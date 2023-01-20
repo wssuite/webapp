@@ -32,7 +32,8 @@ before_script:
 
 test:
   script:
-    - pytest
+    - coverage run -m pytest
+    - coverage report -m --fail-under=95
 
 lint:
   script:
