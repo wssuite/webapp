@@ -36,4 +36,4 @@ test:
 
 lint:
   script:
-    - flake8
+    - flake8 .
