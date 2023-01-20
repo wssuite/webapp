@@ -33,3 +33,7 @@ test:
   script:
     - pip install -r requirements.txt
     - pytest
+
+lint:
+  script:
+    - flake8
