@@ -20,7 +20,7 @@ class TestPerson(TestCase):
         self.assertTrue(created_person.eye_color
                         == self.correct_person.eye_color)
 
-    # def test_person_to_string(self):
-    #   self.assertTrue(self.correct_person.to_string()
-    #                  == "My name is random and my eye color"
-    #                    " is random")
+    def test_person_to_string(self):
+        self.assertTrue(self.correct_person.to_string()
+                        == "My name is random and my eye color"
+                           " is random")
