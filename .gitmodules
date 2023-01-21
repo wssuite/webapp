@@ -1,0 +1,3 @@
+[submodule "frontfacingserver"]
+	path = frontfacingserver
+	url = https://gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/frontfacingserver.git
