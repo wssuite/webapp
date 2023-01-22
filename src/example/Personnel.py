@@ -8,6 +8,3 @@ class Personnel(Writable):
 
     def __repr__(self):
         return f"{self.name} {self.contract_type}"
-
-    def from_json(self, data: dict):
-        return super(Personnel, self).from_json(data)

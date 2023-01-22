@@ -19,6 +19,3 @@ class Scenario(Writable):
               f"Staff\n{staff_str} \n \n" \
               f"Constraints\n{constraints_str}"
         return ret
-
-    def from_json(self, data_dict: dict):
-        return super(Scenario, self).from_json(data_dict)
