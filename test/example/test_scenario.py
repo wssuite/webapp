@@ -1,5 +1,5 @@
-from src.example.Scenario import Scenario
-from src.example.Personnel import Personnel
+from Scenario import Scenario
+from Personnel import Personnel
 from unittest import TestCase
 
 
@@ -23,17 +23,14 @@ class TestScenario(TestCase):
         self.scenario.staff = [self.personnel]
         self.scenario.constraints = ["Early 0"]
 
-    def tearDown(self) -> None:
-        pass
-
     def test_scenario_creation(self):
         scenario = Scenario().from_json(self.scenario_data)
-        self.assertTrue(str(scenario.staff) == str(self.scenario.staff))
-        self.assertTrue(scenario.constraints == self.scenario.constraints)
-        self.assertTrue(scenario.scenario_name == self.scenario.scenario_name)
+        self.assertEqual(str(scenario.staff), str(self.scenario.staff))
+        self.assertEqual(scenario.constraints, self.scenario.constraints)
+        self.assertEqual(scenario.scenario_name, self.scenario.scenario_name)
 
     def test_scenario_to_string(self):
         scenario_str = "Scenario name = n005w4 \n\n" \
                        "Staff\nrandom random\n \n \n" \
                        "Constraints\nEarly 0\n"
-        self.assertTrue(scenario_str == str(self.scenario))
+        self.assertEqual(scenario_str, str(self.scenario))

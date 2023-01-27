@@ -1,5 +1,5 @@
 from pykson import StringField
-from src.example.Writable import Writable
+from Writable import Writable
 
 
 class Personnel(Writable):

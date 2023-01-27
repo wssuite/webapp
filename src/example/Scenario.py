@@ -1,6 +1,6 @@
 from pykson import ObjectListField, ListField, StringField
-from src.example.Personnel import Personnel
-from src.example.Writable import Writable
+from Personnel import Personnel
+from Writable import Writable
 
 
 class Scenario(Writable):
