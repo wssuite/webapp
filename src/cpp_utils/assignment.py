@@ -1,8 +1,4 @@
 class Assignment:
-    date = ""
-    employee_name = ""
-    shift = ""
-    skill = ""
 
     def __init__(self, info):
         self.date = info[0]
