@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint
 import asyncio
 
 mod = Blueprint('index', __name__, url_prefix='/index')
@@ -7,7 +7,7 @@ mod = Blueprint('index', __name__, url_prefix='/index')
 @mod.route('/', methods=["GET"])
 def index():
     asyncio.run(sleep())
-    return request.json
+    return "Hello World"
 
 
 async def sleep():
