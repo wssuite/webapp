@@ -1,0 +1,43 @@
+<table class="NurseDefinitionContainer">
+    <tr>
+       <td>
+            <mat-form-field class="NurseNameInputField">
+                <mat-label>Employee name</mat-label>
+                <input matInput placeholder="name" [(ngModel)]="nurseName">
+            </mat-form-field>
+       </td>
+       <td *ngFor="let contract of nurseContracts; let i= index">
+            <select [(ngModel)]="nurseContracts[i]">
+                <option class="list-contract-group" *ngFor="let aContract of availableContracts">{{aContract}}</option>
+            </select>
+       </td>
+       <td>
+            <button mat-fab color="primary" matTooltip="Add contract" (click)="addContract()">
+                <mat-icon>add</mat-icon>
+            </button>
+       </td>
+       <td *ngIf="nurseContracts.length > 1">
+            <button mat-fab color="accent" matTooltip="Remove contract"(click)="removeContract()">
+                <mat-icon>delete</mat-icon>
+            </button>
+       </td>
+    </tr>
+        <tr class="skillDefinitionSection">
+            <td><label>Skills:</label></td>
+            <td *ngFor="let skill of nurseSkills; let i = index">
+                <select [(ngModel)]="nurseSkills[i]">
+                    <option class="list-skills-group" *ngFor="let aSkill of availableSkills">{{aSkill}}</option>
+                </select>
+            </td>
+            <td>
+                <button mat-fab color="primary" matTooltip="Add skill" (click)="addSkill()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </td>
+            <td *ngIf="nurseSkills.length > 1">
+                <button mat-fab color="accent" matTooltip="Remove skill" (click)="removeSkill()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </tr>
+</table>
