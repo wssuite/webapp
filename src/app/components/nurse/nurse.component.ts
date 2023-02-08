@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Nurse } from 'src/app/models/Nurse';
 
 @Component({
   selector: 'app-nurse',
@@ -6,39 +7,46 @@ import { Component } from '@angular/core';
   styleUrls: ['./nurse.component.css']
 })
 export class NurseComponent {
-  nurseName: string
+  //nurseName: string
   availableContracts: string[]
-  nurseContracts: string[]
+  //nurseContracts: string[]
   availableSkills: string[]
-  nurseSkills: string[]
+  //nurseSkills: string[]
+
+  @Input() nurse!: Nurse;
+  @Output() nurseChange: EventEmitter<Nurse>;
 
   constructor(){
-    this.nurseName = "";
+    //this.nurseName = "";
     this.availableContracts = ["contract1", "contract2", "contract3", "contract4"]
-    this.nurseContracts = [""]
-    this.nurseSkills = [""]
+    //this.nurseContracts = [""]
+    //this.nurseSkills = [""]
     this.availableSkills = ["Nurse", "headNurse"]
+    this.nurseChange = new EventEmitter<Nurse>()
   }
 
   public assignContract(contract: string, i: number){
-    this.nurseContracts[i] = contract;
-    console.log(this.nurseContracts);
+    this.nurse.contracts[i] = contract;
+    //console.log(this.nurseContracts);
   }
 
   public addContract(){
-    this.nurseContracts.push("");
+    this.nurse.contracts.push("");
   }
 
   public removeContract(){
-    this.nurseContracts.pop();
+    this.nurse.contracts.pop();
   }
 
   public addSkill(){
-    this.nurseSkills.push("");
+    this.nurse.skills.push("");
   }
 
   public removeSkill() {
-    this.nurseSkills.pop()
+    this.nurse.skills.pop()
   }
 
+  public emitNurse(){
+    this.nurseChange.emit(this.nurse);
+  }
 }
