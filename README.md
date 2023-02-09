@@ -14,3 +14,24 @@ To build an image:
 
 To push an image:
     docker push registry.gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/frontfacingserver:<TAG>
+
+
+## Run the server
+To run the server there are two options:
+    
+    1- Locally with python
+    2- Docker
+ # Locally with python
+    Create a virtual env: python3 -m virtualenv ~/venv
+    Activate the virtual environment: source ~/venv/bin/activate
+    Install the requirements: pip install -r requirements.txt
+    Run the server: python app.py
+
+ Note: Those instructions were tested on linux, solution for Windows may be different
+
+ # Docker
+    docker build -t frontserver .
+    docker run --rm -p 5000:5000 -v dataset:/app/dataset --name server frontserver
+ 
+ Note for the docker solution, please create the dataset directory in the project root
+ before building the image

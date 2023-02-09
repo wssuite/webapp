@@ -6,6 +6,22 @@ from src.utils.file_system_manager import FileSystemManager
 from src.cpp_utils.schedule import Schedule
 from flask import request
 
+"""
+    To manually test these endpoints, in the project's root, please create
+    directories with the following tree structure:
+
+        dataset
+        |
+        |-<instance>
+            |
+            |_<version>
+                |
+                |_ sol.txt
+
+    The content of the file sol.txt must respect the format agreed
+    with the client, please consult the following link:
+    https://gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/LOG89XX-10/-/blob/dataset/file-format/dataset/examples/sol-instance1.txt
+"""
 mod = Blueprint('schedule_controller', __name__, url_prefix='/schedule')
 
 
