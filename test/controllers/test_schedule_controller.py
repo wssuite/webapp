@@ -13,9 +13,10 @@ solution_content = """Assignments = 1
 
 def create_sol_file(fake_fs):
     fake_fs.create_dir(base_directory)
-    fake_fs.create_dir(f"{base_directory}/{dataset_directory}/{instance}/{version}")
-    fake_fs.create_file(f"{base_directory}/{dataset_directory}/{instance}/{version}/"
-                        f"{solution_file}",
+    fake_fs.create_dir(f"{base_directory}/{dataset_directory}/{instance}/"
+                       f"{version}")
+    fake_fs.create_file(f"{base_directory}/{dataset_directory}/{instance}/"
+                        f"{version}/{solution_file}",
                         contents=solution_content)
 
 

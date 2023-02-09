@@ -1,6 +1,7 @@
 from pyfakefs.fake_filesystem import FakeFilesystem
 
-from file_system_manager import FileSystemManager, dataset_directory, base_directory
+from file_system_manager import FileSystemManager, dataset_directory, \
+    base_directory
 from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
 from unittest.mock import patch
 
@@ -14,7 +15,7 @@ class TestFileSystemManager(TestCase):
 
     @patchfs
     @patch("os.mkdir")
-    def test_dir_created_if_not_exist(self,fake_fs, mock_mkdir):
+    def test_dir_created_if_not_exist(self, fake_fs, mock_mkdir):
         fake_fs.create_dir(base_directory)
         FileSystemManager()
         mock_mkdir.assert_called_once_with(dataset_directory)
