@@ -1,4 +1,4 @@
-from assignment import Assignment
+from src.cpp_utils.assignment import Assignment
 from unittest import TestCase
 
 

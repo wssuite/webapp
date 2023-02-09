@@ -1,5 +1,5 @@
 from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
-from schedule import Schedule
+from src.cpp_utils.schedule import Schedule
 from uuid import uuid4
 
 text = """Assignments = 1
