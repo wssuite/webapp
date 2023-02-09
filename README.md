@@ -32,10 +32,7 @@ To run the server there are two options:
  # Docker
     docker build -t frontserver .
     docker run --rm -p 5000:5000 -v dataset:/app/dataset --name server frontserver
- 
- Note for the docker solution, please create the dataset directory in the project root
- before building the image
- 
+
 To verify that the server is running correctly, in the browser go to:
     http://localhost:5000/index
 
