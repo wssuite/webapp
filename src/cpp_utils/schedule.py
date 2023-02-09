@@ -1,4 +1,4 @@
-from assignment import Assignment
+from src.cpp_utils.assignment import Assignment
 import re
 
 regex = r'{([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+),' \

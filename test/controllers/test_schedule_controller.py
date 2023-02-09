@@ -2,7 +2,7 @@ import error_msg
 from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
 
 import app
-from file_system_manager import dataset_directory, base_directory
+from src.utils.file_system_manager import dataset_directory, base_directory
 
 instance = "prototype"
 version = "1"
