@@ -7,11 +7,14 @@ solution_prefix = 'sol'
 
 class FileSystemManager:
     def __init__(self):
+        os.chdir(base_directory)
         self.create_dir_if_not_exist(dataset_directory)
 
     """Here we make the assumption that there is only one solution file"""
 
-    def get_solution_path(self, instance_name, version) -> str:
+    @staticmethod
+    def get_solution_path(instance_name, version) -> str:
+        os.chdir(base_directory)
         target_dir = f"{dataset_directory}/{instance_name}/{version}"
         try:
             os.chdir(target_dir)
