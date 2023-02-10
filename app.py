@@ -1,5 +1,4 @@
 from flask import Flask
-from pymongo import MongoClient
 from src.controllers import index
 from src.controllers import schedule_controller, nurse_controller
 import config
@@ -18,9 +17,6 @@ def test_client():
     flask_app.config.from_object(config.TestingConfig)
     return flask_app.test_client()
 
-
-def connect_to_db():
-    return MongoClient('localhost', 27017)
 
 
 if __name__ == "__main__":
