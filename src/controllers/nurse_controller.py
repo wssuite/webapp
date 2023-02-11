@@ -1,9 +1,11 @@
 from flask import Blueprint, request
 from src.dao.nurse_dao import NurseDao
+from src.dao.abstract_dao import connect_to_db
 
 mod = Blueprint("nurse_controller", __name__, url_prefix="/nurse")
 
-nurse_dao = NurseDao()
+
+nurse_dao = NurseDao(connect_to_db())
 
 
 @mod.route("/add", methods=["POST"])

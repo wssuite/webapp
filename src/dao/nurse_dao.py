@@ -5,7 +5,8 @@ from pymongo.collection import Collection
 
 
 class NurseDao(AbstractDao):
-    def __init__(self):
+    def __init__(self, mongo):
+        super().__init__(mongo)
         self.collection: Collection = self.db.nurses
 
     def insert_one(self, nurse: dict) -> InsertOneResult:
