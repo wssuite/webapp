@@ -18,7 +18,6 @@ def test_client():
     return flask_app.test_client()
 
 
-
 if __name__ == "__main__":
     app = create_app()
     app.run(host='0.0.0.0')
