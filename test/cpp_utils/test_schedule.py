@@ -22,8 +22,9 @@ class TestSchedule(TestCase):
 
     @patchfs
     def test_filter_schedule_by_name(self, fake_fs):
-        filtering_by_name = {
-            "Patrick": [
+        filtering_by_name = [{
+            "employee_name": "Patrick",
+            "assignments": [
                 {
                     "date": "2010-06-01",
                     "employee_name": "Patrick",
@@ -37,7 +38,7 @@ class TestSchedule(TestCase):
                     "skill": "Nurse"
                 }
             ]
-        }
+        }]
         schedule = create_schedule(fake_fs)
         self.assertEqual(schedule.filter_by_name(), filtering_by_name)
 

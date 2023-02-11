@@ -9,7 +9,8 @@ version = "1"
 solution_file = "sol.txt"
 solution_content = """Assignments = 1
 {2010-06-01,Patrick,Late,Nurse}
-{2010-06-05,Patrick,Early,Nurse}"""
+{2010-06-05,Patrick,Early,Nurse}
+{2010-06-03,Eve,Late,HeadNurse}"""
 
 
 def create_dir(fake_fs):
@@ -36,22 +37,31 @@ class TestScheduleController(TestCase):
     def test_get_schedule_filtered_by_name_if_no_errors_succeed(self, fake_fs):
         create_dir(fake_fs)
         create_sol_file(fake_fs)
-        dict_response = {
-            "Patrick": [
-                {
-                    "date": "2010-06-01",
-                    "employee_name": "Patrick",
-                    "shift": "Late",
-                    "skill": "Nurse"
-                },
-                {
-                    "date": "2010-06-05",
-                    "employee_name": "Patrick",
-                    "shift": "Early",
-                    "skill": "Nurse"
-                }
-            ]
-        }
+        dict_response = [
+            {"employee_name": "Patrick",
+             "assignments": [
+                 {
+                     "date": "2010-06-01",
+                     "employee_name": "Patrick",
+                     "shift": "Late",
+                     "skill": "Nurse"
+                 },
+                 {
+                     "date": "2010-06-05",
+                     "employee_name": "Patrick",
+                     "shift": "Early",
+                     "skill": "Nurse"
+                 }]
+             },
+            {"employee_name": "Eve",
+             "assignments": [
+                 {
+                     "date": "2010-06-03",
+                     "employee_name": "Eve",
+                     "shift": "Late",
+                     "skill": "HeadNurse"
+                 }
+             ]}]
         path = f"/schedule/nameFilter/{instance}?version=1"
         response = self.client.get(path)
         self.assertEqual(response.status_code, 200)

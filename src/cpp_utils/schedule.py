@@ -19,13 +19,20 @@ class Schedule:
                     self.assignments_list.append(Assignment(groups))
 
     def filter_by_name(self):
-        ret = {}
+        dict_filtered_name = {}
         for assignment in self.assignments_list:
-            if assignment.employee_name not in ret:
+            if assignment.employee_name not in dict_filtered_name:
                 list_assignments = [assignment.to_json()]
-                ret[assignment.employee_name] = list_assignments
+                dict_filtered_name[assignment.employee_name] = list_assignments
             else:
-                list_assignments = ret.get(assignment.employee_name)
+                list_assignments = dict_filtered_name.\
+                    get(assignment.employee_name)
                 list_assignments.append(assignment.to_json())
-                ret[assignment.employee_name] = list_assignments
+                dict_filtered_name[assignment.employee_name] = list_assignments
+        ret = []
+        for key in dict_filtered_name.keys():
+            ret_element = {"employee_name": key,
+                           "assignments": dict_filtered_name.get(key)
+                           }
+            ret.append(ret_element)
         return ret
