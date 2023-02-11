@@ -1,0 +1,34 @@
+version: '3'
+
+networks:
+  schedule_generator:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.5.0/24
+          gateway: 192.168.5.1
+
+services:
+  frontfacingserver:
+    build:  frontfacingserver/.
+    ports: 
+      - 5000:5000
+    networks:
+      schedule_generator:
+        ipv4_address: 192.168.5.2
+    volumes:
+      - dataset:/app/dataset
+    restart: on-failure
+  web_app:
+    build: front-end-application/.
+    ports:
+      - 4200:4200
+    networks:
+      schedule_generator:
+        ipv4_address: 192.168.5.3
+    restart: on-failure
+    depends_on:
+      - frontfacingserver
+
+volumes:
+  dataset:
