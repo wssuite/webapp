@@ -2,6 +2,7 @@ from src.dao.abstract_dao import AbstractDao
 from src.cpp_utils.nurse import Nurse
 from pymongo.results import InsertOneResult
 from pymongo.collection import Collection
+from constants import nurse_id
 
 
 class NurseDao(AbstractDao):
@@ -12,7 +13,7 @@ class NurseDao(AbstractDao):
     def insert_one(self, nurse: dict) -> InsertOneResult:
         mongo_id: InsertOneResult = self.collection.insert_one(nurse)
         self.collection.update_one({"_id": mongo_id.inserted_id},
-                                   {"$set": {"id_nurse":
+                                   {"$set": {nurse_id:
                                     str(mongo_id.inserted_id)}},
                                    upsert=False)
         return mongo_id

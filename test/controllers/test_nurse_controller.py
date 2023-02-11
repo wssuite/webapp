@@ -1,14 +1,15 @@
 from unittest.mock import patch
 import app
 from unittest import TestCase
+from constants import nurse_name, nurse_contracts
 
 
 class TestNurseController(TestCase):
     def setUp(self):
         self.client = app.test_client()
         self.nurse_dict = {
-            "name": "random",
-            "contracts": ["fulltime"]
+            nurse_name: "random",
+            nurse_contracts: ["fulltime"]
         }
 
     def tearDown(self) -> None:

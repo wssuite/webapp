@@ -1,15 +1,16 @@
 from src.cpp_utils.jsonify import Jsonify
 from pykson import StringField, ListField
+from constants import nurse_name, nurse_id, nurse_contracts
 
 
 class Nurse(Jsonify):
-    name = StringField(serialized_name="name")
-    contracts = ListField(str, serialized_name="contracts")
-    id = StringField(serialized_name="id_nurse")
+    name = StringField(serialized_name=nurse_name)
+    contracts = ListField(str, serialized_name=nurse_contracts)
+    id = StringField(serialized_name=nurse_id)
 
     def to_json(self):
         return {
-            "id_nurse": self.id,
-            "name": self.name,
-            "contracts": self.contracts
+            nurse_id: self.id,
+            nurse_name: self.name,
+            nurse_contracts: self.contracts
         }

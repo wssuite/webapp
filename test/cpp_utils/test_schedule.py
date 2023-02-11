@@ -1,6 +1,8 @@
 from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
 from src.cpp_utils.schedule import Schedule
 from uuid import uuid4
+from constants import assignment_skill, assignment_date,\
+    assignment_shift, assignment_employee_name
 
 text = """Assignments = 1
 {2010-06-01,Patrick,Late,Nurse}
@@ -25,16 +27,16 @@ class TestSchedule(TestCase):
         filtering_by_name = {
             "Patrick": [
                 {
-                    "date": "2010-06-01",
-                    "employee_name": "Patrick",
-                    "shift": "Late",
-                    "skill": "Nurse"
+                    assignment_date: "2010-06-01",
+                    assignment_employee_name: "Patrick",
+                    assignment_shift: "Late",
+                    assignment_skill: "Nurse"
                 },
                 {
-                    "date": "2010-06-05",
-                    "employee_name": "Patrick",
-                    "shift": "Early",
-                    "skill": "Nurse"
+                    assignment_date: "2010-06-05",
+                    assignment_employee_name: "Patrick",
+                    assignment_shift: "Early",
+                    assignment_skill: "Nurse"
                 }
             ]
         }

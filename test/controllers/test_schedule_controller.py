@@ -9,7 +9,8 @@ version = "1"
 solution_file = "sol.txt"
 solution_content = """Assignments = 1
 {2010-06-01,Patrick,Late,Nurse}
-{2010-06-05,Patrick,Early,Nurse}"""
+{2010-06-05,Patrick,Early,Nurse}
+{2010-06-05,Eve,Late,HeadNurse}"""
 
 
 def create_dir(fake_fs):
@@ -49,6 +50,14 @@ class TestScheduleController(TestCase):
                     "employee_name": "Patrick",
                     "shift": "Early",
                     "skill": "Nurse"
+                }
+            ],
+            "Eve": [
+                {
+                    "date": "2010-06-05",
+                    "employee_name": "Eve",
+                    "shift": "Late",
+                    "skill": "HeadNurse"
                 }
             ]
         }
