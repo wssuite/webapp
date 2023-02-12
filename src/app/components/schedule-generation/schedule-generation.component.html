@@ -28,6 +28,7 @@
         <br>
         <div *ngFor="let n of nurses; let i= index">
             <app-nurse [(nurse)]="nurses[i]"></app-nurse>
+            <p>nurse Name:{{nurses[i].name}}</p>
         </div>
         <button *ngIf= "nurses.length > 1" color="red" (click)="removeNurse()">Delete Nurse</button>
         <button color="blue" (click)="addNurse()">Add nurse</button>
