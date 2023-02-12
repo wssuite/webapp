@@ -1,1 +1,16 @@
-<p>{{greetingMessage}}</p>
+<div class="schedule-container">
+    <table cellspacing="10">
+        <tr>
+            <td></td>
+            <td *ngFor="let index of indexes">
+                {{getDateDayStringByIndex(index)}} - {{getDayString(index)}}
+            </td>
+        </tr>
+        <tr *ngFor="let sc of employeeSchedule.schedule">
+            <td>{{sc.employee_name}}</td>
+            <td *ngFor="let index of indexes">
+                {{getEmployeeShiftSkill(sc.employee_name, index)}}
+            </td>
+        </tr>
+    </table>
+</div>
