@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -17,6 +17,7 @@ import { ConsultScheduleComponent } from './components/consult-schedule/consult-
 import { ContractCreationComponent } from './components/contract-creation/contract-creation.component';
 import { ScheduleGenerationComponent } from './components/schedule-generation/schedule-generation.component';
 import { NurseComponent } from './components/nurse/nurse.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -40,9 +41,11 @@ import { NurseComponent } from './components/nurse/nurse.component';
     NoopAnimationsModule,
     MatIconModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
