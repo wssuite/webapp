@@ -1,31 +1,58 @@
 from src.cpp_utils.assignment import Assignment
 import re
+from constants import start_date, end_date,\
+    schedule_string, assignment_employee_name,\
+    assignments_string
 
-regex = r'{([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+),' \
-        r'([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+)}'
+regex_assignments = r'([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+),' \
+                    r'([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+)'
+
+regex_instance_info = r'([a-zA-Z0-9\-\.]+),([a-zA-Z0-9\-]+),' \
+                      r'([a-zA-Z0-9\-]+)'
 
 
 class Schedule:
 
     def __init__(self, file_name):
         self.assignments_list = []
+        self.start_date = ""
+        self.end_date = ""
         with open(file_name) as stream:
             reader = stream.readlines()
             for row in reader:
-                match = re.search(regex, row)
-                if match:
-                    groups = [match.group(1), match.group(2),
-                              match.group(3), match.group(4)]
+                match_regex_assignments = re.search(regex_assignments, row)
+                match_regex_instance_info = re.search(regex_instance_info, row)
+                if match_regex_assignments:
+                    groups = [match_regex_assignments.group(1),
+                              match_regex_assignments.group(2),
+                              match_regex_assignments.group(3),
+                              match_regex_assignments.group(4)]
                     self.assignments_list.append(Assignment(groups))
+                elif match_regex_instance_info:
+                    self.start_date = match_regex_instance_info.group(2)
+                    self.end_date = match_regex_instance_info.group(3)
 
     def filter_by_name(self):
-        ret = {}
+        dict_filtered_name = {}
         for assignment in self.assignments_list:
-            if assignment.employee_name not in ret:
+            if assignment.employee_name not in dict_filtered_name:
                 list_assignments = [assignment.to_json()]
-                ret[assignment.employee_name] = list_assignments
+                dict_filtered_name[assignment.employee_name] = list_assignments
             else:
-                list_assignments = ret.get(assignment.employee_name)
+                list_assignments = dict_filtered_name. \
+                    get(assignment.employee_name)
                 list_assignments.append(assignment.to_json())
-                ret[assignment.employee_name] = list_assignments
+                dict_filtered_name[assignment.employee_name] = list_assignments
+        schedule = []
+        for key in dict_filtered_name.keys():
+            ret_element = {assignment_employee_name: key,
+                           assignments_string: dict_filtered_name.get(key)
+                           }
+            schedule.append(ret_element)
+
+        ret = {
+            start_date: self.start_date,
+            end_date: self.end_date,
+            schedule_string: schedule
+        }
         return ret
