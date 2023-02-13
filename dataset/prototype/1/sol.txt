@@ -1,0 +1,3 @@
+Assignments = 1
+{2010-06-01,Patrick,Late,Nurse}
+{2010-06-05,Patrick,Early,Nurse}
