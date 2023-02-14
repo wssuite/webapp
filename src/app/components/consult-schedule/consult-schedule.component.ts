@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { scheduleExample } from 'src/app/constants/schedule-example';
-import { EmployeeSchedule } from 'src/app/models/Assignment';
+import { Component, OnInit } from '@angular/core';
+//import { scheduleExample } from 'src/app/constants/schedule-example';
+import { Assignment, EmployeeSchedule } from 'src/app/models/Assignment';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { DateUtils } from 'src/app/utils/DateUtils';
 
@@ -9,30 +9,60 @@ import { DateUtils } from 'src/app/utils/DateUtils';
   templateUrl: './consult-schedule.component.html',
   styleUrls: ['./consult-schedule.component.css']
 })
-export class ConsultScheduleComponent {
+export class ConsultScheduleComponent implements OnInit{
 
-  employeeSchedule: EmployeeSchedule = scheduleExample
-  startDate = new Date(this.employeeSchedule.startDate);
-  endDate = new Date(this.employeeSchedule.endDate);
-  nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
-  indexes: number[] = this.getIndexes()
+  employeeSchedule: EmployeeSchedule;
+  employeeAssignmentsMap: Map<string, Assignment[]>;
+  startDate:Date|undefined;
+  endDate:Date|undefined;
+  nbColumns: number|undefined;
+  indexes: number[]|undefined;
 
   //schedule
-  constructor(private apiService: APIService){}
+  constructor(private apiService: APIService){
+    this.employeeSchedule= {
+      startDate: "",
+      endDate: "",
+      schedule: []
+    }
+    this.employeeAssignmentsMap = new Map();
+  }
+
+  ngOnInit():void {
+    this.apiService.getPrototypeSchedule().subscribe((schedule: EmployeeSchedule) =>{
+      this.employeeSchedule = schedule
+      this.startDate = new Date(this.employeeSchedule.startDate);
+      this.endDate = new Date(this.employeeSchedule.endDate)
+      this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
+      this.indexes = this.getIndexes();
+      for(const sch of this.employeeSchedule.schedule){
+        this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
+      }
+    })
+  }
 
 
   getDateDayStringByIndex(index: number):string {
+    if(this.startDate == undefined) {
+      return "";
+    }
     const nextDay = new Date(+this.startDate + ((index + 1)* DateUtils.dayMultiplicationFactor))
     const local_string = nextDay.toLocaleDateString().replaceAll("/", "-")
     return DateUtils.arrangeDateString(local_string)
   }
 
   getDayString(index:number):string {
+    if(this.startDate == undefined) {
+      return "";
+    }
     const nextDay = new Date(+this.startDate + ((index + 1)* DateUtils.dayMultiplicationFactor)).getDay()
     return DateUtils.days[nextDay];
   }
   getIndexes() {
     const indexes: number[] =[]
+    if(this.nbColumns == undefined) {
+      return []
+    }
     for(let i = 0; i < this.nbColumns; i++){
       indexes.push(i);
     }
@@ -41,16 +71,15 @@ export class ConsultScheduleComponent {
 
   getEmployeeShiftSkill(employeeName:string, index: number):string {
     let ret = ''
-    for(const employeeAssignment of this.employeeSchedule.schedule){
-      if(employeeAssignment.employee_name === employeeName){
-        const date = this.getDateDayStringByIndex(index);
-        for(const assignment of employeeAssignment.assignments){
-          if(assignment.date === date) {
-            console.log(date)
-            ret = "skill:" + assignment.skill + "\n shift: " + assignment.shift;
-            break;
-          }
-        }
+    const assignments = this.employeeAssignmentsMap.get(employeeName);
+    if(assignments === undefined || assignments === null){
+      return ret;
+    }
+    const date = this.getDateDayStringByIndex(index);
+    for(const assignment of assignments){
+      if(assignment.date === date) {
+        console.log(date)
+        ret = "skill:" + assignment.skill + "\n shift: " + assignment.shift;
         break;
       }
     }
