@@ -56,7 +56,7 @@ export class ConsultScheduleComponent implements OnInit{
       return "";
     }
     const nextDay = new Date(+this.startDate + ((index + 1)* DateUtils.dayMultiplicationFactor)).getDay()
-    return DateUtils.days[nextDay];
+    return DateUtils.days[nextDay] + "\n";
   }
   getIndexes() {
     const indexes: number[] =[]

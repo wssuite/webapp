@@ -1,0 +1,25 @@
+.schedule-container{
+    overflow-x: scroll;
+    margin-top: 100px;
+}
+table{
+    border:solid;
+    width: 300px;
+}
+td {
+    border-right: solid;
+    text-align: center;
+    width: 200px;
+    margin-top: 10px;
+
+}
+
+header, footer {
+    height: 10vh;
+    background-color: darkblue;
+}
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
