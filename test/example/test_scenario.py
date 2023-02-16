@@ -1,5 +1,5 @@
-from Scenario import Scenario
-from Personnel import Personnel
+from src.example.Scenario import Scenario
+from src.example.Personnel import Personnel
 from unittest import TestCase
 
 

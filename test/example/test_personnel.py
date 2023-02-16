@@ -1,4 +1,4 @@
-from Personnel import Personnel
+from src.example.Personnel import Personnel
 from unittest import TestCase
 
 

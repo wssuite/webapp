@@ -1,10 +1,12 @@
 from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
-from schedule import Schedule
+from src.cpp_utils.schedule import Schedule
 from uuid import uuid4
 
-text = """Assignments = 1
-{2010-06-01,Patrick,Late,Nurse}
-{2010-06-05,Patrick,Early,Nurse}"""
+text = """
+instance1,2010-06-01,2010-06-28
+Assignments = 2
+2010-06-01,Patrick,Late,Nurse
+2010-06-05,Patrick,Early,Nurse"""
 
 
 def create_schedule(fake_fs):
@@ -23,21 +25,27 @@ class TestSchedule(TestCase):
     @patchfs
     def test_filter_schedule_by_name(self, fake_fs):
         filtering_by_name = {
-            "Patrick": [
-                {
-                    "date": "2010-06-01",
-                    "employee_name": "Patrick",
-                    "shift": "Late",
-                    "skill": "Nurse"
-                },
-                {
-                    "date": "2010-06-05",
-                    "employee_name": "Patrick",
-                    "shift": "Early",
-                    "skill": "Nurse"
-                }
-            ]
+            "startDate": "2010-06-01",
+            "endDate": "2010-06-28",
+            "schedule": [{
+                "employee_name": "Patrick",
+                "assignments": [
+                    {
+                        "date": "2010-06-01",
+                        "employee_name": "Patrick",
+                        "shift": "Late",
+                        "skill": "Nurse"
+                    },
+                    {
+                        "date": "2010-06-05",
+                        "employee_name": "Patrick",
+                        "shift": "Early",
+                        "skill": "Nurse"
+                    }
+                ]
+            }]
         }
+
         schedule = create_schedule(fake_fs)
         self.assertEqual(schedule.filter_by_name(), filtering_by_name)
 

@@ -1,4 +1,5 @@
 import os
+import error_msg
 
 dataset_directory = "dataset"
 base_directory = os.getcwd()
@@ -7,11 +8,14 @@ solution_prefix = 'sol'
 
 class FileSystemManager:
     def __init__(self):
+        os.chdir(base_directory)
         self.create_dir_if_not_exist(dataset_directory)
 
     """Here we make the assumption that there is only one solution file"""
 
-    def get_solution_path(self, instance_name, version) -> str:
+    @staticmethod
+    def get_solution_path(instance_name, version) -> str:
+        os.chdir(base_directory)
         target_dir = f"{dataset_directory}/{instance_name}/{version}"
         try:
             os.chdir(target_dir)
@@ -26,9 +30,9 @@ class FileSystemManager:
             if target_file_found is True:
                 return target_file
             else:
-                raise Exception("No Solution found")
+                raise Exception(error_msg.no_solution_found)
         except OSError:
-            raise OSError("Version not found")
+            raise OSError(error_msg.version_not_found)
 
     @staticmethod
     def create_dir_if_not_exist(name):
