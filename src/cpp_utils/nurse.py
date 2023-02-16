@@ -15,5 +15,5 @@ class Nurse(Jsonify):
             nurse_id: self.id,
             nurse_name: self.name,
             nurse_contracts: self.contracts,
-            nurse_username:self.username
+            nurse_username: self.username
         }
