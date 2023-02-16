@@ -1,9 +1,13 @@
 import pymongo
 import mongomock
 
+"""
+    We need to connect to the ip adress of the container that is hosting mongodb
 
+    Verify thye docker compose to know that public IP
+"""
 def connect_to_db():
-    return pymongo.MongoClient('localhost', 27017)
+    return pymongo.MongoClient('192.168.5.4', 27017)
 
 
 def connect_to_fake_db():
