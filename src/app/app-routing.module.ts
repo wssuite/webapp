@@ -6,7 +6,7 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { ScheduleGenerationComponent } from './components/schedule-generation/schedule-generation.component';
 
 const routes: Routes = [
-  {path:"",redirectTo:'/consult-schedule', pathMatch:"full"},
+  {path:"",redirectTo:'/schedule-generation', pathMatch:"full"},
   {path:"main-menu", component: MainMenuComponent},
   {path:"consult-schedule", component: ConsultScheduleComponent},
   {path:"create-contract", component: ContractCreationComponent},

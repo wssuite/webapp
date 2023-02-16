@@ -1,9 +1,9 @@
 <div class="problemDefinitionContainer">
     <div class="NameDefinitionContainer">
         <label>Name: </label>
-        <mat-form-field class="problemNameInputField">
+        <mat-form-field class="problemNameInputField" [formGroup]="inputControlForm">
             <mat-label>Enter problem's name</mat-label>
-            <input matInput placeholder="name" [(ngModel)]="problemName">
+            <input matInput placeholder="name" formControlName="name" [(ngModel)]="problemName">
         </mat-form-field>
     </div>
     <div class="PlanningHorizonContainer">
@@ -20,17 +20,34 @@
             <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
             <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
         </mat-form-field>
-        <p>start date: {{startDate}}</p>
-        <p>end date: {{endDate}}</p>
     </div>
     <div class="employeeSection">
         <H1 class="employeeSectionTitle">Nurses</H1>
-        <br>
-        <div *ngFor="let n of nurses; let i= index">
-            <app-nurse [(nurse)]="nurses[i]"></app-nurse>
-            <p>nurse Name:{{nurses[i].name}}</p>
+        <div *ngIf="availableNurses.length > 0">
+            <mat-form-field appearance="fill">
+                <mat-label>select a nurse</mat-label>
+                <mat-select [(value)] = "selectedNurse">
+                    <mat-option *ngFor="let nurse of availableNurses" [value]="nurse">
+                        {{nurse.username}} - {{nurse.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-raised-button class="addNurseButton" (click)="addNurse()">add Nurse</button>
         </div>
-        <button *ngIf= "nurses.length > 1" color="red" (click)="removeNurse()">Delete Nurse</button>
-        <button color="blue" (click)="addNurse()">Add nurse</button>
+        <table class="nursesTable">
+            <tr *ngFor="let nurse of nurses">
+                <td class="nurseNameUsername">{{nurse.username}} - {{nurse.name}}</td>
+                <mat-chip-row class="chips" *ngFor="let contract of nurse.contracts" (removed)="removeContract(nurse,contract)">
+                    {{contract}}
+                    <button matChipRemove aria-label="'remove ' + nurse + contract">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+                <button mat-raised-button class="removeNurseButton " (click)="removeNurse(nurse)" color="accent">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </tr>
+        </table>
     </div>
+    <button mat-raised-button color="primary" class="generateScheduleButton" [disabled]="range.invalid || inputControlForm.invalid || nurses.length === 0">Generate schedule</button>
 </div>
