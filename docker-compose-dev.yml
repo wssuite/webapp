@@ -12,7 +12,9 @@ services:
   frontfacingserver:
     build:  frontfacingserver/.
     ports: 
-      - 5000:5000
+      - 5000:443
+    command: >
+     bash -c "systemctl start nginx && /venv/bin/python app.py"
     networks:
       schedule_generator:
         ipv4_address: 192.168.5.2
@@ -21,8 +23,10 @@ services:
     restart: on-failure
   web_app:
     build: front-end-application/.
+    command: > 
+     bash -c "systemctl start nginx && npm start"
     ports:
-      - 4200:4200
+      - 4200:443
     networks:
       schedule_generator:
         ipv4_address: 192.168.5.3
