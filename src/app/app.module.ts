@@ -9,6 +9,7 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
+import {MatChipsModule} from '@angular/material/chips';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app-component/app.component';
@@ -42,7 +43,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatSelectModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
