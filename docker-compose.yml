@@ -9,6 +9,17 @@ networks:
           gateway: 192.168.5.1
 
 services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      schedule_generator:
+        ipv4_address: 192.168.5.4
+    volumes:
+      - mongo_data:/data/db
+    restart: on-failure
+  
   frontfacingserver:
     image:  registry.gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/frontfacingserver:test
     ports: 
@@ -32,5 +43,5 @@ services:
 
 volumes:
   dataset:
-    
+  mongo_data:    
 

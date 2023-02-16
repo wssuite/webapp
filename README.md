@@ -22,7 +22,7 @@ for the docker containers to work properly.
 To use the docker-compose file, make sure to have docker and docker-compose installed on your computer.
 
 To start the docker containers:
-	 docker-compose -f <docker-compose-filename> up -d
+	 docker-compose -f <docker-compose-filename> up -d --build
 
 To stop the docker containers:
 	 docker-compose -f <docker-compose-filename> down -v --rmi local
