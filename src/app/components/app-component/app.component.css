@@ -1,0 +1,13 @@
+header{
+    height: 10vh;
+    background-color: darkblue;
+    display: block;
+}
+/**footer {
+    height: 10vh;
+    background-color: darkblue;
+    display: block;
+    position:fixed;
+    bottom: 0;
+
+}**/

@@ -1,6 +1,6 @@
 .schedule-container{
     overflow-x: scroll;
-    margin-top: 100px;
+    margin-top: 10px;
 }
 table{
     border:solid;
@@ -14,12 +14,10 @@ td {
 
 }
 
-header, footer {
+footer {
     height: 10vh;
     background-color: darkblue;
-}
-footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: block;
+    position:fixed;
+
 }
