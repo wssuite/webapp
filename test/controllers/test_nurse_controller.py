@@ -1,7 +1,8 @@
 from unittest.mock import Mock
 import app
 from unittest import TestCase
-from constants import nurse_name, nurse_contracts, nurse_id
+from constants import nurse_name, nurse_contracts, nurse_id,\
+    nurse_username
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.nurse_dao import NurseDao
 
@@ -11,7 +12,8 @@ class TestNurseController(TestCase):
         self.client = app.test_client()
         self.nurse_dict = {
             nurse_name: "random",
-            nurse_contracts: ["fulltime"]
+            nurse_contracts: ["fulltime"],
+            nurse_username: "random"
         }
         app.nurse_controller.nurse_dao = Mock()
         app.nurse_controller.nurse_dao = NurseDao(connect_to_fake_db())

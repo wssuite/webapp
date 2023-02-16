@@ -2,7 +2,8 @@ from src.dao.abstract_dao import AbstractDao
 from src.cpp_utils.nurse import Nurse
 from pymongo.results import InsertOneResult
 from pymongo.collection import Collection
-from constants import nurse_id
+from constants import nurse_id, mongo_id_field,\
+    mongo_set_operation
 
 
 class NurseDao(AbstractDao):
@@ -12,14 +13,14 @@ class NurseDao(AbstractDao):
 
     def insert_one(self, nurse: dict) -> InsertOneResult:
         mongo_id: InsertOneResult = self.collection.insert_one(nurse)
-        self.collection.update_one({"_id": mongo_id.inserted_id},
-                                   {"$set": {nurse_id:
+        self.collection.update_one({mongo_id_field: mongo_id.inserted_id},
+                                   {mongo_set_operation: {nurse_id:
                                     str(mongo_id.inserted_id)}},
                                    upsert=False)
         return mongo_id
 
     def fetch_all(self):
-        list_nurse = self.collection.find({}, {"_id": 0})
+        list_nurse = self.collection.find({}, {mongo_id_field: 0})
         return_list = []
         for nurse in list_nurse:
             nurse_object = Nurse().from_json(nurse)

@@ -1,7 +1,8 @@
 from src.dao.nurse_dao import NurseDao
 from unittest import TestCase
 from src.dao.abstract_dao import connect_to_fake_db
-from constants import nurse_name, nurse_contracts, nurse_id
+from constants import nurse_name, nurse_contracts,\
+    nurse_id, nurse_username
 
 
 def create_nurse_dao():
@@ -13,7 +14,8 @@ class TestNurseDao(TestCase):
     def setUp(self) -> None:
         self.nurse_dict = {
             nurse_name: "random",
-            nurse_contracts: ["fulltime"]
+            nurse_contracts: ["fulltime"],
+            nurse_username: "random"
         }
         self.dao = create_nurse_dao()
 
