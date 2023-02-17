@@ -49,5 +49,5 @@
             </tr>
         </table>
     </div>
-    <button mat-raised-button color="primary" class="generateScheduleButton" [disabled]="range.invalid || inputControlForm.invalid || nurses.length === 0">Generate schedule</button>
+    <button mat-raised-button color="primary" class="generateScheduleButton" (click)="viewSchedule()" [disabled]="range.invalid || inputControlForm.invalid || nurses.length === 0">Generate schedule</button>
 </div>

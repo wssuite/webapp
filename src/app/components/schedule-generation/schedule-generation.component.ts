@@ -1,6 +1,8 @@
 import { Component} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Router } from '@angular/router';
+import { CONSULT_SCHEDULE } from 'src/app/constants/app-routes';
 import { nurses_example } from 'src/app/constants/nurses';
 import { NurseInterface } from 'src/app/models/Nurse';
 
@@ -31,7 +33,7 @@ export class ScheduleGenerationComponent {
   selectedNurse: NurseInterface;
   nursesMap: Map<string, NurseInterface>
 
-  constructor(){
+  constructor(private router: Router){
     this.startDate = new Date() 
     this.problemName = ""
     this.endDate = new Date()
@@ -84,5 +86,7 @@ export class ScheduleGenerationComponent {
       }
     }
   }
-  
+  viewSchedule() {
+    this.router.navigate(['/'+CONSULT_SCHEDULE])
+  }
 }
