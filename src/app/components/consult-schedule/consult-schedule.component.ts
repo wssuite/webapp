@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-//import { scheduleExample } from 'src/app/constants/schedule-example';
 import { Assignment, EmployeeSchedule } from 'src/app/models/Assignment';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { DateUtils } from 'src/app/utils/DateUtils';
@@ -20,9 +19,11 @@ export class ConsultScheduleComponent implements OnInit{
   endDate:Date|undefined;
   nbColumns: number|undefined;
   indexes: number[]|undefined;
+  validSchedule: boolean
 
   //schedule
   constructor(private apiService: APIService, public dialog: MatDialog){
+    this.validSchedule = false;
     this.employeeSchedule= {
       startDate: "",
       endDate: "",
@@ -33,7 +34,7 @@ export class ConsultScheduleComponent implements OnInit{
 
   ngOnInit():void {
     this.apiService.getPrototypeSchedule().subscribe((schedule: EmployeeSchedule) =>{
-      this.employeeSchedule = schedule
+      this.employeeSchedule = schedule;
       this.startDate = new Date(this.employeeSchedule.startDate);
       this.endDate = new Date(this.employeeSchedule.endDate)
       this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
@@ -41,6 +42,7 @@ export class ConsultScheduleComponent implements OnInit{
       for(const sch of this.employeeSchedule.schedule){
         this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
       }
+      this.validSchedule = true;
     },(err:HttpErrorResponse)=>{
         this.dialog.open(ErrorMessageDialogComponent, {
           data:{message:err.error}
@@ -85,12 +87,10 @@ export class ConsultScheduleComponent implements OnInit{
     const date = this.getDateDayStringByIndex(index);
     for(const assignment of assignments){
       if(assignment.date === date) {
-        console.log(date)
         ret = "skill:" + assignment.skill + "\n shift: " + assignment.shift;
         break;
       }
     }
-    console.log(ret)
     return ret
   }
 }
