@@ -8,11 +8,16 @@ instance = "prototype"
 version = "1"
 solution_file = "sol.txt"
 solution_content = """
+HEADERS
+(0,Patrick)
+(1,Eve)
+END
 instance1,2010-06-01,2010-06-28
 Assignments = 3
-2010-06-01,Patrick,Late,Nurse
-2010-06-05,Patrick,Early,Nurse
-2010-06-03,Eve,Late,HeadNurse"""
+2010-06-01,0,Late,Nurse
+2010-06-05,0,Early,Nurse
+2010-06-03,1,Late,HeadNurse
+"""
 
 
 def create_dir(fake_fs):

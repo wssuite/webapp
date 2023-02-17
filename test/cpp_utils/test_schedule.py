@@ -3,10 +3,14 @@ from src.cpp_utils.schedule import Schedule
 from uuid import uuid4
 
 text = """
+HEADERS
+(0,Patrick)
+END
 instance1,2010-06-01,2010-06-28
 Assignments = 2
-2010-06-01,Patrick,Late,Nurse
-2010-06-05,Patrick,Early,Nurse"""
+2010-06-01,0,Late,Nurse
+2010-06-05,0,Early,Nurse
+"""
 
 
 def create_schedule(fake_fs):
@@ -47,7 +51,7 @@ class TestSchedule(TestCase):
         }
 
         schedule = create_schedule(fake_fs)
-        self.assertEqual(schedule.filter_by_name(), filtering_by_name)
+        self.assertEqual(filtering_by_name, schedule.filter_by_name())
 
     @patchfs
     def test_schedule_init(self, fake_fs):
