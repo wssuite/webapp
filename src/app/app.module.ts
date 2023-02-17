@@ -10,6 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app-component/app.component';
@@ -19,6 +20,7 @@ import { ContractCreationComponent } from './components/contract-creation/contra
 import { ScheduleGenerationComponent } from './components/schedule-generation/schedule-generation.component';
 import { NurseComponent } from './components/nurse/nurse.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ErrorMessageDialogComponent } from './components/error-message-dialog/error-message-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { HttpClientModule } from '@angular/common/http';
     ConsultScheduleComponent,
     ContractCreationComponent,
     ScheduleGenerationComponent,
-    NurseComponent
+    NurseComponent,
+    ErrorMessageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatSelectModule,
     MatButtonModule,
     HttpClientModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,8 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 //import { scheduleExample } from 'src/app/constants/schedule-example';
 import { Assignment, EmployeeSchedule } from 'src/app/models/Assignment';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { DateUtils } from 'src/app/utils/DateUtils';
+import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 
 @Component({
   selector: 'app-consult-schedule',
@@ -19,7 +22,7 @@ export class ConsultScheduleComponent implements OnInit{
   indexes: number[]|undefined;
 
   //schedule
-  constructor(private apiService: APIService){
+  constructor(private apiService: APIService, public dialog: MatDialog){
     this.employeeSchedule= {
       startDate: "",
       endDate: "",
@@ -38,6 +41,10 @@ export class ConsultScheduleComponent implements OnInit{
       for(const sch of this.employeeSchedule.schedule){
         this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
       }
+    },(err:HttpErrorResponse)=>{
+        this.dialog.open(ErrorMessageDialogComponent, {
+          data:{message:err.error}
+        })
     })
   }
 
