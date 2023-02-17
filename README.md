@@ -32,7 +32,7 @@ Note: with docker-compose-dev.yml the images will be built each time that you la
 That may take time.
 
 ## Concerning the Dockerfiles in the gitsubmodules
-The dockerfiles are currently built on a custom made docker image: 
+The dockerfile is currently built on a custom made docker image: 
 markbekhet/horaire-infirmiere:base-image-v2
 
 This image has nginx, openssl, python3 , node18.x installed and it has a self signed ssl certificate.
@@ -53,10 +53,10 @@ To update the ssl certaficate use the following commands:
 	docker commit container <NEW_IMAGE_NAME>:<TAG>
 	(optionnal) docker push <NEW_IMAGE_NAME>:<TAG>
 
-After those commands, update the Dockerfile in each submodule to use new image and the https protocol will be used.
+After those commands, update the Dockerfile to use new image and the https protocol will be used.
 
 ## Front-end Development
 For the front-end development, AKA the gitmodule front-end-application, the developpers may need to restart
-only the web-app service, for this reason and because we use https to communicate with the backend,
+only the web-app service, for this
 use the following command:
-	docker-compose -f docker-compose-dev.yml up -d --force-recreate --no-deps --build web_app
+	docker-compose -f docker-compose-dev.yml up -d --force-recreate --no-deps --build frontfacingserver_webapp

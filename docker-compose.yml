@@ -20,26 +20,20 @@ services:
       - mongo_data:/data/db
     restart: on-failure
   
-  frontfacingserver:
-    image:  registry.gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/frontfacingserver:test
+  frontfacingserver_webapp:
+    image:  markbekhet/horaire-infirmiere:1.0
     ports: 
-      - 5000:5000
+      - 443:443
+    command: >
+     bash -c "systemctl start nginx &&
+      cd /ffs && /venv/bin/python app.py &
+      cd /fe && npm start"
     networks:
       schedule_generator:
         ipv4_address: 192.168.5.2
     volumes:
       - dataset:/app/dataset
     restart: on-failure
-  web_app:
-    image: registry.gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/front-end-application:test
-    ports:
-      - 4200:4200
-    networks:
-      schedule_generator:
-        ipv4_address: 192.168.5.3
-    restart: on-failure
-    depends_on:
-      - frontfacingserver
 
 volumes:
   dataset:
