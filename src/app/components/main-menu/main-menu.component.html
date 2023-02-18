@@ -11,11 +11,16 @@
 </div>-->
 
 <div class="main-menu-page-buttons-container">
-  <button *ngFor="let button of buttons; let i=index" mat--button align="getAlignemntDirection(i)" (click)="redirect(button)">
-    <img [src]="button.icon" align="right">
+  <button
+    *ngFor="let button of buttons; let i = index"
+    mat--button
+    align="getAlignemntDirection(i)"
+    (click)="redirect(button)"
+  >
+    <img [src]="button.icon" align="right" />
     <span>
-      <h1>{{button.title}} </h1>
-      {{button.description}}
+      <h1>{{ button.title }}</h1>
+      {{ button.description }}
     </span>
   </button>
 </div>
