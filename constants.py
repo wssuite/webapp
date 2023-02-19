@@ -21,7 +21,7 @@ start_date = "startDate"
 mongo_id_field = "_id"
 mongo_set_operation = "$set"
 
-"""Constraints and contract"""
+"""Constraints"""
 constraint_name = "name"
 integer_constraint_value = "value"
 constraint_weight = "weight"
@@ -33,6 +33,7 @@ max_constraint_weight = "maxWeight"
 pattern_element_shift = shift_constraint
 pattern_element_day = "dayName"
 unwanted_pattern_elements = "patternElements"
+
 number_of_free_days_after_shift \
     = "NumberOfFreeDaysAfterShift"
 total_weekends_in_four_weeks \
@@ -48,3 +49,10 @@ identical_shift_during_weekend \
     = "IdentShiftTypesDuringWeekend"
 alternative_shift = "AlternativeShift"
 unwanted_pattern = "unwantedPatterns"
+
+
+"""Contract"""
+sub_contract_names = "subContractNames"
+contract_name = "name"
+contract_constraints = "constraints"
+contract_skills = "skills"
