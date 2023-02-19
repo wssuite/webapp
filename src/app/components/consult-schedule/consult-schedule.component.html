@@ -1,22 +1,31 @@
-<div *ngIf="validSchedule === true; else elseBlock">
-  <h1>Your schedule is ready</h1>
-  <div class="schedule-container">
-    <table cellspacing="10">
-      <tr>
-        <th class="employee_name_header"></th>
-        <th *ngFor="let index of indexes">
-          {{ getDateDayStringByIndex(index) }} {{ getDayString(index) }}
-        </th>
-      </tr>
-      <tr *ngFor="let sc of employeeSchedule.schedule">
-        <td class="employee_name_cell">{{ sc.employee_name }}</td>
-        <td *ngFor="let index of indexes">
-          {{ getEmployeeShiftSkill(sc.employee_name, index) }}
-        </td>
-      </tr>
-    </table>
-  </div>
+<div *ngIf="validSchedule === true else elseBlock">
+    <h1>Your schedule is ready</h1>
+    <div class="schedule-container">
+        <!-- create a table to hold the column with the employee names-->
+        <table class="employee-names-column" cellspacing="30">
+            <tr>
+                <th class="employee-name-header"></th>
+            </tr>
+            <tr *ngFor="let sc of employeeSchedule.schedule">
+                <td class="employee-name-cell">{{sc.employee_name}}</td>
+            </tr>
+        </table>
+        <div class="schedule-table">
+            <table cellspacing="10">
+                <tr>
+                    <th *ngFor="let index of indexes">
+                        {{getDateDayStringByIndex(index)}}  {{getDayString(index)}}
+                    </th>
+                </tr>
+                <tr *ngFor="let sc of employeeSchedule.schedule">
+                    <td *ngFor="let index of indexes" class="schedule-cells">
+                        {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 <ng-template #elseBlock>
-  <mat-spinner mode="indeterminate" color="primary"></mat-spinner>
+    <mat-spinner mode="indeterminate" color="primary"></mat-spinner>
 </ng-template>

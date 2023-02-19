@@ -1,23 +1,35 @@
 .schedule-container{
+    margin-top: 0px auto;
+
+}
+.schedule-table {
     overflow-x: scroll;
-    margin-top: 10px;
+    margin-left: 100px;
+    border: solid;
+    top: 10px;;
+    align-items: flex-start;
+    position:static;
+    float: inline-end;
+    align-content: start;
+
 }
-table{
+.employee-names-column{
     border:solid;
-    width: 300px;
+    width: 100px;
+    top:0%;
+    float:left;
+    margin-right: 1px;
+
 }
-td {
+.schedule-cells {
     border-right: solid;
     text-align: center;
     width: 200px;
     margin-top: 10px;
 
 }
-
-footer {
-    height: 10vh;
-    background-color: darkblue;
-    display: block;
-    position:fixed;
-
+.employee-name-cells {
+    margin-top: 10px;
+    text-align: center;
+    border-top: solid;
 }
