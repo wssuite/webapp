@@ -1,15 +1,3 @@
-<!--<div id="main-page-buttons-container">
-  <button class="buttons-main-page" routerLink="/create-contract">
-    Create Contract
-  </button>
-  <button class="buttons-main-page" routerLink="/schedule-generation">
-    Generate Schedule
-  </button>
-  <button class="buttons-main-page" routerLink="/consult-schedule">
-    Consult Schedule
-  </button>
-</div>-->
-
 <div class="main-menu-page-buttons-container">
   <button *ngFor="let button of buttons; let i=index" mat--button align="getAlignemntDirection(i)" (click)="redirect(button)">
     <img [src]="button.icon" align="right">
