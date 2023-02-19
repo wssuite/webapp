@@ -1,0 +1,28 @@
+.problemDefinitionContainer {
+    margin-left: 10vw;
+    margin-top: 2vh;
+}
+label {
+    margin-right: 2vw;
+    font-size: large;
+}
+div {
+    margin-bottom: 2vw;
+}
+.addNurseButton, .removeNurseButton{
+    margin-left: 5vw;
+}
+.chips {
+    width:fit-content;
+    margin: 5px;
+}
+.generateScheduleButton{
+    position: absolute;
+    height:75px;
+    transform: translateX(150%);
+    font-size: large;
+}
+.nursesTable {
+    overflow-x: scroll;
+    overflow-y: scroll;
+}

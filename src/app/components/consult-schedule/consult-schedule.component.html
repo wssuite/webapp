@@ -1,1 +1,22 @@
-<p>consult-schedule works!</p>
+<div *ngIf="validSchedule === true else elseBlock">
+    <h1>Your schedule is ready</h1>
+    <div class="schedule-container">
+        <table cellspacing="10">
+            <tr>
+                <th class="employee_name_header"></th>
+                <th *ngFor="let index of indexes">
+                    {{getDateDayStringByIndex(index)}}  {{getDayString(index)}}
+                </th>
+            </tr>
+            <tr *ngFor="let sc of employeeSchedule.schedule">
+                <td class="employee_name_cell">{{sc.employee_name}}</td>
+                <td *ngFor="let index of indexes">
+                    {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<ng-template #elseBlock>
+    <mat-spinner mode="indeterminate" color="primary"></mat-spinner>
+</ng-template>

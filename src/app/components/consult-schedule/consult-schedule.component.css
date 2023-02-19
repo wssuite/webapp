@@ -1,0 +1,23 @@
+.schedule-container{
+    overflow-x: scroll;
+    margin-top: 10px;
+}
+table{
+    border:solid;
+    width: 300px;
+}
+td {
+    border-right: solid;
+    text-align: center;
+    width: 200px;
+    margin-top: 10px;
+
+}
+
+footer {
+    height: 10vh;
+    background-color: darkblue;
+    display: block;
+    position:fixed;
+
+}

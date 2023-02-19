@@ -1,0 +1,19 @@
+header{
+    height: 10vh;
+    background-color: #255792;
+    display: block;
+}
+span {
+    margin-left: 1vw;
+    text-anchor: middle;
+    color: white;
+    font-size: larger;
+}
+/**footer {
+    height: 10vh;
+    background-color: darkblue;
+    display: block;
+    position:fixed;
+    bottom: 0;
+
+}**/

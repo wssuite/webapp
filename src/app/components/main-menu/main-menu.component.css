@@ -1,0 +1,18 @@
+.main-menu-page-buttons-container{
+  position: fixed;
+  align-items: center;
+  margin-left: 7vw;
+  margin-right: 5vw;
+  margin-top: 10vh;
+}
+button {
+  margin: 5vw;
+  height: max-content;
+  width: 500px;
+
+}
+img {
+  top: 0px;
+  right: 0px;
+}
+
