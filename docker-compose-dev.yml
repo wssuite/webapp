@@ -1,0 +1,43 @@
+version: '3'
+
+networks:
+  schedule_generator:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.5.0/24
+          gateway: 192.168.5.1
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      schedule_generator:
+        ipv4_address: 192.168.5.4
+    volumes:
+      - mongo_data:/data/db
+    restart: on-failure
+
+  frontfacingserver_webapp:
+    build:  .
+    ports: 
+      - 443:443
+      - 80:443
+      - 5000:5000
+      - 4200:4200
+    command: >
+     bash -c "systemctl start nginx &&
+      cd /ffs && /venv/bin/python app.py &
+      cd /fe && npm start"
+    networks:
+      schedule_generator:
+        ipv4_address: 192.168.5.2
+    volumes:
+      - dataset:/app/dataset
+    restart: on-failure
+
+volumes:
+  dataset:
+  mongo_data:
