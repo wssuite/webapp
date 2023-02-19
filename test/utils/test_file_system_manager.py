@@ -1,7 +1,8 @@
 from pyfakefs.fake_filesystem import FakeFilesystem
 
-from src.utils.file_system_manager import FileSystemManager, dataset_directory, \
-    base_directory, NoSolutionFoundException, NoVersionFoundException
+from src.utils.file_system_manager import FileSystemManager,\
+    dataset_directory, base_directory,\
+    NoSolutionFoundException, NoVersionFoundException
 from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
 from unittest.mock import patch
 
