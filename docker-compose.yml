@@ -24,6 +24,7 @@ services:
     image:  markbekhet/horaire-infirmiere:prototype
     ports: 
       - 443:443
+      - 5000:5000
     command: >
      bash -c "systemctl start nginx &&
       cd /ffs && /venv/bin/python app.py &
