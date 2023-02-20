@@ -48,15 +48,17 @@ class Contract(Jsonify):
         self.skills = []
 
     def from_json(self, data: dict):
-        self.name = data[contract_name]
-        self.subContractNames = data[sub_contract_names]
-        self.skills = data[contract_skills]
+        contract = Contract()
+        contract.name = data[contract_name]
+        contract.subContractNames = data[sub_contract_names]
+        contract.skills = data[contract_skills]
 
         constraint_creator = ContractConstraintCreator()
         for constraint in data[contract_constraints]:
-            self.constraints.append(
+            contract.constraints.append(
                 constraint_creator.create_contact_constraint(constraint)
             )
+        return contract
 
     def to_json(self):
         array_constraints = [constraint.to_json() for constraint
