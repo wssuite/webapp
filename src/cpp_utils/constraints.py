@@ -120,6 +120,7 @@ class ContractUnwantedPatterns(ContractConstraint):
 class ContractAlternativeShift(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
     shift = StringField(serialized_name=shift_constraint)
+    weight = StringField(serialized_name=constraint_weight)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
