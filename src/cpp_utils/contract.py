@@ -69,3 +69,6 @@ class Contract(Jsonify):
             sub_contract_names: self.subContractNames,
             contract_constraints: array_constraints
         }
+
+    def merge_contract_constraints(self, another_contract):
+        self.constraints.extend(another_contract.constraints)
