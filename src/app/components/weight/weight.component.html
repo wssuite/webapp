@@ -1,7 +1,8 @@
 <div (mouseleave)="emitWeight()">
+
     <mat-form-field appearance="fill">
         <mat-label>Enter the weight</mat-label>
-        <input matInput [disabled]="disabled" [(ngModel)]="weight" [errorStateMatcher]="matcher" [(ngModel)]="localWeight" [formControl]="inputCtrl">
+        <input matInput [(ngModel)]="weight" [errorStateMatcher]="matcher" [formControl]="inputCtrl">    
     </mat-form-field>
     <mat-checkbox (change)="update()">Impose constraint</mat-checkbox>
     <mat-error
@@ -12,5 +13,5 @@
         "
     >
     Please enter a postive number!
-  </mat-error>
+    </mat-error>
 </div>

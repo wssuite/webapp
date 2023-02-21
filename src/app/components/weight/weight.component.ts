@@ -3,13 +3,9 @@ import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/fo
 import { ErrorStateMatcher } from '@angular/material/core';
 
 export class CustomErrorStateMatcher implements ErrorStateMatcher {
-  constructor(private control: FormControl){}
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
-    return !!(this.control && this.control.invalid && (this.control.dirty || this.control.touched || isSubmitted));
-  }
-  hasError(){
-    this.control.getError("required")|| this.control.getError("min") || this.control.get("pattern")
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
 }
 
@@ -21,11 +17,11 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
 
 export class WeightComponent {
 
-  @Input() weight!: string|number;
+  @Input() weight!: string;
 
-  localWeight: number;
+  localWeight: string;
 
-  @Output() weightChange: EventEmitter<string|number>;
+  @Output() weightChange: EventEmitter<string>;
   numberChecks: number;
   disabled: boolean
   inputCtrl: FormControl;
@@ -33,16 +29,16 @@ export class WeightComponent {
   matcher: CustomErrorStateMatcher;
 
   constructor() {
-    this.weightChange = new EventEmitter<string|number>();
+    this.weightChange = new EventEmitter<string>();
     this.numberChecks = 0;
     this.disabled = false;
-    this.localWeight = 0;
-    this.inputCtrl = new FormControl(this.weight, [
+    this.localWeight = "0";
+    this.inputCtrl = new FormControl({value:this.weight, disabled:false},[
       Validators.required,
       Validators.pattern("([0-9]+)(.([0-9]+))*"),
       Validators.min(0),
     ])
-    this.matcher = new CustomErrorStateMatcher(this.inputCtrl)
+    this.matcher = new CustomErrorStateMatcher()
   }
 
   update() {
@@ -53,14 +49,30 @@ export class WeightComponent {
       this.weight = this.localWeight;
     }
     else {
-      //this.localWeight = this.weight;
+      this.localWeight = this.weight
       this.disabled = true;
       this.weight = "hard";
     }
+    this.inputCtrl = this.updateFormControl(this.disabled);
   }
 
   emitWeight() {
     this.weightChange.emit(this.weight);
+  }
+
+  updateFormControl(disabled: boolean):FormControl {
+    if(disabled){
+      return new FormControl({value:this.localWeight, disabled:true})  
+    }
+    return new FormControl({value:this.weight, disabled:false},[
+      Validators.required,
+      Validators.pattern("([0-9]+)(.([0-9]+))*"),
+      Validators.min(0),
+    ])
+  }
+
+  updateValues(){
+    this.localWeight = this.weight
   }
 
 }

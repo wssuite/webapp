@@ -7,5 +7,5 @@ import { Component } from "@angular/core";
 })
 export class ContractCreationComponent {
 
-  weight: number| string = 0;
+  weight = "0";
 }
