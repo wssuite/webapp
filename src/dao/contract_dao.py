@@ -1,19 +1,25 @@
 from src.dao.abstract_dao import AbstractDao
 from src.cpp_utils.contract import Contract
 from pymongo.collection import Collection
-from constants import contract_name, mongo_id_field, sub_contract_names
+from constants import contract_name, sub_contract_limit, \
+    mongo_id_field, sub_contract_names
 from src.utils.contracts_validator import ContractsValidator
 from src.exceptions.contract_exceptions import (
     ContractContradictionException,
     ContractCreationContradictionException,
     ContractAlreadyExistException,
+    ContractTreeTooLarge
 )
+import json
 
 
 class ContractDao(AbstractDao):
     def __init__(self, mongo):
         super().__init__(mongo)
         self.collection: Collection = self.db.contracts
+        with open("config.json") as file:
+            data = json.load(file)
+            self.sub_contract_limit = data[sub_contract_limit]
 
     """
         This method is validating the contract with its
@@ -53,16 +59,37 @@ class ContractDao(AbstractDao):
             {contract_name: name},
             {mongo_id_field: 0})
 
+    """
+    If there are subcontracts to the subcontracts the counter
+    increments from two.
+    The subcontract_counter variable ensures that we don't go
+    past 20 in the contract tree.
+    This limitation will reduce the risk of over using the
+    stack when updating a contract that has indirect dependencies.
+    """
+
     def get_contract_with_its_dependencies(self, name):
         contract_dict = self.find_contract_by_name(name)
         contract = Contract().from_json(contract_dict)
-        subcontracts_list = contract.sub_contract_names.copy()
-        while len(subcontracts_list) > 0:
-            subcontract_dict = self. \
-                find_contract_by_name(
-                    subcontracts_list.pop(0))
+        subcontracts_tuples_list = [(sub_contract, 2)
+                                    for sub_contract in
+                                    contract.sub_contract_names.copy()]
+        while len(subcontracts_tuples_list) > 0:
+            subcontract_tuple = subcontracts_tuples_list.pop(0)
+            subcontract_dict = (self.
+                                find_contract_by_name(subcontract_tuple[0]))
             subcontract = Contract().from_json(subcontract_dict)
-            subcontracts_list.extend(subcontract.sub_contract_names)
+            subcontract_counter = subcontract_tuple[1]
+            if (subcontract_counter < self.sub_contract_limit
+                    or len(subcontract.sub_contract_names) == 0):
+                new_subcontract_tuple_list = [(indirect_contract,
+                                               subcontract_counter + 1)
+                                              for indirect_contract in
+                                              subcontract.sub_contract_names]
+                subcontracts_tuples_list.extend(new_subcontract_tuple_list)
+            else:
+                raise ContractTreeTooLarge()
+
             contract.merge_contract_constraints(subcontract)
 
         return contract.to_json()
