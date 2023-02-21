@@ -95,6 +95,5 @@ class TestContract(TestCase):
                 }
             ]
         }
-        contract = Contract()
-        contract.from_json(contract_dict)
+        contract = Contract().from_json(contract_dict)
         self.assertEqual(contract_dict, contract.to_json())
