@@ -8,7 +8,6 @@ each other
 
 
 class ContractsValidator:
-
     def __init__(self):
         self.constraints = {}
 
@@ -22,8 +21,10 @@ class ContractsValidator:
                     problematic_constraints.append(constraint.repr())
 
             if len(problematic_constraints) > 0:
-                raise ContractContradictionException(contract.name, key,
-                                                     problematic_constraints)
+                raise ContractContradictionException(
+                    contract.name, key, problematic_constraints
+                )
 
-        self.constraints[contract.name] =\
-            [constraint.repr() for constraint in contract.constraints]
+        self.constraints[contract.name] = [
+            constraint.repr() for constraint in contract.constraints
+        ]

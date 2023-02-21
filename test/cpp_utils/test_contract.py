@@ -88,7 +88,7 @@ class TestContract(TestCase):
 
     def test_contract_object_is_initially_empty(self):
         contract = Contract()
-        self.assertEqual(0, len(contract.subContractNames))
+        self.assertEqual(0, len(contract.sub_contract_names))
         self.assertEqual("", contract.name)
         self.assertEqual(0, len(contract.constraints))
         self.assertEqual(0, len(contract.skills))

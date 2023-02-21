@@ -42,7 +42,7 @@ class Contract(Jsonify):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.subContractNames = []
+        self.sub_contract_names = []
         self.name = ""
         self.constraints: List[ContractConstraint] = []
         self.skills = []
