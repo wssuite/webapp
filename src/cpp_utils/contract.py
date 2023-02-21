@@ -50,7 +50,7 @@ class Contract(Jsonify):
     def from_json(self, data: dict):
         contract = Contract()
         contract.name = data[contract_name]
-        contract.subContractNames = data[sub_contract_names]
+        contract.sub_contract_names = data[sub_contract_names]
         contract.skills = data[contract_skills]
 
         constraint_creator = ContractConstraintCreator()
@@ -66,7 +66,7 @@ class Contract(Jsonify):
         return {
             contract_name: self.name,
             contract_skills: self.skills,
-            sub_contract_names: self.subContractNames,
+            sub_contract_names: self.sub_contract_names,
             contract_constraints: array_constraints
         }
 

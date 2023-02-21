@@ -16,7 +16,7 @@ from constants import number_of_free_days_after_shift, \
 class TestContract(TestCase):
     def setUp(self) -> None:
         self.contract_dict = {
-            contract_name: "Fulltime",
+            contract_name: "FullTime",
             sub_contract_names: ["Employee"],
             contract_skills: ["nurse, HeadNurse"],
             contract_constraints: [

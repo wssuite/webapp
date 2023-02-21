@@ -13,13 +13,19 @@ from src.exceptions.contract_exceptions import (
 import json
 
 
+def get_subcontract_limit():
+    with open("config.json") as file:
+        data = json.load(file)
+
+    return data[sub_contract_limit]
+
+
 class ContractDao(AbstractDao):
     def __init__(self, mongo):
         super().__init__(mongo)
         self.collection: Collection = self.db.contracts
-        with open("config.json") as file:
-            data = json.load(file)
-            self.sub_contract_limit = data[sub_contract_limit]
+
+        self.sub_contract_limit = get_subcontract_limit()
 
     """
         This method is validating the contract with its
@@ -74,14 +80,15 @@ class ContractDao(AbstractDao):
         subcontracts_tuples_list = [(sub_contract, 2)
                                     for sub_contract in
                                     contract.sub_contract_names.copy()]
+
         while len(subcontracts_tuples_list) > 0:
             subcontract_tuple = subcontracts_tuples_list.pop(0)
             subcontract_dict = (self.
                                 find_contract_by_name(subcontract_tuple[0]))
             subcontract = Contract().from_json(subcontract_dict)
             subcontract_counter = subcontract_tuple[1]
-            if (subcontract_counter < self.sub_contract_limit
-                    or len(subcontract.sub_contract_names) == 0):
+
+            if subcontract_counter < self.sub_contract_limit:
                 new_subcontract_tuple_list = [(indirect_contract,
                                                subcontract_counter + 1)
                                               for indirect_contract in
