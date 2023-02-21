@@ -5,4 +5,7 @@ import { Component } from "@angular/core";
   templateUrl: "./contract-creation.component.html",
   styleUrls: ["./contract-creation.component.css"],
 })
-export class ContractCreationComponent {}
+export class ContractCreationComponent {
+
+  weight: number| string = 0;
+}
