@@ -2,7 +2,7 @@
     <label> Day name: </label>
     <mat-form-field appearance="fill">
         <mat-label> choose a day </mat-label>
-        <mat-select [(value)]="element.dayName">
+        <mat-select [(value)]="element.dayName" [formControl]="daySelectorFormControl">
             <mat-option *ngFor="let day of possibleDays" [value]="day">
                 {{day}}
             </mat-option>
@@ -11,7 +11,7 @@
     <label>Shift: </label>
     <mat-form-field appearance="fill">
         <mat-label> choose a shift </mat-label>
-        <mat-select [(value)]="element.shiftId">
+        <mat-select [(value)]="element.shiftId" [formControl]="shiftSelectorFormControl">
             <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
                 {{shift}}
             </mat-option>

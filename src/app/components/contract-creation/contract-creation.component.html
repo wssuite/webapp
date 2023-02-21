@@ -1,4 +1,5 @@
-<app-pattern-element [(element)]="patternElement" [possibleShifts]="shifts"></app-pattern-element>
+<app-pattern-element [(element)]="patternElement" [possibleShifts]="shifts" (errorState)="changeState($event)"></app-pattern-element>
 <p>The day in the pattern is: {{patternElement.dayName}}
     The shift in the pattern is: {{patternElement.shiftId}}
+    The pattern has an error: {{errorState}}
 </p>

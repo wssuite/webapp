@@ -11,4 +11,10 @@ export class ContractCreationComponent {
 
   patternElement: PatternElement = {dayName:'', shiftId:''};
   shifts: string[] = shiftsExample;
+  errorState = true;
+
+  changeState(event: boolean){
+    console.log('here')
+    this.errorState = event
+  }
 }
