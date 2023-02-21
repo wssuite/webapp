@@ -1,5 +1,5 @@
 from src.utils.contracts_validator import ContractsValidator, Contract,\
-    ContractCreationException
+    ContractContradictionException
 from unittest import TestCase
 from constants import contract_constraints, contract_name, \
     constraint_name, shift_constraint, alternative_shift, \
@@ -63,7 +63,7 @@ class TestContractsValidator(TestCase):
         problematic_contract = Contract().from_json(self.problematic_contract)
         validator = ContractsValidator()
         validator.add_contract_constraints(base_contract)
-        with self.assertRaises(ContractCreationException):
+        with self.assertRaises(ContractContradictionException):
             validator.add_contract_constraints(problematic_contract)
 
     def test_add_valid_contract_to_existing_contract_gets_validated(self):

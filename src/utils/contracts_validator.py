@@ -1,5 +1,5 @@
 from src.cpp_utils.contract import Contract
-from src.exceptions.contract_exceptions import ContractCreationException
+from src.exceptions.contract_exceptions import ContractContradictionException
 
 """
 This class validates that multiple contracts don't contradict with
@@ -22,8 +22,8 @@ class ContractsValidator:
                     problematic_constraints.append(constraint.repr())
 
             if len(problematic_constraints) > 0:
-                raise ContractCreationException(contract.name,
-                                                key, problematic_constraints)
+                raise ContractContradictionException(contract.name, key,
+                                                     problematic_constraints)
 
         self.constraints[contract.name] =\
             [constraint.repr() for constraint in contract.constraints]
