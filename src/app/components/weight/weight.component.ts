@@ -27,6 +27,7 @@ export class WeightComponent {
   inputCtrl: FormControl;
 
   matcher: CustomErrorStateMatcher;
+  @Output() errorState: EventEmitter<boolean>;
 
   constructor() {
     this.weightChange = new EventEmitter<string>();
@@ -39,6 +40,7 @@ export class WeightComponent {
       Validators.min(0),
     ])
     this.matcher = new CustomErrorStateMatcher()
+    this.errorState = new EventEmitter();
   }
 
   update() {
@@ -58,6 +60,7 @@ export class WeightComponent {
 
   emitWeight() {
     this.weightChange.emit(this.weight);
+    this.emitErrorState();
   }
 
   updateFormControl(disabled: boolean):FormControl {
@@ -75,4 +78,7 @@ export class WeightComponent {
     this.localWeight = this.weight
   }
 
+  emitErrorState(){
+    this.errorState.emit(this.inputCtrl.hasError('required') || this.inputCtrl.hasError('pattern') || this.inputCtrl.hasError('min'))
+  }
 }
