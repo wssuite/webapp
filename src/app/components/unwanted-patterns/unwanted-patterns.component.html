@@ -3,7 +3,7 @@
         <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
     </mat-expansion-panel-header>
     <div class="additional-items">
-        <app-weight [(weight)]="constraint.weight"></app-weight>
+        <app-weight [(weight)]="constraint.weight" (errorState)="updateWeightErrorState($event)"></app-weight>
         <button mat-mini-fab (click)="addPattern()" color="primary" matTooltip="Add another pattern" class="add-button">
             <mat-icon>add</mat-icon>
         </button>

@@ -14,6 +14,7 @@ export class UnwantedPatternsComponent implements OnInit {
   @Output() constraintChange: EventEmitter<UnwantedPatterns>;
   patternErrors: boolean[];
   @Output() errorState: EventEmitter<boolean>;
+  weightErrorState: boolean
 
   possibleShifts: string[];
 
@@ -22,6 +23,7 @@ export class UnwantedPatternsComponent implements OnInit {
     this.possibleShifts = shiftsExample;
     this.patternErrors = [];
     this.errorState = new EventEmitter();
+    this.weightErrorState = true;
   }
 
   ngOnInit(): void {
@@ -58,9 +60,13 @@ export class UnwantedPatternsComponent implements OnInit {
 
   emitErrorState() {
     let errorState = false;
-    if(this.patternErrors.indexOf(true) > -1) {
+    if(this.patternErrors.indexOf(true) > -1 || this.weightErrorState) {
       errorState = true;
     }
     this.errorState.emit(errorState);
+  }
+  
+  updateWeightErrorState(e:boolean) {
+    this.weightErrorState = e;
   }
 }
