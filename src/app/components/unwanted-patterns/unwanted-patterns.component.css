@@ -4,8 +4,11 @@
     align-items: start;
     top:0%;
     display: inline-flex;
-    margin-left: 20vw;
     float: right;
+    margin-right: 2vw;
+}
+.add-button {
+    margin-left: 1vw;
 }
 table{
     margin-left:2vw;
