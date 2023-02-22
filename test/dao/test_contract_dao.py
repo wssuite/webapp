@@ -1,14 +1,14 @@
-from unittest.mock import Mock
-
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.contract_dao import ContractDao
-import src.dao.contract_dao
 from unittest import TestCase
 from test_constants import (
     general_contract_dict,
     full_time_valid_contract_with_general,
+    full_time_not_valid_contract_with_general
 )
-from constants import contract_name, mongo_id_field
+from constants import (contract_name,
+                       mongo_id_field,
+                       contract_constraints)
 from src.exceptions.contract_exceptions import (
     ContractAlreadyExistException,
 )
@@ -16,8 +16,6 @@ from src.exceptions.contract_exceptions import (
 
 class TestContractDao(TestCase):
     def setUp(self) -> None:
-        src.dao.contract_dao.get_subcontract_limit = Mock()
-        src.dao.contract_dao.get_subcontract_limit.return_value = 20
         self.dao = ContractDao(connect_to_fake_db())
 
     def tearDown(self) -> None:
@@ -36,7 +34,7 @@ class TestContractDao(TestCase):
         with self.assertRaises(ContractAlreadyExistException):
             self.dao.insert_one(general_contract_dict.copy())
 
-    def test_fetch_all_contract_names(self):
+    def test_fetch_all_contracts(self):
         self.dao.insert_one(general_contract_dict.copy())
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
         contract_list = [
@@ -45,3 +43,40 @@ class TestContractDao(TestCase):
         ]
         fetched_list = self.dao.fetch_all_contracts()
         self.assertEqual(contract_list, fetched_list)
+
+    def test_update_contract_if_contract_exist_contract_get_updated(self):
+        self.dao.insert_one(full_time_valid_contract_with_general.copy())
+        self.dao.update_contract(
+            full_time_not_valid_contract_with_general.copy())
+        result = self.dao.find_contract_by_name(
+            full_time_not_valid_contract_with_general[contract_name])
+        self.assertEqual(
+            full_time_not_valid_contract_with_general[contract_constraints],
+            result[contract_constraints])
+        self.assertEqual(
+            full_time_valid_contract_with_general[contract_name],
+            result[contract_name])
+
+    def test_update_contract_if_contract_not_exist_contract_not_updated(self):
+        self.dao.insert_one(full_time_valid_contract_with_general.copy())
+        self.dao.update_contract(
+            general_contract_dict.copy()
+        )
+        fetch_all_contracts = self.dao.fetch_all_contracts()
+        self.assertEqual(1, len(fetch_all_contracts))
+        self.assertEqual(full_time_valid_contract_with_general,
+                         fetch_all_contracts[0])
+
+    def test_delete_contract_if_exist_get_deleted(self):
+        self.dao.insert_one(full_time_valid_contract_with_general.copy())
+        self.dao.remove_contract(
+            full_time_valid_contract_with_general[contract_name])
+        fetch_all_contracts = self.dao.fetch_all_contracts()
+        self.assertEqual(0, len(fetch_all_contracts))
+
+    def test_delete_contract_if_not_exist_does_nothing(self):
+        self.dao.insert_one(full_time_valid_contract_with_general.copy())
+        self.dao.remove_contract(
+            general_contract_dict[contract_name])
+        fetch_all_contracts = self.dao.fetch_all_contracts()
+        self.assertEqual(1, len(fetch_all_contracts))
