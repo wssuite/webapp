@@ -4,11 +4,13 @@
     align-items: start;
     top:0%;
     display: inline-flex;
-    margin-left: 20vw;;
+    margin-left: 20vw;
+    float: right;
 }
 table{
     margin-left:2vw;
 }
 .unwanted-patterns-container {
     margin-left: 5vw;
+    margin-right: 5vw;
 }
