@@ -5,7 +5,7 @@ from constants import number_of_free_days_after_shift, \
     total_weekends_in_four_weeks, min_max_consecutive_weekends, \
     min_max_consecutive_shift_type, min_max_num_assignments_in_four_weeks, \
     identical_shift_during_weekend, complete_weekends, alternative_shift, \
-    unwanted_pattern, constraint_name, sub_contract_names, contract_name, \
+    unwanted_pattern, constraint_name, contract_name, \
     contract_constraints, contract_skills, integer_constraint_value,\
     constraint_weight, shift_constraint, min_constraint_value, \
     max_constraint_value, min_constraint_weight, \
@@ -17,7 +17,6 @@ class TestContract(TestCase):
     def setUp(self) -> None:
         self.contract_dict = {
             contract_name: "FullTime",
-            sub_contract_names: ["Employee"],
             contract_skills: ["nurse, HeadNurse"],
             contract_constraints: [
                 {
@@ -88,7 +87,6 @@ class TestContract(TestCase):
 
     def test_contract_object_is_initially_empty(self):
         contract = Contract()
-        self.assertEqual(0, len(contract.sub_contract_names))
         self.assertEqual("", contract.name)
         self.assertEqual(0, len(contract.constraints))
         self.assertEqual(0, len(contract.skills))

@@ -1,21 +1,22 @@
 from typing import Type, List
 
 from src.cpp_utils.jsonify import Jsonify
-from src.cpp_utils.constraints import ContractConstraint, \
-    ContractIntegerConstraint, ContractBooleanConstraint, \
-    ContractMinMaxConstraint, ContractIntegerShiftConstraint, \
-    ContractMinMaxShiftConstraint, ContractUnwantedPatterns, \
-    ContractAlternativeShift
+from src.cpp_utils.constraints import (
+    ContractConstraint, ContractIntegerConstraint,
+    ContractBooleanConstraint, ContractMinMaxConstraint,
+    ContractIntegerShiftConstraint, ContractMinMaxShiftConstraint,
+    ContractUnwantedPatterns, ContractAlternativeShift)
 
-from constants import number_of_free_days_after_shift,\
-    total_weekends_in_four_weeks, min_max_consecutive_weekends,\
-    min_max_consecutive_shift_type,\
-    min_max_num_assignments_in_four_weeks, \
-    identical_shift_during_weekend,\
-    complete_weekends, alternative_shift, \
-    unwanted_pattern, constraint_name,\
-    sub_contract_names, contract_name,\
-    contract_constraints, contract_skills
+from constants import (
+    number_of_free_days_after_shift,
+    total_weekends_in_four_weeks, min_max_consecutive_weekends,
+    min_max_consecutive_shift_type,
+    min_max_num_assignments_in_four_weeks,
+    identical_shift_during_weekend,
+    complete_weekends, alternative_shift,
+    unwanted_pattern, constraint_name,
+    contract_name, contract_constraints, contract_skills
+)
 
 
 class ContractConstraintCreator:
@@ -34,23 +35,22 @@ class ContractConstraintCreator:
         }
 
     def create_contact_constraint(self, data) -> ContractConstraint:
-        return self.dict_contract_constraints[data[constraint_name]]().\
-            from_json(data)
+        return (self.dict_contract_constraints[data[constraint_name]]().
+                from_json(data))
 
 
 class Contract(Jsonify):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.sub_contract_names = []
         self.name = ""
         self.constraints: List[ContractConstraint] = []
         self.skills = []
 
     def from_json(self, data: dict):
         contract = Contract()
+
         contract.name = data[contract_name]
-        contract.sub_contract_names = data[sub_contract_names]
         contract.skills = data[contract_skills]
 
         constraint_creator = ContractConstraintCreator()
@@ -66,7 +66,6 @@ class Contract(Jsonify):
         return {
             contract_name: self.name,
             contract_skills: self.skills,
-            sub_contract_names: self.sub_contract_names,
             contract_constraints: array_constraints
         }
 
