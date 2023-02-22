@@ -1,0 +1,14 @@
+.additional-items {
+    display: flex;
+    position: relative;
+    align-items: start;
+    top:0%;
+    display: inline-flex;
+    margin-left: 20vw;;
+}
+table{
+    margin-left:2vw;
+}
+.unwanted-patterns-container {
+    margin-left: 5vw;
+}

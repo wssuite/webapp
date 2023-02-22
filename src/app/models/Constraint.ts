@@ -1,6 +1,8 @@
 export class Constraint {
     name: string;
-    constructor(name: string) {
-        this.name = name;
+    displayName: string;
+    constructor(id: string, name:string) {
+        this.name = id;
+        this.displayName = name;
     }
 }

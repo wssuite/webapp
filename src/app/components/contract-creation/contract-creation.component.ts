@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
-import { shiftsExample } from "src/app/constants/shifts";
-import { PatternElement } from "src/app/models/PatternElement";
+import { UNWANTED_PATTERNS_DISPLAY_NAME } from "src/app/constants/constraints";
+//import { shiftsExample } from "src/app/constants/shifts";
+//import { PatternElement } from "src/app/models/PatternElement";
+import { UnwantedPatterns } from "src/app/models/UnwantedPatterns";
 
 @Component({
   selector: "app-contract-creation",
@@ -9,12 +11,11 @@ import { PatternElement } from "src/app/models/PatternElement";
 })
 export class ContractCreationComponent {
 
-  patternElement: PatternElement = {dayName:'', shiftId:''};
-  shifts: string[] = shiftsExample;
+  constraint: UnwantedPatterns = new UnwantedPatterns(UNWANTED_PATTERNS_DISPLAY_NAME);
+
   errorState = true;
 
-  changeState(event: boolean){
-    console.log('here')
-    this.errorState = event
+  changeState(e: boolean) {
+    this.errorState = e;
   }
 }

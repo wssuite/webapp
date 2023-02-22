@@ -16,6 +16,8 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -29,6 +31,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
 import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
 import { WeightComponent } from './components/weight/weight.component';
+import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import { WeightComponent } from './components/weight/weight.component';
     ErrorMessageDialogComponent,
     PatternElementComponent,
     WeightComponent,
+    UnwantedPatternsComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +64,8 @@ import { WeightComponent } from './components/weight/weight.component';
     MatChipsModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
