@@ -1,2 +1,2 @@
-<app-weight [(weight)]="weight"></app-weight>
-<p>The weight is: {{weight}}</p>
+<app-alternative-shift [(constraint)]="constraint" (errorState)="updateConstraintErrorState($event)" [possibleShifts]="possibleShifts"></app-alternative-shift>
+<p>The constraint has an error: {{constraintErrorState}}</p>
