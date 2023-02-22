@@ -28,6 +28,7 @@ import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
 import { WeightComponent } from './components/weight/weight.component';
+import { AlternativeShiftComponent } from './components/alternative-shift/alternative-shift.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { WeightComponent } from './components/weight/weight.component';
     NurseComponent,
     ErrorMessageDialogComponent,
     WeightComponent,
+    AlternativeShiftComponent
   ],
   imports: [
     BrowserModule,
