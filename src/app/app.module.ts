@@ -16,6 +16,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -60,7 +61,8 @@ import { AlternativeShiftComponent } from './components/alternative-shift/altern
     MatChipsModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent],
