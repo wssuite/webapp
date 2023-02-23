@@ -1,7 +1,4 @@
-<mat-expansion-panel (mouseleave)="emitConstraint()" class="alternative-shift-container">
-    <mat-expansion-panel-header>
-        <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
-    </mat-expansion-panel-header>
+<div (mouseleave)="emitConstraint()" class="alternative-shift-container">
     <div calss="weight-component-container">
         <app-weight [(weight)]="constraint.weight" (errorState)="updateWeightErrorState($event)"></app-weight>
     </div>
@@ -14,4 +11,4 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-</mat-expansion-panel>
+</div>
