@@ -18,6 +18,7 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
 export class WeightComponent {
 
   @Input() weight!: string;
+  @Input() label!: string;
 
   localWeight: string;
 
@@ -56,6 +57,7 @@ export class WeightComponent {
       this.weight = "hard";
     }
     this.inputCtrl = this.updateFormControl(this.disabled);
+    this.emitWeight();
   }
 
   emitWeight() {
