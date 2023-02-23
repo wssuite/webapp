@@ -15,6 +15,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -26,7 +27,8 @@ import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
-import { TextInputComponent } from './components/text-input/text-input.component';
+import { TextInputComponent } from "./components/text-input/text-input.component";
+import { WeightComponent } from "./components/weight/weight.component";
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { TextInputComponent } from './components/text-input/text-input.component
     ErrorMessageDialogComponent,
     NumericInputComponent,
     TextInputComponent,
+    WeightComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +61,7 @@ import { TextInputComponent } from './components/text-input/text-input.component
     MatChipsModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
