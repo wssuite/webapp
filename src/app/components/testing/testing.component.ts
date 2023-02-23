@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { UNWANTED_PATTERNS_DISPLAY_NAME } from 'src/app/constants/constraints';
+import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
 
 @Component({
   selector: 'app-testing',
@@ -6,6 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./testing.component.css']
 })
 export class TestingComponent {
-  weightValue = "0";
-  label="weight";
+  constraint: UnwantedPatterns = new UnwantedPatterns(UNWANTED_PATTERNS_DISPLAY_NAME);
+
+  errorState = true;
+
+  changeState(e: boolean) {
+    this.errorState = e;
+  }
 }

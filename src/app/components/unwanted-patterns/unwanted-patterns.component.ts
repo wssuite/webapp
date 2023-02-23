@@ -14,7 +14,8 @@ export class UnwantedPatternsComponent implements OnInit {
   @Output() constraintChange: EventEmitter<UnwantedPatterns>;
   patternErrors: boolean[];
   @Output() errorState: EventEmitter<boolean>;
-  weightErrorState: boolean
+  weightErrorState: boolean;
+  weightLabel: string;
 
   possibleShifts: string[];
 
@@ -24,6 +25,7 @@ export class UnwantedPatternsComponent implements OnInit {
     this.patternErrors = [];
     this.errorState = new EventEmitter();
     this.weightErrorState = true;
+    this.weightLabel = "weight";
   }
 
   ngOnInit(): void {
@@ -39,6 +41,7 @@ export class UnwantedPatternsComponent implements OnInit {
     };
     this.constraint.patternElements.push(newPattern);
     this.patternErrors.push(true);
+    this.emitConstraint();
   }
 
   removePattern(pattern:PatternElement) {
@@ -47,20 +50,23 @@ export class UnwantedPatternsComponent implements OnInit {
       this.constraint.patternElements.splice(index, 1);
       this.patternErrors.splice(index, 1);
     }
+    this.emitConstraint();
   }
 
   emitConstraint() {
     this.constraintChange.emit(this.constraint);
+    this.emitErrorState();
   }
 
   changePatternErrorState(index: number, e: boolean) {
     this.patternErrors[index] = e;
-    this.emitErrorState();
+    this.emitConstraint();
+    console.log(this.patternErrors);
   }
 
   emitErrorState() {
     let errorState = false;
-    if(this.patternErrors.indexOf(true) > -1 || this.weightErrorState) {
+    if(this.patternErrors.indexOf(true) > -1 || this.weightErrorState === true) {
       errorState = true;
     }
     this.errorState.emit(errorState);
@@ -68,5 +74,7 @@ export class UnwantedPatternsComponent implements OnInit {
   
   updateWeightErrorState(e:boolean) {
     this.weightErrorState = e;
+    console.log(this.weightErrorState);
+    this.emitConstraint();
   }
 }
