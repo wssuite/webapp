@@ -25,6 +25,7 @@ import { ScheduleGenerationComponent } from "./components/schedule-generation/sc
 import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
+import { TestingComponent } from './components/testing/testing.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ErrorMessageDialogComponent } from "./components/error-message-dialog/e
     ScheduleGenerationComponent,
     NurseComponent,
     ErrorMessageDialogComponent,
+    TestingComponent,
   ],
   imports: [
     BrowserModule,
