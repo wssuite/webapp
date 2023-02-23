@@ -1,7 +1,4 @@
-<mat-expansion-panel (mouseleave)="emitConstraint()" class="unwanted-patterns-container">
-    <mat-expansion-panel-header>
-        <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
-    </mat-expansion-panel-header>
+<div (mouseleave)="emitConstraint()" class="unwanted-patterns-container">
     <div class="additional-items">
         <app-weight [(weight)]="constraint.weight" (errorState)="updateWeightErrorState($event)"></app-weight>
         <button mat-mini-fab (click)="addPattern()" color="primary" matTooltip="Add another pattern" class="add-button">
@@ -20,4 +17,4 @@
             </td>
         </tr>
     </table>
-</mat-expansion-panel>
+</div>
