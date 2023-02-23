@@ -34,7 +34,7 @@ def get_contract_by_name():
     return contract_dao.find_contract_by_name(name)
 
 
-@mod.route("/remove", method=["DELETE"])
+@mod.route("/remove", methods=["DELETE"])
 def delete_contract():
     name = request.args[contract_name]
     contract_dao.remove_contract(name)
