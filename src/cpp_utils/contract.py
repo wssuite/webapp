@@ -46,6 +46,7 @@ class Contract(Jsonify):
         self.name = ""
         self.constraints: List[ContractConstraint] = []
         self.skills = []
+        self.shifts = []
 
     def from_json(self, data: dict):
         contract = Contract()
@@ -55,9 +56,15 @@ class Contract(Jsonify):
 
         constraint_creator = ContractConstraintCreator()
         for constraint in data[contract_constraints]:
-            contract.constraints.append(
-                constraint_creator.create_contact_constraint(constraint)
-            )
+            new_constraint = (constraint_creator.
+                              create_contact_constraint(constraint))
+            contract.constraints.append(new_constraint)
+            shifts = new_constraint.get_shift()
+            if shifts is not None:
+                for shift in shifts:
+                    if shift not in contract.shifts:
+                        contract.shifts.append(shift)
+
         return contract
 
     def to_json(self):
