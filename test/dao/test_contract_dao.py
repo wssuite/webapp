@@ -4,7 +4,8 @@ from unittest import TestCase
 from test_constants import (
     general_contract_dict,
     full_time_valid_contract_with_general,
-    full_time_not_valid_contract_with_general
+    full_time_not_valid_contract_with_general,
+    full_time_valid_contract_with_general_update
 )
 from constants import (contract_name,
                        mongo_id_field,
@@ -12,6 +13,7 @@ from constants import (contract_name,
 from src.exceptions.contract_exceptions import (
     ContractAlreadyExistException,
 )
+from src.cpp_utils.contract import Contract
 
 
 class TestContractDao(TestCase):
@@ -47,11 +49,11 @@ class TestContractDao(TestCase):
     def test_update_contract_if_contract_exist_contract_get_updated(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
         self.dao.update_contract(
-            full_time_not_valid_contract_with_general.copy())
+            full_time_valid_contract_with_general_update.copy())
         result = self.dao.find_contract_by_name(
-            full_time_not_valid_contract_with_general[contract_name])
+            full_time_valid_contract_with_general[contract_name])
         self.assertEqual(
-            full_time_not_valid_contract_with_general[contract_constraints],
+            full_time_valid_contract_with_general_update[contract_constraints],
             result[contract_constraints])
         self.assertEqual(
             full_time_valid_contract_with_general[contract_name],
@@ -80,3 +82,23 @@ class TestContractDao(TestCase):
             general_contract_dict[contract_name])
         fetch_all_contracts = self.dao.fetch_all_contracts()
         self.assertEqual(1, len(fetch_all_contracts))
+
+    def test_get_contracts_including_shifts(self):
+        contract1 = Contract().from_json(general_contract_dict)
+        contract2 = Contract().from_json(
+            full_time_not_valid_contract_with_general)
+        contract3 = Contract().from_json(
+            full_time_valid_contract_with_general)
+        self.dao.insert_one(contract1.db_json().copy())
+        self.dao.insert_one(contract2.db_json().copy())
+        self.dao.insert_one(contract3.db_json().copy())
+        early_contracts = self.dao.get_contracts_including_shifts(
+            ['Early'])
+        late_contracts = self.dao.get_contracts_including_shifts(
+            ['Late']
+        )
+        self.assertEqual([full_time_valid_contract_with_general],
+                         late_contracts)
+        self.assertEqual([general_contract_dict,
+                          full_time_not_valid_contract_with_general],
+                         early_contracts)

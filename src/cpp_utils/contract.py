@@ -15,8 +15,11 @@ from constants import (
     identical_shift_during_weekend,
     complete_weekends, alternative_shift,
     unwanted_pattern, constraint_name,
-    contract_name, contract_constraints, contract_skills
+    contract_name, contract_constraints,
+    contract_skills, contract_shifts
 )
+
+from src.utils.db_document import DBDocument
 
 
 class ContractConstraintCreator:
@@ -39,7 +42,7 @@ class ContractConstraintCreator:
                 from_json(data))
 
 
-class Contract(Jsonify):
+class Contract(Jsonify, DBDocument):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -75,6 +78,11 @@ class Contract(Jsonify):
             contract_skills: self.skills,
             contract_constraints: array_constraints
         }
+
+    def db_json(self):
+        basic_json = self.to_json()
+        basic_json[contract_shifts] = self.shifts
+        return basic_json
 
     def merge_contract_constraints(self, another_contract):
         self.constraints.extend(another_contract.constraints)

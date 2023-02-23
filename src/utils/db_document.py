@@ -1,3 +1,3 @@
 class DBDocument:
-    def db_json(self):
+    def db_json(self) -> dict:
         pass

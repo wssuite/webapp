@@ -2,10 +2,13 @@ from src.dao.abstract_dao import AbstractDao
 from pymongo.collection import Collection
 from constants import (contract_name,
                        mongo_id_field,
-                       mongo_set_operation)
+                       mongo_set_operation,
+                       mongo_all_operation,
+                       contract_shifts)
 from src.exceptions.contract_exceptions import (
     ContractAlreadyExistException,
 )
+from src.cpp_utils.contract import Contract
 
 
 class ContractDao(AbstractDao):
@@ -45,3 +48,14 @@ class ContractDao(AbstractDao):
 
     def remove_contract(self, name):
         self.collection.find_one_and_delete({contract_name: name})
+
+    def get_contracts_including_shifts(self, shifts_array):
+        contracts = self.collection.find(
+            {contract_shifts: {mongo_all_operation: shifts_array}}
+        )
+        ret_list = []
+        for contract in contracts:
+            contract_object = Contract().from_json(contract)
+            ret_list.append(contract_object.to_json())
+
+        return ret_list
