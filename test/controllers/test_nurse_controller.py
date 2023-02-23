@@ -11,9 +11,9 @@ class TestNurseController(TestCase):
     def setUp(self):
         self.client = app.test_client()
         self.nurse_dict = {
-            nurse_name: "random",
-            nurse_contracts: ["fulltime"],
-            nurse_username: "random"
+            nurse_name: 'random',
+            nurse_contracts: ['fulltime'],
+            nurse_username: 'random'
         }
         app.nurse_controller.nurse_dao = Mock()
         app.nurse_controller.nurse_dao = NurseDao(connect_to_fake_db())
@@ -30,4 +30,13 @@ class TestNurseController(TestCase):
         result_nurse = self.dao.collection.find_one(
             {nurse_id: inserted_nurse_id.data.decode()},
             {"_id": 0, nurse_id: 0})
-        self.assertEqual(result_nurse, self.nurse_dict)
+        self.assertEqual(self.nurse_dict, result_nurse)
+
+    def test_fetch_all_nurses(self):
+        path = "/nurse/fetchAll"
+        new_nurse_id = self.dao.insert_one(self.nurse_dict.copy())
+        response = self.client.get(path)
+        expected = self.nurse_dict.copy()
+        expected[nurse_id] = str(new_nurse_id.inserted_id)
+        all_nurses = response.json
+        self.assertEqual([expected], all_nurses)
