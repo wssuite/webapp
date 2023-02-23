@@ -3,6 +3,9 @@ from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
 
 import app
 from src.utils.file_system_manager import dataset_directory, base_directory
+from constants import assignment_skill, assignment_date,\
+    assignment_shift, assignment_employee_name, start_date,\
+    end_date, schedule_string, assignments_string
 
 instance = "prototype"
 version = "1"
@@ -45,31 +48,31 @@ class TestScheduleController(TestCase):
         create_dir(fake_fs)
         create_sol_file(fake_fs)
         dict_response = {
-            "startDate": "2010-06-01",
-            "endDate": "2010-06-28",
-            "schedule": [
-                {"employee_name": "Patrick",
-                 "assignments": [
+            start_date: "2010-06-01",
+            end_date: "2010-06-28",
+            schedule_string: [
+                {assignment_employee_name: "Patrick",
+                 assignments_string: [
                      {
-                         "date": "2010-06-01",
-                         "employee_name": "Patrick",
-                         "shift": "Late",
-                         "skill": "Nurse"
+                         assignment_date: "2010-06-01",
+                         assignment_employee_name: "Patrick",
+                         assignment_shift: "Late",
+                         assignment_skill: "Nurse"
                      },
                      {
-                         "date": "2010-06-05",
-                         "employee_name": "Patrick",
-                         "shift": "Early",
-                         "skill": "Nurse"
+                         assignment_date: "2010-06-05",
+                         assignment_employee_name: "Patrick",
+                         assignment_shift: "Early",
+                         assignment_skill: "Nurse"
                      }]
                  },
-                {"employee_name": "Eve",
-                 "assignments": [
+                {assignment_employee_name: "Eve",
+                 assignments_string: [
                      {
-                         "date": "2010-06-03",
-                         "employee_name": "Eve",
-                         "shift": "Late",
-                         "skill": "HeadNurse"
+                         assignment_date: "2010-06-03",
+                         assignment_employee_name: "Eve",
+                         assignment_shift: "Late",
+                         assignment_skill: "HeadNurse"
                      }
                  ]}
             ]}

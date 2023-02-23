@@ -1,5 +1,8 @@
 from src.cpp_utils.assignment import Assignment
 from unittest import TestCase
+from constants import assignment_date, \
+    assignment_skill, assignment_shift, \
+    assignment_employee_name
 
 
 class TestAssignment(TestCase):
@@ -19,9 +22,9 @@ class TestAssignment(TestCase):
     def test_assignment_json_presentation(self):
         assignment = Assignment(self.assignment_info)
         assignment_json = {
-            "date": self.assignment_info[0],
-            "employee_name": self.assignment_info[1],
-            "shift": self.assignment_info[2],
-            "skill": self.assignment_info[3]
+            assignment_date: self.assignment_info[0],
+            assignment_employee_name: self.assignment_info[1],
+            assignment_shift: self.assignment_info[2],
+            assignment_skill: self.assignment_info[3]
         }
         self.assertEqual(assignment.to_json(), assignment_json)

@@ -1,5 +1,8 @@
 from src.cpp_utils.assignment import Assignment
 import re
+from constants import start_date, end_date,\
+    schedule_string, assignment_employee_name,\
+    assignments_string
 
 regex_assignments = r'([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+),' \
                     r'([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+)\n'
@@ -54,14 +57,14 @@ class Schedule:
                 dict_filtered_name[assignment.employee_name] = list_assignments
         schedule = []
         for key in dict_filtered_name.keys():
-            ret_element = {"employee_name": key,
-                           "assignments": dict_filtered_name.get(key)
+            ret_element = {assignment_employee_name: key,
+                           assignments_string: dict_filtered_name.get(key)
                            }
             schedule.append(ret_element)
 
         ret = {
-            "startDate": self.start_date,
-            "endDate": self.end_date,
-            "schedule": schedule
+            start_date: self.start_date,
+            end_date: self.end_date,
+            schedule_string: schedule
         }
         return ret

@@ -1,3 +1,8 @@
+from constants import assignment_date,\
+    assignment_employee_name, assignment_shift,\
+    assignment_skill
+
+
 class Assignment:
 
     def __init__(self, info):
@@ -8,8 +13,8 @@ class Assignment:
 
     def to_json(self) -> dict:
         return {
-            "date": self.date,
-            "employee_name": self.employee_name,
-            "shift": self.shift,
-            "skill": self.skill
+            assignment_date: self.date,
+            assignment_employee_name: self.employee_name,
+            assignment_shift: self.shift,
+            assignment_skill: self.skill
         }
