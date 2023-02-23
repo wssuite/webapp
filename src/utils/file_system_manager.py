@@ -1,5 +1,6 @@
 import os
-import error_msg
+from src.exceptions.file_system_exceptions \
+    import NoSolutionFoundException, NoVersionFoundException
 
 dataset_directory = "dataset"
 base_directory = os.getcwd()
@@ -30,9 +31,9 @@ class FileSystemManager:
             if target_file_found is True:
                 return target_file
             else:
-                raise Exception(error_msg.no_solution_found)
+                raise NoSolutionFoundException()
         except OSError:
-            raise OSError(error_msg.version_not_found)
+            raise NoVersionFoundException()
 
     @staticmethod
     def create_dir_if_not_exist(name):

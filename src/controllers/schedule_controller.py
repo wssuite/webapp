@@ -5,6 +5,7 @@ import error_msg
 from src.utils.file_system_manager import FileSystemManager
 from src.cpp_utils.schedule import Schedule
 from flask import request
+from src.exceptions.project_base_exception import ProjectBaseException
 
 """
     To manually test these endpoints, in the project's root, please create
@@ -35,7 +36,5 @@ def get_schedule_filtered_by_name(instance):
         file_path = FileSystemManager.get_solution_path(instance, version)
         schedule = Schedule(file_path)
         return schedule.filter_by_name()
-    except OSError as e:
-        return Response(e.args, 500)
-    except Exception as e:
+    except ProjectBaseException as e:
         return Response(e.args, 500)

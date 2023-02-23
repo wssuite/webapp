@@ -1,7 +1,8 @@
 from pyfakefs.fake_filesystem import FakeFilesystem
 
-from file_system_manager import FileSystemManager, dataset_directory, \
-    base_directory
+from src.utils.file_system_manager import FileSystemManager,\
+    dataset_directory, base_directory,\
+    NoSolutionFoundException, NoVersionFoundException
 from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
 from unittest.mock import patch
 
@@ -39,7 +40,7 @@ class TestFileSystemManager(TestCase):
         dir_name = f"{base_directory}/{dataset_directory}/prototype"
         fake_fs.create_dir(dir_name)
         fsm = FileSystemManager()
-        with self.assertRaises(OSError, msg="Version not found"):
+        with self.assertRaises(NoVersionFoundException):
             fsm.get_solution_path("prototype", 1)
 
     @patchfs
@@ -48,7 +49,7 @@ class TestFileSystemManager(TestCase):
         dir_name = f"{base_directory}/{dataset_directory}/prototype/1"
         fake_fs.create_dir(dir_name)
         fsm = FileSystemManager()
-        with self.assertRaises(Exception, msg="No Solution found"):
+        with self.assertRaises(NoSolutionFoundException):
             fsm.get_solution_path("prototype", 1)
 
     @patchfs
