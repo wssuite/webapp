@@ -28,7 +28,7 @@ class TestNurseController(TestCase):
         inserted_nurse_id = self.client.post(path,
                                              json=self.nurse_dict)
         result_nurse = self.dao.collection.find_one(
-            {nurse_id: inserted_nurse_id.data.decode()},
+            {nurse_id: inserted_nurse_id.text},
             {"_id": 0, nurse_id: 0})
         self.assertEqual(self.nurse_dict, result_nurse)
 
