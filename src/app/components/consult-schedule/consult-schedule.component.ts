@@ -93,7 +93,7 @@ export class ConsultScheduleComponent implements OnInit {
     const date = this.getDateDayStringByIndex(index);
     for (const assignment of assignments) {
       if (assignment.date === date) {
-        ret = "skill:" + assignment.skill + "\n shift: " + assignment.shift;
+        ret = assignment.skill + "\n" + assignment.shift;
         break;
       }
     }

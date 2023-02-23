@@ -30,6 +30,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
 import { WeightComponent } from './components/weight/weight.component';
 import { AlternativeShiftComponent } from './components/alternative-shift/alternative-shift.component';
+import { TestingComponent } from "./components/testing/testing.component";
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { AlternativeShiftComponent } from './components/alternative-shift/altern
     ScheduleGenerationComponent,
     NurseComponent,
     ErrorMessageDialogComponent,
+    TestingComponent,
     WeightComponent,
     AlternativeShiftComponent
   ],
