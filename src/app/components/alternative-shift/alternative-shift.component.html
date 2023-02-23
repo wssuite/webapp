@@ -1,6 +1,6 @@
 <div (mouseleave)="emitConstraint()" class="alternative-shift-container">
     <div calss="weight-component-container">
-        <app-weight [(weight)]="constraint.weight" (errorState)="updateWeightErrorState($event)"></app-weight>
+        <app-weight [(weight)]="constraint.weight" (errorState)="updateWeightErrorState($event)" [label]="weightLabel"></app-weight>
     </div>
     <label>Shift: </label>
     <mat-form-field appearance="fill">

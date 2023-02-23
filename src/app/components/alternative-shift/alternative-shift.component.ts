@@ -15,6 +15,7 @@ export class AlternativeShiftComponent {
   @Input() possibleShifts!: string[];
   weightErrorState: boolean;
   shiftSelectorCtrl: FormControl;
+  weightLabel: string;
 
 
   constructor(){
@@ -22,6 +23,7 @@ export class AlternativeShiftComponent {
     this.errorState = new EventEmitter();
     this.weightErrorState = true;
     this.shiftSelectorCtrl =new FormControl(null, Validators.required);
+    this.weightLabel = "weight";
     
   }
 
@@ -36,5 +38,6 @@ export class AlternativeShiftComponent {
 
   updateWeightErrorState(e: boolean) {
     this.weightErrorState = e;
+    this.emitConstraint();
   }
 }
