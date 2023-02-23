@@ -15,8 +15,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import {MatCheckboxModule} from '@angular/material/checkbox';
-
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -27,7 +26,8 @@ import { ScheduleGenerationComponent } from "./components/schedule-generation/sc
 import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
-import { WeightComponent } from './components/weight/weight.component';
+import { TestingComponent } from "./components/testing/testing.component";
+import { WeightComponent } from "./components/weight/weight.component";
 
 @NgModule({
   declarations: [
@@ -38,6 +38,7 @@ import { WeightComponent } from './components/weight/weight.component';
     ScheduleGenerationComponent,
     NurseComponent,
     ErrorMessageDialogComponent,
+    TestingComponent,
     WeightComponent,
   ],
   imports: [
@@ -58,7 +59,7 @@ import { WeightComponent } from './components/weight/weight.component';
     MatChipsModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
