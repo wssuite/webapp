@@ -34,6 +34,12 @@ def get_contract_by_name():
     return contract_dao.find_contract_by_name(name)
 
 
+"""
+TODO: Verify that the contract isn't associated to a
+ nurse or nurse group before deleting the contract
+"""
+
+
 @mod.route("/remove", methods=["DELETE"])
 def delete_contract():
     name = request.args[contract_name]
@@ -47,3 +53,17 @@ def get_contracts_names():
                      fetch_all_contracts())
     return [contract[contract_name] for
             contract in all_contracts]
+
+
+"""
+TODO: Before updating a contract, verify that the update
+ doesn't have any conflicts with the combination of
+ contracts for different nurses.
+ Verify that the shifts included in the updated contract
+ exist
+"""
+
+
+@mod.route("/updateContract", methods=["PUT"])
+def update_contract():
+    contract_dao.update_contract()
