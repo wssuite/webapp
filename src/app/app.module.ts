@@ -31,6 +31,7 @@ import { ErrorMessageDialogComponent } from "./components/error-message-dialog/e
 import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
 import { WeightComponent } from './components/weight/weight.component';
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
+import { TestingComponent } from "./components/testing/testing.component";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwant
     NurseComponent,
     ErrorMessageDialogComponent,
     PatternElementComponent,
+    TestingComponent,
     WeightComponent,
     UnwantedPatternsComponent
   ],
