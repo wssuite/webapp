@@ -6,6 +6,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
+import { POSITIVE_NUMBERS } from "src/app/constants/regex";
 
 export class CustomErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -39,7 +40,7 @@ export class NumericInputComponent {
     this.valueChange = new EventEmitter<string>();
     this.inputCtrl = new FormControl({ value: this.value, disabled: false }, [
       Validators.required,
-      Validators.pattern("([0-9]+)(.([0-9]+))*"),
+      Validators.pattern(POSITIVE_NUMBERS),
       Validators.min(0),
     ]);
     this.matcher = new CustomErrorStateMatcher();
