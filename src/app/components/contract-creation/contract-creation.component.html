@@ -4,4 +4,4 @@
     </mat-expansion-panel-header>
     <app-alternative-shift [(constraint)]="constraint" (errorState)="updateConstraintErrorState($event)" [possibleShifts]="possibleShifts"></app-alternative-shift>
 </mat-expansion-panel>
-<p>The constraint has an error: {{constraintErrorState}}</p>
+<p>The constraint has an error: {{constraintErrorState}} and the shift is: {{constraint.shiftId}}</p>
