@@ -28,11 +28,8 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
 })
 export class NumericInputComponent {
   @Input() value!: string;
-
-  localValue: string;
   @Output() valueChange: EventEmitter<string>;
-  numberChecks: number;
-  disabled: boolean;
+
   inputCtrl: FormControl;
 
   matcher: CustomErrorStateMatcher;
@@ -40,9 +37,6 @@ export class NumericInputComponent {
 
   constructor() {
     this.valueChange = new EventEmitter<string>();
-    this.numberChecks = 0;
-    this.disabled = false;
-    this.localValue = "0";
     this.inputCtrl = new FormControl({ value: this.value, disabled: false }, [
       Validators.required,
       Validators.pattern("([0-9]+)(.([0-9]+))*"),
@@ -55,21 +49,6 @@ export class NumericInputComponent {
   emitValue() {
     this.valueChange.emit(this.value);
     this.emitErrorState();
-  }
-
-  updateFormControl(disabled: boolean): FormControl {
-    if (disabled) {
-      return new FormControl({ value: this.localValue, disabled: true });
-    }
-    return new FormControl({ value: this.value, disabled: false }, [
-      Validators.required,
-      Validators.pattern("([0-9]+)(.([0-9]+))*"),
-      Validators.min(0),
-    ]);
-  }
-
-  updateValues() {
-    this.localValue = this.value;
   }
 
   emitErrorState() {
