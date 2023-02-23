@@ -60,3 +60,5 @@ contract_skills = "skills"
 sub_contract_limit = "sub_contract_limit"
 depended_contracts = "depended_contracts"
 contract_shifts = "shifts"
+
+ok_message = "ok"
