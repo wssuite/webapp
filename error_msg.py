@@ -12,6 +12,3 @@ contract_creation_error_contradiction = "Cannot create {}.{}."
 contract_already_exist = "Contract {} already exists." \
                         "Please select another " \
                         "name for the contract"
-
-contract_tree_too_big = "The contract cannot be created" \
-                        "because it has many dependencies."
