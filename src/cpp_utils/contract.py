@@ -63,10 +63,9 @@ class Contract(Jsonify, DBDocument):
                               create_contact_constraint(constraint))
             contract.constraints.append(new_constraint)
             shifts = new_constraint.get_shift()
-            if shifts is not None:
-                for shift in shifts:
-                    if shift not in contract.shifts:
-                        contract.shifts.append(shift)
+            for shift in shifts:
+                if shift not in contract.shifts:
+                    contract.shifts.append(shift)
 
         return contract
 

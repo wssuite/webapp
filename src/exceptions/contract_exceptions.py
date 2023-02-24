@@ -1,7 +1,6 @@
 from src.exceptions.project_base_exception import ProjectBaseException
 from error_msg import (
     contract_contradiction_error,
-    contract_creation_error_contradiction,
     contract_already_exist
 )
 
@@ -12,13 +11,6 @@ class ContractContradictionException(ProjectBaseException):
             added_contract, existing_contract, constraints
         )
         super().__init__(msg)
-
-
-class ContractCreationContradictionException(ProjectBaseException):
-    def __init__(self, new_contract_name, msg):
-        new_msg = contract_creation_error_contradiction. \
-            format(new_contract_name, msg)
-        super().__init__(new_msg)
 
 
 class ContractAlreadyExistException(ProjectBaseException):

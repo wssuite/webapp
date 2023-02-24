@@ -41,7 +41,7 @@ class ContractConstraint(BaseConstraint):
         pass
 
     def get_shift(self):
-        pass
+        return []
 
 
 class ContractIntegerConstraint(ContractConstraint):

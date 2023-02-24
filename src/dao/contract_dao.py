@@ -16,11 +16,6 @@ class ContractDao(AbstractDao):
         super().__init__(mongo)
         self.collection: Collection = self.db.contracts
 
-    """
-        This method is validating the contract with its
-        subcontracts before adding it to the db
-    """
-
     def insert_one(self, contract: dict):
         exist = self.contract_exist(contract[contract_name])
         if exist is True:
