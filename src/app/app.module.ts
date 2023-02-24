@@ -32,6 +32,7 @@ import { WeightComponent } from './components/weight/weight.component';
 import { AlternativeShiftComponent } from './components/alternative-shift/alternative-shift.component';
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
+import { ShiftConstraintComponent } from './components/shift-constraint/shift-constraint.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { TestingComponent } from "./components/testing/testing.component";
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
-    AlternativeShiftComponent
+    AlternativeShiftComponent,
+    ShiftConstraintComponent
   ],
   imports: [
     BrowserModule,
