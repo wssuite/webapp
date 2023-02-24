@@ -9,6 +9,7 @@ from src.exceptions.shift_exceptions import (
     ShiftAlreadyExistException
 )
 
+
 class TestShiftDao(TestCase):
     def setUp(self) -> None:
         self.dao = ShiftDao(connect_to_fake_db())
