@@ -1,5 +1,5 @@
 <div class="weight-container">
-    <label> {{label}}: </label>
+    <label> {{label}} (soft): </label>
     <mat-form-field appearance="fill">
         <mat-label>Enter the weight</mat-label>
         <input matInput [(ngModel)]="weight" [errorStateMatcher]="matcher" [formControl]="inputCtrl" (keyup)="emitWeight()">    
@@ -13,5 +13,6 @@
             Please enter a valid postive number!
         </mat-error>
     </mat-form-field>
-    <mat-checkbox (change)="update()">Impose constraint</mat-checkbox>
+    <br>
+    <mat-checkbox (change)="update()">Constraint must be respected (hard)</mat-checkbox>
 </div>
