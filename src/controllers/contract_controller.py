@@ -64,6 +64,8 @@ TODO: Before updating a contract, verify that the update
 """
 
 
-@mod.route("/updateContract", methods=["PUT"])
+@mod.route("/update", methods=["PUT"])
 def update_contract():
-    contract_dao.update_contract()
+    contract_dict = request.json
+    contract_dao.update_contract(contract_dict)
+    return Response(ok_message, 200)
