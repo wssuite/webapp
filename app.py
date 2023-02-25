@@ -1,6 +1,9 @@
 from flask import Flask
 from src.controllers import index
-from src.controllers import schedule_controller, nurse_controller
+from src.controllers import (
+    schedule_controller,
+    nurse_controller,
+    nurse_group_controller)
 import config
 from flask_cors import CORS
 
@@ -13,6 +16,7 @@ def create_app():
     flask_app.register_blueprint(index.mod)
     flask_app.register_blueprint(schedule_controller.mod)
     flask_app.register_blueprint(nurse_controller.mod)
+    flask_app.register_blueprint(nurse_group_controller.mod)
     return flask_app
 
 
