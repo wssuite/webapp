@@ -4,6 +4,11 @@ nurse_contracts = "contracts"
 nurse_id = "nurse_id"
 nurse_username = "username"
 
+"""Nurse group fields"""
+nurse_group_name = "name"
+nurse_group_nurses_list = "nurses"
+nurse_group_contracts_list = "contracts"
+
 """assignment fields"""
 assignment_date = "date"
 assignment_employee_name = "employee_name"
