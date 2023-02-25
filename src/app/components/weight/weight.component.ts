@@ -56,7 +56,6 @@ export class WeightComponent {
   }
 
   update() {
-    console.log("here");
     this.numberChecks++;
     if (this.numberChecks % 2 === 0) {
       this.disabled = false;
