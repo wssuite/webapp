@@ -1,10 +1,6 @@
 <div (mouseleave)="emitConstraint()" class="min-min-shift-constraint-container">
-    <div class="weight-section">
-        <app-weight [(weight)]="constraint.minWeight" [label]="minWeightLabel" (errorState)="updateMinWeightErrorState($event)"></app-weight>
-        <br>
-        <app-weight [(weight)]="constraint.maxWeight" [label]="maxWeightLabel" (errorState)="updateMaxWeightErrorState($event)"></app-weight>
-    </div>
     <div class="constraint-variables-container">
+        <label>Shift: </label>
         <mat-form-field appearance="fill">
             <mat-label>choose a shift </mat-label>
             <mat-select [(value)]="constraint.shiftId" [formControl]="selectFormCtrl">
@@ -17,10 +13,15 @@
         <div class="min-value-container">
             <label>Min value: </label>
             <app-numeric-input [(value)]="constraint.minValue" (errorState)="updateMinValueErrorState($event)"></app-numeric-input>
+            <div class="weight-container">
+                <app-weight [(weight)]="constraint.minWeight" [label]="minWeightLabel" (errorState)="updateMinWeightErrorState($event)"></app-weight>
+            </div>
         </div>
+        <br>
         <div class="max-value-container">
-            <label>Man value: </label>
+            <label>Max value: </label>
             <app-numeric-input [(value)]="constraint.maxValue" (errorState)="updateMaxValueErrorState($event)"></app-numeric-input>
+            <app-weight [(weight)]="constraint.maxWeight" [label]="maxWeightLabel" (errorState)="updateMaxWeightErrorState($event)"></app-weight>
         </div>
     </div>
 </div>
