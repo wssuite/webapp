@@ -29,6 +29,7 @@ import { ErrorMessageDialogComponent } from "./components/error-message-dialog/e
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
 import { WeightComponent } from "./components/weight/weight.component";
+import { BooleanConstraintComponent } from './components/boolean-constraint/boolean-constraint.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { WeightComponent } from "./components/weight/weight.component";
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
+    BooleanConstraintComponent,
   ],
   imports: [
     BrowserModule,

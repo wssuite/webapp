@@ -1,3 +1,7 @@
-<p>Put here any component you want to test!</p>
-<app-weight [(weight)]="weightValue" [label]="label"></app-weight>
-<p>The weight is: {{weightValue}}</p>
+<app-boolean-constraint
+  [booleanConstraint]="identicalWeekendConstraint"
+></app-boolean-constraint>
+
+<app-boolean-constraint
+  [booleanConstraint]="completeWeekendConstraint"
+></app-boolean-constraint>
