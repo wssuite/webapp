@@ -20,6 +20,7 @@ start_date = "startDate"
 """Mongo specific"""
 mongo_id_field = "_id"
 mongo_set_operation = "$set"
+mongo_all_operation = "$all"
 
 """Constraints"""
 constraint_name = "name"
