@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { UNWANTED_PATTERNS_DISPLAY_NAME } from 'src/app/constants/constraints';
+import { UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID } from 'src/app/constants/constraints';
+import { shiftsExample } from 'src/app/constants/shifts';
 import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
 
 @Component({
@@ -8,7 +9,8 @@ import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
   styleUrls: ["./testing.component.css"],
 })
 export class TestingComponent {
-  constraint: UnwantedPatterns = new UnwantedPatterns(UNWANTED_PATTERNS_DISPLAY_NAME);
+  constraint: UnwantedPatterns = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
+  possibleShifts: string[] = shiftsExample;
 
   errorState = true;
 

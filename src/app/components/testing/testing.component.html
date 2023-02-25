@@ -3,7 +3,7 @@
     <mat-expansion-panel-header>
         <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
     </mat-expansion-panel-header>
-    <app-unwanted-patterns [(constraint)]="constraint" (errorState)="changeState($event)"></app-unwanted-patterns>
+    <app-unwanted-patterns [(constraint)]="constraint" (errorState)="changeState($event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
 </mat-expansion-panel>
 <p>The constraint has {{constraint.patternElements.length}} elements
     The constraint has an error: {{errorState}}

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { shiftsExample } from 'src/app/constants/shifts';
 import { PatternElement } from 'src/app/models/PatternElement';
 import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
 
@@ -17,11 +16,10 @@ export class UnwantedPatternsComponent implements OnInit {
   weightErrorState: boolean;
   weightLabel: string;
 
-  possibleShifts: string[];
+  @Input() possibleShifts!: string[];
 
   constructor() {
     this.constraintChange = new EventEmitter();
-    this.possibleShifts = shiftsExample;
     this.patternErrors = [];
     this.errorState = new EventEmitter();
     this.weightErrorState = true;
