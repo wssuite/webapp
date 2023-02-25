@@ -36,11 +36,9 @@ class NurseDao(AbstractDao):
         list_nurse = self.collection.find({}, {mongo_id_field: 0})
         return_list = []
         for nurse in list_nurse:
-            return_list.append(
-                Nurse().from_json(nurse)
-            )
-        return [nurse.to_json() for nurse in
-                return_list]
+            nurse = Nurse().from_json(nurse)
+            return_list.append(nurse.to_json())
+        return return_list
 
     def find_nurse_by_username(self, username):
         return self.collection.find_one(
@@ -59,9 +57,10 @@ class NurseDao(AbstractDao):
             {mongo_id_field: 0})
         nurse_list = []
         for nurse_dict in cursor:
-            nurse_list.append(Nurse().from_json(nurse_dict))
+            nurse = Nurse().from_json(nurse_dict)
+            nurse_list.append(nurse.to_json())
 
-        return [nurse.to_json() for nurse in nurse_list]
+        return nurse_list
 
     def update_nurse(self, nurse_dict):
         self.collection.find_one_and_update(
