@@ -5,6 +5,7 @@ from constants import (shift_name,
                        mongo_set_operation)
 from src.exceptions.shift_exceptions import (
     ShiftAlreadyExistException)
+from src.cpp_utils.shift import Shift
 
 
 class ShiftDao(AbstractDao):
@@ -30,10 +31,14 @@ class ShiftDao(AbstractDao):
         return shift is not None
 
     def fetch_all_shifts(self):
-        shifts = self.collection.find({},
+        cursor = self.collection.find({},
                                       {mongo_id_field: 0}
                                       )
-        return [shift for shift in shifts]
+        shifts = []
+        for shift_dict in cursor:
+            shift = Shift().from_json(shift_dict)
+            shifts.append(shift.to_json())
+        return shifts
 
     def remove_shift(self, name):
         self.collection.find_one_and_delete({shift_name: name})

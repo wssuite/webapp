@@ -7,6 +7,15 @@ from constants import (shift_group_name,
                        mongo_all_operation)
 from src.exceptions.shift_exceptions import (
     ShiftGroupAlreadyExistException)
+from src.cpp_utils.shift_group import ShiftGroup
+
+
+def return_shift_groups_list(cursor):
+    shift_groups = []
+    for group_dict in cursor:
+        group = ShiftGroup().from_json(group_dict)
+        shift_groups.append(group.to_json())
+    return shift_groups
 
 
 class ShiftGroupDao(AbstractDao):
@@ -42,11 +51,11 @@ class ShiftGroupDao(AbstractDao):
                 {mongo_all_operation: shifts}},
             {mongo_id_field: 0}
         )
-        return [shift_group for shift_group in cursor]
+        return return_shift_groups_list(cursor)
 
     def fetch_all_shift_groups(self):
         cursor = self.collection.find({}, {mongo_id_field: 0})
-        return [shift_group for shift_group in cursor]
+        return return_shift_groups_list(cursor)
 
     def update_shift_group(self, shift_group: dict):
         self.collection.find_one_and_update(

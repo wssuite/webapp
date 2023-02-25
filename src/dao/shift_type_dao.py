@@ -7,6 +7,15 @@ from constants import (shift_type_name,
                        mongo_all_operation)
 from src.exceptions.shift_exceptions import (
     ShiftTypeAlreadyExistException)
+from src.cpp_utils.shift_type import ShiftType
+
+
+def return_shift_type_list(cursor):
+    shift_types = []
+    for type_dict in cursor:
+        shift_type = ShiftType().from_json(type_dict)
+        shift_types.append(shift_type.to_json())
+    return shift_types
 
 
 class ShiftTypeDao(AbstractDao):
@@ -36,11 +45,10 @@ class ShiftTypeDao(AbstractDao):
         return shift_type is not None
 
     def fetch_all_shift_types(self):
-        shift_types = self.collection.find({},
-                                           {mongo_id_field: 0}
-                                           )
-        return [shift_type for shift_type
-                in shift_types]
+        cursor = self.collection.find({},
+                                      {mongo_id_field: 0}
+                                      )
+        return return_shift_type_list(cursor)
 
     def remove_shift_type(self, name):
         self.collection.find_one_and_delete(
@@ -53,9 +61,9 @@ class ShiftTypeDao(AbstractDao):
             {mongo_set_operation: shift_type})
 
     def get_shift_types_including_shifts(self, shifts):
-        shift_types = self.collection.find(
+        cursor = self.collection.find(
             {shift_type_shifts_lists: {
                 mongo_all_operation: shifts}},
             {mongo_id_field: 0}
         )
-        return [shift_type for shift_type in shift_types]
+        return return_shift_type_list(cursor)
