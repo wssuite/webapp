@@ -11,6 +11,4 @@ export class BooleanConstraintComponent {
   weightLabel = "weight";
 
   @Input() booleanConstraint!: BooleanConstraint;
-
-  constructor() {}
 }
