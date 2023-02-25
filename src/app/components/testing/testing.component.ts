@@ -4,9 +4,9 @@ import { shiftsExample } from 'src/app/constants/shifts';
 import { AlternativeShift } from 'src/app/models/AlternativeShift';
 
 @Component({
-  selector: 'app-testing',
-  templateUrl: './testing.component.html',
-  styleUrls: ['./testing.component.css']
+  selector: "app-testing",
+  templateUrl: "./testing.component.html",
+  styleUrls: ["./testing.component.css"],
 })
 export class TestingComponent {
   weight = BASE_VALUE;
