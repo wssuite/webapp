@@ -51,6 +51,11 @@ def get_shift_groups_names():
 
 @mod.route("/update", methods=["PUT"])
 def update_shift_group():
-    shift_group = request.json
-    shift_group_dao.update_shift_group(shift_group)
+    shift_group_dict = request.json
+    shift_group = ShiftGroup().from_json(
+        shift_group_dict
+    )
+    shift_group_dao.update_shift_group(
+        shift_group.db_json()
+    )
     return Response("OK", 200)

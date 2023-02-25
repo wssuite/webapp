@@ -48,6 +48,7 @@ def get_shifts_names():
 
 @mod.route("/update", methods=["PUT"])
 def update_shift():
-    shift = request.json
-    shift_dao.update_shift(shift)
+    shift_dict = request.json
+    shift = Shift().from_json(shift_dict)
+    shift_dao.update_shift(shift.db_json())
     return Response("OK", 200)

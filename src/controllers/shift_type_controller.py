@@ -50,6 +50,9 @@ def get_shift_types_names():
 
 @mod.route("/update", methods=["PUT"])
 def update_shift_type():
-    shift_type = request.json
-    shift_type_dao.update_shift_type(shift_type)
+    shift_type_dict = request.json
+    shift_type = ShiftType().from_json(
+        shift_type_dict
+    )
+    shift_type_dao.update_shift_type(shift_type.db_json())
     return Response("OK", 200)
