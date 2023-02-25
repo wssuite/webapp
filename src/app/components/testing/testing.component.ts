@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ALTERNATIVE_SHIFT_DISPLAY_NAME, BASE_VALUE } from 'src/app/constants/constraints';
+import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, BASE_VALUE } from 'src/app/constants/constraints';
 import { shiftsExample } from 'src/app/constants/shifts';
 import { AlternativeShift } from 'src/app/models/AlternativeShift';
 
@@ -16,7 +16,7 @@ export class TestingComponent {
 
   constructor() {
     this.possibleShifts = shiftsExample;
-    this.constraint = new AlternativeShift(ALTERNATIVE_SHIFT_DISPLAY_NAME);
+    this.constraint = new AlternativeShift(ALTERNATIVE_SHIFT_ID,ALTERNATIVE_SHIFT_DISPLAY_NAME);
     this.constraintErrorState = true;
   }
 
