@@ -6,5 +6,6 @@ import { Component } from "@angular/core";
   styleUrls: ["./testing.component.css"],
 })
 export class TestingComponent {
-  value = "0";
+  weightValue = "0";
+  label="weight";
 }
