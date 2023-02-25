@@ -31,6 +31,7 @@ import { ErrorMessageDialogComponent } from "./components/error-message-dialog/e
 import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
 import { WeightComponent } from './components/weight/weight.component';
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
+import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
 
 @NgModule({
@@ -43,6 +44,7 @@ import { TestingComponent } from "./components/testing/testing.component";
     NurseComponent,
     ErrorMessageDialogComponent,
     PatternElementComponent,
+    NumericInputComponent,
     TestingComponent,
     WeightComponent,
     UnwantedPatternsComponent

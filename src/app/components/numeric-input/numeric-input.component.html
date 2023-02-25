@@ -1,0 +1,21 @@
+<div (keyup)="emitValue()">
+  <!-- add a label best descibing the value -->
+  <mat-form-field appearance="fill">
+    <mat-label>Enter a positive value</mat-label>
+    <input
+      matInput
+      [(ngModel)]="value"
+      [errorStateMatcher]="matcher"
+      [formControl]="inputCtrl"
+    />
+    <mat-error
+      *ngIf="
+        inputCtrl.hasError('pattern') ||
+        inputCtrl.hasError('required') ||
+        inputCtrl.hasError('min')
+      "
+    >
+      Please enter a valid postive number!
+    </mat-error>
+  </mat-form-field>
+</div>
