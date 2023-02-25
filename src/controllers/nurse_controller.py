@@ -11,7 +11,9 @@ nurse_dao = NurseDao(connect_to_db())
 @mod.route("/add", methods=["POST"])
 def add_nurse():
     nurse_dict = request.json
-    return str(nurse_dao.insert_one(nurse_dict).inserted_id)
+    nurse = Nurse().from_json(nurse_dict)
+    return str(nurse_dao.insert_one(
+        nurse.db_json()).inserted_id)
 
 
 @mod.route("/fetchAll", methods=["GET"])
