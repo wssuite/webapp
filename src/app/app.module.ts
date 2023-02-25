@@ -33,6 +33,7 @@ import { AlternativeShiftComponent } from './components/alternative-shift/altern
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
 import { ShiftConstraintComponent } from './components/shift-constraint/shift-constraint.component';
+import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ShiftConstraintComponent } from './components/shift-constraint/shift-co
     TestingComponent,
     WeightComponent,
     AlternativeShiftComponent,
-    ShiftConstraintComponent
+    ShiftConstraintComponent,
+    MinMaxConsecutiveShiftComponent
   ],
   imports: [
     BrowserModule,
