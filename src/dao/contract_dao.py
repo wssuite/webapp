@@ -11,6 +11,16 @@ from src.exceptions.contract_exceptions import (
 from src.cpp_utils.contract import Contract
 
 
+def return_contract_list(cursor):
+    contracts = []
+    for contract_dict in cursor:
+        contract = Contract().from_json(
+            contract_dict
+        )
+        contracts.append(contract.to_json())
+    return contracts
+
+
 class ContractDao(AbstractDao):
     def __init__(self, mongo):
         super().__init__(mongo)
@@ -25,7 +35,7 @@ class ContractDao(AbstractDao):
     def fetch_all_contracts(self):
         cursor = self.collection.find({},
                                       {mongo_id_field: 0})
-        return [contract for contract in cursor]
+        return return_contract_list(cursor)
 
     def find_contract_by_name(self, name):
         return self.collection.find_one(
@@ -48,9 +58,4 @@ class ContractDao(AbstractDao):
         contracts = self.collection.find(
             {contract_shifts: {mongo_all_operation: shifts_array}}
         )
-        ret_list = []
-        for contract in contracts:
-            contract_object = Contract().from_json(contract)
-            ret_list.append(contract_object.to_json())
-
-        return ret_list
+        return return_contract_list(contracts)

@@ -67,5 +67,6 @@ TODO: Before updating a contract, verify that the update
 @mod.route("/update", methods=["PUT"])
 def update_contract():
     contract_dict = request.json
-    contract_dao.update_contract(contract_dict)
+    contract = Contract().from_json(contract_dict)
+    contract_dao.update_contract(contract.db_json())
     return Response(ok_message, 200)
