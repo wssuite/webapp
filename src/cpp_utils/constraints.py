@@ -40,6 +40,9 @@ class ContractConstraint(BaseConstraint):
     def repr(self):
         pass
 
+    def get_shift(self):
+        return []
+
 
 class ContractIntegerConstraint(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -61,6 +64,9 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
 
     def repr(self):
         return f"{self.name},{self.shift}"
+
+    def get_shift(self):
+        return [self.shift]
 
 
 class ContractMinMaxConstraint(ContractConstraint):
@@ -85,6 +91,9 @@ class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
 
     def repr(self):
         return f"{self.name},{self.shift}"
+
+    def get_shift(self):
+        return [self.shift]
 
 
 class ContractBooleanConstraint(ContractConstraint):
@@ -116,6 +125,9 @@ class ContractUnwantedPatterns(ContractConstraint):
             unwanted_pattern_elements: array
         }
 
+    def get_shift(self):
+        return [element.get_shift() for element in self.pattern_elements]
+
 
 class ContractAlternativeShift(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -127,3 +139,6 @@ class ContractAlternativeShift(ContractConstraint):
 
     def repr(self):
         return f"{self.name},{self.shift}"
+
+    def get_shift(self):
+        return [self.shift]

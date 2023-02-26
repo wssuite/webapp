@@ -7,3 +7,6 @@ from constants import pattern_element_shift, \
 class PatternElement(Jsonify):
     shift = StringField(serialized_name=pattern_element_shift)
     day = StringField(serialized_name=pattern_element_day)
+
+    def get_shift(self):
+        return self.shift

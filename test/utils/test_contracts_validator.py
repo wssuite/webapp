@@ -1,51 +1,20 @@
-from src.utils.contracts_validator import ContractsValidator, Contract,\
+from src.utils.contracts_validator import ContractsValidator, Contract, \
     ContractContradictionException
 from unittest import TestCase
-from constants import contract_constraints, contract_name, \
-    constraint_name, shift_constraint, alternative_shift, \
-    constraint_weight, sub_contract_names, contract_skills
+from test_constants import general_contract_dict, \
+    full_time_not_valid_contract_with_general,\
+    full_time_valid_contract_with_general
 
 
 class TestContractsValidator(TestCase):
     def setUp(self) -> None:
-        self.base_contract_dict = {
-            contract_name: "General",
-            sub_contract_names: [],
-            contract_skills: [],
-            contract_constraints: [
-                {
-                    constraint_name: alternative_shift,
-                    shift_constraint: "Early",
-                    constraint_weight: "hard"
-                }
-            ]
-        }
+        self.base_contract_dict = general_contract_dict
 
-        self.problematic_contract = {
-            contract_name: "FullTime",
-            sub_contract_names: [],
-            contract_skills: [],
-            contract_constraints: [
-                {
-                    constraint_name: alternative_shift,
-                    shift_constraint: "Early",
-                    constraint_weight: "1.0"
-                }
-            ]
-        }
+        self.problematic_contract = \
+            full_time_not_valid_contract_with_general
 
-        self.valid_contract = {
-            contract_name: "FullTime",
-            sub_contract_names: [],
-            contract_skills: [],
-            contract_constraints: [
-                {
-                    constraint_name: alternative_shift,
-                    shift_constraint: "Late",
-                    constraint_weight: "1.0"
-                }
-            ]
-        }
+        self.valid_contract = \
+            full_time_valid_contract_with_general
 
     def tearDown(self) -> None:
         pass
