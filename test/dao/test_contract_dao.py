@@ -43,14 +43,14 @@ class TestContractDao(TestCase):
             general_contract_dict,
             full_time_valid_contract_with_general,
         ]
-        fetched_list = self.dao.fetch_all_contracts()
+        fetched_list = self.dao.fetch_all()
         self.assertEqual(contract_list, fetched_list)
 
     def test_update_contract_if_contract_exist_contract_get_updated(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
-        self.dao.update_contract(
+        self.dao.update(
             full_time_valid_contract_with_general_update.copy())
-        result = self.dao.find_contract_by_name(
+        result = self.dao.find_by_name(
             full_time_valid_contract_with_general[contract_name])
         self.assertEqual(
             full_time_valid_contract_with_general_update[contract_constraints],
@@ -61,26 +61,26 @@ class TestContractDao(TestCase):
 
     def test_update_contract_if_contract_not_exist_contract_not_updated(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
-        self.dao.update_contract(
+        self.dao.update(
             general_contract_dict.copy()
         )
-        fetch_all_contracts = self.dao.fetch_all_contracts()
+        fetch_all_contracts = self.dao.fetch_all()
         self.assertEqual(1, len(fetch_all_contracts))
         self.assertEqual(full_time_valid_contract_with_general,
                          fetch_all_contracts[0])
 
     def test_delete_contract_if_exist_get_deleted(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
-        self.dao.remove_contract(
+        self.dao.remove(
             full_time_valid_contract_with_general[contract_name])
-        fetch_all_contracts = self.dao.fetch_all_contracts()
+        fetch_all_contracts = self.dao.fetch_all()
         self.assertEqual(0, len(fetch_all_contracts))
 
     def test_delete_contract_if_not_exist_does_nothing(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
-        self.dao.remove_contract(
+        self.dao.remove(
             general_contract_dict[contract_name])
-        fetch_all_contracts = self.dao.fetch_all_contracts()
+        fetch_all_contracts = self.dao.fetch_all()
         self.assertEqual(1, len(fetch_all_contracts))
 
     def test_get_contracts_including_shifts(self):
@@ -92,9 +92,9 @@ class TestContractDao(TestCase):
         self.dao.insert_one(contract1.db_json().copy())
         self.dao.insert_one(contract2.db_json().copy())
         self.dao.insert_one(contract3.db_json().copy())
-        early_contracts = self.dao.get_contracts_including_shifts(
+        early_contracts = self.dao.get_including_shifts(
             ['Early'])
-        late_contracts = self.dao.get_contracts_including_shifts(
+        late_contracts = self.dao.get_including_shifts(
             ['Late']
         )
         self.assertEqual([full_time_valid_contract_with_general],

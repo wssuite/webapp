@@ -25,13 +25,13 @@ def add_contract():
 
 @mod.route("/fetchAll", methods=["GET"])
 def get_all_contracts():
-    return contract_dao.fetch_all_contracts()
+    return contract_dao.fetch_all()
 
 
 @mod.route("/fetchByName", methods=["GET"])
 def get_contract_by_name():
     name = request.args[contract_name]
-    return contract_dao.find_contract_by_name(name)
+    return contract_dao.find_by_name(name)
 
 
 """
@@ -43,14 +43,14 @@ TODO: Verify that the contract isn't associated to a
 @mod.route("/remove", methods=["DELETE"])
 def delete_contract():
     name = request.args[contract_name]
-    contract_dao.remove_contract(name)
+    contract_dao.remove(name)
     return Response(ok_message, 200)
 
 
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_contracts_names():
     all_contracts = (contract_dao.
-                     fetch_all_contracts())
+                     fetch_all())
     return [contract[contract_name] for
             contract in all_contracts]
 
@@ -68,5 +68,5 @@ TODO: Before updating a contract, verify that the update
 def update_contract():
     contract_dict = request.json
     contract = Contract().from_json(contract_dict)
-    contract_dao.update_contract(contract.db_json())
+    contract_dao.update(contract.db_json())
     return Response(ok_message, 200)
