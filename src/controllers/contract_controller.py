@@ -49,10 +49,8 @@ def delete_contract():
 
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_contracts_names():
-    all_contracts = (contract_dao.
-                     fetch_all())
-    return [contract[contract_name] for
-            contract in all_contracts]
+    all_contracts = contract_dao.fetch_all()
+    return [contract[contract_name] for contract in all_contracts]
 
 
 """

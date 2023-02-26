@@ -23,10 +23,10 @@ from src.exceptions.project_base_exception import ProjectBaseException
     with the client, please consult the following link:
     https://gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/LOG89XX-10/-/blob/dataset/file-format/dataset/examples/sol-instance1.txt
 """
-mod = Blueprint('schedule_controller', __name__, url_prefix='/schedule')
+mod = Blueprint("schedule_controller", __name__, url_prefix="/schedule")
 
 
-@mod.route('/nameFilter/<instance>', methods=["GET"])
+@mod.route("/nameFilter/<instance>", methods=["GET"])
 def get_schedule_filtered_by_name(instance):
     try:
         version = request.args["version"]

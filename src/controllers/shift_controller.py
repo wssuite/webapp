@@ -4,20 +4,16 @@ from flask import Blueprint, request, Response
 from src.cpp_utils.shift import Shift
 from constants import shift_name
 
-mod = Blueprint('shift_controller',
-                __name__,
-                url_prefix="/shift")
+mod = Blueprint("shift_controller", __name__, url_prefix="/shift")
 
 shift_dao = ShiftDao(connect_to_db())
 
 
-@mod.route('/add', methods=['POST'])
+@mod.route("/add", methods=["POST"])
 def add_shift():
     shift_dict = request.json
     shift = Shift().from_json(shift_dict)
-    shift_dao.insert_one_if_not_exist(
-        shift.db_json()
-    )
+    shift_dao.insert_one_if_not_exist(shift.db_json())
     return Response("OK", 200)
 
 
@@ -42,8 +38,7 @@ def remove_shift():
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_shifts_names():
     shifts = shift_dao.fetch_all()
-    return [shift[shift_name]
-            for shift in shifts]
+    return [shift[shift_name] for shift in shifts]
 
 
 @mod.route("/update", methods=["PUT"])

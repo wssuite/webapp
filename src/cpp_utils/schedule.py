@@ -1,20 +1,26 @@
 from src.cpp_utils.assignment import Assignment
 import re
-from constants import start_date, end_date,\
-    schedule_string, assignment_employee_name,\
-    assignments_string
+from constants import (
+    start_date,
+    end_date,
+    schedule_string,
+    assignment_employee_name,
+    assignments_string,
+)
 
-regex_assignments = r'([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+),' \
-                    r'([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+)\n'
+regex_assignments = (
+    r"([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+),"
+    r"([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+)\n"
+)
 
-regex_instance_info = r'([a-zA-Z0-9\-\.]+),([a-zA-Z0-9\-]+),' \
-                      r'([a-zA-Z0-9\-]+)\n'
+regex_instance_info = (
+    r"([a-zA-Z0-9\-\.]+),([a-zA-Z0-9\-]+)," r"([a-zA-Z0-9\-]+)\n"
+)
 
-regex_headers = r'\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9]+)\)\n'
+regex_headers = r"\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9]+)\)\n"
 
 
 class Schedule:
-
     def __init__(self, file_name):
         self.assignments_list = []
         self.start_date = ""
@@ -29,17 +35,21 @@ class Schedule:
                 """the assignments block will be after the headers bloc"""
                 if match_regex_assignments:
                     employee_name = self.id_dict.get(
-                        match_regex_assignments.group(2))
+                        match_regex_assignments.group(2)
+                    )
 
-                    groups = [match_regex_assignments.group(1),
-                              employee_name,
-                              match_regex_assignments.group(3),
-                              match_regex_assignments.group(4)]
+                    groups = [
+                        match_regex_assignments.group(1),
+                        employee_name,
+                        match_regex_assignments.group(3),
+                        match_regex_assignments.group(4),
+                    ]
 
                     self.assignments_list.append(Assignment(groups))
                 elif match_regex_headers:
-                    self.id_dict[match_regex_headers.group(1)] =\
-                        match_regex_headers.group(2)
+                    self.id_dict[
+                        match_regex_headers.group(1)
+                    ] = match_regex_headers.group(2)
                 elif match_regex_instance_info:
                     self.start_date = match_regex_instance_info.group(2)
                     self.end_date = match_regex_instance_info.group(3)
@@ -51,20 +61,22 @@ class Schedule:
                 list_assignments = [assignment.to_json()]
                 dict_filtered_name[assignment.employee_name] = list_assignments
             else:
-                list_assignments = dict_filtered_name. \
-                    get(assignment.employee_name)
+                list_assignments = dict_filtered_name.get(
+                    assignment.employee_name
+                )
                 list_assignments.append(assignment.to_json())
                 dict_filtered_name[assignment.employee_name] = list_assignments
         schedule = []
         for key in dict_filtered_name.keys():
-            ret_element = {assignment_employee_name: key,
-                           assignments_string: dict_filtered_name.get(key)
-                           }
+            ret_element = {
+                assignment_employee_name: key,
+                assignments_string: dict_filtered_name.get(key),
+            }
             schedule.append(ret_element)
 
         ret = {
             start_date: self.start_date,
             end_date: self.end_date,
-            schedule_string: schedule
+            schedule_string: schedule,
         }
         return ret

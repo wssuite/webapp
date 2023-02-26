@@ -40,19 +40,13 @@ pattern_element_shift = shift_constraint
 pattern_element_day = "dayName"
 unwanted_pattern_elements = "patternElements"
 
-number_of_free_days_after_shift \
-    = "NumberOfFreeDaysAfterShift"
-total_weekends_in_four_weeks \
-    = "TotalWeekendsInFourWeeks"
-min_max_consecutive_shift_type \
-    = "MinMaxConsecutiveShiftType"
-min_max_consecutive_weekends \
-    = "MinMaxConsecutiveWeekends"
-min_max_num_assignments_in_four_weeks \
-    = "MinMaxNumAssignmentsInFourWeeks"
+number_of_free_days_after_shift = "NumberOfFreeDaysAfterShift"
+total_weekends_in_four_weeks = "TotalWeekendsInFourWeeks"
+min_max_consecutive_shift_type = "MinMaxConsecutiveShiftType"
+min_max_consecutive_weekends = "MinMaxConsecutiveWeekends"
+min_max_num_assignments_in_four_weeks = "MinMaxNumAssignmentsInFourWeeks"
 complete_weekends = "CompleteWeekends"
-identical_shift_during_weekend \
-    = "IdentShiftTypesDuringWeekend"
+identical_shift_during_weekend = "IdentShiftTypesDuringWeekend"
 alternative_shift = "AlternativeShift"
 unwanted_pattern = "unwantedPatterns"
 

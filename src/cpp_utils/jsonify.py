@@ -2,7 +2,6 @@ from pykson import Pykson, JsonObject
 
 
 class Jsonify(JsonObject):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

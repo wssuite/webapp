@@ -1,8 +1,5 @@
 from src.exceptions.project_base_exception import ProjectBaseException
-from error_msg import (
-    nurse_username_already_exist,
-    nurse_group_already_exist
-)
+from error_msg import nurse_username_already_exist, nurse_group_already_exist
 
 
 class NurseUsernameAlreadyExist(ProjectBaseException):

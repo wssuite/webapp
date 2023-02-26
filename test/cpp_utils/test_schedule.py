@@ -1,9 +1,16 @@
 from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
 from src.cpp_utils.schedule import Schedule
 from uuid import uuid4
-from constants import assignment_skill, assignment_date,\
-    assignment_shift, assignment_employee_name, start_date,\
-    end_date, schedule_string, assignments_string
+from constants import (
+    assignment_skill,
+    assignment_date,
+    assignment_shift,
+    assignment_employee_name,
+    start_date,
+    end_date,
+    schedule_string,
+    assignments_string,
+)
 
 text = """
 HEADERS
@@ -34,23 +41,25 @@ class TestSchedule(TestCase):
         filtering_by_name = {
             start_date: "2010-06-01",
             end_date: "2010-06-28",
-            schedule_string: [{
-                assignment_employee_name: "Patrick",
-                assignments_string: [
-                    {
-                        assignment_date: "2010-06-01",
-                        assignment_employee_name: "Patrick",
-                        assignment_shift: "Late",
-                        assignment_skill: "Nurse"
-                    },
-                    {
-                        assignment_date: "2010-06-05",
-                        assignment_employee_name: "Patrick",
-                        assignment_shift: "Early",
-                        assignment_skill: "Nurse"
-                    }
-                ]
-            }]
+            schedule_string: [
+                {
+                    assignment_employee_name: "Patrick",
+                    assignments_string: [
+                        {
+                            assignment_date: "2010-06-01",
+                            assignment_employee_name: "Patrick",
+                            assignment_shift: "Late",
+                            assignment_skill: "Nurse",
+                        },
+                        {
+                            assignment_date: "2010-06-05",
+                            assignment_employee_name: "Patrick",
+                            assignment_shift: "Early",
+                            assignment_skill: "Nurse",
+                        },
+                    ],
+                }
+            ],
         }
 
         schedule = create_schedule(fake_fs)

@@ -15,7 +15,9 @@ class Scenario(Writable):
             staff_str += f"{personnel}\n"
         for constraint in self.constraints:
             constraints_str += f"{constraint}\n"
-        ret = f"Scenario name = {self.scenario_name} \n\n" \
-              f"Staff\n{staff_str} \n \n" \
-              f"Constraints\n{constraints_str}"
+        ret = (
+            f"Scenario name = {self.scenario_name} \n\n"
+            f"Staff\n{staff_str} \n \n"
+            f"Constraints\n{constraints_str}"
+        )
         return ret

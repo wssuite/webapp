@@ -1,15 +1,13 @@
 from unittest import TestCase
 from src.cpp_utils.shift_group import ShiftGroup
-from constants import (shift_group_name,
-                       shift_group_shifts_list)
+from constants import shift_group_name, shift_group_shifts_list
 
 
 class TestShiftGroups(TestCase):
     def setUp(self) -> None:
         self.shift_group_dict = {
             shift_group_name: "Work",
-            shift_group_shifts_list: ["Day",
-                                      "Early", "Midnight"]
+            shift_group_shifts_list: ["Day", "Early", "Midnight"],
         }
 
     def tearDown(self) -> None:

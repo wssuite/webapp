@@ -3,22 +3,19 @@ from unittest import TestCase
 
 
 class TestPersonnel(TestCase):
-
     def setUp(self) -> None:
-        self.personnel_data = {
-            "name": "random",
-            "contract_type": "random"
-        }
+        self.personnel_data = {"name": "random", "contract_type": "random"}
         self.correct_personnel = Personnel()
         self.correct_personnel.name = "random"
         self.correct_personnel.contract_type = "random"
 
     def test_personnel_creation(self):
         created_personnel = Personnel().from_json(self.personnel_data)
-        self.assertEqual(created_personnel.name,
-                         self.correct_personnel.name)
-        self.assertEqual(created_personnel.contract_type,
-                         self.correct_personnel.contract_type)
+        self.assertEqual(created_personnel.name, self.correct_personnel.name)
+        self.assertEqual(
+            created_personnel.contract_type,
+            self.correct_personnel.contract_type,
+        )
 
     def test_personnel_to_string(self):
         self.assertEqual(str(self.correct_personnel), "random random")

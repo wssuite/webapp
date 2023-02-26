@@ -1,9 +1,6 @@
 from unittest import TestCase
-from src.exceptions.shift_exceptions import (
-    ShiftGroupAlreadyExistException
-)
-from constants import (shift_group_name,
-                       shift_group_shifts_list)
+from src.exceptions.shift_exceptions import ShiftGroupAlreadyExistException
+from constants import shift_group_name, shift_group_shifts_list
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.shift_group_dao import ShiftGroupDao
 
@@ -13,16 +10,11 @@ class TestShiftGroupDao(TestCase):
         self.dao = ShiftGroupDao(connect_to_fake_db())
         self.shift_group = {
             shift_group_name: "Work",
-            shift_group_shifts_list: [
-                "Early", "Day", "Midnight"
-            ]
+            shift_group_shifts_list: ["Early", "Day", "Midnight"],
         }
         self.shift_group_update = {
             shift_group_name: "Work",
-            shift_group_shifts_list: [
-                "Early", "Day",
-                "Midnight", "Night"
-            ]
+            shift_group_shifts_list: ["Early", "Day", "Midnight", "Night"],
         }
 
     def tearDown(self) -> None:
@@ -50,19 +42,13 @@ class TestShiftGroupDao(TestCase):
     def test_update_shift_group(self):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
         self.dao.update(self.shift_group_update.copy())
-        shift_group = self.dao.find_by_name(
-            self.shift_group[shift_group_name]
-        )
+        shift_group = self.dao.find_by_name(self.shift_group[shift_group_name])
         self.assertEqual(self.shift_group_update, shift_group)
 
     def test_get_shift_groups_including_shifts(self):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
-        night_shift_group = self.dao.get_including_shifts(
-            ["Night"]
-        )
-        day_shift_group = self.dao.get_including_shifts(
-            ["Day"]
-        )
+        night_shift_group = self.dao.get_including_shifts(["Night"])
+        day_shift_group = self.dao.get_including_shifts(["Day"])
         self.assertEqual(0, len(night_shift_group))
         self.assertEqual(1, len(day_shift_group))
         self.assertEqual(self.shift_group, day_shift_group[0])
