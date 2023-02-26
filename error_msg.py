@@ -5,3 +5,11 @@ version_required = "Version required please make sure" \
 shift_already_exists = "The shift {} already exists"
 shift_type_already_exists = "The shift type {} already exists"
 shift_group_already_exists = "The shift group {} already exists"
+
+contract_contradiction_error = "The contract {} contradicts " \
+                               "the contract {} regarding the " \
+                               "following constraints {}"
+
+contract_already_exist = "Contract {} already exists." \
+                        "Please select another " \
+                        "name for the contract"

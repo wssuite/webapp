@@ -4,7 +4,8 @@ from src.controllers import (schedule_controller,
                              nurse_controller,
                              shift_controller,
                              shift_type_controller,
-                             shift_group_controller)
+                             shift_group_controller,
+                             contract_controller)
 import config
 from flask_cors import CORS
 
@@ -27,6 +28,7 @@ def create_app():
     flask_app.register_blueprint(
         shift_group_controller.mod
     )
+    flask_app.register_blueprint(contract_controller.mod)
     return flask_app
 
 

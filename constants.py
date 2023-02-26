@@ -70,3 +70,8 @@ shift_group_shifts_list = "shifts"
 """Shift Type"""
 shift_type_name = "name"
 shift_type_shifts_lists = "shifts"
+sub_contract_limit = "sub_contract_limit"
+depended_contracts = "depended_contracts"
+contract_shifts = "shifts"
+
+ok_message = "ok"
