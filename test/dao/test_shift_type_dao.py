@@ -26,7 +26,7 @@ class TestShiftTypeDao(TestCase):
 
     def test_insert_shift_type_when_not_exist_succeed(self):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
-        all_shift_types = self.dao.fetch_all_shift_types()
+        all_shift_types = self.dao.fetch_all()
         self.assertEqual(1, len(all_shift_types))
         self.assertEqual(self.shift_type, all_shift_types[0])
 
@@ -39,16 +39,16 @@ class TestShiftTypeDao(TestCase):
 
     def test_remove_shift_type(self):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
-        shift_type_len_before = len(self.dao.fetch_all_shift_types())
-        self.dao.remove_shift_type(self.shift_type[shift_type_name])
-        shift_type_len_after = len(self.dao.fetch_all_shift_types())
+        shift_type_len_before = len(self.dao.fetch_all())
+        self.dao.remove(self.shift_type[shift_type_name])
+        shift_type_len_after = len(self.dao.fetch_all())
         self.assertEqual(1, shift_type_len_before)
         self.assertEqual(0, shift_type_len_after)
 
     def test_update_shift_type(self):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
-        self.dao.update_shift_type(self.shift_type_update)
-        shift_type_updated = self.dao.find_shift_type_by_name(
+        self.dao.update(self.shift_type_update)
+        shift_type_updated = self.dao.find_by_name(
             self.shift_type[shift_type_name]
         )
         self.assertEqual(self.shift_type_update,
@@ -58,12 +58,12 @@ class TestShiftTypeDao(TestCase):
     def test_get_shift_types_including_shifts(self):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
         night_shift_types = (self.dao.
-                             get_shift_types_including_shifts
+                             get_including_shifts
                              (["Night"])
                              )
         self.assertEqual(0, len(night_shift_types))
         early_shift_types = (self.dao.
-                             get_shift_types_including_shifts
+                             get_including_shifts
                              (["Early"])
                              )
         self.assertEqual(1, len(early_shift_types))

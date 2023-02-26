@@ -21,16 +21,16 @@ class ShiftDao(AbstractDao):
 
         self.collection.insert_one(shift)
 
-    def find_shift_by_name(self, name):
+    def find_by_name(self, name):
         return self.collection.find_one(
             {shift_name: name},
             {mongo_id_field: 0})
 
     def exist(self, name):
-        shift = self.find_shift_by_name(name)
+        shift = self.find_by_name(name)
         return shift is not None
 
-    def fetch_all_shifts(self):
+    def fetch_all(self):
         cursor = self.collection.find({},
                                       {mongo_id_field: 0}
                                       )
@@ -40,10 +40,10 @@ class ShiftDao(AbstractDao):
             shifts.append(shift.to_json())
         return shifts
 
-    def remove_shift(self, name):
+    def remove(self, name):
         self.collection.find_one_and_delete({shift_name: name})
 
-    def update_shift(self, shift: dict):
+    def update(self, shift: dict):
         self.collection.find_one_and_update(
             {shift_name: shift[shift_name]},
             {mongo_set_operation: shift})

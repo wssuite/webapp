@@ -30,7 +30,7 @@ class TestShiftGroupDao(TestCase):
 
     def test_insert_shift_group_when_not_exist_succeeds(self):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
-        shifts = self.dao.fetch_all_shift_groups()
+        shifts = self.dao.fetch_all()
         self.assertEqual(1, len(shifts))
         self.assertEqual(self.shift_group, shifts[0])
 
@@ -41,26 +41,26 @@ class TestShiftGroupDao(TestCase):
 
     def test_remove_shift_group(self):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
-        shift_groups_before = self.dao.fetch_all_shift_groups()
-        self.dao.remove_shift_group(self.shift_group[shift_group_name])
-        shift_groups_after = self.dao.fetch_all_shift_groups()
+        shift_groups_before = self.dao.fetch_all()
+        self.dao.remove(self.shift_group[shift_group_name])
+        shift_groups_after = self.dao.fetch_all()
         self.assertEqual(1, len(shift_groups_before))
         self.assertEqual(0, len(shift_groups_after))
 
     def test_update_shift_group(self):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
-        self.dao.update_shift_group(self.shift_group_update.copy())
-        shift_group = self.dao.find_shift_group_by_name(
+        self.dao.update(self.shift_group_update.copy())
+        shift_group = self.dao.find_by_name(
             self.shift_group[shift_group_name]
         )
         self.assertEqual(self.shift_group_update, shift_group)
 
     def test_get_shift_groups_including_shifts(self):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
-        night_shift_group = self.dao.get_shift_groups_including_shifts(
+        night_shift_group = self.dao.get_including_shifts(
             ["Night"]
         )
-        day_shift_group = self.dao.get_shift_groups_including_shifts(
+        day_shift_group = self.dao.get_including_shifts(
             ["Day"]
         )
         self.assertEqual(0, len(night_shift_group))

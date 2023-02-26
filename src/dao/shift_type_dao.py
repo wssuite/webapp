@@ -10,7 +10,7 @@ from src.exceptions.shift_exceptions import (
 from src.cpp_utils.shift_type import ShiftType
 
 
-def return_shift_type_list(cursor):
+def get_shift_types_from_cursor(cursor):
     shift_types = []
     for type_dict in cursor:
         shift_type = ShiftType().from_json(type_dict)
@@ -33,37 +33,37 @@ class ShiftTypeDao(AbstractDao):
 
         self.collection.insert_one(shift_type)
 
-    def find_shift_type_by_name(self, name):
+    def find_by_name(self, name):
         return self.collection.find_one(
             {shift_type_name: name},
             {mongo_id_field: 0})
 
     def exist(self, name):
-        shift_type = self.find_shift_type_by_name(
+        shift_type = self.find_by_name(
             name
         )
         return shift_type is not None
 
-    def fetch_all_shift_types(self):
+    def fetch_all(self):
         cursor = self.collection.find({},
                                       {mongo_id_field: 0}
                                       )
-        return return_shift_type_list(cursor)
+        return get_shift_types_from_cursor(cursor)
 
-    def remove_shift_type(self, name):
+    def remove(self, name):
         self.collection.find_one_and_delete(
             {shift_type_name: name})
 
-    def update_shift_type(self, shift_type: dict):
+    def update(self, shift_type: dict):
         self.collection.find_one_and_update(
             {shift_type_name: shift_type[
                 shift_type_name]},
             {mongo_set_operation: shift_type})
 
-    def get_shift_types_including_shifts(self, shifts):
+    def get_including_shifts(self, shifts):
         cursor = self.collection.find(
             {shift_type_shifts_lists: {
                 mongo_all_operation: shifts}},
             {mongo_id_field: 0}
         )
-        return return_shift_type_list(cursor)
+        return get_shift_types_from_cursor(cursor)

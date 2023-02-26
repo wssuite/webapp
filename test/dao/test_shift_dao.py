@@ -29,7 +29,7 @@ class TestShiftDao(TestCase):
 
     def test_insert_shift_when_not_exist_succeeds(self):
         self.dao.insert_one_if_not_exist(self.shift.copy())
-        all_shifts = self.dao.fetch_all_shifts()
+        all_shifts = self.dao.fetch_all()
         self.assertEqual(1, len(all_shifts))
         self.assertEqual(self.shift, all_shifts[0])
 
@@ -40,16 +40,16 @@ class TestShiftDao(TestCase):
 
     def test_remove_shift(self):
         self.dao.insert_one_if_not_exist(self.shift.copy())
-        shift_len_before = len(self.dao.fetch_all_shifts())
-        self.dao.remove_shift(self.shift[shift_name])
-        shift_len_after = len(self.dao.fetch_all_shifts())
+        shift_len_before = len(self.dao.fetch_all())
+        self.dao.remove(self.shift[shift_name])
+        shift_len_after = len(self.dao.fetch_all())
         self.assertEqual(0, shift_len_after)
         self.assertEqual(1, shift_len_before)
 
     def test_update_shift(self):
         self.dao.insert_one_if_not_exist(self.shift.copy())
-        self.dao.update_shift(self.shift_update)
-        shift = self.dao.find_shift_by_name(
+        self.dao.update(self.shift_update)
+        shift = self.dao.find_by_name(
             self.shift[shift_name]
         )
         self.assertEqual(self.shift_update, shift)

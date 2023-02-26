@@ -23,25 +23,25 @@ def add_shift():
 
 @mod.route("/fetchAll", methods=["GET"])
 def get_all_shifts():
-    return shift_dao.fetch_all_shifts()
+    return shift_dao.fetch_all()
 
 
 @mod.route("/fetchByName", methods=["GET"])
 def get_shift_by_name():
     name = request.args[shift_name]
-    return shift_dao.find_shift_by_name(name)
+    return shift_dao.find_by_name(name)
 
 
 @mod.route("/remove", methods=["DELETE"])
 def remove_shift():
     name = request.args[shift_name]
-    shift_dao.remove_shift(name)
+    shift_dao.remove(name)
     return Response("OK", 200)
 
 
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_shifts_names():
-    shifts = shift_dao.fetch_all_shifts()
+    shifts = shift_dao.fetch_all()
     return [shift[shift_name]
             for shift in shifts]
 
@@ -50,5 +50,5 @@ def get_shifts_names():
 def update_shift():
     shift_dict = request.json
     shift = Shift().from_json(shift_dict)
-    shift_dao.update_shift(shift.db_json())
+    shift_dao.update(shift.db_json())
     return Response("OK", 200)

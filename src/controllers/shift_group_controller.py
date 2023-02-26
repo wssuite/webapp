@@ -23,13 +23,13 @@ def add_shift_group():
 
 @mod.route("/fetchAll", methods=["GET"])
 def get_all_shift_groups():
-    return shift_group_dao.fetch_all_shift_groups()
+    return shift_group_dao.fetch_all()
 
 
 @mod.route("/fetchByName", methods=["GET"])
 def get_shift_group_by_name():
     name = request.args[shift_group_name]
-    return shift_group_dao.find_shift_group_by_name(
+    return shift_group_dao.find_by_name(
         name
     )
 
@@ -37,14 +37,14 @@ def get_shift_group_by_name():
 @mod.route("/remove", methods=["DELETE"])
 def remove_shift_group():
     name = request.args[shift_group_name]
-    shift_group_dao.remove_shift_group(name)
+    shift_group_dao.remove(name)
     return Response("OK", 200)
 
 
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_shift_groups_names():
     shift_groups = (shift_group_dao.
-                    fetch_all_shift_groups())
+                    fetch_all())
     return [shift_group[shift_group_name]
             for shift_group in shift_groups]
 
@@ -55,7 +55,7 @@ def update_shift_group():
     shift_group = ShiftGroup().from_json(
         shift_group_dict
     )
-    shift_group_dao.update_shift_group(
+    shift_group_dao.update(
         shift_group.db_json()
     )
     return Response("OK", 200)

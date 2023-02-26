@@ -10,7 +10,7 @@ from src.exceptions.shift_exceptions import (
 from src.cpp_utils.shift_group import ShiftGroup
 
 
-def return_shift_groups_list(cursor):
+def get_shift_groups_from_cursor(cursor):
     shift_groups = []
     for group_dict in cursor:
         group = ShiftGroup().from_json(group_dict)
@@ -33,35 +33,35 @@ class ShiftGroupDao(AbstractDao):
             )
         self.collection.insert_one(shift_group)
 
-    def find_shift_group_by_name(self, name):
+    def find_by_name(self, name):
         return self.collection.find_one(
             {shift_group_name: name},
             {mongo_id_field: 0}
         )
 
     def exist(self, name):
-        shift_group = self.find_shift_group_by_name(
+        shift_group = self.find_by_name(
             name
         )
         return shift_group is not None
 
-    def get_shift_groups_including_shifts(self, shifts):
+    def get_including_shifts(self, shifts):
         cursor = self.collection.find(
             {shift_group_shifts_list:
                 {mongo_all_operation: shifts}},
             {mongo_id_field: 0}
         )
-        return return_shift_groups_list(cursor)
+        return get_shift_groups_from_cursor(cursor)
 
-    def fetch_all_shift_groups(self):
+    def fetch_all(self):
         cursor = self.collection.find({}, {mongo_id_field: 0})
-        return return_shift_groups_list(cursor)
+        return get_shift_groups_from_cursor(cursor)
 
-    def update_shift_group(self, shift_group: dict):
+    def update(self, shift_group: dict):
         self.collection.find_one_and_update(
             {shift_group_name: shift_group[shift_group_name]},
             {mongo_set_operation: shift_group}
         )
 
-    def remove_shift_group(self, name):
+    def remove(self, name):
         self.collection.find_one_and_delete({shift_group_name: name})

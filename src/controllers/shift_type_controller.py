@@ -23,13 +23,13 @@ def add_shift_type():
 
 @mod.route("/fetchAll", methods=["GET"])
 def get_all_shift_types():
-    return shift_type_dao.fetch_all_shift_types()
+    return shift_type_dao.fetch_all()
 
 
 @mod.route("/fetchByName", methods=["GET"])
 def get_shift_type_by_name():
     name = request.args[shift_type_name]
-    return shift_type_dao.find_shift_type_by_name(
+    return shift_type_dao.find_by_name(
         name
     )
 
@@ -37,13 +37,13 @@ def get_shift_type_by_name():
 @mod.route("/remove", methods=["DELETE"])
 def remove_shift_type():
     name = request.args[shift_type_name]
-    shift_type_dao.remove_shift_type(name)
+    shift_type_dao.remove(name)
     return Response("OK", 200)
 
 
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_shift_types_names():
-    shift_types = shift_type_dao.fetch_all_shift_types()
+    shift_types = shift_type_dao.fetch_all()
     return [shift_type[shift_type_name]
             for shift_type in shift_types]
 
@@ -54,5 +54,5 @@ def update_shift_type():
     shift_type = ShiftType().from_json(
         shift_type_dict
     )
-    shift_type_dao.update_shift_type(shift_type.db_json())
+    shift_type_dao.update(shift_type.db_json())
     return Response("OK", 200)
