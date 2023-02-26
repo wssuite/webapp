@@ -63,11 +63,11 @@ class TestNurseDao(TestCase):
         )
         nurse_group_dict = self.nurse_group_dict.copy()
         parTime = (
-            self.dao.get_nurse_groups_with_contracts(
+            self.dao.get_with_contracts(
                 ["ParTime"])
         )
         fullTime = (
-            self.dao.get_nurse_groups_with_contracts(
+            self.dao.get_with_contracts(
                 ["FullTime"])
         )
         self.assertEqual(0, len(parTime))
@@ -83,11 +83,11 @@ class TestNurseDao(TestCase):
         )
         nurse_group_dict = self.nurse_group_dict.copy()
         eves_groups = (
-            self.dao.get_nurse_groups_with_contracts(
+            self.dao.get_with_contracts(
                 ["Eve"])
         )
         patricks_groups = (
-            self.dao.get_nurse_groups_with_nurses(
+            self.dao.get_with_nurses(
                 ["Patrick"])
         )
         self.assertEqual(0, len(eves_groups))
@@ -102,11 +102,11 @@ class TestNurseDao(TestCase):
         self.dao.insert_one_if_not_exist(
             nurse_group.db_json()
         )
-        self.dao.update_nurse_group(
+        self.dao.update(
             self.nurse_group_update
         )
         result = self.nurse_group_update.copy()
-        nurse_updated = (self.dao.find_nurse_group_by_name(
+        nurse_updated = (self.dao.find_by_name(
             self.nurse_group_dict[nurse_group_name]
         ))
         self.assertEqual(result, nurse_updated)
@@ -117,7 +117,7 @@ class TestNurseDao(TestCase):
             nurse_group.db_json()
         )
         all_nurse_groups_before = self.dao.fetch_all()
-        self.dao.remove_nurse_group(
+        self.dao.remove(
             nurse_group.name
         )
         all_nurse_groups_after = self.dao.fetch_all()

@@ -24,13 +24,13 @@ def get_all_nurses():
 @mod.route("/fetchByUsername", methods=["GET"])
 def get_nurse_by_username():
     username = request.args[nurse_username]
-    return nurse_dao.find_nurse_by_username(username)
+    return nurse_dao.find_by_username(username)
 
 
 @mod.route("/remove", methods=["DELETE"])
 def delete_nurse():
     username = request.args[nurse_username]
-    nurse_dao.remove_nurse(username)
+    nurse_dao.remove(username)
     return Response("OK", 200)
 
 
@@ -45,5 +45,5 @@ def get_nurses_usernames():
 def update_nurse():
     update_dict = request.json
     nurse = Nurse().from_json(update_dict)
-    nurse_dao.update_nurse(nurse.db_json())
+    nurse_dao.update(nurse.db_json())
     return Response("OK", 200)

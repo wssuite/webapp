@@ -67,10 +67,10 @@ class TestNurseDao(TestCase):
             inserted_id.inserted_id
         )
         parTime = (
-            self.dao.get_nurses_with_contracts(["ParTime"])
+            self.dao.get_with_contracts(["ParTime"])
         )
         fullTime = (
-            self.dao.get_nurses_with_contracts(["FullTime"])
+            self.dao.get_with_contracts(["FullTime"])
         )
         self.assertEqual(0, len(parTime))
         self.assertEqual(1, len(fullTime))
@@ -81,12 +81,12 @@ class TestNurseDao(TestCase):
         inserted_id = self.dao.insert_one(
             nurse.db_json()
         )
-        self.dao.update_nurse(self.nurse_update)
+        self.dao.update(self.nurse_update)
         result = self.nurse_update.copy()
         result[nurse_id] = str(
             inserted_id.inserted_id
         )
-        nurse_updated = self.dao.find_nurse_by_username(
+        nurse_updated = self.dao.find_by_username(
             self.nurse_dict[nurse_username])
         self.assertEqual(result, nurse_updated)
 
@@ -94,7 +94,7 @@ class TestNurseDao(TestCase):
         nurse = Nurse().from_json(self.nurse_dict)
         self.dao.insert_one(nurse.db_json())
         all_nurses_before = self.dao.fetch_all()
-        self.dao.remove_nurse(nurse.username)
+        self.dao.remove(nurse.username)
         all_nurses_after = self.dao.fetch_all()
         self.assertEqual(
             1, len(all_nurses_before)

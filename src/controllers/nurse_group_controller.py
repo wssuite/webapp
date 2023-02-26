@@ -32,7 +32,7 @@ def get_all_nurse_groups():
 @mod.route("/fetchByName", methods=["GET"])
 def get_nurse_group_by_name():
     name = request.args[nurse_group_name]
-    return nurse_group_dao.find_nurse_group_by_name(
+    return nurse_group_dao.find_by_name(
         name
     )
 
@@ -40,7 +40,7 @@ def get_nurse_group_by_name():
 @mod.route("/remove", methods=["DELETE"])
 def delete_nurse():
     name = request.args[nurse_group_name]
-    nurse_group_dao.remove_nurse_group(name)
+    nurse_group_dao.remove(name)
     return Response("OK", 200)
 
 
@@ -56,6 +56,6 @@ def update_nurse():
     update_dict = request.json
     nurse_group = NurseGroup().from_json(
         update_dict)
-    nurse_group_dao.update_nurse_group(
+    nurse_group_dao.update(
         nurse_group.db_json())
     return Response("OK", 200)

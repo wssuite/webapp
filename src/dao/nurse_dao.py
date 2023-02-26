@@ -14,6 +14,14 @@ from src.exceptions.nurse_exceptions import (
 )
 
 
+def get_nurses_from_cursor(cursor):
+    return_list = []
+    for nurse in cursor:
+        nurse = Nurse().from_json(nurse)
+        return_list.append(nurse.to_json())
+    return return_list
+
+
 class NurseDao(AbstractDao):
     def __init__(self, mongo):
         super().__init__(mongo)
@@ -34,41 +42,32 @@ class NurseDao(AbstractDao):
 
     def fetch_all(self):
         list_nurse = self.collection.find({}, {mongo_id_field: 0})
-        return_list = []
-        for nurse in list_nurse:
-            nurse = Nurse().from_json(nurse)
-            return_list.append(nurse.to_json())
-        return return_list
+        return get_nurses_from_cursor(list_nurse)
 
-    def find_nurse_by_username(self, username):
+    def find_by_username(self, username):
         return self.collection.find_one(
             {nurse_username: username},
             {mongo_id_field: 0}
         )
 
     def exist(self, username):
-        nurse = self.find_nurse_by_username(username)
+        nurse = self.find_by_username(username)
         return nurse is not None
 
-    def get_nurses_with_contracts(self, contracts):
+    def get_with_contracts(self, contracts):
         cursor = self.collection.find({nurse_contracts: {
             mongo_all_operation: contracts
         }},
             {mongo_id_field: 0})
-        nurse_list = []
-        for nurse_dict in cursor:
-            nurse = Nurse().from_json(nurse_dict)
-            nurse_list.append(nurse.to_json())
+        return get_nurses_from_cursor(cursor)
 
-        return nurse_list
-
-    def update_nurse(self, nurse_dict):
+    def update(self, nurse_dict):
         self.collection.find_one_and_update(
             {nurse_username: nurse_dict[nurse_username]},
             {mongo_set_operation: nurse_dict}
         )
 
-    def remove_nurse(self, username):
+    def remove(self, username):
         self.collection.find_one_and_delete(
             {nurse_username: username}
         )
