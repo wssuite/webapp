@@ -62,3 +62,21 @@ sub_contract_names = "subContractNames"
 contract_name = "name"
 contract_constraints = "constraints"
 contract_skills = "skills"
+
+"""shift"""
+shift_name = "name"
+shift_start_time = "startTime"
+shift_end_time = "endTime"
+
+"""Shift group"""
+shift_group_name = "name"
+shift_group_shifts_list = "shifts"
+
+"""Shift Type"""
+shift_type_name = "name"
+shift_type_shifts_lists = "shifts"
+sub_contract_limit = "sub_contract_limit"
+depended_contracts = "depended_contracts"
+contract_shifts = "shifts"
+
+ok_message = "ok"
