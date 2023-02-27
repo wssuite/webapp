@@ -21,6 +21,15 @@ from constants import (
 )
 
 
+def verify_token(token, user_dao):
+    if token == empty_token:
+        raise LoginRequired()
+    user_dict = user_dao.find_by_token(token)
+    if user_dict is None:
+        raise TokenInvalid()
+    return user_dict
+
+
 class AuthenticationHandler:
     def __init__(self, mongo):
         self.user_dao = UserDao(mongo)
@@ -29,16 +38,8 @@ class AuthenticationHandler:
         user = self.user_dao.find_by_username(username)
         return user is not None
 
-    def verify_token(self, token):
-        if token == empty_token:
-            raise LoginRequired()
-        user_dict = self.user_dao.find_by_token(token)
-        if user_dict is None:
-            raise TokenInvalid()
-        return user_dict
-
     def verify_user_is_admin(self, token):
-        user_dict = self.verify_token(token)
+        user_dict = verify_token(token, self.user_dao)
         if user_dict[user_username] != admin:
             raise AdminOnlyAction()
 
@@ -73,7 +74,7 @@ class AuthenticationHandler:
         return token
 
     def logout(self, token):
-        user_dict = self.verify_token(token)
+        user_dict = verify_token(token, self.user_dao)
         user_dict[user_token] = empty_token
         self.user_dao.update(user_dict)
 
