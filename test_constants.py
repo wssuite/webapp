@@ -6,6 +6,9 @@ from constants import (
     constraint_weight,
     alternative_shift,
     shift_constraint,
+    user_username,
+    admin,
+    user_password,
 )
 
 general_contract_dict = {
@@ -55,3 +58,7 @@ full_time_valid_contract_with_general_update = {
         }
     ],
 }
+
+random_hex = "12345678123456781234567812345678"
+
+default_user = {user_password: admin, user_username: admin}

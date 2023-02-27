@@ -26,3 +26,11 @@ contract_already_exist = (
     "Please select another "
     "name for the contract"
 )
+
+user_already_exist = "user {} already exists"
+user_not_exist = "The user {} doesn't exist"
+password_not_valid = "Password is incorrect"
+user_error = "The token provided is invalid"
+admin_only = "Only admin user can perform this action"
+delete_admin_error = "Cannot delete admin"
+login_required_error = "Please login before continuing"
