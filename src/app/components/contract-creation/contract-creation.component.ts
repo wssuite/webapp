@@ -2,12 +2,7 @@ import { Component } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import {  ALTERNATIVE_SHIFT_ID, CONSTRAINTS, DISPLAY_NAME_CONSTRAINT_MAP, FREE_DAYS_AFTER_SHIFT_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
 import { shiftsExample } from "src/app/constants/shifts";
-import { AlternativeShift } from "src/app/models/AlternativeShift";
-import { Constraint } from "src/app/models/Constraint";
 import { Contract } from "src/app/models/Contract";
-import { MinMaxShiftConstraint } from "src/app/models/MinMaxShiftConstraint";
-import { ShiftConstraint } from "src/app/models/ShiftConstraint";
-import { UnwantedPatterns } from "src/app/models/UnwantedPatterns";
 
 @Component({
   selector: "app-contract-creation",
@@ -53,22 +48,7 @@ export class ContractCreationComponent {
     this.constraintsErrorState[index]= e;
   }
 
-  getConstraint(constraint: Constraint, constraintChange: Constraint): Constraint{
-    constraint = constraintChange;
-    switch(constraint.name){
-      case UNWANTED_PATTERNS_ID:
-        return constraint as UnwantedPatterns;
-
-      case ALTERNATIVE_SHIFT_ID:
-        return constraint as AlternativeShift;
-
-      case FREE_DAYS_AFTER_SHIFT_ID:
-        return constraint as ShiftConstraint;
-
-      case MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID:
-        return constraint as MinMaxShiftConstraint;
-
-      default: return constraint;
-    }
+  removeConstraint(index: number) {
+    this.contract.constraints.splice(index);
   }
 }
