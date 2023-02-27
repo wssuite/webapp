@@ -34,6 +34,8 @@ services:
     networks:
       schedule_generator:
         ipv4_address: 192.168.5.2
+    depends_on:
+      - mongodb
     volumes:
       - dataset:/app/dataset
     restart: on-failure
