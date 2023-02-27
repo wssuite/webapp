@@ -1,4 +1,13 @@
 import { Component } from "@angular/core";
+import { FormControl, Validators } from "@angular/forms";
+import {  ALTERNATIVE_SHIFT_ID, CONSTRAINTS, DISPLAY_NAME_CONSTRAINT_MAP, FREE_DAYS_AFTER_SHIFT_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
+import { shiftsExample } from "src/app/constants/shifts";
+import { AlternativeShift } from "src/app/models/AlternativeShift";
+import { Constraint } from "src/app/models/Constraint";
+import { Contract } from "src/app/models/Contract";
+import { MinMaxShiftConstraint } from "src/app/models/MinMaxShiftConstraint";
+import { ShiftConstraint } from "src/app/models/ShiftConstraint";
+import { UnwantedPatterns } from "src/app/models/UnwantedPatterns";
 
 @Component({
   selector: "app-contract-creation",
@@ -6,6 +15,60 @@ import { Component } from "@angular/core";
   styleUrls: ["./contract-creation.component.css"],
 })
 export class ContractCreationComponent {
-  
 
+  contract: Contract;
+  possibleShifts: string[];
+  possibleConstraints: string[];
+  chosenConstraint: string;
+  constraintsErrorState: boolean[];
+  nameFormCtrl: FormControl;
+  unwantedPatternsId: string;
+  alternativeShiftId: string;
+  freeDaysAfterShiftId: string;
+  minMaxConsecutiveShiftTypeId: string;
+
+  constructor() {
+    this.contract = new Contract();
+    this.possibleShifts = shiftsExample;
+    this.possibleConstraints = CONSTRAINTS;
+    this.chosenConstraint = '';
+    this.constraintsErrorState = [];
+    this.nameFormCtrl = new FormControl(null, Validators.required);
+    this.unwantedPatternsId = UNWANTED_PATTERNS_ID;
+    this.alternativeShiftId = ALTERNATIVE_SHIFT_ID;
+    this.freeDaysAfterShiftId = FREE_DAYS_AFTER_SHIFT_ID;
+    this.minMaxConsecutiveShiftTypeId = MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID;
+  }
+  
+  addConstraint() {
+    const constraint = DISPLAY_NAME_CONSTRAINT_MAP.get(this.chosenConstraint);
+    if(constraint === undefined || constraint === null) {
+      return;
+    }
+    this.contract.constraints.push(constraint);
+    this.constraintsErrorState.push(true);
+  }
+
+  updateConstraintErrorState(index: number, e: boolean) {
+    this.constraintsErrorState[index]= e;
+  }
+
+  getConstraint(constraint: Constraint, constraintChange: Constraint): Constraint{
+    constraint = constraintChange;
+    switch(constraint.name){
+      case UNWANTED_PATTERNS_ID:
+        return constraint as UnwantedPatterns;
+
+      case ALTERNATIVE_SHIFT_ID:
+        return constraint as AlternativeShift;
+
+      case FREE_DAYS_AFTER_SHIFT_ID:
+        return constraint as ShiftConstraint;
+
+      case MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID:
+        return constraint as MinMaxShiftConstraint;
+
+      default: return constraint;
+    }
+  }
 }

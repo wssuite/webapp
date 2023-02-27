@@ -1,1 +1,47 @@
+<div class="contract-container">
+    <section class="name-section">
+        <label>Contract name: </label>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter a name</mat-label>
+            <input matInput [(ngModel)]="contract.name"
+            [formControl]="nameFormCtrl"/>
+        </mat-form-field>
+    </section>
+    <section class="constraints-section">
+        <h1>Constraints</h1>
+        <label>choose a constraint: </label>
+        <mat-form-field appearance="fill">
+            <mat-label>Choose a constraint: </mat-label>
+            <mat-select [(value)]="chosenConstraint">
+                <mat-option *ngFor="let constraint of possibleConstraints" [value]="constraint">
+                    {{constraint}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-button (click)="addConstraint()">Add constraint</button>
+        <br>
+        <div class="constraints-container">
+            <mat-expansion-panel *ngFor="let constraint of contract.constraints; let i= index">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
+                </mat-expansion-panel-header>
+                <ng-container [ngSwitch]="constraint.name">
+                    <div>
+                        <app-unwanted-patterns *ngSwitchCase="unwantedPatternsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
+                    </div>
+                    <div>
+                        <app-alternative-shift *ngSwitchCase="alternativeShiftId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-alternative-shift>
+                    </div>
+                    <div>
+                        <app-shift-constraint *ngSwitchCase="freeDaysAfterShiftId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-shift-constraint>
+                    </div>
+                    <div>
+                        <app-min-max-consecutive-shift *ngSwitchCase="minMaxConsecutiveShiftTypeId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
+                    </div>
+                    <div *ngSwitchDefault>Empty</div>
+                </ng-container>
+            </mat-expansion-panel>
 
+        </div>
+    </section>
+</div>
