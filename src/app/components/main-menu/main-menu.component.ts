@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { SCHEDULE_GENERATION } from "src/app/constants/app-routes";
+import { SHIFT } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
 
@@ -24,6 +25,9 @@ export class MainMenuComponent {
     switch (button.title) {
       case "Schedule":
         this.router.navigate(["/" + SCHEDULE_GENERATION]);
+        break;
+      case "Shift":
+        this.router.navigate(["/" + SHIFT]);
         break;
       default:
         break;

@@ -28,6 +28,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
 import { TestingComponent } from "./components/testing/testing.component";
 import { WeightComponent } from "./components/weight/weight.component";
+import { ShiftComponent } from './components/shift/shift.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { WeightComponent } from "./components/weight/weight.component";
     ErrorMessageDialogComponent,
     TestingComponent,
     WeightComponent,
+    ShiftComponent,
   ],
   imports: [
     BrowserModule,
