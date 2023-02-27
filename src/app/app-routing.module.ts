@@ -3,11 +3,13 @@ import { RouterModule, Routes } from "@angular/router";
 import { ConsultScheduleComponent } from "./components/consult-schedule/consult-schedule.component";
 import { ContractCreationComponent } from "./components/contract-creation/contract-creation.component";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
+import { NurseComponent } from "./components/nurse/nurse.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
 import {
   CONSULT_SCHEDULE,
   CREATE_CONTRACT,
   MAIN_MENU,
+  NURSE,
   SCHEDULE_GENERATION,
 } from "./constants/app-routes";
 
@@ -17,6 +19,7 @@ const routes: Routes = [
   { path: CONSULT_SCHEDULE, component: ConsultScheduleComponent },
   { path: CREATE_CONTRACT, component: ContractCreationComponent },
   { path: SCHEDULE_GENERATION, component: ScheduleGenerationComponent },
+  { path: NURSE, component: NurseComponent},
 ];
 
 @NgModule({
