@@ -1,0 +1,1 @@
+export const shiftsExample = ["Early", "MidDay", "Late"];
