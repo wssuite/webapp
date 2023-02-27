@@ -2,7 +2,7 @@ import uuid
 from unittest import TestCase
 from unittest.mock import patch
 import bcrypt
-from src.handlers.authentication_handler import AuthenticationHandler, User
+from src.handlers.user_handler import AuthenticationHandler, User
 from src.dao.abstract_dao import connect_to_fake_db
 from test_constants import default_user, random_hex
 from constants import (

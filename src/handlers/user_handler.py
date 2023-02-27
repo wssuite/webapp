@@ -63,9 +63,8 @@ class AuthenticationHandler:
         if user_dict is None:
             raise UserNotExist(user.username)
         hashed_password = user_dict[user_password]
-        match = bcrypt.checkpw(
-            str(user.password).encode(utf8), hashed_password
-        )
+        encoded_password = str(user.password).encode(utf8)
+        match = bcrypt.checkpw(encoded_password, hashed_password)
         if match is False:
             raise WrongPassword
         token = uuid.uuid4().hex

@@ -2,7 +2,7 @@ from src.models.jsonify import Jsonify
 from pykson import StringField, ListField
 from constants import nurse_name, nurse_id, nurse_contracts, nurse_username
 
-from models.db_document import DBDocument
+from src.models.db_document import DBDocument
 
 
 class Nurse(Jsonify, DBDocument):

@@ -8,9 +8,16 @@ from src.controllers import (
     shift_type_controller,
     shift_group_controller,
     contract_controller,
+    user_controller,
 )
 import config
 from flask_cors import CORS
+from src.dao.user_dao import UserDao
+from test_constants import default_user
+from src.dao.abstract_dao import connect_to_db
+from constants import admin, user_password, utf8
+from src.models.user import User
+import bcrypt
 
 
 def create_app():
@@ -28,6 +35,7 @@ def create_app():
     flask_app.register_blueprint(shift_type_controller.mod)
     flask_app.register_blueprint(shift_group_controller.mod)
     flask_app.register_blueprint(contract_controller.mod)
+    flask_app.register_blueprint(user_controller.mod)
     return flask_app
 
 
@@ -39,4 +47,14 @@ def test_client():
 
 if __name__ == "__main__":
     app = create_app()
+    user_dao = UserDao(connect_to_db())
+    admin_dict = user_dao.find_by_username(admin)
+    if admin_dict is None:
+        admin_user = User().from_json(default_user)
+        db_json = admin_user.db_json()
+        password = db_json[user_password].encode(utf8)
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password, salt)
+        db_json[user_password] = hashed_password
+        user_dao.insert_one(db_json)
     app.run(host="0.0.0.0")

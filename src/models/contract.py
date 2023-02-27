@@ -29,7 +29,7 @@ from constants import (
     contract_shifts,
 )
 
-from models.db_document import DBDocument
+from src.models.db_document import DBDocument
 
 
 class ContractConstraintCreator:

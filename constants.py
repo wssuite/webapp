@@ -77,7 +77,7 @@ ok_message = "ok"
 
 
 """User"""
-user_username = "useername"
+user_username = "username"
 user_password = "password"
 user_token = "token"
 empty_token = "empty"
