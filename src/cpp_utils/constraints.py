@@ -1,10 +1,16 @@
 from src.cpp_utils.stringify import Stringify
 from pykson import StringField, ObjectListField
-from constants import constraint_name, \
-    integer_constraint_value, constraint_weight, \
-    shift_constraint, min_constraint_value, \
-    max_constraint_value, min_constraint_weight, \
-    max_constraint_weight, unwanted_pattern_elements
+from constants import (
+    constraint_name,
+    integer_constraint_value,
+    constraint_weight,
+    shift_constraint,
+    min_constraint_value,
+    max_constraint_value,
+    min_constraint_weight,
+    max_constraint_weight,
+    unwanted_pattern_elements,
+)
 from src.cpp_utils.pattern_element import PatternElement
 from src.cpp_utils.jsonify import Jsonify
 
@@ -28,7 +34,6 @@ nor in the BaseConstraint class
 
 
 class BaseConstraint(Jsonify, Stringify):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -110,19 +115,19 @@ class ContractBooleanConstraint(ContractConstraint):
 class ContractUnwantedPatterns(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
     pattern_elements = ObjectListField(
-        PatternElement, serialized_name=unwanted_pattern_elements)
+        PatternElement, serialized_name=unwanted_pattern_elements
+    )
     weight = StringField(serialized_name=constraint_weight)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def to_json(self):
-        array = [element.to_json()
-                 for element in self.pattern_elements]
+        array = [element.to_json() for element in self.pattern_elements]
         return {
             constraint_name: self.name,
             constraint_weight: self.weight,
-            unwanted_pattern_elements: array
+            unwanted_pattern_elements: array,
         }
 
     def get_shift(self):

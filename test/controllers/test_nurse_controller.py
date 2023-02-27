@@ -1,8 +1,7 @@
 from unittest.mock import Mock
 import app
 from unittest import TestCase
-from constants import nurse_name, nurse_contracts, nurse_id,\
-    nurse_username
+from constants import nurse_name, nurse_contracts, nurse_id, nurse_username
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.nurse_dao import NurseDao
 
@@ -11,9 +10,9 @@ class TestNurseController(TestCase):
     def setUp(self):
         self.client = app.test_client()
         self.nurse_dict = {
-            nurse_name: 'random',
-            nurse_contracts: ['fulltime'],
-            nurse_username: 'random'
+            nurse_name: "random",
+            nurse_contracts: ["fulltime"],
+            nurse_username: "random",
         }
         app.nurse_controller.nurse_dao = Mock()
         app.nurse_controller.nurse_dao = NurseDao(connect_to_fake_db())
@@ -25,11 +24,10 @@ class TestNurseController(TestCase):
     def test_register_nurse(self):
         path = "/nurse/add"
 
-        inserted_nurse_id = self.client.post(path,
-                                             json=self.nurse_dict)
+        inserted_nurse_id = self.client.post(path, json=self.nurse_dict)
         result_nurse = self.dao.collection.find_one(
-            {nurse_id: inserted_nurse_id.text},
-            {"_id": 0, nurse_id: 0})
+            {nurse_id: inserted_nurse_id.text}, {"_id": 0, nurse_id: 0}
+        )
         self.assertEqual(self.nurse_dict, result_nurse)
 
     def test_fetch_all_nurses(self):

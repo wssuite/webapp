@@ -7,13 +7,8 @@ class TestScenario(TestCase):
     def setUp(self) -> None:
         self.scenario_data = {
             "scenario_name": "n005w4",
-            "staff": [
-                {
-                    "name": "random",
-                    "contract_type": "random"
-                }
-            ],
-            "constraints": ["Early 0"]
+            "staff": [{"name": "random", "contract_type": "random"}],
+            "constraints": ["Early 0"],
         }
         self.scenario = Scenario()
         self.scenario.scenario_name = "n005w4"
@@ -30,7 +25,9 @@ class TestScenario(TestCase):
         self.assertEqual(scenario.scenario_name, self.scenario.scenario_name)
 
     def test_scenario_to_string(self):
-        scenario_str = "Scenario name = n005w4 \n\n" \
-                       "Staff\nrandom random\n \n \n" \
-                       "Constraints\nEarly 0\n"
+        scenario_str = (
+            "Scenario name = n005w4 \n\n"
+            "Staff\nrandom random\n \n \n"
+            "Constraints\nEarly 0\n"
+        )
         self.assertEqual(scenario_str, str(self.scenario))

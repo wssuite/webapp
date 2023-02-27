@@ -1,10 +1,12 @@
 import os
-from src.exceptions.file_system_exceptions \
-    import NoSolutionFoundException, NoVersionFoundException
+from src.exceptions.file_system_exceptions import (
+    NoSolutionFoundException,
+    NoVersionFoundException,
+)
 
 dataset_directory = "dataset"
 base_directory = os.getcwd()
-solution_prefix = 'sol'
+solution_prefix = "sol"
 
 
 class FileSystemManager:

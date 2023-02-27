@@ -10,7 +10,7 @@ import mongomock
 
 
 def connect_to_db():
-    return pymongo.MongoClient('192.168.5.4', 27017)
+    return pymongo.MongoClient("192.168.5.4", 27017)
 
 
 def connect_to_fake_db():
@@ -18,6 +18,5 @@ def connect_to_fake_db():
 
 
 class AbstractDao:
-
     def __init__(self, mongo):
         self.db = mongo.test

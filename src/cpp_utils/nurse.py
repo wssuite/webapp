@@ -1,9 +1,6 @@
 from src.cpp_utils.jsonify import Jsonify
 from pykson import StringField, ListField
-from constants import (nurse_name,
-                       nurse_id,
-                       nurse_contracts,
-                       nurse_username)
+from constants import nurse_name, nurse_id, nurse_contracts, nurse_username
 
 from src.utils.db_document import DBDocument
 

@@ -12,8 +12,7 @@ nurse_dao = NurseDao(connect_to_db())
 def add_nurse():
     nurse_dict = request.json
     nurse = Nurse().from_json(nurse_dict)
-    return str(nurse_dao.insert_one(
-        nurse.db_json()).inserted_id)
+    return str(nurse_dao.insert_one(nurse.db_json()).inserted_id)
 
 
 @mod.route("/fetchAll", methods=["GET"])
@@ -37,8 +36,7 @@ def delete_nurse():
 @mod.route("/fetchAllUsernames", methods=["GET"])
 def get_nurses_usernames():
     all_nurses = nurse_dao.fetch_all()
-    return [nurse[nurse_username]
-            for nurse in all_nurses]
+    return [nurse[nurse_username] for nurse in all_nurses]
 
 
 @mod.route("/update", methods=["PUT"])

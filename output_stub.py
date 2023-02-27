@@ -1,10 +1,15 @@
 import random
 from datetime import datetime, timedelta
 
-fictive_employees = [("0a", "Eve"), ("1b", "Patrick"),
-                     ("2c", "Genevieve"), ("3d", "Monique"),
-                     ("4e", "Jessica"), ("5f", "Andrew"),
-                     ("6g", "Patrice")]
+fictive_employees = [
+    ("0a", "Eve"),
+    ("1b", "Patrick"),
+    ("2c", "Genevieve"),
+    ("3d", "Monique"),
+    ("4e", "Jessica"),
+    ("5f", "Andrew"),
+    ("6g", "Patrice"),
+]
 
 skills = ["Nurse", "HeadNurse", "Pediatrics", "Sociologist"]
 shifts = ["Early", "Late", "MidDay", "Night"]
@@ -14,7 +19,7 @@ end_date_string = "2023-03-20"
 
 
 def string_to_date(string):
-    return datetime.strptime(string, '%Y-%m-%d').date()
+    return datetime.strptime(string, "%Y-%m-%d").date()
 
 
 start_date = string_to_date(start_date_string)
@@ -29,8 +34,8 @@ for employee in fictive_employees:
 headers_section += "END\n"
 file_content = headers_section
 
-file_content += f'prototype,{start_date_string},{end_date_string}\n'
-file_content += f'Assignments={len(shifts) * days_diff * len(skills)}\n'
+file_content += f"prototype,{start_date_string},{end_date_string}\n"
+file_content += f"Assignments={len(shifts) * days_diff * len(skills)}\n"
 
 for i in range(0, days_diff + 1):
     new_date = start_date + timedelta(days=i)
@@ -41,7 +46,7 @@ for date in dates:
         for skill in skills:
             random_number = random.randint(0, len(fictive_employees) - 1)
             chosen_employee = fictive_employees[random_number][0]
-            file_content += f'{date},{chosen_employee},{shift},{skill}\n'
+            file_content += f"{date},{chosen_employee},{shift},{skill}\n"
 
 print(file_content)
 

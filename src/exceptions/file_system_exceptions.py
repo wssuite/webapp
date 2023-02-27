@@ -1,5 +1,4 @@
-from src.exceptions.project_base_exception import \
-    ProjectBaseException
+from src.exceptions.project_base_exception import ProjectBaseException
 import error_msg
 
 

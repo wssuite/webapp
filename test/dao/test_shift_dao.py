@@ -1,13 +1,8 @@
 from src.dao.shift_dao import ShiftDao
 from unittest import TestCase
 from src.dao.abstract_dao import connect_to_fake_db
-from constants import (shift_name,
-                       shift_start_time,
-                       shift_end_time
-                       )
-from src.exceptions.shift_exceptions import (
-    ShiftAlreadyExistException
-)
+from constants import shift_name, shift_start_time, shift_end_time
+from src.exceptions.shift_exceptions import ShiftAlreadyExistException
 
 
 class TestShiftDao(TestCase):
@@ -16,12 +11,12 @@ class TestShiftDao(TestCase):
         self.shift = {
             shift_name: "Early",
             shift_start_time: "06:30:00",
-            shift_end_time: "12:00:00"
+            shift_end_time: "12:00:00",
         }
         self.shift_update = {
             shift_name: "Early",
             shift_start_time: "06:00:00",
-            shift_end_time: "12:00:00"
+            shift_end_time: "12:00:00",
         }
 
     def tearDown(self) -> None:
@@ -49,7 +44,5 @@ class TestShiftDao(TestCase):
     def test_update_shift(self):
         self.dao.insert_one_if_not_exist(self.shift.copy())
         self.dao.update(self.shift_update)
-        shift = self.dao.find_by_name(
-            self.shift[shift_name]
-        )
+        shift = self.dao.find_by_name(self.shift[shift_name])
         self.assertEqual(self.shift_update, shift)

@@ -1,8 +1,5 @@
 from src.exceptions.project_base_exception import ProjectBaseException
-from error_msg import (
-    contract_contradiction_error,
-    contract_already_exist
-)
+from error_msg import contract_contradiction_error, contract_already_exist
 
 
 class ContractContradictionException(ProjectBaseException):

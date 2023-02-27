@@ -1,10 +1,12 @@
-from constants import assignment_date,\
-    assignment_employee_name, assignment_shift,\
-    assignment_skill
+from constants import (
+    assignment_date,
+    assignment_employee_name,
+    assignment_shift,
+    assignment_skill,
+)
 
 
 class Assignment:
-
     def __init__(self, info):
         self.date = info[0]
         self.employee_name = info[1]
@@ -16,5 +18,5 @@ class Assignment:
             assignment_date: self.date,
             assignment_employee_name: self.employee_name,
             assignment_shift: self.shift,
-            assignment_skill: self.skill
+            assignment_skill: self.skill,
         }
