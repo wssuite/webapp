@@ -1,4 +1,4 @@
-from src.cpp_utils.assignment import Assignment
+from src.models.assignment import Assignment
 from unittest import TestCase
 from constants import (
     assignment_date,

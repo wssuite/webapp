@@ -1,7 +1,7 @@
 from src.dao.abstract_dao import connect_to_db
 from src.dao.shift_group_dao import ShiftGroupDao
 from flask import Blueprint, request, Response
-from src.cpp_utils.shift_group import ShiftGroup
+from src.models.shift_group import ShiftGroup
 from constants import shift_group_name
 
 mod = Blueprint("shift_group_controller", __name__, url_prefix="/shiftGroup")

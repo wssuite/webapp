@@ -8,7 +8,7 @@ from constants import (
     nurse_group_contracts_list,
 )
 from pymongo.collection import Collection
-from src.cpp_utils.nurse_group import NurseGroup
+from src.models.nurse_group import NurseGroup
 from src.exceptions.nurse_exceptions import NurseGroupAlreadyExist
 
 

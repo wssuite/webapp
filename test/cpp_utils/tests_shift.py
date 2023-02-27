@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.cpp_utils.shift import Shift
+from src.models.shift import Shift
 from constants import shift_name, shift_start_time, shift_end_time
 
 

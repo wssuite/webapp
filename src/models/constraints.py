@@ -1,4 +1,4 @@
-from src.cpp_utils.stringify import Stringify
+from src.models.stringify import Stringify
 from pykson import StringField, ObjectListField
 from constants import (
     constraint_name,
@@ -11,8 +11,8 @@ from constants import (
     max_constraint_weight,
     unwanted_pattern_elements,
 )
-from src.cpp_utils.pattern_element import PatternElement
-from src.cpp_utils.jsonify import Jsonify
+from src.models.pattern_element import PatternElement
+from src.models.jsonify import Jsonify
 
 """
 Note: The following constraints are conceptually

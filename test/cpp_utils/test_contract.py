@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.cpp_utils.contract import Contract, ContractMinMaxConstraint
+from src.models.contract import Contract, ContractMinMaxConstraint
 
 from constants import (
     number_of_free_days_after_shift,

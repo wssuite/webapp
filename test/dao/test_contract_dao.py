@@ -11,7 +11,7 @@ from constants import contract_name, mongo_id_field, contract_constraints
 from src.exceptions.contract_exceptions import (
     ContractAlreadyExistException,
 )
-from src.cpp_utils.contract import Contract
+from src.models.contract import Contract
 
 
 class TestContractDao(TestCase):

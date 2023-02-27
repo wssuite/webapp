@@ -10,7 +10,7 @@ from constants import (
 from src.exceptions.contract_exceptions import (
     ContractAlreadyExistException,
 )
-from src.cpp_utils.contract import Contract
+from src.models.contract import Contract
 
 
 def get_contracts_from_cursor(cursor):

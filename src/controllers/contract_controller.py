@@ -1,7 +1,7 @@
 from flask import Blueprint, request, Response
 from src.dao.contract_dao import ContractDao
 from src.dao.abstract_dao import connect_to_db
-from src.cpp_utils.contract import Contract
+from src.models.contract import Contract
 from constants import ok_message, contract_name
 
 mod = Blueprint("contract_controller", __name__, url_prefix="/contract")

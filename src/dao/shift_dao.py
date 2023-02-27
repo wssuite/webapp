@@ -2,7 +2,7 @@ from src.dao.abstract_dao import AbstractDao
 from pymongo.collection import Collection
 from constants import shift_name, mongo_id_field, mongo_set_operation
 from src.exceptions.shift_exceptions import ShiftAlreadyExistException
-from src.cpp_utils.shift import Shift
+from src.models.shift import Shift
 
 
 class ShiftDao(AbstractDao):

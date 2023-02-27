@@ -12,7 +12,7 @@ from constants import (
     unwanted_pattern,
 )
 
-from src.cpp_utils.constraints import (
+from src.models.constraints import (
     ContractIntegerConstraint,
     ContractIntegerShiftConstraint,
     ContractUnwantedPatterns,

@@ -1,4 +1,4 @@
-from src.cpp_utils.jsonify import Jsonify
+from src.models.jsonify import Jsonify
 from pykson import StringField
 from constants import pattern_element_shift, pattern_element_day
 
