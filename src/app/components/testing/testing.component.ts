@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID } from 'src/app/constants/constraints';
-import { shiftsExample } from 'src/app/constants/shifts';
-import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
+import { Component } from "@angular/core";
+import {
+  TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME,
+  TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID,
+} from "src/app/constants/constraints";
+import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 
 @Component({
   selector: "app-testing",
@@ -9,12 +11,14 @@ import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
   styleUrls: ["./testing.component.css"],
 })
 export class TestingComponent {
-  constraint: UnwantedPatterns = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
-  possibleShifts: string[] = shiftsExample;
+  constraint: IntegerConstraint = new IntegerConstraint(
+    TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID,
+    TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME
+  );
 
-  errorState = true;
+  constraintErrorState = true;
 
-  changeState(e: boolean) {
-    this.errorState = e;
+  updateConstraintErrorState(e: boolean) {
+    this.constraintErrorState = e;
   }
 }

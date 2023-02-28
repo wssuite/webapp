@@ -1,0 +1,7 @@
+.integer-constraint-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 2vw;
+    margin-right: 2vw;
+}

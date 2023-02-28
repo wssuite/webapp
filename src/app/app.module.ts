@@ -33,6 +33,7 @@ import { WeightComponent } from './components/weight/weight.component';
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
+import { IntegerConstraintComponent } from './components/integer-constraint/integer-constraint.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { TestingComponent } from "./components/testing/testing.component";
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
-    UnwantedPatternsComponent
+    UnwantedPatternsComponent,
+    IntegerConstraintComponent
   ],
   imports: [
     BrowserModule,
