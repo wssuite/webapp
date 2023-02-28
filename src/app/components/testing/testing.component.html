@@ -23,3 +23,12 @@
 <p>The shift type constraint has an error: {{minMaxConstraintErrorState}} and the shift is: {{minMaxConsecutiveShift.shiftId}}</p>
 <p>The min value is: {{minMaxConsecutiveShift.minValue}} and the min weight is :{{minMaxConsecutiveShift.minWeight}}</p>
 <p>The max value is: {{minMaxConsecutiveShift.maxValue}} and the max weight is :{{minMaxConsecutiveShift.maxWeight}}</p>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>{{unwantedPatternsConstraint.displayName}}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-unwanted-patterns [(constraint)]="unwantedPatternsConstraint" (errorState)="updateUnwantedPatternsErrorState($event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
+</mat-expansion-panel>
+<p>The constraint has {{unwantedPatternsConstraint.patternElements.length}} elements
+    The constraint has an error: {{unwantedPatternsErrorState}}
+</p>
