@@ -6,5 +6,6 @@ import { Component } from "@angular/core";
   styleUrls: ["./contract-creation.component.css"],
 })
 export class ContractCreationComponent {
+  
 
 }

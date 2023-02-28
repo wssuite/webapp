@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID } from 'src/app/constants/constraints';
+import { UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID ,ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, BASE_VALUE } from 'src/app/constants/constraints';
 import { shiftsExample } from 'src/app/constants/shifts';
+import { AlternativeShift } from 'src/app/models/AlternativeShift';
 import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
 
 @Component({
@@ -9,12 +10,26 @@ import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
   styleUrls: ["./testing.component.css"],
 })
 export class TestingComponent {
-  constraint: UnwantedPatterns = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
-  possibleShifts: string[] = shiftsExample;
+  weight = BASE_VALUE;
+  possibleShifts: string[]
+  alternativeShiftConstraint: AlternativeShift;
+  alternativeShiftConstraintErrorState: boolean;
+  unwantedPatternsConstraint: UnwantedPatterns;
+  unwantedPatternsErrorState: boolean;
 
-  errorState = true;
+  constructor() {
+    this.possibleShifts = shiftsExample;
+    this.alternativeShiftConstraint = new AlternativeShift(ALTERNATIVE_SHIFT_ID,ALTERNATIVE_SHIFT_DISPLAY_NAME);
+    this.alternativeShiftConstraintErrorState = true;
+    this.unwantedPatternsConstraint = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
+    this.unwantedPatternsErrorState = true;
+  }
 
-  changeState(e: boolean) {
-    this.errorState = e;
+  updateUnwantedPatternsErrorState(e: boolean) {
+    this.unwantedPatternsErrorState = e
+  }
+
+  updateAlternativeShiftConstraintErrorState(e: boolean){
+    this.alternativeShiftConstraintErrorState = e;
   }
 }

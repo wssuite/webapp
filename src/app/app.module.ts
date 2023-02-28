@@ -28,8 +28,9 @@ import { ScheduleGenerationComponent } from "./components/schedule-generation/sc
 import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
-import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
 import { WeightComponent } from './components/weight/weight.component';
+import { AlternativeShiftComponent } from './components/alternative-shift/alternative-shift.component';
+import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
@@ -47,6 +48,7 @@ import { TestingComponent } from "./components/testing/testing.component";
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
+    AlternativeShiftComponent,
     UnwantedPatternsComponent
   ],
   imports: [
@@ -68,8 +70,8 @@ import { TestingComponent } from "./components/testing/testing.component";
     MatDialogModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
-    MatTooltipModule,
     MatExpansionModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

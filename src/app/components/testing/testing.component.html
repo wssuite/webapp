@@ -1,10 +1,17 @@
 <p>Put here any component you want to test!</p>
 <mat-expansion-panel>
     <mat-expansion-panel-header>
-        <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
+        <mat-panel-title>{{alternativeShiftConstraint.displayName}}</mat-panel-title>
     </mat-expansion-panel-header>
-    <app-unwanted-patterns [(constraint)]="constraint" (errorState)="changeState($event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
+    <app-alternative-shift [(constraint)]="alternativeShiftConstraint" (errorState)="updateAlternativeShiftConstraintErrorState($event)" [possibleShifts]="possibleShifts"></app-alternative-shift>
 </mat-expansion-panel>
-<p>The constraint has {{constraint.patternElements.length}} elements
-    The constraint has an error: {{errorState}}
+<p>The constraint has an error: {{alternativeShiftConstraintErrorState}} and the shift is: {{alternativeShiftConstraint.shiftId}}</p>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>{{unwantedPatternsConstraint.displayName}}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-unwanted-patterns [(constraint)]="unwantedPatternsConstraint" (errorState)="updateUnwantedPatternsErrorState($event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
+</mat-expansion-panel>
+<p>The constraint has {{unwantedPatternsConstraint.patternElements.length}} elements
+    The constraint has an error: {{unwantedPatternsErrorState}}
 </p>
