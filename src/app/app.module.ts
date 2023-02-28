@@ -16,6 +16,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -30,6 +31,7 @@ import { NumericInputComponent } from "./components/numeric-input/numeric-input.
 import { TestingComponent } from "./components/testing/testing.component";
 import { WeightComponent } from "./components/weight/weight.component";
 import { ShiftComponent } from './components/shift/shift.component';
+import { CreateShiftDialogComponent } from './components/create-shift-dialog/create-shift-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import { ShiftComponent } from './components/shift/shift.component';
     TestingComponent,
     WeightComponent,
     ShiftComponent,
+    CreateShiftDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +67,8 @@ import { ShiftComponent } from './components/shift/shift.component';
     MatDialogModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
+    NgxMaterialTimepickerModule
+
   ],
   providers: [],
   bootstrap: [AppComponent],

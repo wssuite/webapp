@@ -1,0 +1,1 @@
+export const shift_type_exemple =  ["work","rest"];
