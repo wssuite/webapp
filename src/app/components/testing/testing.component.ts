@@ -1,4 +1,10 @@
 import { Component } from "@angular/core";
+import {
+  COMPLETE_WEEKEND_DISPLAY_ID,
+  COMPLETE_WEEKEND_DISPLAY_NAME,
+  IDENTICAL_WEEKEND_DISPLAY_ID,
+  IDENTICAL_WEEKEND_DISPLAY_NAME,
+} from "src/app/constants/constraints";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 
 @Component({
@@ -7,16 +13,13 @@ import { BooleanConstraint } from "src/app/models/BooleanConstraint";
   styleUrls: ["./testing.component.css"],
 })
 export class TestingComponent {
-  weightValue = "0";
-  label = "weight";
-
   completeWeekendConstraint: BooleanConstraint = new BooleanConstraint(
-    "completeWeekend",
-    "Complete Weekend"
+    COMPLETE_WEEKEND_DISPLAY_ID,
+    COMPLETE_WEEKEND_DISPLAY_NAME
   );
 
   identicalWeekendConstraint: BooleanConstraint = new BooleanConstraint(
-    "identicalWeekend",
-    "Identical Weekend"
+    IDENTICAL_WEEKEND_DISPLAY_ID,
+    IDENTICAL_WEEKEND_DISPLAY_NAME
   );
 }

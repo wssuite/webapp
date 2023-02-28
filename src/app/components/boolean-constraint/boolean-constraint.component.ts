@@ -1,4 +1,5 @@
 import { Component, Input } from "@angular/core";
+import { BASE_VALUE, WEIGHT_LABEL } from "src/app/constants/constraints";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 
 @Component({
@@ -7,8 +8,7 @@ import { BooleanConstraint } from "src/app/models/BooleanConstraint";
   styleUrls: ["./boolean-constraint.component.css"],
 })
 export class BooleanConstraintComponent {
-  weightValue = "0";
-  weightLabel = "weight";
+  weightLabel = WEIGHT_LABEL;
 
-  @Input() booleanConstraint!: BooleanConstraint;
+  @Input() constraint!: BooleanConstraint;
 }
