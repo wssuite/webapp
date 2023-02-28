@@ -8,18 +8,21 @@ import { TestingComponent } from "./components/testing/testing.component";
 import {
   CONSULT_SCHEDULE,
   CREATE_CONTRACT,
+  LOGIN,
   MAIN_MENU,
   SCHEDULE_GENERATION,
   TESTING,
 } from "./constants/app-routes";
+import { LoginComponent } from "./components/login/login.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "/" + MAIN_MENU, pathMatch: "full" },
+  { path: "", redirectTo: "/" + LOGIN, pathMatch: "full" },
+  { path: LOGIN, component: LoginComponent },
   { path: MAIN_MENU, component: MainMenuComponent },
   { path: CONSULT_SCHEDULE, component: ConsultScheduleComponent },
   { path: CREATE_CONTRACT, component: ContractCreationComponent },
   { path: SCHEDULE_GENERATION, component: ScheduleGenerationComponent },
-  { path: TESTING, component: TestingComponent },
+  { path: TESTING, component: TestingComponent }, 
 ];
 
 @NgModule({
