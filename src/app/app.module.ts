@@ -15,9 +15,9 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatTooltipModule } from "@angular/material/tooltip";
-import { MatExpansionModule } from "@angular/material/expansion";
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -30,12 +30,12 @@ import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
 import { WeightComponent } from './components/weight/weight.component';
 import { AlternativeShiftComponent } from './components/alternative-shift/alternative-shift.component';
+import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
+import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
 import { ShiftConstraintComponent } from './components/shift-constraint/shift-constraint.component';
 import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
-import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
-import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
 
 @NgModule({

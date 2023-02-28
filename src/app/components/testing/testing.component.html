@@ -30,7 +30,7 @@
     <app-unwanted-patterns [(constraint)]="unwantedPatternsConstraint" (errorState)="undateUnwantedPatternsErrorState($event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
 </mat-expansion-panel>
 <p>The constraint has {{unwantedPatternsConstraint.patternElements.length}} elements
-    The constraint has an error: {{unwantedPatternErrorState}}
+    The constraint has an error: {{unwantedPatternsErrorState}}
 <mat-expansion-panel>
     <mat-expansion-panel-header>
         <mat-panel-title>{{booleanConstraint.displayName}}</mat-panel-title>

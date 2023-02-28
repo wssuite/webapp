@@ -28,10 +28,11 @@ export class TestingComponent {
   shiftTypeConstraintErrorState: boolean;
   minMaxConsecutiveShift: MinMaxShiftConstraint;
   minMaxConstraintErrorState: boolean;
-  unwantedPatternsConstraint: UnwantedPatterns = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
-  unwantedPatternErrorState: boolean;
   booleanConstraint: BooleanConstraint;
   booleanConstraintErrorState: boolean;
+
+  unwantedPatternsConstraint: UnwantedPatterns;
+  unwantedPatternsErrorState: boolean;
 
   constructor() {
     this.possibleShifts = shiftsExample;
@@ -41,7 +42,8 @@ export class TestingComponent {
     this.shiftTypeConstraintErrorState = true;
     this.minMaxConsecutiveShift = new MinMaxShiftConstraint(MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME);
     this.minMaxConstraintErrorState = true;
-    this.unwantedPatternErrorState = true;
+    this.unwantedPatternsConstraint = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
+    this.unwantedPatternsErrorState = true;
     this.booleanConstraint = new BooleanConstraint(
       IDENTICAL_WEEKEND_DISPLAY_ID,
       IDENTICAL_WEEKEND_DISPLAY_NAME
@@ -53,6 +55,11 @@ export class TestingComponent {
     this.booleanConstraintErrorState = e;
   }
 
+
+  updateUnwantedPatternsErrorState(e: boolean) {
+    this.unwantedPatternsErrorState = e
+  }
+  
   updateAlternativeConstraintErrorState(e: boolean){
     this.alternativeShiftConstraintErrorState = e;
   }
@@ -62,7 +69,7 @@ export class TestingComponent {
   }
 
   undateUnwantedPatternsErrorState(e:boolean) {
-    this.unwantedPatternErrorState = e;
+    this.unwantedPatternsErrorState = e;
   }
   
   updateMinMaxConstraintErrorState(e:boolean) {

@@ -17,7 +17,7 @@
                 <app-weight [(weight)]="constraint.minWeight" [label]="minWeightLabel" (errorState)="updateMinWeightErrorState($event)"></app-weight>
             </div>
         </div>
-        <br>
+        <br><br>
         <div class="max-value-container">
             <label>Max value: </label>
             <app-numeric-input [(value)]="constraint.maxValue" (errorState)="updateMaxValueErrorState($event)"></app-numeric-input>
