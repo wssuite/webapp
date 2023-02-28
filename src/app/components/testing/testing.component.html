@@ -1,7 +1,8 @@
 <app-boolean-constraint
   [constraint]="identicalWeekendConstraint"
+  (errorState)="updateConstraintErrorState($event)"
 ></app-boolean-constraint>
-
-<app-boolean-constraint
-  [constraint]="completeWeekendConstraint"
-></app-boolean-constraint>
+<p>
+  The constraint has an error: {{ constraintErrorState }} and the weight is:
+  {{ identicalWeekendConstraint.weight }}
+</p>
