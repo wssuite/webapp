@@ -38,7 +38,8 @@ class ContractDao(AbstractDao):
 
     def find_by_name(self, name):
         return self.collection.find_one(
-            {contract_name: name}, {mongo_id_field: 0}
+            {contract_name: name}, {mongo_id_field: 0,
+                                    contract_shifts: 0}
         )
 
     def exist(self, name):

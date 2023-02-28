@@ -5,7 +5,7 @@ from test_constants import (
     general_contract_dict,
     full_time_valid_contract_with_general,
     full_time_not_valid_contract_with_general,
-    full_time_valid_contract_with_general_update,
+    full_time_valid_contract_with_general_update_to_invalid,
 )
 from constants import contract_name, mongo_id_field, contract_constraints
 from src.exceptions.contract_exceptions import (
@@ -46,12 +46,12 @@ class TestContractDao(TestCase):
 
     def test_update_contract_if_contract_exist_contract_get_updated(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
-        self.dao.update(full_time_valid_contract_with_general_update.copy())
+        self.dao.update(full_time_valid_contract_with_general_update_to_invalid.copy())
         result = self.dao.find_by_name(
             full_time_valid_contract_with_general[contract_name]
         )
         self.assertEqual(
-            full_time_valid_contract_with_general_update[contract_constraints],
+            full_time_valid_contract_with_general_update_to_invalid[contract_constraints],
             result[contract_constraints],
         )
         self.assertEqual(
