@@ -34,6 +34,7 @@ import { PatternElementComponent } from './components/pattern-element/pattern-el
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
+import { ShiftConstraintComponent } from './components/shift-constraint/shift-constraint.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { TestingComponent } from "./components/testing/testing.component";
     TestingComponent,
     WeightComponent,
     AlternativeShiftComponent,
+    ShiftConstraintComponent,
     UnwantedPatternsComponent
   ],
   imports: [
