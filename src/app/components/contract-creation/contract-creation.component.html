@@ -1,4 +1,4 @@
-<div class="contract-container">
+<div class="contract-container" (mouseleave)="emitContract()">
     <section class="name-section">
         <label>Contract name: </label>
         <mat-form-field appearance="fill">
@@ -18,7 +18,7 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-button (click)="addConstraint()">Add constraint</button>
+        <button mat-raised-button (click)="addConstraint()">Add constraint</button>
         <br>
         <div class="constraints-container">
             <div *ngFor="let constraint of contract.constraints; let i= index" class="constraint-container">

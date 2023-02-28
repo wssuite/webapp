@@ -1,7 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import {  ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_ID, CONSTRAINTS, DISPLAY_NAME_CONSTRAINT_MAP, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
-import { shiftsExample } from "src/app/constants/shifts";
 import { Contract } from "src/app/models/Contract";
 
 @Component({
@@ -11,8 +10,11 @@ import { Contract } from "src/app/models/Contract";
 })
 export class ContractCreationComponent {
 
-  contract: Contract;
-  possibleShifts: string[];
+  @Input() contract!: Contract;
+  @Output() contractChange: EventEmitter<Contract>;
+  @Output() errorState: EventEmitter<boolean>;
+
+  @Input() possibleShifts!: string[];
   possibleConstraints: string[];
   chosenConstraint: string;
   constraintsErrorState: boolean[];
@@ -25,8 +27,9 @@ export class ContractCreationComponent {
   completeWeekendId: string;
 
   constructor() {
-    this.contract = new Contract();
-    this.possibleShifts = shiftsExample;
+    this.contractChange = new EventEmitter();
+    this.errorState = new EventEmitter();
+
     this.possibleConstraints = CONSTRAINTS;
     this.chosenConstraint = '';
     this.constraintsErrorState = [];
@@ -46,13 +49,26 @@ export class ContractCreationComponent {
     }
     this.contract.constraints.push(constraint);
     this.constraintsErrorState.push(true);
+    this.emitContract();
   }
 
   updateConstraintErrorState(index: number, e: boolean) {
     this.constraintsErrorState[index]= e;
+    this.emitContract();
   }
 
   removeConstraint(index: number) {
     this.contract.constraints.splice(index);
+    this.emitContract()
+  }
+
+  emitContract() {
+    this.contractChange.emit(this.contract);
+    this.emitErrorState();
+  }
+
+  emitErrorState() {
+    this.errorState.emit(this.nameFormCtrl.hasError('required') ||
+                this.constraintsErrorState.includes(true));
   }
 }

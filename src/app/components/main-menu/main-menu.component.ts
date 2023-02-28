@@ -1,8 +1,11 @@
 import { Component } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
+import { Contract } from "src/app/models/Contract";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
+import { ContractCreationDialogComponent } from "../contract-creation-dialog/contract-creation-dialog.component";
 
 @Component({
   selector: "app-main-menu",
@@ -12,7 +15,7 @@ import { MainMenuButton } from "src/app/models/MainMenuButton";
 export class MainMenuComponent {
   buttons: MainMenuButton[];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private dialog: MatDialog) {
     this.buttons = MAIN_MENU_BUTTONS;
   }
 
@@ -25,6 +28,13 @@ export class MainMenuComponent {
       case "Schedule":
         this.router.navigate(["/" + SCHEDULE_GENERATION]);
         break;
+
+      case "Contracts":
+        this.dialog.open(ContractCreationDialogComponent,
+           {data: {contract: new Contract()},
+        })
+        break;
+
       default:
         break;
     }
