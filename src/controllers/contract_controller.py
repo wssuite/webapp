@@ -1,70 +1,65 @@
 from flask import Blueprint, request, Response
-from src.dao.contract_dao import ContractDao
+from src.handlers.contract_handler import ContractHandler
 from src.dao.abstract_dao import connect_to_db
-from src.models.contract import Contract
 from constants import ok_message, contract_name
+from src.exceptions.project_base_exception import ProjectBaseException
+from constants import user_token
 
 mod = Blueprint("contract_controller", __name__, url_prefix="/contract")
 
-contract_dao = ContractDao(connect_to_db())
-
-"""
-TODO: Before adding a contract it will be necessary
-to verify that the shifts included in the contract
-exist
-"""
+contract_handler = ContractHandler(connect_to_db())
 
 
 @mod.route("/add", methods=["POST"])
 def add_contract():
-    contract_dict = request.json
-    contract = Contract().from_json(contract_dict)
-    contract_dao.insert_one(contract.db_json())
-    return Response(ok_message, 200)
+    try:
+        token = request.args[user_token]
+        contract_dict = request.json
+        contract_handler.add(token, contract_dict)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchAll", methods=["GET"])
 def get_all_contracts():
-    return contract_dao.fetch_all()
+    token = request.args[user_token]
+    return contract_handler.get_all(token)
 
 
 @mod.route("/fetchByName", methods=["GET"])
 def get_contract_by_name():
-    name = request.args[contract_name]
-    return contract_dao.find_by_name(name)
-
-
-"""
-TODO: Verify that the contract isn't associated to a
- nurse or nurse group before deleting the contract
-"""
+    try:
+        name = request.args[contract_name]
+        token = request.args[user_token]
+        return contract_handler.get_by_name(token, name)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/remove", methods=["DELETE"])
 def delete_contract():
-    name = request.args[contract_name]
-    contract_dao.remove(name)
-    return Response(ok_message, 200)
+    try:
+        name = request.args[contract_name]
+        token = request.args[user_token]
+        contract_handler.delete(token, name)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_contracts_names():
-    all_contracts = contract_dao.fetch_all()
-    return [contract[contract_name] for contract in all_contracts]
-
-
-"""
-TODO: Before updating a contract, verify that the update
- doesn't have any conflicts with the combination of
- contracts for different nurses.
- Verify that the shifts included in the updated contract
- exist
-"""
+    token = request.args[user_token]
+    return contract_handler.get_all_names(token)
 
 
 @mod.route("/update", methods=["PUT"])
 def update_contract():
-    contract_dict = request.json
-    contract = Contract().from_json(contract_dict)
-    contract_dao.update(contract.db_json())
-    return Response(ok_message, 200)
+    try:
+        contract_dict = request.json
+        token = request.args[user_token]
+        contract_handler.update(token, contract_dict)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
