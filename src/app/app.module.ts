@@ -16,6 +16,8 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -26,10 +28,12 @@ import { ScheduleGenerationComponent } from "./components/schedule-generation/sc
 import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
+import { PatternElementComponent } from "./components/pattern-element/pattern-element.component";
+import { WeightComponent } from "./components/weight/weight.component";
+import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
-import { WeightComponent } from "./components/weight/weight.component";
-import { BooleanConstraintComponent } from './components/boolean-constraint/boolean-constraint.component';
+import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
 
 @NgModule({
   declarations: [
@@ -40,10 +44,12 @@ import { BooleanConstraintComponent } from './components/boolean-constraint/bool
     ScheduleGenerationComponent,
     NurseComponent,
     ErrorMessageDialogComponent,
+    PatternElementComponent,
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
     BooleanConstraintComponent,
+    UnwantedPatternsComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +70,8 @@ import { BooleanConstraintComponent } from './components/boolean-constraint/bool
     MatDialogModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
+    MatTooltipModule,
+    MatExpansionModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
