@@ -4,9 +4,13 @@ import error_msg
 
 class NoSolutionFoundException(ProjectBaseException):
     def __init__(self):
-        super().__init__(error_msg.no_solution_found)
+        super(NoSolutionFoundException, self).__init__(
+            error_msg.no_solution_found
+        )
 
 
 class NoVersionFoundException(ProjectBaseException):
     def __init__(self):
-        super().__init__(error_msg.version_not_found)
+        super(NoVersionFoundException, self).__init__(
+            error_msg.version_not_found
+        )

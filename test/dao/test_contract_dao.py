@@ -46,12 +46,16 @@ class TestContractDao(TestCase):
 
     def test_update_contract_if_contract_exist_contract_get_updated(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
-        self.dao.update(full_time_valid_contract_with_general_update_to_invalid.copy())
+        self.dao.update(
+            full_time_valid_contract_with_general_update_to_invalid.copy()
+        )
         result = self.dao.find_by_name(
             full_time_valid_contract_with_general[contract_name]
         )
         self.assertEqual(
-            full_time_valid_contract_with_general_update_to_invalid[contract_constraints],
+            full_time_valid_contract_with_general_update_to_invalid[
+                contract_constraints
+            ],
             result[contract_constraints],
         )
         self.assertEqual(

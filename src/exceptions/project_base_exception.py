@@ -1,3 +1,3 @@
 class ProjectBaseException(Exception):
     def __init__(self, msg):
-        super().__init__(msg)
+        super(ProjectBaseException, self).__init__(msg)

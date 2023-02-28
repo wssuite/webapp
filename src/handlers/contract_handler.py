@@ -7,14 +7,18 @@ from src.dao.shift_dao import ShiftDao
 from src.dao.shift_type_dao import ShiftTypeDao
 from src.dao.shift_group_dao import ShiftGroupDao
 from src.exceptions.shift_exceptions import ShiftNotExist
-from constants import (nurse_contracts,
-                       nurse_group_contracts_list,
-                       nurse_name, contract_name,
-                       nurse_username)
+from constants import (
+    nurse_contracts,
+    nurse_group_contracts_list,
+    nurse_name,
+    contract_name,
+    nurse_username,
+)
 from src.utils.contracts_validator import ContractsValidator
 from src.exceptions.contract_exceptions import (
     CannotDeleteContract,
-    ContractNotExist)
+    ContractNotExist,
+)
 
 
 class ContractHandler:
@@ -46,9 +50,11 @@ class ContractHandler:
             shift_dict = self.shift_dao.find_by_name(shift)
             shift_type = self.shift_type_dao.find_by_name(shift)
             shift_group = self.shift_group_dao.find_by_name(shift)
-            exist = (shift_dict is not None
-                     or shift_group is not None
-                     or shift_type is not None)
+            exist = (
+                shift_dict is not None
+                or shift_group is not None
+                or shift_type is not None
+            )
             if exist is False:
                 not_exist_shifts.append(shift)
 
@@ -72,16 +78,15 @@ class ContractHandler:
     def update(self, token, json):
         contract = self.insertion_verification(token, json)
         nurses_with_contract = self.nurse_dao.get_with_contracts(
-            [contract.name])
-        nurse_groups = self.nurse_group_dao.get_with_contracts(
             [contract.name]
         )
-        self.contract_validation_with_nurses(nurses_with_contract,
-                                             nurse_contracts,
-                                             contract)
-        self.contract_validation_with_nurse_groups(nurse_groups,
-                                                   nurse_group_contracts_list,
-                                                   contract)
+        nurse_groups = self.nurse_group_dao.get_with_contracts([contract.name])
+        self.contract_validation_with_nurses(
+            nurses_with_contract, nurse_contracts, contract
+        )
+        self.contract_validation_with_nurse_groups(
+            nurse_groups, nurse_group_contracts_list, contract
+        )
         self.contract_dao.update(contract.db_json())
 
     def contract_validation_with_nurses(self, array, tag, contract):
@@ -97,13 +102,15 @@ class ContractHandler:
             to reduce time complexity
             """
             verification_contract = Contract()
-            verification_contract.name = (
-                f"{nurse[nurse_name]} other contracts")
+            verification_contract.name = f"{nurse[nurse_name]} other contracts"
             for other_contract_name in other_contracts_names:
                 contract_dict = self.contract_dao.find_by_name(
-                    other_contract_name)
+                    other_contract_name
+                )
                 other_contract = Contract().from_json(contract_dict)
-                verification_contract.merge_contract_constraints(other_contract)
+                verification_contract.merge_contract_constraints(
+                    other_contract
+                )
             """
             Get the groups in which the nurse takes part and the contracts implied
             """
@@ -112,11 +119,16 @@ class ContractHandler:
             )
             if nurse_groups is not None:
                 for group in nurse_groups:
-                    for other_contract_name in group[nurse_group_contracts_list]:
+                    for other_contract_name in group[
+                        nurse_group_contracts_list
+                    ]:
                         contract_dict = self.contract_dao.find_by_name(
-                            other_contract_name)
+                            other_contract_name
+                        )
                         other_contract = Contract().from_json(contract_dict)
-                        verification_contract.merge_contract_constraints(other_contract)
+                        verification_contract.merge_contract_constraints(
+                            other_contract
+                        )
 
             validator = ContractsValidator()
             validator.add_contract_constraints(verification_contract)
@@ -135,13 +147,15 @@ class ContractHandler:
             to reduce time complexity
             """
             verification_contract = Contract()
-            verification_contract.name = (
-                f"{nurse[nurse_name]} other contracts")
+            verification_contract.name = f"{nurse[nurse_name]} other contracts"
             for other_contract_name in other_contracts_names:
                 contract_dict = self.contract_dao.find_by_name(
-                    other_contract_name)
+                    other_contract_name
+                )
                 other_contract = Contract().from_json(contract_dict)
-                verification_contract.merge_contract_constraints(other_contract)
+                verification_contract.merge_contract_constraints(
+                    other_contract
+                )
 
             validator = ContractsValidator()
             validator.add_contract_constraints(verification_contract)
@@ -155,11 +169,8 @@ class ContractHandler:
     def delete(self, token, name):
         verify_token(token, self.user_dao)
         usage = []
-        usage.extend(self.nurse_dao.get_with_contracts(
-            [name]))
-        usage.extend(self.nurse_group_dao.get_with_contracts(
-            [name]
-        ))
+        usage.extend(self.nurse_dao.get_with_contracts([name]))
+        usage.extend(self.nurse_group_dao.get_with_contracts([name]))
         if len(usage) > 0:
             raise CannotDeleteContract(name)
         self.contract_dao.remove(name)
@@ -177,5 +188,4 @@ class ContractHandler:
 
     def get_all_names(self, token):
         verify_token(token, self.user_dao)
-        return [contract[contract_name]
-                for contract in self.get_all(token)]
+        return [contract[contract_name] for contract in self.get_all(token)]
