@@ -25,6 +25,7 @@ export class ContractCreationComponent {
   minMaxConsecutiveShiftTypeId: string;
   identicalWeekendId: string;
   completeWeekendId: string;
+  skillFormCtrls: FormControl[]; 
 
   constructor() {
     this.contractChange = new EventEmitter();
@@ -40,6 +41,7 @@ export class ContractCreationComponent {
     this.minMaxConsecutiveShiftTypeId = MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID;
     this.identicalWeekendId = IDENTICAL_WEEKEND_ID;
     this.completeWeekendId = COMPLETE_WEEKEND_ID;
+    this.skillFormCtrls = [];
   }
   
   addConstraint() {
@@ -68,7 +70,24 @@ export class ContractCreationComponent {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameFormCtrl.hasError('required') ||
+    let skillError = false;
+    for(const form of this.skillFormCtrls){
+      if(form.hasError('required')) {
+        skillError = true;
+      }
+    }
+    this.errorState.emit(skillError || this.nameFormCtrl.hasError('required') ||
                 this.constraintsErrorState.includes(true));
+  }
+
+  addSkill() {
+    this.contract.skills.push("");
+    this.emitContract();
+    this.skillFormCtrls.push(new FormControl(null,Validators.required));
+  }
+
+  deleteSkill(i:number){
+    this.contract.skills.splice(i,1);
+    this.emitContract();
   }
 }

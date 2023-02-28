@@ -1,16 +1,34 @@
 <div class="contract-container" (mouseleave)="emitContract()">
-    <section class="name-section">
+    <div class="name-section">
         <label>Contract name: </label>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="name-input">
             <mat-label>Enter a name</mat-label>
             <input matInput [(ngModel)]="contract.name"
             [formControl]="nameFormCtrl"/>
         </mat-form-field>
-    </section>
-    <section class="constraints-section">
+    </div>
+    <div class="skills-section">
+        <div class="skills-section-header">
+            <H1> skills:</H1>
+            <button mat-mini-fab color="primary" (click)="addSkill()" class="add-skill-button" matTooltip="Add skill">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <br>
+        <div *ngFor="let skill of contract.skills; let i=index">
+            <mat-form-field appearance="fill" class="skill-input" >
+                <mat-label>Enter a skill</mat-label>
+                <input matInput [(ngModel)]="contract.skills[i]" [formControl]="skillFormCtrls[i]"/>
+            </mat-form-field>
+            <button mat-raised-button (click)="deleteSkill(i)" class="delete-skill-button" color="accent">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="constraints-section">
         <h1>Constraints</h1>
         <label>choose a constraint: </label>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="constraint-select">
             <mat-label>Choose a constraint: </mat-label>
             <mat-select [(value)]="chosenConstraint">
                 <mat-option *ngFor="let constraint of possibleConstraints" [value]="constraint">
@@ -42,5 +60,5 @@
             </div>
 
         </div>
-    </section>
+    </div>
 </div>
