@@ -1,10 +1,18 @@
 import { Component } from '@angular/core';
-import { UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID, ALTERNATIVE_SHIFT_ID,ALTERNATIVE_SHIFT_DISPLAY_NAME, BASE_VALUE, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID } from 'src/app/constants/constraints';
+import { 
+    IDENTICAL_WEEKEND_DISPLAY_ID, 
+    IDENTICAL_WEEKEND_DISPLAY_NAME,UNWANTED_PATTERNS_DISPLAY_NAME,
+    UNWANTED_PATTERNS_ID, ALTERNATIVE_SHIFT_ID,
+    ALTERNATIVE_SHIFT_DISPLAY_NAME, BASE_VALUE,
+    FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME,
+    FREE_DAYS_AFTER_SHIFT_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME,
+    MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID } from 'src/app/constants/constraints';
 import { shiftsExample } from 'src/app/constants/shifts';
 import { AlternativeShift } from 'src/app/models/AlternativeShift';
 import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
 import { ShiftConstraint } from 'src/app/models/ShiftConstraint';
 import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
+import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 
 @Component({
   selector: "app-testing",
@@ -22,6 +30,8 @@ export class TestingComponent {
   minMaxConstraintErrorState: boolean;
   unwantedPatternsConstraint: UnwantedPatterns = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
   unwantedPatternErrorState: boolean;
+  booleanConstraint: BooleanConstraint;
+  booleanConstraintErrorState: boolean;
 
   constructor() {
     this.possibleShifts = shiftsExample;
@@ -32,6 +42,15 @@ export class TestingComponent {
     this.minMaxConsecutiveShift = new MinMaxShiftConstraint(MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME);
     this.minMaxConstraintErrorState = true;
     this.unwantedPatternErrorState = true;
+    this.booleanConstraint = new BooleanConstraint(
+      IDENTICAL_WEEKEND_DISPLAY_ID,
+      IDENTICAL_WEEKEND_DISPLAY_NAME
+    );
+    this.booleanConstraintErrorState = true;
+  }
+
+  updateBooleanConstraintErrorState(e: boolean) {
+    this.booleanConstraintErrorState = e;
   }
 
   updateAlternativeConstraintErrorState(e: boolean){

@@ -13,6 +13,11 @@ export const FREE_DAYS_AFTER_SHIFT_ID = "freeDaysAfterhift";
 export const FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME = "free days after shift";
 export const MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID = "minMaxConsecutiveShiftType";
 export const MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME = "minimum maximum consecutive shift type";
+export const IDENTICAL_WEEKEND_DISPLAY_ID = "identicalWeekend";
+export const IDENTICAL_WEEKEND_DISPLAY_NAME = "Identical Weekend";
+export const COMPLETE_WEEKEND_DISPLAY_ID = "completeWeekend";
+export const COMPLETE_WEEKEND_DISPLAY_NAME = "Complete Weekend";
+export const WEIGHT_LABEL = "weight";
 
 export const CONSTRAINTS = [
     UNWANTED_PATTERNS_DISPLAY_NAME, ALTERNATIVE_SHIFT_DISPLAY_NAME,

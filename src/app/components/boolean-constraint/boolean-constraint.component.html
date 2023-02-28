@@ -1,0 +1,8 @@
+<div class="boolean-contraint-container">
+  <label>{{ constraint.displayName }}</label>
+  <app-weight
+    [(weight)]="constraint.weight"
+    (errorState)="updateWeightErrorState($event)"
+    [label]="weightLabel"
+  ></app-weight>
+</div>

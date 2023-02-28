@@ -31,4 +31,16 @@
 </mat-expansion-panel>
 <p>The constraint has {{unwantedPatternsConstraint.patternElements.length}} elements
     The constraint has an error: {{unwantedPatternErrorState}}
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>{{booleanConstraint.displayName}}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-boolean-constraint
+    [(constraint)]="booleanConstraint"
+    (errorState)="updateBooleanConstraintErrorState($event)"
+    ></app-boolean-constraint>
+</mat-expansion-panel>
+<p>
+  The constraint has an error: {{ booleanConstraintErrorState }} and the weight is:
+  {{ booleanConstraint.weight }}
 </p>
