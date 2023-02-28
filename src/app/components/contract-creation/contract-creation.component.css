@@ -1,13 +1,13 @@
 mat-expansion-panel {
     margin-left: 1vw;
-    margin-right: 10vw;
+    margin-right: 1vw;
 }
 
 .contract-container {
     margin-left: 1vw;
 }
 
-.deleteButton {
+.delete-button {
     float:right;
     position: relative;
     margin-right: 6vw;
@@ -18,4 +18,22 @@ mat-expansion-panel {
     flex-direction: row;
     margin-bottom: 5vh;
     align-content: space-between;
+    display:inline-flex;
 }
+
+label {
+    margin-right: 1vw;
+}
+
+mat-form-field {
+    width:30vw;
+}
+
+.add-button {
+    margin-left: 2vw;
+}
+
+mat-expansion-panel {
+    width: 75vw;;
+}
+
