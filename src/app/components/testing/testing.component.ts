@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { 
-    IDENTICAL_WEEKEND_DISPLAY_ID, 
+    IDENTICAL_WEEKEND_ID, 
     IDENTICAL_WEEKEND_DISPLAY_NAME,UNWANTED_PATTERNS_DISPLAY_NAME,
     UNWANTED_PATTERNS_ID, ALTERNATIVE_SHIFT_ID,
     ALTERNATIVE_SHIFT_DISPLAY_NAME, BASE_VALUE,
@@ -45,7 +45,7 @@ export class TestingComponent {
     this.unwantedPatternsConstraint = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
     this.unwantedPatternsErrorState = true;
     this.booleanConstraint = new BooleanConstraint(
-      IDENTICAL_WEEKEND_DISPLAY_ID,
+      IDENTICAL_WEEKEND_ID,
       IDENTICAL_WEEKEND_DISPLAY_NAME
     );
     this.booleanConstraintErrorState = true;

@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
-import {  ALTERNATIVE_SHIFT_ID, CONSTRAINTS, DISPLAY_NAME_CONSTRAINT_MAP, FREE_DAYS_AFTER_SHIFT_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
+import {  ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_ID, CONSTRAINTS, DISPLAY_NAME_CONSTRAINT_MAP, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
 import { shiftsExample } from "src/app/constants/shifts";
 import { Contract } from "src/app/models/Contract";
 
@@ -21,6 +21,8 @@ export class ContractCreationComponent {
   alternativeShiftId: string;
   freeDaysAfterShiftId: string;
   minMaxConsecutiveShiftTypeId: string;
+  identicalWeekendId: string;
+  completeWeekendId: string;
 
   constructor() {
     this.contract = new Contract();
@@ -33,6 +35,8 @@ export class ContractCreationComponent {
     this.alternativeShiftId = ALTERNATIVE_SHIFT_ID;
     this.freeDaysAfterShiftId = FREE_DAYS_AFTER_SHIFT_ID;
     this.minMaxConsecutiveShiftTypeId = MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID;
+    this.identicalWeekendId = IDENTICAL_WEEKEND_ID;
+    this.completeWeekendId = COMPLETE_WEEKEND_ID;
   }
   
   addConstraint() {

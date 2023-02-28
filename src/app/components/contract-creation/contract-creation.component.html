@@ -31,6 +31,8 @@
                         <app-alternative-shift *ngSwitchCase="alternativeShiftId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-alternative-shift>
                         <app-shift-constraint *ngSwitchCase="freeDaysAfterShiftId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-shift-constraint>
                         <app-min-max-consecutive-shift *ngSwitchCase="minMaxConsecutiveShiftTypeId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
+                        <app-boolean-constraint *ngSwitchCase="identicalWeekendId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-boolean-constraint>
+                        <app-boolean-constraint *ngSwitchCase="completeWeekendId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-boolean-constraint>
                         <div *ngSwitchDefault>Empty</div>
                     </ng-container>
                 </mat-expansion-panel>
