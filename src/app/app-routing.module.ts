@@ -4,9 +4,9 @@ import { ConsultScheduleComponent } from "./components/consult-schedule/consult-
 import { ContractCreationComponent } from "./components/contract-creation/contract-creation.component";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
-import { ShiftGroupComponent } from "./components/shift-group/shift-group.component";
-import { ShiftTypeComponent } from "./components/shift-type/shift-type.component";
-import { ShiftComponent } from "./components/shift/shift.component";
+import { ShiftGroupComponent } from "./components/shift-component/shift-group/shift-group.component";
+import { ShiftTypeComponent } from "./components/shift-component/shift-type/shift-type.component";
+import { ShiftComponent } from "./components/shift-component/shift/shift.component";
 import { TestingComponent } from "./components/testing/testing.component";
 import {
   CONSULT_SCHEDULE,

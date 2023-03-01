@@ -34,16 +34,16 @@ import { PatternElementComponent } from './components/pattern-element/pattern-el
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
-import { ShiftComponent } from './components/shift/shift.component';
-import { CreateShiftDialogComponent } from './components/create-shift-dialog/create-shift-dialog.component';
+import { ShiftComponent } from './components/shift-component/shift/shift.component';
+import { CreateShiftDialogComponent } from './components/shift-component/create-shift-dialog/create-shift-dialog.component';
 import { ShiftConstraintComponent } from './components/shift-constraint/shift-constraint.component';
 import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { CreateShiftGroupDialogComponent } from './components/create-shift-group-dialog/create-shift-group-dialog.component';
-import { CreateShiftTypeDialogComponent } from './components/create-shift-type-dialog/create-shift-type-dialog.component';
-import { ShiftTypeComponent } from './components/shift-type/shift-type.component';
-import { ShiftGroupComponent } from './components/shift-group/shift-group.component';
-import { SidenavShiftComponent } from './components/sidenav-shift/sidenav-shift.component'
+import { CreateShiftGroupDialogComponent } from './components/shift-component/create-shift-group-dialog/create-shift-group-dialog.component';
+import { CreateShiftTypeDialogComponent } from './components/shift-component/create-shift-dialog/create-shift-type-dialog/create-shift-type-dialog.component';
+import { ShiftTypeComponent } from './components/shift-component/shift-type/shift-type.component';
+import { ShiftGroupComponent } from './components/shift-component/shift-group/shift-group.component';
+import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
 
 @NgModule({
   declarations: [

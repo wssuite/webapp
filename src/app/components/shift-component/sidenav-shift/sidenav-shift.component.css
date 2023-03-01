@@ -1,0 +1,17 @@
+
+button {
+    height: max-content;
+    width: 400px;
+    height: 200px;
+  }
+
+.side-bar{
+    background-color: lightgray;
+    height: 600px;
+    width: 400px;
+    margin-top: 5vw;
+    margin-left: 5vw;
+    margin-bottom: 2vh;
+    border: solid black;
+    border-radius: 10px;
+}

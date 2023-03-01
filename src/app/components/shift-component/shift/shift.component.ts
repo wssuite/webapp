@@ -19,23 +19,4 @@ export class ShiftComponent {
       });
   }
 
-  openGroupShiftDialog() {
-    this.dialog.open(CreateShiftDialogComponent,  
-      { disableClose: true,  
-        height: '60%',
-        width: '50%', 
-        position: {top:'5%',left: '25%', right: '25%'}
-      });
-  }
-
-  openTypeShiftDialog() {
-    this.dialog.open(CreateShiftDialogComponent,  
-      { disableClose: true,  
-        height: '60%',
-        width: '50%', 
-        position: {top:'5%',left: '25%', right: '25%'}
-      });
-  
-    }
-
 }
