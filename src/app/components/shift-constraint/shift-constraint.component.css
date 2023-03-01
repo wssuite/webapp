@@ -1,0 +1,23 @@
+app-weight{
+    display: flex;
+    position: relative;
+    align-items: flex-end;
+    top:0%;
+    display: inline-flex;
+    float: right;
+    margin-right: 2vw;
+}
+.shift-constraint-container{
+    margin-right: 2vw;
+    margin-left: 2vw;
+}
+
+
+label{
+    margin-right: 1vw;
+    position: center;
+}
+.value-container {
+    margin-top: 1vh;
+    display:inline-flex
+}

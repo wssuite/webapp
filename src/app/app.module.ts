@@ -28,11 +28,14 @@ import { ScheduleGenerationComponent } from "./components/schedule-generation/sc
 import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
-import { PatternElementComponent } from "./components/pattern-element/pattern-element.component";
 import { WeightComponent } from "./components/weight/weight.component";
+import { AlternativeShiftComponent } from "./components/alternative-shift/alternative-shift.component";
+import { PatternElementComponent } from "./components/pattern-element/pattern-element.component";
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
+import { ShiftConstraintComponent } from "./components/shift-constraint/shift-constraint.component";
+import { MinMaxConsecutiveShiftComponent } from "./components/min-max-consecutive-shift/min-max-consecutive-shift.component";
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
 
 @NgModule({
@@ -48,8 +51,11 @@ import { BooleanConstraintComponent } from "./components/boolean-constraint/bool
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
-    BooleanConstraintComponent,
+    AlternativeShiftComponent,
+    ShiftConstraintComponent,
+    MinMaxConsecutiveShiftComponent,
     UnwantedPatternsComponent,
+    BooleanConstraintComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,8 +76,8 @@ import { BooleanConstraintComponent } from "./components/boolean-constraint/bool
     MatDialogModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
-    MatTooltipModule,
     MatExpansionModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
