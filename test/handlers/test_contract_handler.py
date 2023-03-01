@@ -1,4 +1,3 @@
-import constants
 from src.dao.abstract_dao import connect_to_fake_db
 from src.handlers.contract_handler import ContractHandler
 from test_constants import (
@@ -72,7 +71,7 @@ class TestContractHandler(TestCase):
             all_contracts,
         )
 
-    def test_update_contract_if_update_contradicts_nurse_indirect_contract_raise_error(
+    def test_update_contract_if_update_contradicts_nurse_contract_raise_error(
         self,
     ):
         self.insert_missing_deps()

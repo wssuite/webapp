@@ -98,8 +98,8 @@ class ContractHandler:
             We suppose that other contracts don't have conflicts.
             This verification will be done however when inserting/updating
             a nurse or a nurse group.
-            Consequently, we will perform a merge operation on the other contracts
-            to reduce time complexity
+            Consequently, we will perform a merge operation on the other
+            contracts to reduce time complexity
             """
             verification_contract = Contract()
             verification_contract.name = f"{nurse[nurse_name]} other contracts"
@@ -112,7 +112,8 @@ class ContractHandler:
                     other_contract
                 )
             """
-            Get the groups in which the nurse takes part and the contracts implied
+            Get the groups in which the nurse takes part and the
+            contracts implied
             """
             nurse_groups = self.nurse_group_dao.get_with_nurses(
                 [nurse[nurse_username]]
@@ -143,8 +144,8 @@ class ContractHandler:
             We suppose that other contracts don't have conflicts.
             This verification will be done however when inserting/updating
             a nurse or a nurse group.
-            Consequently, we will perform a merge operation on the other contracts
-            to reduce time complexity
+            Consequently, we will perform a merge operation on the other
+            contracts to reduce time complexity
             """
             verification_contract = Contract()
             verification_contract.name = f"{nurse[nurse_name]} other contracts"
@@ -163,7 +164,7 @@ class ContractHandler:
 
     """
     To delete a contract, it must not
-    be used by any nurse nor any nurse groups 
+    be used by any nurse nor any nurse groups
     """
 
     def delete(self, token, name):
