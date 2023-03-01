@@ -23,6 +23,7 @@ from constants import (
     max_constraint_weight,
     min_constraint_value,
     min_max_consecutive_weekends,
+    skill_name,
 )
 
 general_contract_dict = {
@@ -119,3 +120,8 @@ nurse_group2 = {
 }
 
 default_user = {user_password: admin, user_username: admin}
+
+nurse_skill = {skill_name: "Nurse"}
+head_nurse_skill = {skill_name: "HeadNurse"}
+sociologist_skill = {skill_name: "Sociologist"}
+skill_array = ["Nurse", "HeadNurse", "Sociologist", "Nurse"]
