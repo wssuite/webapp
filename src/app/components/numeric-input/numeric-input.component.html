@@ -7,6 +7,7 @@
       [(ngModel)]="value"
       [errorStateMatcher]="matcher"
       [formControl]="inputCtrl"
+      placeholder="Ex: 2.0"
     />
     <mat-error
       *ngIf="
@@ -15,7 +16,7 @@
         inputCtrl.hasError('min')
       "
     >
-      Please enter a valid postive number!
+    Please enter a valid postive number up to two digits after the floatting point!
     </mat-error>
   </mat-form-field>
 </div>

@@ -15,8 +15,10 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatCheckboxModule } from "@angular/material/checkbox";
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -27,11 +29,16 @@ import { ScheduleGenerationComponent } from "./components/schedule-generation/sc
 import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
+import { WeightComponent } from './components/weight/weight.component';
+import { AlternativeShiftComponent } from './components/alternative-shift/alternative-shift.component';
+import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
+import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
-import { WeightComponent } from "./components/weight/weight.component";
 import { ShiftComponent } from './components/shift/shift.component';
 import { CreateShiftDialogComponent } from './components/create-shift-dialog/create-shift-dialog.component';
+import { ShiftConstraintComponent } from './components/shift-constraint/shift-constraint.component';
+import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
 
 @NgModule({
   declarations: [
@@ -42,11 +49,16 @@ import { CreateShiftDialogComponent } from './components/create-shift-dialog/cre
     ScheduleGenerationComponent,
     NurseComponent,
     ErrorMessageDialogComponent,
+    PatternElementComponent,
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
     ShiftComponent,
     CreateShiftDialogComponent,
+    AlternativeShiftComponent,
+    ShiftConstraintComponent,
+    MinMaxConsecutiveShiftComponent,
+    UnwantedPatternsComponent
   ],
   imports: [
     BrowserModule,
@@ -67,8 +79,9 @@ import { CreateShiftDialogComponent } from './components/create-shift-dialog/cre
     MatDialogModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
-    NgxMaterialTimepickerModule
-
+    NgxMaterialTimepickerModule,
+    MatExpansionModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

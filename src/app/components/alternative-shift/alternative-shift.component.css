@@ -1,0 +1,14 @@
+app-weight{
+    display: flex;
+    position: relative;
+    align-items: flex-end;
+    top:0%;
+    display: inline-flex;
+    float: right;
+    margin-right: 2vw;
+}
+
+.alternative-shift-container {
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
