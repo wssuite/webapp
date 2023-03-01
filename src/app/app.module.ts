@@ -29,6 +29,7 @@ import { ErrorMessageDialogComponent } from "./components/error-message-dialog/e
 import { TestingComponent } from "./components/testing/testing.component";
 import { WeightComponent } from "./components/weight/weight.component";
 import { LoginComponent } from './components/login/login.component';
+import { AccountCreationComponent } from './components/account-creation/account-creation.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { LoginComponent } from './components/login/login.component';
     TestingComponent,
     WeightComponent,
     LoginComponent,
+    AccountCreationComponent,
   ],
   imports: [
     BrowserModule,
