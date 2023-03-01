@@ -3,11 +3,11 @@
         <app-contract-creation [(contract)]="data.contract" [possibleShifts]="possibleShifts" (errorState)="updateContractErrorState($event)"></app-contract-creation>
     </div>
     <div mat-dialog-action class="buttons-container">
+        <button mat-raised-button color="warn" [mat-dialog-close]="true">
+            Cancel
+        </button>
         <button [disabled]="contractErrorState" mat-raised-button color="primary" (click)="submit()">
             Submit
-        </button>
-        <button mat-raised-button color="accent" [mat-dialog-close]="true">
-            Cancel
         </button>
     </div>
 </div>

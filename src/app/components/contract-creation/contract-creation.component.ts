@@ -1,7 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
-import { ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_ID, CONSTRAINTS, DISPLAY_NAME_CONSTRAINT_MAP, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
+import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_ID, CONSTRAINTS, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
+import { AlternativeShift } from "src/app/models/AlternativeShift";
+import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 import { Contract } from "src/app/models/Contract";
+import { MinMaxShiftConstraint } from "src/app/models/MinMaxShiftConstraint";
+import { ShiftConstraint } from "src/app/models/ShiftConstraint";
+import { UnwantedPatterns } from "src/app/models/UnwantedPatterns";
 
 @Component({
   selector: "app-contract-creation",
@@ -50,9 +55,33 @@ export class ContractCreationComponent implements OnInit {
   }
   
   addConstraint() {
-    const constraint = DISPLAY_NAME_CONSTRAINT_MAP.get(this.chosenConstraint);
-    if(constraint === undefined || constraint === null) {
-      return;
+    let constraint;
+    switch(this.chosenConstraint) {
+      case UNWANTED_PATTERNS_DISPLAY_NAME:
+        constraint = new UnwantedPatterns(UNWANTED_PATTERNS_ID, UNWANTED_PATTERNS_DISPLAY_NAME); 
+        break;
+
+      case ALTERNATIVE_SHIFT_DISPLAY_NAME:
+        constraint = new AlternativeShift(ALTERNATIVE_SHIFT_ID, ALTERNATIVE_SHIFT_DISPLAY_NAME);
+        break;
+
+      case FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME:
+        constraint = new ShiftConstraint(FREE_DAYS_AFTER_SHIFT_ID, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME);
+        break;
+
+      case MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME:
+        constraint = new MinMaxShiftConstraint(MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME);
+        break;
+
+      case IDENTICAL_WEEKEND_DISPLAY_NAME:
+        constraint = new BooleanConstraint(IDENTICAL_WEEKEND_ID, IDENTICAL_WEEKEND_DISPLAY_NAME);
+        break;
+
+      case COMPLETE_WEEKEND_DISPLAY_NAME:
+        constraint = new BooleanConstraint(COMPLETE_WEEKEND_ID, COMPLETE_WEEKEND_DISPLAY_NAME);
+        break;
+
+      default: break;
     }
     this.contract.constraints.push(constraint);
     this.constraintsErrorState.push(true);
