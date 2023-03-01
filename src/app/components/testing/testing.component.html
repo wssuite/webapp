@@ -1,7 +1,15 @@
-<app-boolean-constraint
-  [constraint]="identicalWeekendConstraint"
-  (errorState)="updateConstraintErrorState($event)"
-></app-boolean-constraint>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{
+      identicalWeekendConstraint.displayName
+    }}</mat-panel-title>
+  </mat-expansion-panel-header>
+  <app-boolean-constraint
+    [constraint]="identicalWeekendConstraint"
+    (errorState)="updateConstraintErrorState($event)"
+  ></app-boolean-constraint
+></mat-expansion-panel>
+
 <p>
   The constraint has an error: {{ constraintErrorState }} and the weight is:
   {{ identicalWeekendConstraint.weight }}
