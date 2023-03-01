@@ -19,7 +19,6 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
-
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
@@ -39,6 +38,12 @@ import { ShiftComponent } from './components/shift/shift.component';
 import { CreateShiftDialogComponent } from './components/create-shift-dialog/create-shift-dialog.component';
 import { ShiftConstraintComponent } from './components/shift-constraint/shift-constraint.component';
 import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { CreateShiftGroupDialogComponent } from './components/create-shift-group-dialog/create-shift-group-dialog.component';
+import { CreateShiftTypeDialogComponent } from './components/create-shift-type-dialog/create-shift-type-dialog.component';
+import { ShiftTypeComponent } from './components/shift-type/shift-type.component';
+import { ShiftGroupComponent } from './components/shift-group/shift-group.component';
+import { SidenavShiftComponent } from './components/sidenav-shift/sidenav-shift.component'
 
 @NgModule({
   declarations: [
@@ -58,7 +63,12 @@ import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutiv
     AlternativeShiftComponent,
     ShiftConstraintComponent,
     MinMaxConsecutiveShiftComponent,
-    UnwantedPatternsComponent
+    UnwantedPatternsComponent,
+    CreateShiftGroupDialogComponent,
+    CreateShiftTypeDialogComponent,
+    ShiftTypeComponent,
+    ShiftGroupComponent,
+    SidenavShiftComponent
   ],
   imports: [
     BrowserModule,
@@ -82,6 +92,7 @@ import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutiv
     NgxMaterialTimepickerModule,
     MatExpansionModule,
     MatTooltipModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,1 +1,15 @@
-<button mat-raised-button (click)="openDialog()">Create new shift</button>
+
+<mat-sidenav-container>
+<mat-sidenav>
+    <mat-list>
+    <mat-list-item><a routerLink="/shift">Shift</a></mat-list-item>
+    <mat-list-item><a routerLink="/shift-type">Shift Type</a></mat-list-item>
+        <mat-list-item><a routerLink="/shift-groupe">Shift Group</a></mat-list-item>
+    </mat-list>
+</mat-sidenav>
+</mat-sidenav-container>
+<button mat-raised-button (click)="openShiftDialog()">Create new shift</button>
+<button mat-raised-button (click)="openGroupShiftDialog()">Create new shift group </button>
+<button mat-raised-button (click)="openGroupShiftDialog()">Create new shift type </button>
+
+

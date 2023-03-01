@@ -22,7 +22,7 @@ export class CreateShiftDialogComponent {
     
 }
 
-submit() {
+add() {
   //valide form
   //call api service to push the shift
   this.close();

@@ -10,7 +10,7 @@ import { CreateShiftDialogComponent } from '../create-shift-dialog/create-shift-
 export class ShiftComponent {
   constructor(public dialog: MatDialog) {}
 
-  openDialog() {
+  openShiftDialog() {
     this.dialog.open(CreateShiftDialogComponent,  
       { disableClose: true,  
         height: '60%',
@@ -19,5 +19,23 @@ export class ShiftComponent {
       });
   }
 
+  openGroupShiftDialog() {
+    this.dialog.open(CreateShiftDialogComponent,  
+      { disableClose: true,  
+        height: '60%',
+        width: '50%', 
+        position: {top:'5%',left: '25%', right: '25%'}
+      });
+  }
+
+  openTypeShiftDialog() {
+    this.dialog.open(CreateShiftDialogComponent,  
+      { disableClose: true,  
+        height: '60%',
+        width: '50%', 
+        position: {top:'5%',left: '25%', right: '25%'}
+      });
+  
+    }
 
 }
