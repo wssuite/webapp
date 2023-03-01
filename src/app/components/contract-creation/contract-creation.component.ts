@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
-import {  ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_ID, CONSTRAINTS, DISPLAY_NAME_CONSTRAINT_MAP, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
+import { ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_ID, CONSTRAINTS, DISPLAY_NAME_CONSTRAINT_MAP, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
 import { Contract } from "src/app/models/Contract";
 
 @Component({
@@ -8,13 +8,13 @@ import { Contract } from "src/app/models/Contract";
   templateUrl: "./contract-creation.component.html",
   styleUrls: ["./contract-creation.component.css"],
 })
-export class ContractCreationComponent {
+export class ContractCreationComponent implements OnInit {
 
   @Input() contract!: Contract;
   @Output() contractChange: EventEmitter<Contract>;
   @Output() errorState: EventEmitter<boolean>;
-
   @Input() possibleShifts!: string[];
+
   possibleConstraints: string[];
   chosenConstraint: string;
   constraintsErrorState: boolean[];
@@ -24,8 +24,8 @@ export class ContractCreationComponent {
   freeDaysAfterShiftId: string;
   minMaxConsecutiveShiftTypeId: string;
   identicalWeekendId: string;
-  completeWeekendId: string;
-  skillFormCtrls: FormControl[]; 
+  completeWeekendId: string; 
+  skillsFormCtrls: FormControl[];
 
   constructor() {
     this.contractChange = new EventEmitter();
@@ -41,7 +41,12 @@ export class ContractCreationComponent {
     this.minMaxConsecutiveShiftTypeId = MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID;
     this.identicalWeekendId = IDENTICAL_WEEKEND_ID;
     this.completeWeekendId = COMPLETE_WEEKEND_ID;
-    this.skillFormCtrls = [];
+    this.skillsFormCtrls = [];
+  }
+  ngOnInit(): void {
+    for(let i=0; i< this.contract.skills.length; i++) {
+      this.skillsFormCtrls.push(new FormControl(null, Validators.required));
+    }
   }
   
   addConstraint() {
@@ -71,23 +76,29 @@ export class ContractCreationComponent {
 
   emitErrorState() {
     let skillError = false;
-    for(const form of this.skillFormCtrls){
+    for(const form of this.skillsFormCtrls){
       if(form.hasError('required')) {
         skillError = true;
+        break;
       }
     }
-    this.errorState.emit(skillError || this.nameFormCtrl.hasError('required') ||
+    this.errorState.emit(skillError||this.nameFormCtrl.hasError('required') ||
                 this.constraintsErrorState.includes(true));
   }
 
   addSkill() {
     this.contract.skills.push("");
+    this.skillsFormCtrls.push(new FormControl(null, Validators.required));
     this.emitContract();
-    this.skillFormCtrls.push(new FormControl(null,Validators.required));
   }
 
   deleteSkill(i:number){
     this.contract.skills.splice(i,1);
+    this.skillsFormCtrls.splice(i,1);
     this.emitContract();
+  }
+
+  trackByFn(index: number) {
+    return index;  
   }
 }

@@ -15,10 +15,10 @@
             </button>
         </div>
         <br>
-        <div *ngFor="let skill of contract.skills; let i=index">
+        <div *ngFor="let skill of contract.skills; let i=index; trackBy: trackByFn">
             <mat-form-field appearance="fill" class="skill-input" >
                 <mat-label>Enter a skill</mat-label>
-                <input matInput [(ngModel)]="contract.skills[i]" [formControl]="skillFormCtrls[i]"/>
+                <input matInput [(ngModel)]="contract.skills[i]" [formControl]="skillsFormCtrls[i]"/>
             </mat-form-field>
             <button mat-raised-button (click)="deleteSkill(i)" class="delete-skill-button" color="accent">
                 <mat-icon>delete</mat-icon>
