@@ -11,8 +11,13 @@ export class ShiftComponent {
   constructor(public dialog: MatDialog) {}
 
   openDialog() {
-    this.dialog.open(CreateShiftDialogComponent);
+    this.dialog.open(CreateShiftDialogComponent,  
+      { disableClose: true,  
+        height: '60%',
+        width: '50%', 
+        position: {top:'5%',left: '25%', right: '25%'}
+      });
   }
 
+
 }
- 

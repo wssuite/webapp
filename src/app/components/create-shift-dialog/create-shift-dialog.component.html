@@ -1,12 +1,10 @@
-<h1 mat-dialog-title>New Shift</h1>
-<mat-dialog-content>
-    <div class="NameShiftContainer">
-    <label>Name: </label>
-    <mat-form-field
-      [formGroup]="inputControlForm"
-    >
+<div class="title" mat-dialog-title>New Shift</div>
+<div class="content"  mat-dialog-content>
+    <div class="nameShiftContainer">
+    <label>Name </label>
+    <mat-form-field class = "nameForm" [formGroup]="inputControlForm">
       <mat-label>Enter shift name</mat-label>
-      <input
+      <input id="input"
         matInput
         placeholder="name"
         formControlName="name"
@@ -14,35 +12,29 @@
       />
     </mat-form-field>
     </div>
-    <!--div class="TypeShiftContainer">
-        <label>Shift type: </label>
-        <div *ngIf="availableTypes.length > 0">
-          <mat-form-field appearance="fill">
-            <mat-label>Choose type</mat-label>
-            <mat-select [(value)]="shiftType">
-              <mat-option *ngFor="let type of availableTypes" [value]="type">
-                {{ type }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-    </div-->
-    <div class="ngx-timepicker-field-example">
-        <mat-label>Start Time:</mat-label>
+    <div class = "timepicker">
+    <label>Duration</label>
+    <div class="timepickerStart">
+        <div class="label" mat-label>Start Time</div>
         <ngx-timepicker-field 
             [defaultTime]="'00:00 am'"
             [(ngModel)]="startTime"
             ></ngx-timepicker-field>
     </div>
-    <div class="ngx-timepicker-field-example">
-        <mat-label>End Time:</mat-label>
-        <ngx-timepicker-field 
+    <div class="timepickerEnd">
+        <div class="label" mat-label>End Time</div>
+        <div class="time"><ngx-timepicker-field class="timer"
         [defaultTime]="'00:00 am'"
         [(ngModel)]="endTime"
-        ></ngx-timepicker-field>
+        ></ngx-timepicker-field></div>
     </div>
-</mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button mat-dialog-close>Add</button>
-</mat-dialog-actions>
+    </div>
+</div>
+<div mat-dialog-action class="buttons-container">
+    <button  mat-raised-button color="primary" (click)="submit()">
+        Add
+    </button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">
+        Cancel
+    </button>
+

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-shift-dialog',
@@ -14,10 +15,23 @@ export class CreateShiftDialogComponent {
     name: new FormControl(null, Validators.required),
   });
 
-  constructor() {
+  constructor(public dialogRef: MatDialogRef<CreateShiftDialogComponent >,) {
     this.shiftName = "";
     this.startTime = "";
     this.endTime = "";
+    
 }
+
+submit() {
+  //valide form
+  //call api service to push the shift
+  this.close();
+}
+
+close(){
+  this.dialogRef.close();
+}
+
+
 
 }
