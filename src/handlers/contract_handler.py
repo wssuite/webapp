@@ -6,6 +6,7 @@ from src.dao.nurse_dao import NurseDao
 from src.dao.shift_dao import ShiftDao
 from src.dao.shift_type_dao import ShiftTypeDao
 from src.dao.shift_group_dao import ShiftGroupDao
+from src.dao.skill_dao import SkillDao
 from src.exceptions.shift_exceptions import ShiftNotExist
 from constants import (
     nurse_contracts,
@@ -30,6 +31,7 @@ class ContractHandler:
         self.shift_dao = ShiftDao(mongo)
         self.shift_type_dao = ShiftTypeDao(mongo)
         self.shift_group_dao = ShiftGroupDao(mongo)
+        self.skill_dao = SkillDao(mongo)
 
     """
     To add a contract we will perform a check on the token
@@ -43,6 +45,7 @@ class ContractHandler:
     def add(self, token, json):
         contract = self.insertion_verification(token, json)
         self.contract_dao.insert_one(contract.db_json())
+        self.skill_dao.insert_many(contract.skills)
 
     def verify_contract_shifts_exist(self, shifts):
         not_exist_shifts = []
@@ -88,6 +91,7 @@ class ContractHandler:
             nurse_groups, nurse_group_contracts_list, contract
         )
         self.contract_dao.update(contract.db_json())
+        self.skill_dao.insert_many(contract.skills)
 
     def contract_validation_with_nurses(self, array, tag, contract):
         for nurse in array:
