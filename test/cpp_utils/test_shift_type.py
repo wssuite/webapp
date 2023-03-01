@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.cpp_utils.shift_type import ShiftType
+from src.models.shift_type import ShiftType
 from constants import shift_type_name, shift_type_shifts_lists
 
 

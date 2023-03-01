@@ -3,7 +3,7 @@ from werkzeug.exceptions import BadRequestKeyError
 
 import error_msg
 from src.utils.file_system_manager import FileSystemManager
-from src.cpp_utils.schedule import Schedule
+from src.models.schedule import Schedule
 from flask import request
 from src.exceptions.project_base_exception import ProjectBaseException
 

@@ -1,4 +1,4 @@
-from src.cpp_utils.contract import Contract
+from src.models.contract import Contract
 from src.exceptions.contract_exceptions import ContractContradictionException
 
 """

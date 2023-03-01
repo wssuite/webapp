@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.cpp_utils.shift_group import ShiftGroup
+from src.models.shift_group import ShiftGroup
 from constants import shift_group_name, shift_group_shifts_list
 
 

@@ -8,7 +8,7 @@ from constants import (
     mongo_all_operation,
 )
 from src.exceptions.shift_exceptions import ShiftTypeAlreadyExistException
-from src.cpp_utils.shift_type import ShiftType
+from src.models.shift_type import ShiftType
 
 
 def get_shift_types_from_cursor(cursor):

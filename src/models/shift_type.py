@@ -1,5 +1,5 @@
-from src.cpp_utils.jsonify import Jsonify
-from src.utils.db_document import DBDocument
+from src.models.jsonify import Jsonify
+from models.db_document import DBDocument
 from constants import shift_type_name, shift_type_shifts_lists
 from pykson import StringField, ListField
 

@@ -1,4 +1,4 @@
-from src.cpp_utils.assignment import Assignment
+from src.models.assignment import Assignment
 import re
 from constants import (
     start_date,

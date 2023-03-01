@@ -8,7 +8,7 @@ from constants import (
     mongo_all_operation,
 )
 from src.exceptions.shift_exceptions import ShiftGroupAlreadyExistException
-from src.cpp_utils.shift_group import ShiftGroup
+from src.models.shift_group import ShiftGroup
 
 
 def get_shift_groups_from_cursor(cursor):

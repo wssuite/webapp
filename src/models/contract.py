@@ -1,7 +1,7 @@
 from typing import Type, List
 
-from src.cpp_utils.jsonify import Jsonify
-from src.cpp_utils.constraints import (
+from src.models.jsonify import Jsonify
+from src.models.constraints import (
     ContractConstraint,
     ContractIntegerConstraint,
     ContractBooleanConstraint,
@@ -29,7 +29,7 @@ from constants import (
     contract_shifts,
 )
 
-from src.utils.db_document import DBDocument
+from models.db_document import DBDocument
 
 
 class ContractConstraintCreator:

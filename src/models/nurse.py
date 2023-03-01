@@ -1,8 +1,8 @@
-from src.cpp_utils.jsonify import Jsonify
+from src.models.jsonify import Jsonify
 from pykson import StringField, ListField
 from constants import nurse_name, nurse_id, nurse_contracts, nurse_username
 
-from src.utils.db_document import DBDocument
+from models.db_document import DBDocument
 
 
 class Nurse(Jsonify, DBDocument):
