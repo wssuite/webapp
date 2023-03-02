@@ -37,6 +37,7 @@ import { TestingComponent } from "./components/testing/testing.component";
 import { ShiftConstraintComponent } from "./components/shift-constraint/shift-constraint.component";
 import { MinMaxConsecutiveShiftComponent } from "./components/min-max-consecutive-shift/min-max-consecutive-shift.component";
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
+import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { BooleanConstraintComponent } from "./components/boolean-constraint/bool
     MinMaxConsecutiveShiftComponent,
     UnwantedPatternsComponent,
     BooleanConstraintComponent,
+    MinMaxConstraintComponent,
   ],
   imports: [
     BrowserModule,
