@@ -14,7 +14,7 @@ export class ShiftGroupComponent {
   openShiftGroupDialog() {
     this.dialog.open(CreateShiftGroupDialogComponent,  
       { disableClose: true,  
-        height: '60%',
+        height: '80%',
         width: '50%', 
         position: {top:'5%',left: '25%', right: '25%'}
       });

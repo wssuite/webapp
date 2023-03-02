@@ -5,7 +5,7 @@
     text-align: left;
     font-size: 50px;
     height: 10%;
-    padding: 1%;
+    padding: 2%;
 }
 
 
@@ -33,4 +33,12 @@
 button {
     margin-right: 1vw;
     float: right;
+}
+
+.shiftSection{
+    padding: 2%;
+}
+
+.shiftTypeSection{
+    padding: 2%;
 }
