@@ -15,7 +15,7 @@ export class ShiftTypeComponent {
       { disableClose: true,  
         height: '60%',
         width: '50%', 
-        position: {top:'5%',left: '25%', right: '25%'}
+        position: {top:'5vh',left: '25%', right: '25%'}
       });
   }
 

@@ -44,6 +44,7 @@ import { CreateShiftTypeDialogComponent } from './components/shift-component/cre
 import { ShiftTypeComponent } from './components/shift-component/shift-type/shift-type.component';
 import { ShiftGroupComponent } from './components/shift-component/shift-group/shift-group.component';
 import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { SidenavShiftComponent } from './components/shift-component/sidenav-shif
     NgxMaterialTimepickerModule,
     MatExpansionModule,
     MatTooltipModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent],
