@@ -78,6 +78,18 @@ full_time_valid_contract_with_general_update_to_invalid = {
     ],
 }
 
+full_time_contract_with_day_shift_type = {
+    contract_name: "FullTime_Valid",
+    contract_skills: [],
+    contract_constraints: [
+        {
+            constraint_name: alternative_shift,
+            shift_constraint: "Day",
+            constraint_weight: "1.0",
+        }
+    ],
+}
+
 min_cons_contract = {
     contract_name: "minConsContract",
     contract_skills: [],

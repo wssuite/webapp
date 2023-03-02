@@ -9,6 +9,10 @@ from src.exceptions.shift_exceptions import (
     CannotDeleteShiftType,
     ShiftNotExist,
 )
+from src.handlers.shift_handler import (
+    add_shift_in_work_shift_group,
+    remove_shift_from_work_shift_group,
+)
 
 
 class ShiftTypeHandler:
@@ -33,6 +37,7 @@ class ShiftTypeHandler:
         shift_type = ShiftType().from_json(json)
         self.verify_shifts_exist(shift_type.shifts)
         self.shift_type_dao.insert_one_if_not_exist(shift_type.db_json())
+        add_shift_in_work_shift_group(shift_type.name, self.shift_group_dao)
 
     def update(self, token, json):
         verify_token(token, self.user_dao)
@@ -45,9 +50,10 @@ class ShiftTypeHandler:
         usage = []
         usage.extend(self.contract_dao.get_including_shifts([name]))
         usage.extend(self.shift_group_dao.get_including_shifts([name]))
-        if len(usage) > 0:
+        if len(usage) > 1:
             raise CannotDeleteShiftType(name)
         self.shift_type_dao.remove(name)
+        remove_shift_from_work_shift_group(name, self.shift_group_dao)
 
     def get_by_name(self, token, name):
         verify_token(token, self.user_dao)

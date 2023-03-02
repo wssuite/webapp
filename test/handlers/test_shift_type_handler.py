@@ -6,6 +6,7 @@ from test_constants import (
     test_work_shift_group,
     late_shift,
     early_shift,
+    full_time_contract_with_day_shift_type,
 )
 from src.dao.abstract_dao import connect_to_fake_db
 from unittest import TestCase
@@ -15,10 +16,12 @@ from src.exceptions.shift_exceptions import (
     CannotDeleteShiftType,
     ShiftNotExist,
 )
+from src.models.contract import Contract
 
 
 class TestShiftHandler(TestCase):
     def setUp(self) -> None:
+        contract = Contract().from_json(full_time_contract_with_day_shift_type)
         self.handler = ShiftTypeHandler(connect_to_fake_db())
         user = default_user.copy()
         user[user_token] = random_hex
@@ -26,6 +29,7 @@ class TestShiftHandler(TestCase):
         self.handler.shift_type_dao.insert_one_if_not_exist(
             day_shift_type.copy()
         )
+        self.handler.contract_dao.insert_one(contract.db_json())
         self.handler.shift_group_dao.insert_one_if_not_exist(
             test_work_shift_group.copy()
         )
