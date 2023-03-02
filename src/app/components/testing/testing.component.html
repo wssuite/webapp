@@ -1,9 +1,15 @@
 <p>Put here any component you want to test!</p>
-<app-integer-constraint
-  [constraint]="constraint"
-  (errorState)="updateConstraintErrorState($event)"
-></app-integer-constraint>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{ constraint.displayName }}</mat-panel-title>
+  </mat-expansion-panel-header>
+  <app-integer-constraint
+    [constraint]="constraint"
+    (errorState)="updateConstraintErrorState($event)"
+  ></app-integer-constraint>
+</mat-expansion-panel>
+
 <p>
   The constraint has an error: {{ constraintErrorState }} and the weight is:
-  {{ constraint.weight }}. The chosen unit is: {{ constraint.chosenUnit }}
+  {{ constraint.weight }}. The value is : {{ constraint.value }}
 </p>

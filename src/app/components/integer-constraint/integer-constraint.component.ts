@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { IntegerConstraint } from "src/app/models/IntegerConstraint";
-import { FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-integer-constraint",
@@ -13,8 +12,7 @@ export class IntegerConstraintComponent {
   @Output() errorState: EventEmitter<boolean>;
 
   weightErrorState: boolean;
-
-  unitSelectorCtrl: FormControl;
+  valueErrorState: boolean;
 
   valueLabel: string;
   weightLabel: string;
@@ -22,9 +20,9 @@ export class IntegerConstraintComponent {
   constructor() {
     this.constraintChange = new EventEmitter();
     this.errorState = new EventEmitter();
-    this.valueLabel = "value";
 
-    this.unitSelectorCtrl = new FormControl(null, Validators.required);
+    this.valueErrorState = true;
+    this.valueLabel = "value";
 
     this.weightErrorState = true;
     this.weightLabel = "weight";
@@ -36,13 +34,16 @@ export class IntegerConstraintComponent {
   }
 
   emitErrorState() {
-    this.errorState.emit(
-      this.weightErrorState || this.unitSelectorCtrl.hasError("required")
-    );
+    this.errorState.emit(this.weightErrorState || this.valueErrorState);
   }
 
   updateWeightErrorState(e: boolean) {
     this.weightErrorState = e;
+    this.emitConstraint();
+  }
+
+  updateValueErrorState(e: boolean) {
+    this.valueErrorState = e;
     this.emitConstraint();
   }
 }

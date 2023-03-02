@@ -1,19 +1,8 @@
-<div (mouseleave)="emitConstraint()" class="boolean-contraint-container">
-  <label>{{ constraint.displayName }}</label>
-  <app-numeric-input></app-numeric-input>
-  <label>Unit: </label>
-  <mat-form-field appearance="fill">
-    <mat-label>choose a unit </mat-label>
-    <mat-select
-      [(value)]="constraint.chosenUnit"
-      [formControl]="unitSelectorCtrl"
-    >
-      <mat-option *ngFor="let unit of constraint.units" [value]="unit">
-        {{ unit }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
+<div (mouseleave)="emitConstraint()" class="integer-constraint-container">
+  <app-numeric-input
+    [(value)]="constraint.value"
+    (errorState)="updateValueErrorState($event)"
+  ></app-numeric-input>
   <app-weight
     [(weight)]="constraint.weight"
     (errorState)="updateWeightErrorState($event)"
