@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import {
   BASE_VALUE,
-  MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID,
-  MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME,
+  MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID,
+  MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME,
 } from "src/app/constants/constraints";
 import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
 
@@ -19,8 +19,8 @@ export class TestingComponent {
 
   constructor() {
     this.constraint = new MinMaxConstraint(
-      MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID,
-      MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME
+      MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID,
+      MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME
     );
     this.constraintErrorState = true;
   }

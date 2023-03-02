@@ -8,9 +8,12 @@
   ></app-min-max-constraint>
 </mat-expansion-panel>
 
+<p>The constraint has an error: {{ constraintErrorState }}.</p>
 <p>
-  The constraint has an error: {{ constraintErrorState }}. Min value is:
-  {{ constraint.minValue }} and its weight is {{ constraint.minWeight }}. Max
-  value is : {{ constraint.maxValue }} and its value is:
+  Min value is: {{ constraint.minValue }} and its weight is
+  {{ constraint.minWeight }}.
+</p>
+<p>
+  Max value is : {{ constraint.maxValue }} and its value is:
   {{ constraint.maxWeight }}
 </p>
