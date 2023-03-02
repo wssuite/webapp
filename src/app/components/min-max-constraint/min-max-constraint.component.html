@@ -1,1 +1,26 @@
-<p>min-max-constraint works!</p>
+<div (mouseleave)="emitConstraint()" class="min-max-constraint-container">
+  <div class="min">
+    <label>Min</label>
+    <app-numeric-input
+      [(value)]="constraint.minValue"
+      (errorState)="updateMinValueErrorState($event)"
+    ></app-numeric-input>
+    <app-weight
+      [(weight)]="constraint.minWeight"
+      (errorState)="updateWeightErrorState($event)"
+      [label]="minWeightLabel"
+    ></app-weight>
+  </div>
+  <div>
+    <label>Max</label>
+    <app-numeric-input
+      [(value)]="constraint.maxValue"
+      (errorState)="updateMaxValueErrorState($event)"
+    ></app-numeric-input>
+    <app-weight
+      [(weight)]="constraint.maxWeight"
+      (errorState)="updateWeightErrorState($event)"
+      [label]="maxWeightLabel"
+    ></app-weight>
+  </div>
+</div>

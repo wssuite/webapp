@@ -1,16 +1,16 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
-    <mat-panel-title>{{
-      identicalWeekendConstraint.displayName
-    }}</mat-panel-title>
+    <mat-panel-title>{{ constraint.displayName }}</mat-panel-title>
   </mat-expansion-panel-header>
-  <app-boolean-constraint
-    [constraint]="identicalWeekendConstraint"
+  <app-min-max-constraint
+    [constraint]="constraint"
     (errorState)="updateConstraintErrorState($event)"
-  ></app-boolean-constraint
-></mat-expansion-panel>
+  ></app-min-max-constraint>
+</mat-expansion-panel>
 
 <p>
-  The constraint has an error: {{ constraintErrorState }} and the weight is:
-  {{ identicalWeekendConstraint.weight }}
+  The constraint has an error: {{ constraintErrorState }}. Min value is:
+  {{ constraint.minValue }} and its weight is {{ constraint.minWeight }}. Max
+  value is : {{ constraint.maxValue }} and its value is:
+  {{ constraint.maxWeight }}
 </p>

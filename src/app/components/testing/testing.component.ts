@@ -1,10 +1,10 @@
 import { Component } from "@angular/core";
 import {
   BASE_VALUE,
-  IDENTICAL_WEEKEND_DISPLAY_ID,
-  IDENTICAL_WEEKEND_DISPLAY_NAME,
+  MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID,
+  MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME,
 } from "src/app/constants/constraints";
-import { BooleanConstraint } from "src/app/models/BooleanConstraint";
+import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
 
 @Component({
   selector: "app-testing",
@@ -12,15 +12,15 @@ import { BooleanConstraint } from "src/app/models/BooleanConstraint";
   styleUrls: ["./testing.component.css"],
 })
 export class TestingComponent {
-  identicalWeekendConstraint: BooleanConstraint;
+  constraint: MinMaxConstraint;
 
   constraintErrorState: boolean;
   weight = BASE_VALUE;
 
   constructor() {
-    this.identicalWeekendConstraint = new BooleanConstraint(
-      IDENTICAL_WEEKEND_DISPLAY_ID,
-      IDENTICAL_WEEKEND_DISPLAY_NAME
+    this.constraint = new MinMaxConstraint(
+      MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID,
+      MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME
     );
     this.constraintErrorState = true;
   }
