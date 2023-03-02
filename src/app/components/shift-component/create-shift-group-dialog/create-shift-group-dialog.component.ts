@@ -21,7 +21,7 @@ export class CreateShiftGroupDialogComponent {
 
 add() {
   //valide form
-  //call api service to push the shift
+  //call api service to push the shift group
   this.close();
 }
 

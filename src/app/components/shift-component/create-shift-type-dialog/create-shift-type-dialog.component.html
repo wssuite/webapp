@@ -13,6 +13,37 @@
     </mat-form-field>
     </div>
 </div>
+<div class="shiftSection">
+  <H1 class="shiftSectionTitle">Shifts</H1>
+  <div *ngIf="availableShifts.length > 0">
+    <mat-form-field appearance="fill">
+      <mat-label>Select a shift</mat-label>
+      <mat-select [(value)]="selectedShift">
+        <mat-option *ngFor="let shift of availableShifts" [value]="shift">
+          {{ shift }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button class="addShiftButton" (click)="addShift()">
+      add Shift
+    </button>
+  </div>
+  <table class="shiftTable">
+    <tr *ngFor="let shift of shifts">
+      <td class="shiftName">
+        {{ shift }}
+      </td>
+      <button
+        mat-raised-button
+        class="removeShiftButton"
+        (click)="removeShift(shift)"
+        color="accent"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </tr>
+  </table>
+</div>
 <div mat-dialog-action class="buttons-container">
     <button  mat-raised-button color="primary" (click)="add()">
         Add
