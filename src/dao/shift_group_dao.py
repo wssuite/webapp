@@ -7,7 +7,10 @@ from constants import (
     mongo_set_operation,
     mongo_all_operation,
 )
-from src.exceptions.shift_exceptions import ShiftGroupAlreadyExistException
+from src.exceptions.shift_exceptions import (
+    ShiftGroupAlreadyExistException,
+    ShiftNotExist,
+)
 from src.models.shift_group import ShiftGroup
 
 
@@ -60,3 +63,18 @@ class ShiftGroupDao(AbstractDao):
 
     def remove(self, name):
         self.collection.find_one_and_delete({shift_group_name: name})
+
+    def add_shift_to_shift_group_list(self, name, shift_name):
+        shift_group = self.find_by_name(name)
+        if shift_group is None:
+            raise ShiftNotExist(name)
+        shift_group[shift_group_shifts_list].append(shift_name)
+        self.update(dict(shift_group))
+
+    def delete_shift_from_shift_group_list(self, name, shift_name):
+        shift_group = self.find_by_name(name)
+        if shift_group is None:
+            raise ShiftNotExist(name)
+        if shift_name in shift_group[shift_group_shifts_list]:
+            shift_group[shift_group_shifts_list].remove(shift_name)
+            self.update(dict(shift_group))

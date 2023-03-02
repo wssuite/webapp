@@ -1,5 +1,8 @@
 from unittest import TestCase
-from src.exceptions.shift_exceptions import ShiftGroupAlreadyExistException
+from src.exceptions.shift_exceptions import (
+    ShiftGroupAlreadyExistException,
+    ShiftNotExist,
+)
 from constants import shift_group_name, shift_group_shifts_list
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.shift_group_dao import ShiftGroupDao
@@ -52,3 +55,38 @@ class TestShiftGroupDao(TestCase):
         self.assertEqual(0, len(night_shift_group))
         self.assertEqual(1, len(day_shift_group))
         self.assertEqual(self.shift_group, day_shift_group[0])
+
+    def test_add_shift_to_nonexistent_shift_group_raise_error(self):
+        with self.assertRaises(ShiftNotExist):
+            self.dao.add_shift_to_shift_group_list("Work", "Late")
+
+    def test_add_shift_to_existing_shift_group_succeed(self):
+        self.dao.insert_one_if_not_exist(self.shift_group.copy())
+        shift_group_before = self.dao.find_by_name("Work")
+        self.dao.add_shift_to_shift_group_list("Work", "Late")
+        shift_group_after = self.dao.find_by_name("Work")
+        self.assertEqual(
+            ["Early", "Day", "Midnight"],
+            shift_group_before[shift_group_shifts_list],
+        )
+        self.assertEqual(
+            ["Early", "Day", "Midnight", "Late"],
+            shift_group_after[shift_group_shifts_list],
+        )
+
+    def test_remove_shift_to_nonexistent_group_raise_error(self):
+        with self.assertRaises(ShiftNotExist):
+            self.dao.delete_shift_from_shift_group_list("Work", "Early")
+
+    def test_remove_shift_from_existing_group_succeed(self):
+        self.dao.insert_one_if_not_exist(self.shift_group.copy())
+        shift_group_before = self.dao.find_by_name("Work")
+        self.dao.delete_shift_from_shift_group_list("Work", "Early")
+        shift_group_after = self.dao.find_by_name("Work")
+        self.assertEqual(
+            ["Early", "Day", "Midnight"],
+            shift_group_before[shift_group_shifts_list],
+        )
+        self.assertEqual(
+            ["Day", "Midnight"], shift_group_after[shift_group_shifts_list]
+        )
