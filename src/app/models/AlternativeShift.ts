@@ -1,6 +1,6 @@
 import { BASE_VALUE } from "../constants/constraints";
 import { Exception } from "../utils/Exception";
-import { Constraint } from "./Constraint";
+import { Constraint, ConstraintInterface } from "./Constraint";
 
 export class AlternativeShift extends Constraint {
     weight: string;
@@ -23,4 +23,17 @@ export class AlternativeShift extends Constraint {
             throw new Exception(this.getContradictionErrorMessage());
         }
     }
+
+    toJson(): AlternativeShiftInterface {
+        return {
+            name: this.name,
+            shiftId: this.shiftId,
+            weight: this.weight,    
+        }
+    }
+}
+
+export interface AlternativeShiftInterface extends ConstraintInterface{
+    shiftId: string;
+    weight: string;
 }

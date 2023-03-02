@@ -14,4 +14,16 @@ export class PatternElement {
             throw new Exception("Repetitive day shift pattern");
         }
     }
+
+    toJson(): PatternElementInterface{
+        return {
+            shiftId: this.shiftId,
+            dayName: this.dayName,
+        }
+    }
+}
+
+export interface PatternElementInterface{
+    shiftId: string;
+    dayName: string;
 }

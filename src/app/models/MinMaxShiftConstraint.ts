@@ -1,6 +1,6 @@
 import { Exception } from "../utils/Exception";
-import { Constraint } from "./Constraint";
-import { MinMaxConstraint } from "./MinMaxConstraint";
+import { Constraint} from "./Constraint";
+import { MinMaxConstraint, MinMaxConstraintInterface } from "./MinMaxConstraint";
 
 export class MinMaxShiftConstraint extends MinMaxConstraint{
 
@@ -27,4 +27,19 @@ export class MinMaxShiftConstraint extends MinMaxConstraint{
             }
         throw new Exception(this.getContradictionErrorMessage())
     }
+
+    override toJson(): MinMaxShiftConstraintInterface {
+        return {
+            name: this.name,
+            minValue: this.minValue,
+            minWeight: this.minWeight,
+            maxValue: this.maxValue,
+            maxWeight: this.maxWeight,
+            shiftId: this.shiftId,
+        }
+    }
+}
+
+export interface MinMaxShiftConstraintInterface extends MinMaxConstraintInterface {
+    shiftId: string;
 }

@@ -1,6 +1,6 @@
 import { BASE_VALUE } from "../constants/constraints";
 import { Exception } from "../utils/Exception";
-import { Constraint } from "./Constraint";
+import { Constraint, ConstraintInterface } from "./Constraint";
 
 export class MinMaxConstraint extends Constraint {
     
@@ -33,4 +33,21 @@ export class MinMaxConstraint extends Constraint {
             }
         throw new Exception(this.getContradictionErrorMessage());
     }
+
+    toJson(): MinMaxConstraintInterface {
+        return {
+            name: this.name,
+            minValue: this.minValue,
+            minWeight: this.minWeight,
+            maxValue: this.maxValue,
+            maxWeight: this.maxWeight,
+        }
+    }
+}
+
+export interface MinMaxConstraintInterface extends ConstraintInterface {
+    minValue: string;
+    minWeight: string;
+    maxValue: string;
+    maxWeight: string;
 }

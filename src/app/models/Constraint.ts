@@ -14,4 +14,10 @@ export abstract class Constraint {
   getContradictionErrorMessage():string{
     return `${this.displayName} constraint contradiction`;
   }
+
+  abstract toJson():ConstraintInterface;
+}
+
+export interface ConstraintInterface {
+  name: string;
 }

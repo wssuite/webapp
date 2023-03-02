@@ -1,6 +1,6 @@
 import { BASE_VALUE } from "../constants/constraints";
 import { Exception } from "../utils/Exception";
-import { Constraint } from "./Constraint";
+import { Constraint, ConstraintInterface } from "./Constraint";
 
 export class IntegerConstraint extends Constraint {
   value: string;
@@ -33,4 +33,17 @@ export class IntegerConstraint extends Constraint {
       throw new Exception(this.getContradictionErrorMessage());
     }
   }
+
+  toJson(): IntegerConstraintInterface {
+    return {
+      name: this.name,
+      value: this.value,
+      weight: this.weight
+    }
+  }
+}
+
+export interface IntegerConstraintInterface extends ConstraintInterface {
+  value: string;
+  weight: string;
 }

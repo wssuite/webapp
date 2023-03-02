@@ -1,6 +1,6 @@
 import { Exception } from "../utils/Exception";
 import { Constraint } from "./Constraint";
-import { IntegerConstraint } from "./IntegerConstraint";
+import { IntegerConstraint, IntegerConstraintInterface } from "./IntegerConstraint";
 
 export class ShiftConstraint extends IntegerConstraint {
     shiftId: string;
@@ -22,4 +22,17 @@ export class ShiftConstraint extends IntegerConstraint {
         }
         throw new Exception(this.getContradictionErrorMessage());
     }
+
+    override toJson(): ShiftConstraintInterface {
+        return {
+            name: this.name,
+            value: this.value,
+            weight: this.weight,
+            shiftId: this.shiftId,
+        }
+    }
+}
+
+export interface ShiftConstraintInterface extends IntegerConstraintInterface {
+    shiftId: string;
 }

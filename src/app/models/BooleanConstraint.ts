@@ -1,6 +1,6 @@
 import { BASE_VALUE } from "../constants/constraints";
 import { Exception } from "../utils/Exception";
-import { Constraint } from "./Constraint";
+import { Constraint, ConstraintInterface } from "./Constraint";
 
 export class BooleanConstraint extends Constraint {
   weight: string;
@@ -22,4 +22,15 @@ export class BooleanConstraint extends Constraint {
 
     }
   }
+
+  toJson(): BooleanConstraintInterface {
+    return {
+      name: this.name,
+      weight: this.weight,
+    }
+  }
+}
+
+export interface BooleanConstraintInterface extends ConstraintInterface {
+  weight: string;
 }

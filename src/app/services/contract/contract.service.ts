@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ErrorMessageDialogComponent } from 'src/app/components/error-message-dialog/error-message-dialog.component';
 import { Constraint } from 'src/app/models/Constraint';
-import { Contract } from 'src/app/models/Contract';
-import { Exception } from 'src/app/utils/Exception';
+import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { APIService } from '../api-service/api.service';
 
 @Injectable({
@@ -11,9 +9,11 @@ import { APIService } from '../api-service/api.service';
 })
 export class ContractService {
 
-  contract: Contract| undefined;
+  contract: Contract;
 
-  constructor(private api: APIService, public dialog: MatDialog) {}
+  constructor(private api: APIService, public dialog: MatDialog) {
+    this.contract = new Contract();
+  }
 
   setContract(c: Contract) {
     this.contract = c;
@@ -21,19 +21,10 @@ export class ContractService {
 
   validateContract(): void {
     // validate contract
-    if(this.contract === undefined || this.contract === null){
-      return;
-    }
-    try{
-      for(let i=0; i< this.contract.constraints.length; i++){
-        for(let j=i+1; j< this.contract.constraints.length; j++){
-          (this.contract.constraints[j] as Constraint).validateConstraint((this.contract.constraints[i] as Constraint));
-        }
+    for(let i=0; i< this.contract.constraints.length; i++){
+      for(let j=i+1; j< this.contract.constraints.length; j++){
+        (this.contract.constraints[j] as Constraint).validateConstraint((this.contract.constraints[i] as Constraint));
       }
-    } catch(e) {
-      this.dialog.open(ErrorMessageDialogComponent, {
-        data: {message: (e as Exception).getMessage()},
-      });
     }
   }
 
@@ -42,4 +33,8 @@ export class ContractService {
   }
 
   //get shifts() {}
+
+  getJson(): ContractInterface{
+    return this.contract.toJson()
+  }
 }

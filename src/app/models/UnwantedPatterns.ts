@@ -1,6 +1,6 @@
 import { BASE_VALUE} from "../constants/constraints";
-import { Constraint } from "./Constraint";
-import { PatternElement } from "./PatternElement";
+import { Constraint, ConstraintInterface } from "./Constraint";
+import { PatternElement, PatternElementInterface } from "./PatternElement";
 
 export class UnwantedPatterns extends Constraint{
     patternElements: PatternElement[];
@@ -25,4 +25,22 @@ export class UnwantedPatterns extends Constraint{
             })
         })
     }
+
+    toJson(): UnwantedPatternsInterface{
+        const elements: PatternElementInterface[] = [];
+        for(const pattern of this.patternElements){
+            elements.push(pattern.toJson());
+        }
+
+        return {
+            name: this.name,
+            weight: this.weight,
+            patternElements: elements,
+        }
+    }
+}
+
+export interface UnwantedPatternsInterface extends ConstraintInterface {
+    patternElements: PatternElementInterface[];
+    weight: string;
 }
