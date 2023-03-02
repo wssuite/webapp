@@ -1,0 +1,11 @@
+<div (mouseleave)="emitConstraint()" class="integer-constraint-container">
+  <app-numeric-input
+    [(value)]="constraint.value"
+    (errorState)="updateValueErrorState($event)"
+  ></app-numeric-input>
+  <app-weight
+    [(weight)]="constraint.weight"
+    (errorState)="updateWeightErrorState($event)"
+    [label]="weightLabel"
+  ></app-weight>
+</div>

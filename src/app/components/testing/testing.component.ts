@@ -6,13 +6,15 @@ import {
     ALTERNATIVE_SHIFT_DISPLAY_NAME, BASE_VALUE,
     FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME,
     FREE_DAYS_AFTER_SHIFT_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME,
-    MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID } from 'src/app/constants/constraints';
+    MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME,
+    TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID } from 'src/app/constants/constraints';
 import { shiftsExample } from 'src/app/constants/shifts';
 import { AlternativeShift } from 'src/app/models/AlternativeShift';
 import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
 import { ShiftConstraint } from 'src/app/models/ShiftConstraint';
 import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
+import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 
 @Component({
   selector: "app-testing",
@@ -34,6 +36,9 @@ export class TestingComponent {
   unwantedPatternsConstraint: UnwantedPatterns;
   unwantedPatternsErrorState: boolean;
 
+  integerConstraint: IntegerConstraint;
+  integerConstraintErrorState:boolean;
+
   constructor() {
     this.possibleShifts = shiftsExample;
     this.alternativeConstraint = new AlternativeShift(ALTERNATIVE_SHIFT_ID,ALTERNATIVE_SHIFT_DISPLAY_NAME);
@@ -49,6 +54,8 @@ export class TestingComponent {
       IDENTICAL_WEEKEND_DISPLAY_NAME
     );
     this.booleanConstraintErrorState = true;
+    this.integerConstraint = new IntegerConstraint(TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME);
+    this.integerConstraintErrorState = true;
   }
 
   updateBooleanConstraintErrorState(e: boolean) {
@@ -74,5 +81,9 @@ export class TestingComponent {
   
   updateMinMaxConstraintErrorState(e:boolean) {
     this.minMaxConstraintErrorState = e;
+  }
+
+  updateIntegerConstraintErrorState(e:boolean) {
+    this.integerConstraintErrorState = e;
   }
 }

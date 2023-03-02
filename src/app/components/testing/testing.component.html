@@ -44,3 +44,16 @@
   The constraint has an error: {{ booleanConstraintErrorState }} and the weight is:
   {{ booleanConstraint.weight }}
 </p>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>{{ integerConstraint.displayName }}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-integer-constraint
+        [constraint]="integerConstraint"
+        (errorState)="updateIntegerConstraintErrorState($event)"
+    ></app-integer-constraint>
+</mat-expansion-panel>
+<p>
+    The integer constraint has an error: {{ integerConstraintErrorState }} and the weight is:
+  {{ integerConstraint.weight }}. The value is : {{ integerConstraint.value }}
+</p>
