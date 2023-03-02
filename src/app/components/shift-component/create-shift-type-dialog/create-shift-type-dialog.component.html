@@ -1,0 +1,23 @@
+<div class="title" mat-dialog-title>New Shift Type</div>
+<div class="content"  mat-dialog-content>
+    <div class="nameShiftContainer">
+    <label>Shift type name </label>
+    <mat-form-field class = "nameForm" [formGroup]="inputControlForm">
+      <mat-label>Enter shift type name</mat-label>
+      <input id="input"
+        matInput
+        placeholder="name"
+        formControlName="name"
+        [(ngModel)]="shiftTypeName"
+      />
+    </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-action class="buttons-container">
+    <button  mat-raised-button color="primary" (click)="add()">
+        Add
+    </button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">
+        Cancel
+    </button>
+

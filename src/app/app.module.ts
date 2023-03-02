@@ -40,7 +40,7 @@ import { ShiftConstraintComponent } from './components/shift-constraint/shift-co
 import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { CreateShiftGroupDialogComponent } from './components/shift-component/create-shift-group-dialog/create-shift-group-dialog.component';
-import { CreateShiftTypeDialogComponent } from './components/shift-component/create-shift-dialog/create-shift-type-dialog/create-shift-type-dialog.component';
+import { CreateShiftTypeDialogComponent } from './components/shift-component/create-shift-type-dialog/create-shift-type-dialog.component';
 import { ShiftTypeComponent } from './components/shift-component/shift-type/shift-type.component';
 import { ShiftGroupComponent } from './components/shift-component/shift-group/shift-group.component';
 import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
