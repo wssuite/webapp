@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import {
-  TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME,
-  TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID,
+  TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME,
+  TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_ID,
 } from "src/app/constants/constraints";
 import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 
@@ -12,8 +12,8 @@ import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 })
 export class TestingComponent {
   constraint: IntegerConstraint = new IntegerConstraint(
-    TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID,
-    TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME
+    TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_ID,
+    TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME
   );
 
   constraintErrorState = true;
