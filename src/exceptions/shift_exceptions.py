@@ -37,3 +37,10 @@ class CannotDeleteShift(ProjectBaseException):
         shift = f"the shift {name}"
         msg = deletion_error.format(shift)
         super(CannotDeleteShift, self).__init__(msg)
+
+
+class CannotDeleteShiftType(ProjectBaseException):
+    def __init__(self, name):
+        shift_type = f"the shift type {name}"
+        msg = deletion_error.format(shift_type)
+        super(CannotDeleteShiftType, self).__init__(msg)

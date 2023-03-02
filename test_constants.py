@@ -104,8 +104,16 @@ late_shift = {
     shift_end_time: "24:00:00",
 }
 day_shift_type = {shift_type_name: "Day", shift_type_shifts_lists: ["Early"]}
+night_shift_type = {
+    shift_type_name: "Night",
+    shift_type_shifts_lists: ["Late"],
+}
 work_shift_group = {shift_group_name: "Work", shift_group_shifts_list: []}
 rest_shift_group = {shift_group_name: "Rest", shift_group_shifts_list: []}
+
+test_work_shift_group = work_shift_group.copy()
+test_work_shift_group[shift_group_shifts_list] = ["Day"]
+
 nurse1 = {
     nurse_name: "nurse1",
     nurse_contracts: ["FullTime_Valid", "minConsContract"],

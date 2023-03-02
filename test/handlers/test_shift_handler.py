@@ -28,7 +28,7 @@ class TestShiftHandler(TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_add_new_skill(self):
+    def test_add_new_shift(self):
         actual_before = self.handler.get_all_names(random_hex)
         expected_before = ["Early"]
         self.handler.add(random_hex, late_shift)
@@ -37,7 +37,7 @@ class TestShiftHandler(TestCase):
         self.assertEqual(expected_before, actual_before)
         self.assertEqual(expected_after, actual_after)
 
-    def test_update_skill(self):
+    def test_update_shift(self):
         actual_before = self.handler.get_by_name(random_hex, "Early")
         update_early_shift = early_shift.copy()
         update_early_shift[shift_start_time] = "09:00:00"
@@ -46,7 +46,7 @@ class TestShiftHandler(TestCase):
         self.assertEqual(early_shift, actual_before)
         self.assertEqual(update_early_shift, actual_after)
 
-    def test_delete_skill(self):
+    def test_delete_shift(self):
         self.handler.shift_dao.insert_one_if_not_exist(late_shift.copy())
         with self.assertRaises(CannotDeleteShift):
             self.handler.delete(random_hex, "Early")

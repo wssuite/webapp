@@ -34,6 +34,8 @@ user_error = "The token provided is invalid"
 admin_only = "Only admin user can perform this action"
 delete_admin_error = "Cannot delete admin"
 login_required_error = "Please login before continuing"
-shifts_not_exist = "Error the following shifts don't exist {}"
+shifts_not_exist = (
+    "Error the following shifts/shift types/shift " "groups don't exist {}"
+)
 deletion_error = "Cannot delete {} because it is used elsewhere."
 contract_not_exist = "The contract {} doesn't exist"
