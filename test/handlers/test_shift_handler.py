@@ -5,11 +5,12 @@ from test_constants import (
     late_shift,
     random_hex,
     default_user,
+    work_shift_group,
 )
 from src.dao.abstract_dao import connect_to_fake_db
 from unittest import TestCase
 from src.handlers.shift_handler import ShiftHandler
-from constants import user_token, shift_start_time
+from constants import user_token, shift_start_time, shift_group_shifts_list
 from src.exceptions.shift_exceptions import CannotDeleteShift, ShiftNotExist
 
 
@@ -24,6 +25,9 @@ class TestShiftHandler(TestCase):
         self.handler.shift_type_dao.insert_one_if_not_exist(
             day_shift_type.copy()
         )
+        copy_work_group = work_shift_group.copy()
+        copy_work_group[shift_group_shifts_list] = ["Early"]
+        self.handler.shift_group_dao.insert_one_if_not_exist(copy_work_group)
 
     def tearDown(self) -> None:
         pass
