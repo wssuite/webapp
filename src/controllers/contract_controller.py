@@ -23,8 +23,11 @@ def add_contract():
 
 @mod.route("/fetchAll", methods=["GET"])
 def get_all_contracts():
-    token = request.args[user_token]
-    return contract_handler.get_all(token)
+    try:
+        token = request.args[user_token]
+        return contract_handler.get_all(token)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchByName", methods=["GET"])
@@ -50,8 +53,11 @@ def delete_contract():
 
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_contracts_names():
-    token = request.args[user_token]
-    return contract_handler.get_all_names(token)
+    try:
+        token = request.args[user_token]
+        return contract_handler.get_all_names(token)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/update", methods=["PUT"])
