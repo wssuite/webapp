@@ -4,6 +4,7 @@ from error_msg import (
     shift_type_already_exists,
     shift_group_already_exists,
     shifts_not_exist,
+    deletion_error,
 )
 
 
@@ -29,3 +30,10 @@ class ShiftNotExist(ProjectBaseException):
     def __init__(self, shifts):
         msg = shifts_not_exist.format(shifts)
         super(ShiftNotExist, self).__init__(msg)
+
+
+class CannotDeleteShift(ProjectBaseException):
+    def __init__(self, name):
+        shift = f"the shift {name}"
+        msg = deletion_error.format(shift)
+        super(CannotDeleteShift, self).__init__(msg)

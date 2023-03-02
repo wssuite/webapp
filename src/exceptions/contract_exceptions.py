@@ -2,7 +2,7 @@ from src.exceptions.project_base_exception import ProjectBaseException
 from error_msg import (
     contract_contradiction_error,
     contract_already_exist,
-    contract_deletion_error,
+    deletion_error,
     contract_not_exist,
 )
 
@@ -23,7 +23,8 @@ class ContractAlreadyExistException(ProjectBaseException):
 
 class CannotDeleteContract(ProjectBaseException):
     def __init__(self, name):
-        msg = contract_deletion_error.format(name)
+        contract = f"the contract {name}"
+        msg = deletion_error.format(contract)
         super(CannotDeleteContract, self).__init__(msg)
 
 

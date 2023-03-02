@@ -24,6 +24,10 @@ from constants import (
     min_constraint_value,
     min_max_consecutive_weekends,
     skill_name,
+    shift_type_name,
+    shift_type_shifts_lists,
+    shift_group_name,
+    shift_group_shifts_list,
 )
 
 general_contract_dict = {
@@ -99,7 +103,9 @@ late_shift = {
     shift_start_time: "18:00:00",
     shift_end_time: "24:00:00",
 }
-
+day_shift_type = {shift_type_name: "Day", shift_type_shifts_lists: ["Early"]}
+work_shift_group = {shift_group_name: "Work", shift_group_shifts_list: []}
+rest_shift_group = {shift_group_name: "Rest", shift_group_shifts_list: []}
 nurse1 = {
     nurse_name: "nurse1",
     nurse_contracts: ["FullTime_Valid", "minConsContract"],
