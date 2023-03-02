@@ -9,7 +9,7 @@ from src.controllers import (
     shift_group_controller,
     contract_controller,
     user_controller,
-    skill_controller
+    skill_controller,
 )
 import config
 from flask_cors import CORS
