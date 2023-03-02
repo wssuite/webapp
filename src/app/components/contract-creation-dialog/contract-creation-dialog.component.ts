@@ -1,3 +1,4 @@
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { shiftsExample } from 'src/app/constants/shifts';
@@ -36,7 +37,24 @@ export class ContractCreationDialogComponent {
       //call api service to push the contract
       const contractJson = this.service.getJson();
       console.log(contractJson);
-      this.close();
+      this.api.addContract(contractJson).subscribe({
+        next: data=> {
+          this.dialog.open(ErrorMessageDialogComponent, {
+            data: {message: data},
+          })
+          this.close()
+        },
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }
+          else{
+            this.dialog.open(ErrorMessageDialogComponent,{
+              data:{message: err.error}
+            })
+          }
+        } 
+      })
     }
     catch(e){
       this.dialog.open(ErrorMessageDialogComponent, {

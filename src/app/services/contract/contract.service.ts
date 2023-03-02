@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Constraint } from 'src/app/models/Constraint';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
-import { APIService } from '../api-service/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +9,7 @@ export class ContractService {
 
   contract: Contract;
 
-  constructor(private api: APIService, public dialog: MatDialog) {
+  constructor() {
     this.contract = new Contract();
   }
 
@@ -27,12 +25,6 @@ export class ContractService {
       }
     }
   }
-
-  submitContract() {
-    // call api service function to submit contract
-  }
-
-  //get shifts() {}
 
   getJson(): ContractInterface{
     return this.contract.toJson()
