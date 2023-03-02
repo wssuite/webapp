@@ -39,6 +39,7 @@ import { ShiftConstraintComponent } from './components/shift-constraint/shift-co
 import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
+import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { ContractCreationDialogComponent } from './components/contract-creation-
     UnwantedPatternsComponent,
     BooleanConstraintComponent,
     ContractCreationDialogComponent,
+    MinMaxConstraintComponent,
   ],
   imports: [
     BrowserModule,

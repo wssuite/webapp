@@ -18,9 +18,9 @@
     <mat-expansion-panel-header>
         <mat-panel-title>{{minMaxConsecutiveShift.displayName}}</mat-panel-title>
     </mat-expansion-panel-header>
-    <app-min-max-consecutive-shift [(constraint)]="minMaxConsecutiveShift" (errorState)="updateMinMaxConstraintErrorState($event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
+    <app-min-max-consecutive-shift [(constraint)]="minMaxConsecutiveShift" (errorState)="updateMinMaxShiftConstraintErrorState($event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
 </mat-expansion-panel>
-<p>The shift type constraint has an error: {{minMaxConstraintErrorState}} and the shift is: {{minMaxConsecutiveShift.shiftId}}</p>
+<p>The shift type constraint has an error: {{minMaxShiftConstraintErrorState}} and the shift is: {{minMaxConsecutiveShift.shiftId}}</p>
 <p>The min value is: {{minMaxConsecutiveShift.minValue}} and the min weight is :{{minMaxConsecutiveShift.minWeight}}</p>
 <p>The max value is: {{minMaxConsecutiveShift.maxValue}} and the max weight is :{{minMaxConsecutiveShift.maxWeight}}</p>
 <mat-expansion-panel>
@@ -56,4 +56,21 @@
 <p>
     The integer constraint has an error: {{ integerConstraintErrorState }} and the weight is:
   {{ integerConstraint.weight }}. The value is : {{ integerConstraint.value }}
+</p>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>{{ minMaxConstraint.displayName }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-min-max-constraint
+        [constraint]="minMaxConstraint"
+        (errorState)="updateMinMaxConstraintErrorState($event)"
+      ></app-min-max-constraint>
+</mat-expansion-panel>
+<p>
+    Min value is: {{ minMaxConstraint.minValue }} and its weight is
+    {{ minMaxConstraint.minWeight }}.
+</p>
+<p>
+Max value is : {{ minMaxConstraint.maxValue }} and its value is:
+{{ minMaxConstraint.maxWeight }}
 </p>
