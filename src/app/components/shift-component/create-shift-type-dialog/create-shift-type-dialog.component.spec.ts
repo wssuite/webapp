@@ -1,33 +1,22 @@
-import { Component } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CreateShiftTypeDialogComponent } from './create-shift-type-dialog.component';
 
-@Component({
-  selector: 'app-create-shift-type-dialog.component',
-  templateUrl: './create-shift-type-dialog.component.html',
-  styleUrls: ['./create-shift-type-dialog.component.css']
-})
-export class CreateShiftDialogComponent {
-  shiftName: string;
-  inputControlForm = new FormGroup({
-    name: new FormControl(null, Validators.required),
+describe('CreateShiftTypeDialogComponent', () => {
+  let component: CreateShiftTypeDialogComponent;
+  let fixture: ComponentFixture<CreateShiftTypeDialogComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ CreateShiftTypeDialogComponent ]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(CreateShiftTypeDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  constructor(public dialogRef: MatDialogRef<CreateShiftDialogComponent >,) {
-    this.shiftName = "";
-   
-}
-
-add() {
-  //valide form
-  //call api service to push the shift
-  this.close();
-}
-
-close(){
-  this.dialogRef.close();
-}
-
-
-
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

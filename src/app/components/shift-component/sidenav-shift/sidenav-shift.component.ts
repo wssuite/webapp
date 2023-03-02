@@ -23,10 +23,10 @@ export class SidenavShiftComponent {
         case "Shift":
           this.router.navigate(["/" + SHIFT]);
           break;
-        case "Shift-Type":
+        case "Shift Type":
           this.router.navigate(["/" + SHIFT_TYPE]);
           break;
-        case "Shift-Group":
+        case "Shift Group":
             this.router.navigate(["/" + SHIFT_GROUP]);
             break;
         default:

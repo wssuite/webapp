@@ -1,1 +1,23 @@
-<p>create-shift-group-dialog works!</p>
+<div class="title" mat-dialog-title>New Shift Group</div>
+<div class="content"  mat-dialog-content>
+    <div class="nameShiftContainer">
+    <label>Shift group name </label>
+    <mat-form-field class = "nameForm" [formGroup]="inputControlForm">
+      <mat-label>Enter shift group name</mat-label>
+      <input id="input"
+        matInput
+        placeholder="name"
+        formControlName="name"
+        [(ngModel)]="shiftGroupName"
+      />
+    </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-action class="buttons-container">
+    <button  mat-raised-button color="primary" (click)="add()">
+        Add
+    </button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">
+        Cancel
+    </button>
+

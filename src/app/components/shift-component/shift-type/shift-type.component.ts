@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateShiftDialogComponent } from '../create-shift-dialog/create-shift-dialog.component';
+import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/create-shift-type-dialog.component';
 
 @Component({
   selector: 'app-shift-type',
@@ -10,8 +10,8 @@ import { CreateShiftDialogComponent } from '../create-shift-dialog/create-shift-
 export class ShiftTypeComponent {
   constructor(public dialog: MatDialog) {}
 
-  openShiftDialog() {
-    this.dialog.open(CreateShiftDialogComponent,  
+  openShiftTypeDialog() {
+    this.dialog.open(CreateShiftTypeDialogComponent,  
       { disableClose: true,  
         height: '60%',
         width: '50%', 

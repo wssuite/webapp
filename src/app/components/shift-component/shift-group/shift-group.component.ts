@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateShiftDialogComponent } from '../create-shift-dialog/create-shift-dialog.component';
+import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/create-shift-group-dialog.component';
 
 @Component({
   selector: 'app-shift-group',
@@ -10,8 +11,8 @@ import { CreateShiftDialogComponent } from '../create-shift-dialog/create-shift-
 export class ShiftGroupComponent {
   constructor(public dialog: MatDialog) {}
 
-  openShiftDialog() {
-    this.dialog.open(CreateShiftDialogComponent,  
+  openShiftGroupDialog() {
+    this.dialog.open(CreateShiftGroupDialogComponent,  
       { disableClose: true,  
         height: '60%',
         width: '50%', 
