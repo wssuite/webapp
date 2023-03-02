@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
-import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_ID, CONSTRAINTS, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
+import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_ID, CONSTRAINTS, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
 import { AlternativeShift } from "src/app/models/AlternativeShift";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 import { Contract } from "src/app/models/Contract";
+import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 import { MinMaxShiftConstraint } from "src/app/models/MinMaxShiftConstraint";
 import { ShiftConstraint } from "src/app/models/ShiftConstraint";
 import { UnwantedPatterns } from "src/app/models/UnwantedPatterns";
@@ -31,6 +32,7 @@ export class ContractCreationComponent implements OnInit {
   identicalWeekendId: string;
   completeWeekendId: string; 
   skillsFormCtrls: FormControl[];
+  totalNumberWeekendsId: string;
 
   constructor() {
     this.contractChange = new EventEmitter();
@@ -47,6 +49,7 @@ export class ContractCreationComponent implements OnInit {
     this.identicalWeekendId = IDENTICAL_WEEKEND_ID;
     this.completeWeekendId = COMPLETE_WEEKEND_ID;
     this.skillsFormCtrls = [];
+    this.totalNumberWeekendsId = TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID;
   }
   ngOnInit(): void {
     for(let i=0; i< this.contract.skills.length; i++) {
@@ -81,8 +84,12 @@ export class ContractCreationComponent implements OnInit {
         constraint = new BooleanConstraint(COMPLETE_WEEKEND_ID, COMPLETE_WEEKEND_DISPLAY_NAME);
         break;
 
+      case TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME:
+        constraint = new IntegerConstraint(TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME);
+        break;
       default: break;
     }
+    console.log(constraint);
     this.contract.constraints.push(constraint);
     this.constraintsErrorState.push(true);
     this.emitContract();
