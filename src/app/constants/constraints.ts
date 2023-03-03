@@ -15,12 +15,12 @@ export const IDENTICAL_WEEKEND_DISPLAY_NAME = "Identical shift types during Week
 export const COMPLETE_WEEKEND_ID = "CompleteWeekends";
 export const COMPLETE_WEEKEND_DISPLAY_NAME = "Complete Weekends";
 export const WEIGHT_LABEL = "weight";
-export const MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID = "";
-export const MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME = "";
+export const MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID = "MinMaxNumAssignmentsInFourWeeks";
+export const MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME = "Minimum and Maximum of number of assignments in four weeks";
 export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID =
-  "minMaxConsecutiveWorkingWeekends";
+  "MinMaxConsecutiveWeekends";
 export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME =
-  "minimim maximum working weekends";
+  "Minimim and Maximum of consecutive working weekends";
 
 export const CONSTRAINTS = [
     UNWANTED_PATTERNS_DISPLAY_NAME, ALTERNATIVE_SHIFT_DISPLAY_NAME,
