@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { shiftsExample } from 'src/app/constants/shifts';
 import { Contract } from 'src/app/models/Contract';
@@ -13,7 +13,7 @@ import { ErrorMessageDialogComponent } from '../error-message-dialog/error-messa
   templateUrl: './contract-creation-dialog.component.html',
   styleUrls: ['./contract-creation-dialog.component.css']
 })
-export class ContractCreationDialogComponent {
+export class ContractCreationDialogComponent implements OnInit{
 
   contractErrorState: boolean;
   possibleShifts: string[];
@@ -28,6 +28,40 @@ export class ContractCreationDialogComponent {
     this.possibleShifts = shiftsExample;
     this.service.setContract(data.contract);
   }
+  ngOnInit(): void {
+    this.api.getShiftNames().subscribe({
+      next: (shifts: string[])=>{
+        shifts.forEach((shift: string)=>{
+          this.possibleShifts.push(shift);
+        })
+      },
+      error: (error: HttpErrorResponse)=>{
+        this.openErrorDialog(error.error);
+      }
+    })
+
+    this.api.getShiftTypeNames().subscribe({
+      next: (shifts: string[])=>{
+        shifts.forEach((shift: string)=>{
+          this.possibleShifts.push(shift);
+        })
+      },
+      error: (error: HttpErrorResponse)=>{
+        this.openErrorDialog(error.error);
+      }
+    })
+
+    this.api.getShiftGroupNames().subscribe({
+      next: (shifts: string[])=>{
+        shifts.forEach((shift: string)=>{
+          this.possibleShifts.push(shift);
+        })
+      },
+      error: (error: HttpErrorResponse)=>{
+        this.openErrorDialog(error.error);
+      }
+    })
+  }
 
   submit() {
     try
@@ -38,29 +72,25 @@ export class ContractCreationDialogComponent {
       const contractJson = this.service.getJson();
       console.log(contractJson);
       this.api.addContract(contractJson).subscribe({
-        next: data=> {
-          this.dialog.open(ErrorMessageDialogComponent, {
-            data: {message: data},
-          })
-          this.close()
-        },
         error: (err: HttpErrorResponse)=> {
           if(err.status === HttpStatusCode.Ok) {
             this.close();
           }
           else{
-            this.dialog.open(ErrorMessageDialogComponent,{
-              data:{message: err.error}
-            })
+            this.openErrorDialog(err.error)
           }
         } 
       })
     }
     catch(e){
-      this.dialog.open(ErrorMessageDialogComponent, {
-        data: {message: (e as Exception).getMessage()},
-      })
+      this.openErrorDialog((e as Exception).getMessage())
     }
+  }
+
+  openErrorDialog(message: string) {
+    this.dialog.open(ErrorMessageDialogComponent, {
+      data: {message: message},
+    })
   }
 
   close(){
