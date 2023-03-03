@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import {MatCardModule} from '@angular/material/card';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -64,6 +65,7 @@ import { AccountCreationComponent } from './components/account-creation/account-
     MatDialogModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
