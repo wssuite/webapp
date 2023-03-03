@@ -56,6 +56,7 @@ sub_contract_names = "subContractNames"
 contract_name = "name"
 contract_constraints = "constraints"
 contract_skills = "skills"
+skill_name = "name"
 
 """shift"""
 shift_name = "name"

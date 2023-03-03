@@ -62,7 +62,7 @@ class TestNurseDao(TestCase):
         nurse_group = NurseGroup().from_json(self.nurse_group_dict)
         self.dao.insert_one_if_not_exist(nurse_group.db_json())
         nurse_group_dict = self.nurse_group_dict.copy()
-        eves_groups = self.dao.get_with_contracts(["Eve"])
+        eves_groups = self.dao.get_with_nurses(["Eve"])
         patricks_groups = self.dao.get_with_nurses(["Patrick"])
         self.assertEqual(0, len(eves_groups))
         self.assertEqual(1, len(patricks_groups))

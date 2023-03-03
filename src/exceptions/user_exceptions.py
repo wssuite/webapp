@@ -13,34 +13,34 @@ from error_msg import (
 class UserAlreadyExist(ProjectBaseException):
     def __init__(self, username):
         msg = user_already_exist.format(username)
-        super().__init__(msg)
+        super(UserAlreadyExist, self).__init__(msg)
 
 
 class WrongPassword(ProjectBaseException):
     def __init__(self):
-        super().__init__(password_not_valid)
+        super(WrongPassword, self).__init__(password_not_valid)
 
 
 class UserNotExist(ProjectBaseException):
     def __init__(self, username):
-        super().__init__(user_not_exist.format(username))
+        super(UserNotExist, self).__init__(user_not_exist.format(username))
 
 
 class TokenInvalid(ProjectBaseException):
     def __init__(self):
-        super().__init__(user_error)
+        super(TokenInvalid, self).__init__(user_error)
 
 
 class AdminOnlyAction(ProjectBaseException):
     def __init__(self):
-        super().__init__(admin_only)
+        super(AdminOnlyAction, self).__init__(admin_only)
 
 
 class CannotDeleteAdmin(ProjectBaseException):
     def __init__(self):
-        super().__init__(delete_admin_error)
+        super(CannotDeleteAdmin, self).__init__(delete_admin_error)
 
 
 class LoginRequired(ProjectBaseException):
     def __init__(self):
-        super().__init__(login_required_error)
+        super(LoginRequired, self).__init__(login_required_error)

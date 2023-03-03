@@ -63,11 +63,12 @@ class Contract(Jsonify, DBDocument):
     def from_json(self, data: dict):
         contract = Contract()
 
-        contract.name = data[contract_name]
-        contract.skills = data[contract_skills]
+        contract.name = data.setdefault(contract_name, [])
+        contract.skills = data.setdefault(contract_skills, [])
 
         constraint_creator = ContractConstraintCreator()
-        for constraint in data[contract_constraints]:
+        constraints = data.setdefault(contract_constraints, [])
+        for constraint in constraints:
             new_constraint = constraint_creator.create_contact_constraint(
                 constraint
             )
