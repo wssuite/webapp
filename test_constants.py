@@ -123,6 +123,8 @@ night_shift_type = {
 work_shift_group = {shift_group_name: "Work", shift_group_shifts_list: []}
 rest_shift_group = {shift_group_name: "Rest", shift_group_shifts_list: []}
 
+day_shift_group = {shift_group_name: "Day", shift_group_shifts_list: ["Early"]}
+night_shift_group = {shift_group_name: "Night", shift_group_shifts_list: []}
 test_work_shift_group = work_shift_group.copy()
 test_work_shift_group[shift_group_shifts_list] = ["Day"]
 
