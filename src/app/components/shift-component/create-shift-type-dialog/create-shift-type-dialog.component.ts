@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { shiftsExample } from 'src/app/constants/shifts';
+import { Shift } from 'src/app/models/Shift';
 
 @Component({
   selector: 'app-create-shift-type-dialog',
@@ -10,9 +11,9 @@ import { shiftsExample } from 'src/app/constants/shifts';
 })
 export class CreateShiftTypeDialogComponent {
   shiftTypeName: string;
-  availableShifts: string[];
-  shifts: string[];
-  selectedShift: string;
+  availableShifts: Shift[];
+  shifts: Shift[];
+  selectedShift: Shift;
 
 
   inputControlForm = new FormGroup({
@@ -38,7 +39,7 @@ addShift() {
   }
 }
 
-removeShift(shift: string) {
+removeShift(shift: Shift) {
   const index = this.shifts.indexOf(shift);
   if (index > -1) {
     this.shifts.splice(index, 1);

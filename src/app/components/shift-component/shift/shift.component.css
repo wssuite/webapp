@@ -2,3 +2,18 @@ button{
     margin-left: 5vw;
     width: 400px;  
 }
+
+.shiftCard{
+    margin-top: 5vw;
+    margin-left: 20%;
+}
+
+mat-card{
+    padding: 2%;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.mat-mdc-form-field + .mat-mdc-form-field {
+    margin-left: 8px;
+  }

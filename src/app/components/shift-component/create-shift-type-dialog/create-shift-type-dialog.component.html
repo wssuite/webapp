@@ -20,7 +20,7 @@
       <mat-label>Select a shift</mat-label>
       <mat-select [(value)]="selectedShift">
         <mat-option *ngFor="let shift of availableShifts" [value]="shift">
-          {{ shift }}
+          {{ shift.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -31,7 +31,7 @@
   <table class="shiftTable">
     <tr *ngFor="let shift of shifts">
       <td class="shiftName">
-        {{ shift }}
+        {{ shift.name }}
       </td>
       <button
         mat-raised-button

@@ -45,6 +45,9 @@ import { ShiftTypeComponent } from './components/shift-component/shift-type/shif
 import { ShiftGroupComponent } from './components/shift-component/shift-group/shift-group.component';
 import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatCardModule} from '@angular/material/card';
+import {MatMenuModule} from '@angular/material/menu';
+
 
 @NgModule({
   declarations: [
@@ -94,7 +97,9 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatExpansionModule,
     MatTooltipModule,
     MatSidenavModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatCardModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent],

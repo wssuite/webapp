@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID, ALTERNATIVE_SHIFT_ID,ALTERNATIVE_SHIFT_DISPLAY_NAME, BASE_VALUE, FREE_DAYS_AFTER_SHIFT_DISPLAY_MAME, FREE_DAYS_AFTER_SHIFT_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID } from 'src/app/constants/constraints';
-import { shiftsExample } from 'src/app/constants/shifts';
+import { shiftExample} from 'src/app/constants/shifts';
 import { AlternativeShift } from 'src/app/models/AlternativeShift';
 import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
 import { ShiftConstraint } from 'src/app/models/ShiftConstraint';
@@ -25,7 +25,7 @@ export class TestingComponent {
   unwantedPatternsErrorState: boolean;
 
   constructor() {
-    this.possibleShifts = shiftsExample;
+    this.possibleShifts = shiftExample;
     this.alternativeConstraint = new AlternativeShift(ALTERNATIVE_SHIFT_ID,ALTERNATIVE_SHIFT_DISPLAY_NAME);
     this.alternativeShiftConstraintErrorState = true;
     this.shiftTypeConstraint = new ShiftConstraint(FREE_DAYS_AFTER_SHIFT_ID, FREE_DAYS_AFTER_SHIFT_DISPLAY_MAME);
