@@ -7,13 +7,19 @@
             {{ shiftGroup.name }}
         </mat-panel-title>
         </mat-expansion-panel-header>
+        <div *ngIf="shiftGroup.shift.length > 0">
+            <h2>Includes the following shift:</h2>
         <div class="details" *ngFor="let shift of shiftGroup.shift">
-            <h2 > Shift: {{ shift.name }} <br> Start Time: {{ shift.startTime }} & End Time: {{ shift.endTime }}   </h2>
-        </div>
+            <h3 >{{ shift.name }} <br> Start Time: {{ shift.startTime }} & End Time: {{ shift.endTime }}   </h3>
+        </div></div>
+        <div *ngIf="shiftGroup.shiftType.length > 0">
+            <h2>Includes the following shift type:</h2>
         <div class="details" *ngFor="let shiftType of shiftGroup.shiftType">
-        <h2 > Shift Type: {{ shiftType.name }} </h2>
-        <h2 class="details" *ngFor="let shift of shiftType.shift"> Shift: {{ shift.name }} <br> Start Time: {{ shift.startTime }} & End Time: {{ shift.endTime }}  </h2>
-    </div>
+        <h3 >{{ shiftType.name }} </h3>
+        <div *ngIf="shiftType.shift.length > 0">
+            <h4>Includes the following shift :</h4>
+        <h4 class="details" *ngFor="let shift of shiftType.shift"> {{ shift.name }} <br> Start Time: {{ shift.startTime }} & End Time: {{ shift.endTime }}  </h4>
+    </div></div></div>
     
       <div class="options"><mat-panel-description>
         <button class="optionsButton"  mat-button [matMenuTriggerFor]="menu">Options</button>
@@ -35,4 +41,4 @@
         </mat-expansion-panel>
     </div>
 <app-sidenav-shift></app-sidenav-shift>
-<button mat-raised-button color="primary"  (click)="openShiftGroupDialog()">Create new shift group</button>
+<button mat-raised-button class="buttonCreate" color="primary"  (click)="openShiftGroupDialog()">Create new shift group</button>
