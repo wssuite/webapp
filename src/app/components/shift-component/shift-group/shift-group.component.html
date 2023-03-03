@@ -1,2 +1,38 @@
+<div class="shiftGroup">
+    <div class ="shiftGroupCard">
+        <mat-expansion-panel (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false" *ngFor="let shiftGroup of shiftsGroup" >
+        <mat-expansion-panel-header>
+        <mat-panel-title>
+            {{ shiftGroup.name }}
+        </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="details" *ngFor="let shift of shiftGroup.shift">
+            <h2 > Shift: {{ shift.name }} <br> Start Time: {{ shift.startTime }} & End Time: {{ shift.endTime }}   </h2>
+        </div>
+        <div class="details" *ngFor="let shiftType of shiftGroup.shiftType">
+        <h2 > Shift Type: {{ shiftType.name }} </h2>
+        <h2 class="details" *ngFor="let shift of shiftType.shift"> Shift: {{ shift.name }} <br> Start Time: {{ shift.startTime }} & End Time: {{ shift.endTime }}  </h2>
+    </div>
+    
+      <div class="options"><mat-panel-description>
+        <button class="optionsButton"  mat-button [matMenuTriggerFor]="menu">Options</button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Modify shift group </span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>Detele shift group </span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>cloud_upload</mat-icon>
+              <span>Export shift group </span>
+            </button>
+          </mat-menu>
+    </mat-panel-description></div>
+        </mat-expansion-panel>
+    </div>
 <app-sidenav-shift></app-sidenav-shift>
 <button mat-raised-button color="primary"  (click)="openShiftGroupDialog()">Create new shift group</button>

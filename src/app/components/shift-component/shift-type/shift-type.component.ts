@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { shiftsTypeExample } from 'src/app/constants/shifts';
+import { ShiftType } from 'src/app/models/Shift';
 import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/create-shift-type-dialog.component';
+
 
 @Component({
   selector: 'app-shift-type',
@@ -8,7 +11,14 @@ import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/crea
   styleUrls: ['./shift-type.component.css']
 })
 export class ShiftTypeComponent {
-  constructor(public dialog: MatDialog) {}
+  shiftsType: ShiftType[]
+  panelOpenState: boolean
+
+  constructor(public dialog: MatDialog) {
+    this.shiftsType = shiftsTypeExample;
+    this.panelOpenState = false;
+
+  }
 
   openShiftTypeDialog() {
     this.dialog.open(CreateShiftTypeDialogComponent,  

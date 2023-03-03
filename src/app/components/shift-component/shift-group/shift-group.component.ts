@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateShiftDialogComponent } from '../create-shift-dialog/create-shift-dialog.component';
+import { shiftGroupExample } from 'src/app/constants/shifts';
+import { ShiftGroup } from 'src/app/models/Shift';
 import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/create-shift-group-dialog.component';
 
 @Component({
@@ -9,7 +10,13 @@ import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/cr
   styleUrls: ['./shift-group.component.css']
 })
 export class ShiftGroupComponent {
-  constructor(public dialog: MatDialog) {}
+  shiftsGroup: ShiftGroup[]
+  panelOpenState: boolean
+  
+  constructor(public dialog: MatDialog) {
+    this.shiftsGroup = shiftGroupExample;
+    this.panelOpenState = false;
+  }
 
   openShiftGroupDialog() {
     this.dialog.open(CreateShiftGroupDialogComponent,  

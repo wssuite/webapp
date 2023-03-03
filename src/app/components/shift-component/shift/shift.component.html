@@ -1,38 +1,34 @@
 <div class="shift">
-    <app-sidenav-shift></app-sidenav-shift>
-<div class = "shiftCard">
-    <mat-expansion-panel *ngFor="let shift of shifts" (opened)="panelOpenState = true"
-            (closed)="panelOpenState = false">
+<div class ="shiftCard">
+    <mat-expansion-panel (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"*ngFor="let shift of shifts" >
     <mat-expansion-panel-header>
     <mat-panel-title>
-        {{ shift }}
+        {{ shift.name }}
     </mat-panel-title>
-    <mat-panel-description>
-        <button mat-icon-button [matMenuTriggerFor]="menu" >
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item>
-              <mat-icon>edit</mat-icon>
-              <span>Modify shift</span>
-            </button>
-            <button mat-menu-item>
-              <mat-icon>delete</mat-icon>
-              <span>Detele shift</span>
-            </button>
-            <button mat-menu-item>
-              <mat-icon>cloud_upload</mat-icon>
-              <span>Export shift</span>
-            </button>
-          </mat-menu>
-    </mat-panel-description>
     </mat-expansion-panel-header>
-    <p>I'm visible because I am open</p>
+  <h2 class="details"> Start Time : {{ shift.startTime }}</h2>
+  <h2 class="details"> End Time: {{ shift.endTime }}</h2>
+  <div class="options"><mat-panel-description>
+    <button class="optionsButton"  mat-button [matMenuTriggerFor]="menu">Options</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>edit</mat-icon>
+          <span>Modify shift</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>delete</mat-icon>
+          <span>Detele shift</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>cloud_upload</mat-icon>
+          <span>Export shift</span>
+        </button>
+      </mat-menu>
+</mat-panel-description></div>
     </mat-expansion-panel>
-
-
-
 </div>
-<button mat-raised-button color="primary"  (click)="openShiftDialog()">Create new shift</button>
+<app-sidenav-shift></app-sidenav-shift>
+<button class="buttonCreate" mat-raised-button color="primary"  (click)="openShiftDialog()">Create new shift</button>
 </div>
 
