@@ -1,49 +1,70 @@
 from src.dao.abstract_dao import connect_to_db
-from src.dao.shift_group_dao import ShiftGroupDao
+from src.handlers.shift_group_handler import ShiftGroupHandler
 from flask import Blueprint, request, Response
-from src.models.shift_group import ShiftGroup
-from constants import shift_group_name
+from constants import shift_group_name, user_token, ok_message
+from src.exceptions.project_base_exception import ProjectBaseException
 
 mod = Blueprint("shift_group_controller", __name__, url_prefix="/shiftGroup")
 
-shift_group_dao = ShiftGroupDao(connect_to_db())
+shift_group_handler = ShiftGroupHandler(connect_to_db())
 
 
 @mod.route("/add", methods=["POST"])
 def add_shift_group():
-    shift_group_dict = request.json
-    shift_group = ShiftGroup().from_json(shift_group_dict)
-    shift_group_dao.insert_one_if_not_exist(shift_group.db_json())
-    return Response("OK", 200)
+    try:
+        token = request.args[user_token]
+        shift_group_dict = request.json
+        shift_group_handler.add(token, shift_group_dict)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchAll", methods=["GET"])
 def get_all_shift_groups():
-    return shift_group_dao.fetch_all()
+    try:
+        token = request.args[user_token]
+        return shift_group_handler.get_all(token)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchByName", methods=["GET"])
 def get_shift_group_by_name():
-    name = request.args[shift_group_name]
-    return shift_group_dao.find_by_name(name)
+    try:
+        token = request.args[user_token]
+        name = request.args[shift_group_name]
+        return shift_group_handler.get_by_name(token, name)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/remove", methods=["DELETE"])
 def remove_shift_group():
-    name = request.args[shift_group_name]
-    shift_group_dao.remove(name)
-    return Response("OK", 200)
+    try:
+        token = request.args[user_token]
+        name = request.args[shift_group_name]
+        shift_group_handler.delete(token, name)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_shift_groups_names():
-    shift_groups = shift_group_dao.fetch_all()
-    return [shift_group[shift_group_name] for shift_group in shift_groups]
+    try:
+        token = request.args[user_token]
+        return shift_group_handler.get_all_names(token)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/update", methods=["PUT"])
 def update_shift_group():
-    shift_group_dict = request.json
-    shift_group = ShiftGroup().from_json(shift_group_dict)
-    shift_group_dao.update(shift_group.db_json())
-    return Response("OK", 200)
+    try:
+        token = request.args[user_token]
+        shift_group_dict = request.json
+        shift_group_handler.update(token, shift_group_dict)
+        return Response("OK", 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
