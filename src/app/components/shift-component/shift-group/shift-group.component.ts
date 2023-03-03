@@ -27,4 +27,11 @@ export class ShiftGroupComponent {
       });
   }
 
+  deleteShiftGroup(shiftGroup: ShiftGroup){
+    const index = this.shiftsGroup.indexOf(shiftGroup);
+    if (index > -1) {
+      this.shiftsGroup.splice(index, 1);
+    }
+  }
+
 }

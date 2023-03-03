@@ -27,4 +27,12 @@ export class ShiftComponent {
       });
   }
 
+  deleteShift(shift: Shift){
+    //Manque la vérification si le shift est dans un shift type ou group
+    const index = this.shifts.indexOf(shift);
+    if (index > -1) {
+      this.shifts.splice(index, 1);
+    }
+  }
+
 }

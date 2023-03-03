@@ -29,4 +29,12 @@ export class ShiftTypeComponent {
       });
   }
 
+  deleteShiftType(shiftType: ShiftType){
+    //Manque la vérification si le shift est dans un shift type ou group
+    const index = this.shiftsType.indexOf(shiftType);
+    if (index > -1) {
+      this.shiftsType.splice(index, 1);
+    }
+  }
+
 }

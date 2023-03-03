@@ -1,7 +1,7 @@
 <div class="shift">
-<div class ="shiftCard">
+<div class ="shiftCard" >
     <mat-expansion-panel (opened)="panelOpenState = true"
-    (closed)="panelOpenState = false"*ngFor="let shift of shifts" >
+    (closed)="panelOpenState = false" *ngFor="let shift of shifts" >
     <mat-expansion-panel-header>
     <mat-panel-title>
         {{ shift.name }}
@@ -16,7 +16,7 @@
           <mat-icon>edit</mat-icon>
           <span>Modify shift</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="deleteShift(shift)">
           <mat-icon>delete</mat-icon>
           <span>Detele shift</span>
         </button>
