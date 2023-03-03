@@ -19,6 +19,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
+
+
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
@@ -28,9 +30,9 @@ import { ScheduleGenerationComponent } from "./components/schedule-generation/sc
 import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
-import { WeightComponent } from './components/weight/weight.component';
-import { AlternativeShiftComponent } from './components/alternative-shift/alternative-shift.component';
-import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
+import { WeightComponent } from "./components/weight/weight.component";
+import { AlternativeShiftComponent } from "./components/alternative-shift/alternative-shift.component";
+import { PatternElementComponent } from "./components/pattern-element/pattern-element.component";
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
@@ -47,7 +49,8 @@ import { SidenavShiftComponent } from './components/shift-component/sidenav-shif
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
-
+import { IntegerConstraintComponent } from "./components/integer-constraint/integer-constraint.component";
+import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
 
 @NgModule({
   declarations: [
@@ -64,6 +67,7 @@ import {MatMenuModule} from '@angular/material/menu';
     WeightComponent,
     ShiftComponent,
     CreateShiftDialogComponent,
+    IntegerConstraintComponent,
     AlternativeShiftComponent,
     ShiftConstraintComponent,
     MinMaxConsecutiveShiftComponent,
@@ -72,7 +76,8 @@ import {MatMenuModule} from '@angular/material/menu';
     CreateShiftTypeDialogComponent,
     ShiftTypeComponent,
     ShiftGroupComponent,
-    SidenavShiftComponent
+    SidenavShiftComponent,
+    BooleanConstraintComponent,
   ],
   imports: [
     BrowserModule,

@@ -89,4 +89,3 @@ export const shiftGroupExample: ShiftGroup[] = [
 
 
 
-export const shiftExample = ["Early", "MidDay", "Late"]

@@ -1,34 +1,14 @@
-<p>Put here any component you want to test!</p>
 <mat-expansion-panel>
-    <mat-expansion-panel-header>
-        <mat-panel-title>{{alternativeConstraint.displayName}}</mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-alternative-shift [(constraint)]="alternativeConstraint" (errorState)="updateAlternativeConstraintErrorState($event)" [possibleShifts]="possibleShifts"></app-alternative-shift>
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{ constraint.displayName }}</mat-panel-title>
+  </mat-expansion-panel-header>
+  <app-integer-constraint
+    [constraint]="constraint"
+    (errorState)="updateConstraintErrorState($event)"
+  ></app-integer-constraint>
 </mat-expansion-panel>
-<p>The alternative constraint has an error: {{alternativeShiftConstraintErrorState}} and the shift is: {{alternativeConstraint.shiftId}}</p>
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-        <mat-panel-title>{{shiftTypeConstraint.displayName}}</mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-shift-constraint [(constraint)]="shiftTypeConstraint" (errorState)="updateShiftConstraintErrorState($event)" [possibleShifts]="possibleShifts"></app-shift-constraint>
-</mat-expansion-panel>
-<p>The shift type constraint has an error: {{shiftTypeConstraintErrorState}} and the shift is: {{shiftTypeConstraint.shiftId}} and the value is: {{shiftTypeConstraint.value}}</p>
 
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-        <mat-panel-title>{{minMaxConsecutiveShift.displayName}}</mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-min-max-consecutive-shift [(constraint)]="minMaxConsecutiveShift" (errorState)="updateMinMaxConstraintErrorState($event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
-</mat-expansion-panel>
-<p>The shift type constraint has an error: {{minMaxConstraintErrorState}} and the shift is: {{minMaxConsecutiveShift.shiftId}}</p>
-<p>The min value is: {{minMaxConsecutiveShift.minValue}} and the min weight is :{{minMaxConsecutiveShift.minWeight}}</p>
-<p>The max value is: {{minMaxConsecutiveShift.maxValue}} and the max weight is :{{minMaxConsecutiveShift.maxWeight}}</p>
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-        <mat-panel-title>{{unwantedPatternsConstraint.displayName}}</mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-unwanted-patterns [(constraint)]="unwantedPatternsConstraint" (errorState)="updateUnwantedPatternsErrorState($event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
-</mat-expansion-panel>
-<p>The constraint has {{unwantedPatternsConstraint.patternElements.length}} elements
-    The constraint has an error: {{unwantedPatternsErrorState}}
+<p>
+  The constraint has an error: {{ constraintErrorState }} and the weight is:
+  {{ constraint.weight }}. The value is : {{ constraint.value }}
 </p>
