@@ -25,7 +25,7 @@ import { MainMenuComponent } from "./components/main-menu/main-menu.component";
 import { ConsultScheduleComponent } from "./components/consult-schedule/consult-schedule.component";
 import { ContractCreationComponent } from "./components/contract-creation/contract-creation.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
-import { NurseComponent } from "./components/nurse/nurse.component";
+import { NurseComponent } from "./components/nurse-component/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
 import { WeightComponent } from "./components/weight/weight.component";
@@ -38,6 +38,9 @@ import { IntegerConstraintComponent } from "./components/integer-constraint/inte
 import { ShiftConstraintComponent } from "./components/shift-constraint/shift-constraint.component";
 import { MinMaxConsecutiveShiftComponent } from "./components/min-max-consecutive-shift/min-max-consecutive-shift.component";
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
+import { SidenavNurseComponent } from './components/nurse-component/sidenav-nurse/sidenav-nurse.component';
+import { CreateNurseDialogComponent } from './components/nurse-component/create-nurse-dialog/create-nurse-dialog.component';
+import { CreateNurseGroupDialogComponent } from './components/nurse-component/create-nurse-group-dialog/create-nurse-group-dialog.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +61,9 @@ import { BooleanConstraintComponent } from "./components/boolean-constraint/bool
     MinMaxConsecutiveShiftComponent,
     UnwantedPatternsComponent,
     BooleanConstraintComponent,
+    SidenavNurseComponent,
+    CreateNurseDialogComponent,
+    CreateNurseGroupDialogComponent,
   ],
   imports: [
     BrowserModule,

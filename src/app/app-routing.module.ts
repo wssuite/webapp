@@ -3,7 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { ConsultScheduleComponent } from "./components/consult-schedule/consult-schedule.component";
 import { ContractCreationComponent } from "./components/contract-creation/contract-creation.component";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
-import { NurseComponent } from "./components/nurse/nurse.component";
+import { NurseComponent } from "./components/nurse-component/nurse/nurse.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
 import { TestingComponent } from "./components/testing/testing.component";
 import {
