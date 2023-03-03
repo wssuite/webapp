@@ -74,3 +74,12 @@ depended_contracts = "depended_contracts"
 contract_shifts = "shifts"
 
 ok_message = "ok"
+
+
+"""User"""
+user_username = "username"
+user_password = "password"
+user_token = "token"
+empty_token = "empty"
+admin = "admin"
+utf8 = "utf-8"
