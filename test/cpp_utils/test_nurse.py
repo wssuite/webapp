@@ -18,7 +18,7 @@ class TestNurse(TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_nurse_creation_without_contract_definition_returns_nurse_with_empty_contract(
+    def test_nurse_creation_without_contracts_gets_nurse_with_empty_contract(
         self,
     ):
         nurse = Nurse().from_json(self.nurse_without_contract)

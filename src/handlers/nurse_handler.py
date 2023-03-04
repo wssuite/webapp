@@ -85,7 +85,8 @@ class NurseHandler:
 
     """
     Get the details of a nurse by username:
-    Add the contracts that exist in the nurse groups to the list of inherited contracts
+    Add the contracts that exist in the nurse groups
+    to the list of inherited contracts
     """
 
     def get_by_username(self, token, nurse_to_be_found_username):
