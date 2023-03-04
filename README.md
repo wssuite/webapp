@@ -13,8 +13,9 @@ To get the submodules as they were with the branch in use, use the following com
 ## Using docker-compose
 
 There are two docker-compose files in this repository:
-	- docker-compose.yml : for deployment that uses an image pre-build
-	- docker-compose-dev.yml: for testing reasons during development
+
+	docker-compose.yml : for deployment that uses an image pre-build
+	docker-compose-dev.yml: for testing reasons during development
 
 Those files prepare the environment ex. creating the network and volumes necessary,
 for the docker containers to work properly.
@@ -22,9 +23,11 @@ for the docker containers to work properly.
 To use the docker-compose file, make sure to have docker and docker-compose installed on your computer.
 
 To start the docker containers:
+
 	 docker-compose -f <docker-compose-filename> up -d --build
 
 To stop the docker containers:
+
 	 docker-compose -f <docker-compose-filename> down -v --rmi local
 
 
@@ -59,4 +62,10 @@ After those commands, update the Dockerfile to use new image and the https proto
 For the front-end development, AKA the gitmodule front-end-application, the developpers may need to restart
 only the web-app service, for this
 use the following command:
+
 	docker-compose -f docker-compose-dev.yml up -d --force-recreate --no-deps --build frontfacingserver_webapp
+
+## Running a single service
+The developer can also run a single service if it doesn't depend on other services for example mongodb service
+
+    docker-compose -f docker-compose-dev.yml up mongodb
