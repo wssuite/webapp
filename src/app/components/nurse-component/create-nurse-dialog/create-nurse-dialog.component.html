@@ -1,6 +1,6 @@
 <div class="title" mat-dialog-title>New Nurse</div>
 <div class="content"  mat-dialog-content>
-   <!-- <div class="nameNurseContainer">
+   <div class="nameNurseContainer">
     <label>Name</label>
     <mat-form-field class = "nameForm" [formGroup]="inputControlForm">
       <mat-label>Enter nurse name</mat-label>
@@ -11,23 +11,41 @@
         [(ngModel)]="data.name"
       />
     </mat-form-field>
-    </div>-->
+    </div>
 </div>
 <div class="contractSection">
   <H1 class="contractSectionTitle">Contracts</H1>
-  <!--<div *ngIf="availableContracts.length > 0">
+  <div *ngIf="availableContracts.length > 0">
     <mat-form-field appearance="fill">
-      <mat-label>Select a shift</mat-label>
-      <mat-select [(value)]="selectedShift">
-        <mat-option *ngFor="let shift of availableShifts" [value]="shift">
-          {{ shift.name }}
+      <mat-label>Select a contract</mat-label>
+      <mat-select [(value)]="selectedContract">
+        <mat-option *ngFor="let contract of availableContracts" [value]="contract">
+          {{ contract }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button class="addShiftButton" (click)="addShift()">
-      add Shift
+    <button mat-raised-button class="addContractButton" (click)="addContract()">
+      add contract
     </button>
-  </div>-->
+  </div>
+  <table class="contractTable">
+    <tr *ngFor="let contract of contracts">
+      <td class="contractName">
+        <mat-chip>
+        {{ contract }}
+      </mat-chip>
+      </td>
+      <button
+        mat-raised-button
+        class="removeContractButton"
+        (click)="removeContract(contract)"
+        color="accent"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </tr>
+  </table>
+
 
 </div>
 

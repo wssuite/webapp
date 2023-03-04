@@ -1,3 +1,30 @@
+<div class="nurse">
+    <div class ="nurseGroupCard" >
+      <mat-card *ngFor="let nurseGroup of nursesGroup">
+      <mat-card-header>
+        <mat-card-title> {{ nurseGroup.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-actions align="end">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Modify nurse group</span>
+            </button>
+            <button mat-menu-item (click)="deleteNurseGroup(nurseGroup)">
+              <mat-icon>delete</mat-icon>
+              <span>Detele nurse group</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>cloud_upload</mat-icon>
+              <span>Export nurse group</span>
+            </button>
+          </mat-menu>
+      </mat-card-actions>
+    </mat-card>
+    </div>
 <app-sidenav-nurse></app-sidenav-nurse>
 <button mat-raised-button class="buttonCreate" color="primary"  (click)="openNurseGroupDialog()">Create new Nurse Group</button>
 

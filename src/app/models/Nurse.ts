@@ -17,3 +17,9 @@ export interface NurseInterface {
   contracts: string[];
   username: string;
 }
+
+export interface NurseGroup {
+  name: string;
+  contracts: string[];
+  nurses: NurseInterface[];
+}

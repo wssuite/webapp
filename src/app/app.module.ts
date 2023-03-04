@@ -45,6 +45,7 @@ import { NurseGroupComponent } from './components/nurse-component/nurse-group/nu
 import { MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,6 +93,8 @@ import {MatCardModule} from '@angular/material/card';
     MatTooltipModule,
     MatMenuModule,
     MatCardModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

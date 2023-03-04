@@ -23,6 +23,7 @@ export class NurseComponent {
         height: '60%',
         width: '50%', 
         position: {top:'5vh',left: '25%', right: '25%'},
+        data: {name: '', contracts: [], username:''},
       });
   }
 
