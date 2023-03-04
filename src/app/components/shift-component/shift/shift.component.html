@@ -1,16 +1,13 @@
 <div class="shift">
 <div class ="shiftCard" >
-    <mat-expansion-panel (opened)="panelOpenState = true"
-    (closed)="panelOpenState = false" *ngFor="let shift of shifts" >
-    <mat-expansion-panel-header>
-    <mat-panel-title>
-        {{ shift.name }}
-    </mat-panel-title>
-    </mat-expansion-panel-header>
-  <h2 class="details"> Start Time : {{ shift.startTime }}</h2>
-  <h2 class="details"> End Time: {{ shift.endTime }}</h2>
-  <div class="options"><mat-panel-description>
-    <button class="optionsButton"  mat-button [matMenuTriggerFor]="menu">Options</button>
+  <mat-card *ngFor="let shift of shifts">
+  <mat-card-header>
+    <mat-card-title> {{ shift.name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions align="end">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_horiz</mat-icon>
+    </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item>
           <mat-icon>edit</mat-icon>
@@ -25,8 +22,8 @@
           <span>Export shift</span>
         </button>
       </mat-menu>
-</mat-panel-description></div>
-    </mat-expansion-panel>
+  </mat-card-actions>
+</mat-card>
 </div>
 <app-sidenav-shift></app-sidenav-shift>
 <button class="buttonCreate" mat-raised-button color="primary"  (click)="openShiftDialog()">Create new shift</button>

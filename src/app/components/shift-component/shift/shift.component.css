@@ -3,33 +3,21 @@
     width: 400px;  
 }
 
-mat-expansion-panel-header{
+mat-card-header{
     padding: 2%;
     font-size: 30px;
     font-weight: bold;
-}
-
-.mat-mdc-form-field + .mat-mdc-form-field {
-    margin-left: 8px;
-  }
-
-.options{
-    position:relative;
-	left:95%;
-    font-weight: bold;
+    
 }
 
 .shiftCard{
-    position:absolute;
-    left: 5vh;
-    top: 10vh;
+    position:fixed;
+    left: 10%;
+    top: 10%;
     margin-top: 5vw;
     margin-left: 20%;
     width: 60%;
 }
 
-.details{
-    background-color: lightgrey;
-    border-radius: 8px;
-}
+
 
