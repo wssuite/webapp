@@ -31,7 +31,7 @@
   <table class="shiftTable">
     <tr *ngFor="let shift of shifts">
       <td class="shiftName">
-        {{ shift.name }}
+        <mat-chip>{{ shift.name }}</mat-chip>
       </td>
       <button
         mat-raised-button

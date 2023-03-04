@@ -10,8 +10,13 @@ mat-card-header{
     
 }
 
+mat-card {
+    margin-bottom: 1vh;
+}
+
+
 .shiftTypeCard{
-    position:fixed;
+    position:absolute;
     left: 10%;
     top: 10%;
     margin-top: 5vw;

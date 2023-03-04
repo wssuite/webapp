@@ -21,7 +21,7 @@ export class CreateShiftGroupDialogComponent {
     name: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<CreateShiftTypeDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: ShiftGroup) {
+  constructor(public dialogRef: MatDialogRef<CreateShiftGroupDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: ShiftGroup) {
     this.availableShifts = shiftsExample;
     this.selectedShift = this.availableShifts[0];
     this.availableShiftsType = shiftsTypeExample;
