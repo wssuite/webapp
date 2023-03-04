@@ -1,1 +1,59 @@
-<p>create-nurse-group-dialog works!</p>
+<div class="title" mat-dialog-title>New Nurse Group</div>
+<div class="content"  mat-dialog-content>
+   <!-- <div class="nameNurseGroupContainer">
+    <label>Name</label>
+    <mat-form-field class = "nameForm" [formGroup]="inputControlForm">
+      <mat-label>Enter nurse name</mat-label>
+      <input id="input"
+        matInput
+        placeholder="Name"
+        formControlName="name"
+        [(ngModel)]="data.name"
+      />
+    </mat-form-field>
+    </div>-->
+</div>
+<div class="nurseSection">
+    <H1 class="nurseSectionTitle">Nurses</H1>
+    <!--<div *ngIf="availableContracts.length > 0">
+      <mat-form-field appearance="fill">
+        <mat-label>Select a shift</mat-label>
+        <mat-select [(value)]="selectedShift">
+          <mat-option *ngFor="let shift of availableShifts" [value]="shift">
+            {{ shift.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button class="addShiftButton" (click)="addShift()">
+        add Shift
+      </button>
+    </div>-->
+  
+  </div>
+<div class="contractSection">
+  <H1 class="contractSectionTitle">Contracts</H1>
+  <!--<div *ngIf="availableContracts.length > 0">
+    <mat-form-field appearance="fill">
+      <mat-label>Select a shift</mat-label>
+      <mat-select [(value)]="selectedShift">
+        <mat-option *ngFor="let shift of availableShifts" [value]="shift">
+          {{ shift.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button class="addShiftButton" (click)="addShift()">
+      add Shift
+    </button>
+  </div>-->
+
+</div>
+
+<div mat-dialog-action class="buttons-container">
+    <button  mat-raised-button color="primary" (click)="add()">
+        Add
+    </button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">
+        Cancel
+    </button>
+
+
