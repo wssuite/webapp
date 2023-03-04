@@ -21,7 +21,7 @@ export const shiftsExample: Shift[] = [
 export const shiftsTypeExample: ShiftType[] = [
     {
         name:"Rotating shift",
-        shift: [    {
+        shifts: [    {
             name: "Early",
             startTime: "6h00 AM",
             endTime: "11h00 AM"
@@ -33,7 +33,7 @@ export const shiftsTypeExample: ShiftType[] = [
           }]},
     {
         name:"Night shift",
-        shift:  [
+        shifts:  [
           {
             name: "Early",
             startTime: "6h00 AM",
@@ -43,22 +43,22 @@ export const shiftsTypeExample: ShiftType[] = [
     },
     {
         name:"Permanent shift",
-        shift:  []
+        shifts:  []
     },
     {
         name:"Fixed shift",
-        shift:  []
+        shifts:  []
     },
     {
         name:"On-Call Shift",
-        shift:  []
+        shifts:  []
     }
 ]
 
 export const shiftGroupExample: ShiftGroup[] = [    
     {
     name:"Work",
-    shift: [    {
+    shifts: [    {
         name: "Early",
         startTime: "6h00 AM",
         endTime: "11h00 AM"
@@ -73,9 +73,9 @@ export const shiftGroupExample: ShiftGroup[] = [
          startTime: "15h00 PM",
          endTime: "20h00 PM"
       }],
-    shiftType: [    {
+    shiftsType: [    {
         name:"Night shift",
-        shift:  [          {
+        shifts:  [          {
             name: "Early",
             startTime: "6h00 AM",
             endTime: "11h00 AM"
@@ -83,8 +83,8 @@ export const shiftGroupExample: ShiftGroup[] = [
     }]},
 {
     name:"Rest",
-    shift:  [],
-    shiftType: []
+    shifts:  [],
+    shiftsType: []
 }];
 
 

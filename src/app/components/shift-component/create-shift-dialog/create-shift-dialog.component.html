@@ -8,7 +8,7 @@
         matInput
         placeholder="name"
         formControlName="name"
-        [(ngModel)]="shiftName"
+        [(ngModel)]="data.name"
       />
     </mat-form-field>
     </div>
@@ -18,14 +18,14 @@
         <div class="label" mat-label>Start Time</div>
         <ngx-timepicker-field 
             [defaultTime]="'00:00 am'"
-            [(ngModel)]="startTime"
+            [(ngModel)]="data.startTime"
             ></ngx-timepicker-field>
     </div>
     <div class="timepickerEnd">
         <div class="label" mat-label>End Time</div>
         <div class="time"><ngx-timepicker-field class="timer"
         [defaultTime]="'00:00 am'"
-        [(ngModel)]="endTime"
+        [(ngModel)]="data.endTime"
         ></ngx-timepicker-field></div>
     </div>
     </div>

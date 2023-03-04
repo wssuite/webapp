@@ -23,7 +23,8 @@ export class ShiftGroupComponent {
       { disableClose: true,  
         height: '80%',
         width: '50%', 
-        position: {top:'5vh',left: '25%', right: '25%'}
+        position: {top:'5vh',left: '25%', right: '25%'},
+        data: {name: '', shifts: [], shiftsType: ''}
       });
   }
 

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Shift } from 'src/app/models/Shift';
 
 @Component({
   selector: 'app-create-shift-dialog',
@@ -8,18 +9,10 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./create-shift-dialog.component.css']
 })
 export class CreateShiftDialogComponent {
-  shiftName: string;
-  startTime: string;
-  endTime: string;
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });
-
-  constructor(public dialogRef: MatDialogRef<CreateShiftDialogComponent >,) {
-    this.shiftName = "";
-    this.startTime = "";
-    this.endTime = "";
-    
+  constructor(public dialogRef: MatDialogRef<CreateShiftDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: Shift ) { 
 }
 
 add() {

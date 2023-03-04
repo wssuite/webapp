@@ -8,7 +8,7 @@
         matInput
         placeholder="name"
         formControlName="name"
-        [(ngModel)]="shiftGroupName"
+        [(ngModel)]="data.name"
       />
     </mat-form-field>
     </div>
@@ -29,7 +29,7 @@
     </button>
   </div>
   <table class="shiftTable">
-    <tr *ngFor="let shift of shifts">
+    <tr *ngFor="let shift of data.shifts">
       <td class="shiftName">
         {{ shift.name }}
       </td>
@@ -60,7 +60,7 @@
     </button>
   </div>
   <table class="shiftTypeTable">
-    <tr *ngFor="let shiftType of shiftsType">
+    <tr *ngFor="let shiftType of data.shiftsType">
       <td class="shiftTypeName">
         {{ shiftType.name }}
       </td>
