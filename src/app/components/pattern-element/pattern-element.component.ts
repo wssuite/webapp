@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { PatternElement } from 'src/app/models/PatternElement';
 import { DateUtils } from 'src/app/utils/DateUtils';
@@ -8,7 +8,7 @@ import { DateUtils } from 'src/app/utils/DateUtils';
   templateUrl: './pattern-element.component.html',
   styleUrls: ['./pattern-element.component.css']
 })
-export class PatternElementComponent {
+export class PatternElementComponent implements OnInit{
 
   possibleDays: string[]
 
@@ -27,6 +27,11 @@ export class PatternElementComponent {
     this.errorState = new EventEmitter<boolean>();
     this.daySelectorFormControl = new FormControl(null, Validators.required);
     this.shiftSelectorFormControl = new FormControl(null, Validators.required);
+  }
+
+  ngOnInit(): void {
+    this.daySelectorFormControl.setValue(this.element.dayName);
+    this.shiftSelectorFormControl.setValue(this.element.shiftId);  
   }
 
   emitElement(){

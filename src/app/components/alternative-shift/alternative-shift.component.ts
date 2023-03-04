@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AlternativeShift } from 'src/app/models/AlternativeShift';
 
@@ -7,7 +7,7 @@ import { AlternativeShift } from 'src/app/models/AlternativeShift';
   templateUrl: './alternative-shift.component.html',
   styleUrls: ['./alternative-shift.component.css']
 })
-export class AlternativeShiftComponent {
+export class AlternativeShiftComponent implements OnInit{
 
   @Input() constraint!: AlternativeShift;
   @Output() constraintChange: EventEmitter<AlternativeShift>;
@@ -25,6 +25,10 @@ export class AlternativeShiftComponent {
     this.shiftSelectorCtrl =new FormControl(null, Validators.required);
     this.weightLabel = "weight";
     
+  }
+
+  ngOnInit(): void {
+    this.shiftSelectorCtrl.setValue(this.constraint.shiftId);    
   }
 
   emitConstraint() {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
 
@@ -7,7 +7,7 @@ import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
   templateUrl: './min-max-consecutive-shift.component.html',
   styleUrls: ['./min-max-consecutive-shift.component.css']
 })
-export class MinMaxConsecutiveShiftComponent {
+export class MinMaxConsecutiveShiftComponent implements OnInit{
 
   @Input() constraint!: MinMaxShiftConstraint;
   @Output() constraintChange: EventEmitter<MinMaxShiftConstraint>;
@@ -31,6 +31,10 @@ export class MinMaxConsecutiveShiftComponent {
     this.selectFormCtrl = new FormControl(null, Validators.required);
     this.maxWeightLabel = " Max weight";
     this.minWeightLabel = "Min weight"
+  }
+
+  ngOnInit(): void {
+      this.selectFormCtrl.setValue(this.constraint.shiftId);
   }
 
   emitErrorState(){
