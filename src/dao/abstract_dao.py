@@ -17,6 +17,16 @@ def connect_to_fake_db():
     return mongomock.MongoClient()
 
 
+class DBConnection:
+    connection = None
+
+    @staticmethod
+    def get_connection():
+        if DBConnection.connection is None:
+            DBConnection.connection = connect_to_db()
+        return DBConnection.connection
+
+
 class AbstractDao:
     def __init__(self, mongo):
         self.db = mongo.test

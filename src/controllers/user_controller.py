@@ -1,4 +1,4 @@
-from src.dao.abstract_dao import connect_to_db
+from src.dao.abstract_dao import DBConnection
 from src.handlers.user_handler import AuthenticationHandler
 from flask import Blueprint, request, Response
 from constants import user_token, user_username, ok_message
@@ -6,7 +6,7 @@ from src.exceptions.project_base_exception import ProjectBaseException
 
 mod = Blueprint("user_controller", __name__, url_prefix="/user")
 
-handler = AuthenticationHandler(connect_to_db())
+handler = AuthenticationHandler(DBConnection.get_connection())
 
 
 @mod.route("/login", methods=["POST"])

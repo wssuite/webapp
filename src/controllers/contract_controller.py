@@ -1,13 +1,13 @@
 from flask import Blueprint, request, Response
 from src.handlers.contract_handler import ContractHandler
-from src.dao.abstract_dao import connect_to_db
+from src.dao.abstract_dao import DBConnection
 from constants import ok_message, contract_name
 from src.exceptions.project_base_exception import ProjectBaseException
 from constants import user_token
 
 mod = Blueprint("contract_controller", __name__, url_prefix="/contract")
 
-contract_handler = ContractHandler(connect_to_db())
+contract_handler = ContractHandler(DBConnection.get_connection())
 
 
 @mod.route("/add", methods=["POST"])

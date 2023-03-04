@@ -15,7 +15,7 @@ import config
 from flask_cors import CORS
 from src.dao.user_dao import UserDao
 from test_constants import default_user, work_shift_group, rest_shift_group
-from src.dao.abstract_dao import connect_to_db
+from src.dao.abstract_dao import DBConnection
 from constants import admin, user_password, utf8, work, rest
 from src.models.user import User
 import bcrypt
@@ -49,8 +49,9 @@ def test_client():
 
 
 if __name__ == "__main__":
+    db_connection = DBConnection.get_connection()
     app = create_app()
-    user_dao = UserDao(connect_to_db())
+    user_dao = UserDao(db_connection)
     admin_dict = user_dao.find_by_username(admin)
     if admin_dict is None:
         admin_user = User().from_json(default_user)

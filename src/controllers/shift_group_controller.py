@@ -1,4 +1,4 @@
-from src.dao.abstract_dao import connect_to_db
+from src.dao.abstract_dao import DBConnection
 from src.handlers.shift_group_handler import ShiftGroupHandler
 from flask import Blueprint, request, Response
 from constants import shift_group_name, user_token, ok_message
@@ -6,7 +6,7 @@ from src.exceptions.project_base_exception import ProjectBaseException
 
 mod = Blueprint("shift_group_controller", __name__, url_prefix="/shiftGroup")
 
-shift_group_handler = ShiftGroupHandler(connect_to_db())
+shift_group_handler = ShiftGroupHandler(DBConnection.get_connection())
 
 
 @mod.route("/add", methods=["POST"])
