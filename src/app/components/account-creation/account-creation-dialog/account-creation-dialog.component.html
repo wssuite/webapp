@@ -1,1 +1,12 @@
-<p>account-creation-dialog works!</p>
+<div mat-dialog-title>Create New Account</div>
+<div  mat-dialog-content>
+
+</div>
+<div mat-dialog-action class="buttons-container">
+    <button  mat-raised-button color="primary" (click)="createAccount()">
+        Create
+    </button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">
+        Cancel
+    </button>
+</div>

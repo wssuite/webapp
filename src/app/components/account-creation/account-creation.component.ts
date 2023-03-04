@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Account } from 'src/app/models/Account';
+import { AccountCreationDialogComponent } from './account-creation-dialog/account-creation-dialog.component';
 
 @Component({
   selector: 'app-account-creation',
@@ -20,7 +21,14 @@ export class AccountCreationComponent {
     ]
   }
 
-  createAccount(){
-    console.log("create account")
+  openCreateAccountDialog(){
+    this.dialog.open(AccountCreationDialogComponent,  
+      { disableClose: true,  
+        height: '60%',
+        width: '50%', 
+        position: {top:'5vh',left: '25%', right: '25%'},
+        data: {name: '', startTime: '', endTime: ''}
+      });
+
   }
 }
