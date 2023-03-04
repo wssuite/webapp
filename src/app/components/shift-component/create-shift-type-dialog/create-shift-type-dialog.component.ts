@@ -12,6 +12,7 @@ import { Shift, ShiftGroup, ShiftType } from 'src/app/models/Shift';
 export class CreateShiftTypeDialogComponent {
   availableShifts: Shift[];
   selectedShift: Shift;
+  shifts: Shift[];
 
 
   inputControlForm = new FormGroup({
@@ -19,8 +20,11 @@ export class CreateShiftTypeDialogComponent {
   });
 
   constructor(public dialogRef: MatDialogRef<CreateShiftTypeDialogComponent >,@Inject(MAT_DIALOG_DATA) public data: ShiftType) {
-    this.availableShifts = shiftsExample
+    this.availableShifts = shiftsExample;
     this.selectedShift = this.availableShifts[0];
+    this.shifts = []
+    
+  
   
 }
 
@@ -29,21 +33,22 @@ addShift() {
   if (index > -1) {
     this.availableShifts.splice(index, 1);
   }
-  this.data.shifts.push(this.selectedShift);
+  this.shifts.push(this.selectedShift);
   if (this.availableShifts.length > 0) {
     this.selectedShift = this.availableShifts[0];
   }
 }
 
 removeShift(shift: Shift) {
-  const index = this.data.shifts.indexOf(shift);
+  const index = this.shifts.indexOf(shift);
   if (index > -1) {
-    this.data.shifts.splice(index, 1);
+    this.shifts.splice(index, 1);
   }
   if (shift !== undefined && shift !== null) {
     this.availableShifts.push(shift);
   }
 }
+
 
 add() {
   //valide form
@@ -53,6 +58,7 @@ add() {
 
 close(){
   this.dialogRef.close();
+
 }
 
 }
