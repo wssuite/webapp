@@ -31,6 +31,7 @@ import { TestingComponent } from "./components/testing/testing.component";
 import { WeightComponent } from "./components/weight/weight.component";
 import { LoginComponent } from './components/login/login.component';
 import { AccountCreationComponent } from './components/account-creation/account-creation.component';
+import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AccountCreationComponent } from './components/account-creation/account-
     WeightComponent,
     LoginComponent,
     AccountCreationComponent,
+    AccountCreationDialogComponent,
   ],
   imports: [
     BrowserModule,
