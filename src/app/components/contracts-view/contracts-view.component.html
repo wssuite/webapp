@@ -1,1 +1,29 @@
-<p>contracts-view works!</p>
+<div class="contracts-container">
+    <div class ="contract-cards-container" >
+      <mat-card *ngFor="let contract of contracts">
+            <mat-card-header>
+                <mat-card-title> {{ contract }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-actions align="end">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon>more_horiz</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                    <mat-icon>edit</mat-icon>
+                    <span>View or Edit</span>
+                    </button>
+                    <button mat-menu-item>
+                    <mat-icon>delete</mat-icon>
+                    <span>Detele</span>
+                    </button>
+                    <button mat-menu-item>
+                    <mat-icon>cloud_upload</mat-icon>
+                    <span>Export</span>
+                    </button>
+                </mat-menu>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <button class="create-button" mat-raised-button color="primary"  (click)="createNewContract()">Create new contract</button>
+</div>

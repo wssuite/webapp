@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
   ADD_CONTRACT_URL,
+  FETCH_CONTRACT_NAMES,
   FETCH_SHIFT_GROUP_NAMES,
   FETCH_SHIFT_NAMES,
   FETCH_SHIFT_TYPE_NAMES,
@@ -44,5 +45,9 @@ export class APIService {
 
   getShiftTypeNames():Observable<string[]> {
     return this.httpClient.get<string[]>(FETCH_SHIFT_TYPE_NAMES);
+  }
+
+  getContractNames():Observable<string[]> {
+    return this.httpClient.get<string[]>(FETCH_CONTRACT_NAMES);
   }
 }

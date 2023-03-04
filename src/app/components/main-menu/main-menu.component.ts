@@ -3,9 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CONTRACTS, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
-//import { Contract } from "src/app/models/Contract";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
-//import { ContractCreationDialogComponent } from "../contract-creation-dialog/contract-creation-dialog.component";
 
 @Component({
   selector: "app-main-menu",
@@ -30,9 +28,6 @@ export class MainMenuComponent {
         break;
 
       case "Contracts":
-        /*this.dialog.open(ContractCreationDialogComponent,
-           {data: {contract: new Contract()},
-        })*/
         this.router.navigate(["/" + CONTRACTS]);
         break;
 
