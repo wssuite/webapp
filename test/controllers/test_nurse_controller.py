@@ -1,7 +1,13 @@
 from unittest.mock import Mock
 import app
 from unittest import TestCase
-from constants import nurse_name, nurse_contracts, nurse_id, nurse_username
+from constants import (
+    nurse_name,
+    nurse_direct_contracts,
+    nurse_id,
+    nurse_username,
+    nurse_inherited_contracts,
+)
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.nurse_dao import NurseDao
 
@@ -11,7 +17,7 @@ class TestNurseController(TestCase):
         self.client = app.test_client()
         self.nurse_dict = {
             nurse_name: "random",
-            nurse_contracts: ["fulltime"],
+            nurse_direct_contracts: ["fulltime"],
             nurse_username: "random",
         }
         app.nurse_controller.nurse_dao = Mock()
@@ -35,6 +41,7 @@ class TestNurseController(TestCase):
         new_nurse_id = self.dao.insert_one(self.nurse_dict.copy())
         response = self.client.get(path)
         expected = self.nurse_dict.copy()
+        expected[nurse_inherited_contracts] = []
         expected[nurse_id] = str(new_nurse_id.inserted_id)
         all_nurses = response.json
         self.assertEqual([expected], all_nurses)

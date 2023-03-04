@@ -1,8 +1,9 @@
 """Nurse fields"""
 nurse_name = "name"
-nurse_contracts = "contracts"
+nurse_direct_contracts = "direct_contracts"
 nurse_id = "nurse_id"
 nurse_username = "username"
+nurse_inherited_contracts = "inherited_contracts"
 
 """Nurse group fields"""
 nurse_group_name = "name"
