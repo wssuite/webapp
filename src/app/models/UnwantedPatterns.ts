@@ -41,11 +41,13 @@ export class UnwantedPatterns extends Constraint{
 
     fromJson(c: UnwantedPatternsInterface): void {
         this.weight = c.weight;
+        const elements: PatternElement[] = []
         for(const p of c.patternElements){
             const pattern = new PatternElement();
             pattern.fromJson(p);
-            this.patternElements.push(pattern);
+            elements.push(pattern);
         }
+        this.patternElements = elements;
     }
 }
 
