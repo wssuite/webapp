@@ -62,7 +62,7 @@ if __name__ == "__main__":
         db_json[user_password] = hashed_password
         user_dao.insert_one(db_json)
 
-    shift_group_dao = ShiftGroupDao(connect_to_db())
+    shift_group_dao = ShiftGroupDao(db_connection)
     work_group = shift_group_dao.find_by_name(work)
     rest_group = shift_group_dao.find_by_name(rest)
     if work_group is None:
