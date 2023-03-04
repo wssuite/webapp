@@ -1,12 +1,12 @@
 from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.skill_handler import SkillHandler
-from src.dao.abstract_dao import connect_to_db
+from src.dao.abstract_dao import DBConnection
 from flask import Blueprint, request, Response
 from constants import user_token
 
 mod = Blueprint("skill_controller", __name__, url_prefix="/skill")
 
-skill_handler = SkillHandler(connect_to_db())
+skill_handler = SkillHandler(DBConnection.get_connection())
 
 
 @mod.route("/fetchAll", methods=["GET"])

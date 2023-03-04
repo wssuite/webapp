@@ -1,4 +1,4 @@
-from src.dao.abstract_dao import connect_to_db
+from src.dao.abstract_dao import DBConnection
 from src.dao.shift_dao import ShiftDao
 from flask import Blueprint, request, Response
 from src.models.shift import Shift
@@ -6,7 +6,7 @@ from constants import shift_name
 
 mod = Blueprint("shift_controller", __name__, url_prefix="/shift")
 
-shift_dao = ShiftDao(connect_to_db())
+shift_dao = ShiftDao(DBConnection.get_connection())
 
 
 @mod.route("/add", methods=["POST"])
