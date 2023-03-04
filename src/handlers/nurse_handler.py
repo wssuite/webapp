@@ -52,7 +52,8 @@ class NurseHandler:
 
     def add(self, token, json):
         nurse, contract_validator = self.insertion_validations(token, json)
-        self.nurse_dao.insert_one(nurse.db_json())
+        inserted_id = self.nurse_dao.insert_one(nurse.db_json())
+        return str(inserted_id.inserted_id)
 
     """
     Before updating a nurse we need to verify:
