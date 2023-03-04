@@ -1,5 +1,6 @@
 import {  NurseGroup, NurseInterface} from "../models/Nurse";
 
+export const nurses_name_example:string[] = ["Caroline", "Zoe", "Mal", "Kyro", "Mark"]
 
 export const nurses_example: NurseInterface[] = [
   {
