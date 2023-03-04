@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { Nurse } from "src/app/models/Nurse";
+import { nurses_example } from "src/app/constants/nurses";
+import { Nurse, NurseInterface } from "src/app/models/Nurse";
 import { CreateNurseDialogComponent } from "../create-nurse-dialog/create-nurse-dialog.component";
 
 @Component({
@@ -9,12 +10,11 @@ import { CreateNurseDialogComponent } from "../create-nurse-dialog/create-nurse-
   styleUrls: ["./nurse.component.css"],
 })
 export class NurseComponent {
-  //availableContracts: string[]
+  nurses: NurseInterface[]
 
   constructor(public dialog: MatDialog) {
-    //this.availableContracts = ;
-
-
+    this.nurses = nurses_example
+    
   }
 
   openNurseDialog() {
@@ -25,6 +25,15 @@ export class NurseComponent {
         position: {top:'5vh',left: '25%', right: '25%'},
       });
   }
+
+  deleteNurse(nurse: NurseInterface){
+    //Manque la vérification si le shift est dans un shift type ou group
+    const index = this.nurses.indexOf(nurse);
+    if (index > -1) {
+      this.nurses.splice(index, 1);
+    }
+  }
+
 
 
 

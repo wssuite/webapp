@@ -42,6 +42,8 @@ import { SidenavNurseComponent } from './components/nurse-component/sidenav-nurs
 import { CreateNurseDialogComponent } from './components/nurse-component/create-nurse-dialog/create-nurse-dialog.component';
 import { CreateNurseGroupDialogComponent } from './components/nurse-component/create-nurse-group-dialog/create-nurse-group-dialog.component';
 import { NurseGroupComponent } from './components/nurse-component/nurse-group/nurse-group.component';
+import { MatMenuModule} from '@angular/material/menu';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -88,6 +90,8 @@ import { NurseGroupComponent } from './components/nurse-component/nurse-group/nu
     MatCheckboxModule,
     MatExpansionModule,
     MatTooltipModule,
+    MatMenuModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
