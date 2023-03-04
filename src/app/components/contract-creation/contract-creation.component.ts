@@ -36,6 +36,7 @@ export class ContractCreationComponent implements OnInit {
   totalNumberWeekendsId: string;
   minMaxConsecutiveWorkingWeekendsId: string;
   minMaxNbAssignmentsId: string;
+  inputDisabled: boolean;
 
   constructor() {
     this.contractChange = new EventEmitter();
@@ -55,11 +56,15 @@ export class ContractCreationComponent implements OnInit {
     this.totalNumberWeekendsId = TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID;
     this.minMaxConsecutiveWorkingWeekendsId = MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID;
     this.minMaxNbAssignmentsId = MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID;
+    this.inputDisabled = false;
   }
   ngOnInit(): void {
     for(let i=0; i< this.contract.skills.length; i++) {
       this.skillsFormCtrls.push(new FormControl(null, Validators.required));
     }
+    this.inputDisabled = this.contract.name === ""? false: true;
+    this.nameFormCtrl = new FormControl({value: this.contract.name, disabled: this.inputDisabled},
+      Validators.required);
   }
   
   addConstraint() {

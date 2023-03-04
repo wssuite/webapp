@@ -10,6 +10,7 @@ import {
   FETCH_SHIFT_TYPE_NAMES,
   PROTOTYPE_SCHEDULE_URL,
   TEST_URL,
+  UPDATE_CONTRACT_URL,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { ContractInterface } from "src/app/models/Contract";
@@ -58,5 +59,9 @@ export class APIService {
     return this.httpClient.get<ContractInterface>(FETCH_CONTRACT_BY_NAME, {
       params: queryParams,
     })    
+  }
+
+  updateContract(contract: ContractInterface):Observable<HttpResponse<string>> {
+    return this.httpClient.put<HttpResponse<string>>(UPDATE_CONTRACT_URL, contract);
   }
 }

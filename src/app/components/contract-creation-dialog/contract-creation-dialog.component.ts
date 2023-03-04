@@ -17,6 +17,7 @@ export class ContractCreationDialogComponent implements OnInit{
 
   contractErrorState: boolean;
   possibleShifts: string[];
+  //contractCopy: Contract;
 
   constructor(
     public dialogRef: MatDialogRef<ContractCreationDialogComponent>,
@@ -27,6 +28,7 @@ export class ContractCreationDialogComponent implements OnInit{
     this.contractErrorState = true;
     this.possibleShifts = shiftsExample;
     this.service.setContract(data.contract);
+    //this.contractCopy = data.contract;
   }
   ngOnInit(): void {
     this.api.getShiftNames().subscribe({
@@ -71,16 +73,30 @@ export class ContractCreationDialogComponent implements OnInit{
       //call api service to push the contract
       const contractJson = this.service.getJson();
       console.log(contractJson);
-      this.api.addContract(contractJson).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
+      if(this.data.contract.name == ""){
+        this.api.addContract(contractJson).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          } 
+        })
+      }
+      else {
+        this.api.updateContract(contractJson).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
           }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
-      })
+        })
+      } 
     }
     catch(e){
       this.openErrorDialog((e as Exception).getMessage())
