@@ -18,6 +18,8 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCardModule} from '@angular/material/card';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -40,6 +42,7 @@ import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutiv
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
 import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
+import { ContractsViewComponent } from './components/contracts-view/contracts-view.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +65,7 @@ import { MinMaxConstraintComponent } from './components/min-max-constraint/min-m
     BooleanConstraintComponent,
     ContractCreationDialogComponent,
     MinMaxConstraintComponent,
+    ContractsViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +88,8 @@ import { MinMaxConstraintComponent } from './components/min-max-constraint/min-m
     MatCheckboxModule,
     MatExpansionModule,
     MatTooltipModule,
+    MatCardModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
