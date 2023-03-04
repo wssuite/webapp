@@ -41,6 +41,7 @@ import { BooleanConstraintComponent } from "./components/boolean-constraint/bool
 import { SidenavNurseComponent } from './components/nurse-component/sidenav-nurse/sidenav-nurse.component';
 import { CreateNurseDialogComponent } from './components/nurse-component/create-nurse-dialog/create-nurse-dialog.component';
 import { CreateNurseGroupDialogComponent } from './components/nurse-component/create-nurse-group-dialog/create-nurse-group-dialog.component';
+import { NurseGroupComponent } from './components/nurse-component/nurse-group/nurse-group.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { CreateNurseGroupDialogComponent } from './components/nurse-component/cr
     SidenavNurseComponent,
     CreateNurseDialogComponent,
     CreateNurseGroupDialogComponent,
+    NurseGroupComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,9 @@
-<p>sidenav-nurse works!</p>
+<div class="side-bar">
+    <button
+    *ngFor="let button of buttons"
+    mat--button
+    (click)="redirect(button)">
+      <h1 class="buttonClicked">{{ button }}</h1>
+  </button>
+</div>
+
