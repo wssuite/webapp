@@ -16,6 +16,8 @@ export abstract class Constraint {
   }
 
   abstract toJson():ConstraintInterface;
+
+  abstract fromJson(c: ConstraintInterface):void;
 }
 
 export interface ConstraintInterface {

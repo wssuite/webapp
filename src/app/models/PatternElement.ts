@@ -21,6 +21,11 @@ export class PatternElement {
             dayName: this.dayName,
         }
     }
+
+    fromJson(p: PatternElementInterface):void {
+        this.dayName = p.dayName;
+        this.shiftId = p.shiftId;
+    }
 }
 
 export interface PatternElementInterface{

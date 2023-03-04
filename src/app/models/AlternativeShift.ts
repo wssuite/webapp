@@ -31,6 +31,11 @@ export class AlternativeShift extends Constraint {
             weight: this.weight,    
         }
     }
+
+    fromJson(c: AlternativeShiftInterface): void {
+        this.shiftId = c.shiftId;
+        this.weight = c.weight;
+    }
 }
 
 export interface AlternativeShiftInterface extends ConstraintInterface{

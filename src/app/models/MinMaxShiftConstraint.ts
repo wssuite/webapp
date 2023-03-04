@@ -38,6 +38,11 @@ export class MinMaxShiftConstraint extends MinMaxConstraint{
             shiftId: this.shiftId,
         }
     }
+
+    override fromJson(c: MinMaxShiftConstraintInterface): void {
+        super.fromJson(c as MinMaxConstraintInterface);
+        this.shiftId = c.shiftId;
+    }
 }
 
 export interface MinMaxShiftConstraintInterface extends MinMaxConstraintInterface {

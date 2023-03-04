@@ -43,6 +43,13 @@ export class MinMaxConstraint extends Constraint {
             maxWeight: this.maxWeight,
         }
     }
+
+    fromJson(c: MinMaxConstraintInterface): void {
+        this.minValue = c.minValue;
+        this.minWeight = c.minWeight;
+        this.maxValue = c.maxValue;
+        this.maxWeight = c.maxWeight;
+    }
 }
 
 export interface MinMaxConstraintInterface extends ConstraintInterface {

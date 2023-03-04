@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
   ADD_CONTRACT_URL,
+  FETCH_CONTRACT_BY_NAME,
   FETCH_CONTRACT_NAMES,
   FETCH_SHIFT_GROUP_NAMES,
   FETCH_SHIFT_NAMES,
@@ -49,5 +50,13 @@ export class APIService {
 
   getContractNames():Observable<string[]> {
     return this.httpClient.get<string[]>(FETCH_CONTRACT_NAMES);
+  }
+
+  getContractByName(name:string):Observable<ContractInterface> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("name", name);
+    return this.httpClient.get<ContractInterface>(FETCH_CONTRACT_BY_NAME, {
+      params: queryParams,
+    })    
   }
 }

@@ -36,6 +36,11 @@ export class IntegerConstraint extends Constraint {
       weight: this.weight
     }
   }
+
+  fromJson(c: IntegerConstraintInterface): void {
+      this.value = c.value;
+      this.weight = c.weight;
+  }
 }
 
 export interface IntegerConstraintInterface extends ConstraintInterface {

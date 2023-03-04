@@ -31,6 +31,11 @@ export class ShiftConstraint extends IntegerConstraint {
             shiftId: this.shiftId,
         }
     }
+
+    override fromJson(c: ShiftConstraintInterface): void {
+        super.fromJson(c as IntegerConstraintInterface);
+        this.shiftId = c.shiftId;
+    }
 }
 
 export interface ShiftConstraintInterface extends IntegerConstraintInterface {

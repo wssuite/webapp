@@ -29,6 +29,10 @@ export class BooleanConstraint extends Constraint {
       weight: this.weight,
     }
   }
+
+  fromJson(c: BooleanConstraintInterface): void {
+    this.weight = c.weight;
+  }
 }
 
 export interface BooleanConstraintInterface extends ConstraintInterface {
