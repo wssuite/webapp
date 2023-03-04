@@ -38,4 +38,18 @@ export class ShiftTypeComponent {
     }
   }
 
+  modifyShiftType(shiftType: ShiftType){
+    const index = this.shiftsType.indexOf(shiftType);
+    if (index > -1) {
+      this.dialog.open(CreateShiftTypeDialogComponent,  
+        { disableClose: true,  
+          height: '60%',
+          width: '50%', 
+          position: {top:'5vh',left: '25%', right: '25%'},
+          data: {shiftType}
+        });
+
+  }
+}
+
 }

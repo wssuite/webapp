@@ -16,15 +16,15 @@
     <label>Duration</label>
     <div class="timepickerStart">
         <div class="label" mat-label>Start Time</div>
-        <ngx-timepicker-field 
-            [defaultTime]="'00:00 am'"
+        <div class="time"><ngx-timepicker-field class="timer"
+            placeholder ="data.startTime"
             [(ngModel)]="data.startTime"
-            ></ngx-timepicker-field>
+            ></ngx-timepicker-field></div>
     </div>
     <div class="timepickerEnd">
         <div class="label" mat-label>End Time</div>
         <div class="time"><ngx-timepicker-field class="timer"
-        [defaultTime]="'00:00 am'"
+        placeholder ="data.endTime"
         [(ngModel)]="data.endTime"
         ></ngx-timepicker-field></div>
     </div>

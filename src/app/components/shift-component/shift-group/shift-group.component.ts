@@ -35,4 +35,18 @@ export class ShiftGroupComponent {
     }
   }
 
+  modifyShiftGroup(shiftGroup: ShiftGroup){
+    const index = this.shiftsGroup.indexOf(shiftGroup);
+    if (index > -1) {
+      this.dialog.open(CreateShiftGroupDialogComponent,  
+        { disableClose: true,  
+          height: '60%',
+          width: '50%', 
+          position: {top:'5vh',left: '25%', right: '25%'},
+          data: {shiftGroup}
+        });
+
+  }
+}
+
 }

@@ -25,7 +25,7 @@ export class ShiftComponent {
         height: '60%',
         width: '50%', 
         position: {top:'5vh',left: '25%', right: '25%'},
-        data: {name: '', startime: '', endTime: ''}
+        data: {name: '', startTime: '', endTime: ''}
       });
   }
 
@@ -36,5 +36,19 @@ export class ShiftComponent {
       this.shifts.splice(index, 1);
     }
   }
+
+  modifyShift(shift: Shift){
+    const index = this.shifts.indexOf(shift);
+    if (index > -1) {
+      this.dialog.open(CreateShiftDialogComponent,  
+        { disableClose: true,  
+          height: '60%',
+          width: '50%', 
+          position: {top:'5vh',left: '25%', right: '25%'},
+          data: {shift}
+        });
+
+  }
+}
 
 }
