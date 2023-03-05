@@ -13,8 +13,9 @@ export class MinMaxConstraintComponent {
 
   minValueErrorState: boolean;
   maxValueErrorState: boolean;
+  minWeightErrorState: boolean;
+  maxWeightErrorState: boolean;
 
-  weightErrorState: boolean;
   minWeightLabel: string;
   maxWeightLabel: string;
 
@@ -25,7 +26,9 @@ export class MinMaxConstraintComponent {
     this.minValueErrorState = true;
     this.maxValueErrorState = true;
 
-    this.weightErrorState = true;
+    this.minWeightErrorState = true;
+    this.maxWeightErrorState = true;
+
     this.minWeightLabel = "weight for min value";
     this.maxWeightLabel = "weight for max value";
   }
@@ -37,14 +40,19 @@ export class MinMaxConstraintComponent {
 
   emitErrorState() {
     this.errorState.emit(
-      this.weightErrorState ||
+      this.minWeightErrorState ||
+        this.maxWeightErrorState ||
         this.minValueErrorState ||
         this.maxValueErrorState
     );
   }
 
-  updateWeightErrorState(e: boolean) {
-    this.weightErrorState = e;
+  updateMinWeightErrorState(e: boolean) {
+    this.minWeightErrorState = e;
+    this.emitConstraint();
+  }
+  updateMaxWeightErrorState(e: boolean) {
+    this.maxWeightErrorState = e;
     this.emitConstraint();
   }
 
