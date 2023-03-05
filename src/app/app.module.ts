@@ -34,6 +34,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AccountCreationComponent } from './components/account-creation/account-creation.component';
 import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
 import { HeaderComponent } from './components/header/header.component';
+import { NotConnectedComponent } from './components/not-connected/not-connected.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { HeaderComponent } from './components/header/header.component';
     AccountCreationComponent,
     AccountCreationDialogComponent,
     HeaderComponent,
+    NotConnectedComponent,
   ],
   imports: [
     BrowserModule,

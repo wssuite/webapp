@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
@@ -10,16 +10,27 @@ import { CacheUtils } from "src/app/utils/CacheUtils";
   templateUrl: "./main-menu.component.html",
   styleUrls: ["./main-menu.component.css"],
 })
-export class MainMenuComponent implements OnInit{
+export class MainMenuComponent implements OnInit, OnDestroy{
   buttons: MainMenuButton[];
   isAdminUser!: boolean;
+  connectedUser!: boolean
 
   constructor(private router: Router) {
     this.buttons = MAIN_MENU_BUTTONS;
   }
 
   ngOnInit(): void {
-    this.isAdminUser = CacheUtils.getIsAdmin();    
+    try{
+      this.isAdminUser = CacheUtils.getIsAdmin();
+      this.connectedUser = true;
+    }
+    catch(err){
+      this.connectedUser = false;
+    }
+  }
+
+  ngOnDestroy(): void {
+      CacheUtils.emptyCache();
   }
 
   getAlignmentDirection(button:MainMenuButton ,index: number): string {
