@@ -18,6 +18,7 @@ from constants import (
     empty_token,
     admin,
     user_username,
+    is_admin,
 )
 
 
@@ -71,7 +72,10 @@ class AuthenticationHandler:
         token = uuid.uuid4().hex
         user_dict[user_token] = token
         self.user_dao.update(user_dict)
-        return token
+        ret = {user_token: token, is_admin: True}
+        if user.username != admin:
+            ret[is_admin] = False
+        return ret
 
     def logout(self, token):
         user_dict = verify_token(token, self.user_dao)
