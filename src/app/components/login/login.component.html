@@ -1,40 +1,37 @@
 <div class="loginContainer">
+    <div class="background">
+        <img src="../../../assets/background.jpg">
+    </div>
     <div class="loginFormContainer">
-        <div class="userInputContainer">
-            <label>Username: </label>
-            <mat-form-field
-                class="userInputField"
-                [formGroup]="usernameControlForm"
-            >
-            <mat-label>Enter username</mat-label>
-            <input
-                matInput
-                placeholder="username"
-                formControlName="username"
-                [(ngModel)]="username"
-            />
-            </mat-form-field>
-        </div>
-        <div class="passwordInputContainer">
-            <label>Password: </label>
-            <mat-form-field
-                class="passwordInputField"
-                [formGroup]="passwordControlForm"
-            >
-            <mat-label>Enter password</mat-label>
-            <input
-                matInput
-                type="password"
-                placeholder="password"
-                formControlName="password"
-                [(ngModel)]="password"
-            />
-            </mat-form-field>
-        </div>
-        <div class="loginButtonContainer">
-            <button mat-raised-button class="loginButton" (click)="login()">
-                LOG IN
-            </button>
-        </div>
+        <label>Username: </label>
+        <mat-form-field
+            class="userInputField"
+        >
+        <mat-label>Enter username</mat-label>
+        <input
+            matInput
+            placeholder="username"
+            [formControl]="usernameControlForm"
+            [(ngModel)]="username"
+        />
+        </mat-form-field>
+        <br>
+        <label>Password: </label>
+        <mat-form-field
+            class="passwordInputField"
+        >
+        <mat-label>Enter password</mat-label>
+        <input
+            matInput
+            type="password"
+            placeholder="password"
+            [formControl]="passwordControlForm"
+            [(ngModel)]="password"
+        />
+        </mat-form-field>
+        <br>
+        <button mat-raised-button [disabled]="hasError()" class="loginButton" (click)="login()">
+            LOG IN
+        </button>
     </div>    
 </div>

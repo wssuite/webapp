@@ -1,7 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MAIN_MENU } from 'src/app/constants/app-routes';
+import { Credentials, UserInfo } from 'src/app/models/Credentials';
+import { APIService } from 'src/app/services/api-service/api.service';
+import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -11,20 +16,39 @@ import { MAIN_MENU } from 'src/app/constants/app-routes';
 export class LoginComponent {
   username: string;
   password: string;
-  usernameControlForm = new FormGroup({
-    username: new FormControl(null, Validators.required),
-  });
-  passwordControlForm = new FormGroup({
-    password: new FormControl(null, Validators.required),
-  });
+  usernameControlForm: FormControl;
+  passwordControlForm: FormControl;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private apiService: APIService, private dialog: MatDialog) {
     this.username = "";
     this.password = "";
+    this.usernameControlForm = new FormControl(null, Validators.required);
+    this.passwordControlForm = new FormControl(null, Validators.required);
   }
 
   login() {
-    console.log("login" + this.username + this.password);
-    this.router.navigate(["/" + MAIN_MENU]);
+    const credentials: Credentials = {
+      username: this.username,
+      password: this.password,
+    }
+    this.apiService.login(credentials).subscribe({
+      next: (value: UserInfo)=>{
+        localStorage.setItem("token", value.token);
+        localStorage.setItem("isAdmin", JSON.stringify(value.isAdmin));
+        this.apiService.userInfo.next(value);
+        this.router.navigate(["/" + MAIN_MENU]);
+      },
+      error: (err: HttpErrorResponse)=> {
+        this.dialog.open(ErrorMessageDialogComponent, {
+          data: {message: err.error},
+        })
+      }
+    })
+    //this.router.navigate(["/" + MAIN_MENU]);
+    //console.log("login" + this.username + this.password);
+  }
+
+  hasError():boolean{
+    return this.passwordControlForm.hasError('required') || this.usernameControlForm.hasError('required');
   }
 }
