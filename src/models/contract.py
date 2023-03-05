@@ -97,3 +97,6 @@ class Contract(Jsonify, DBDocument):
 
     def merge_contract_constraints(self, another_contract):
         self.constraints.extend(another_contract.constraints)
+
+    def copy(self):
+        return Contract().from_json(self.to_json())

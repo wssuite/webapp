@@ -134,3 +134,9 @@ class TestContract(TestCase):
         )
         self.assertEqual(10, len(contract.constraints))
         self.assertEqual(modified_contract_dict, contract.to_json())
+
+    def test_copy_contract_returns_another_object(self):
+        contract = Contract().from_json(self.contract_dict)
+        copy_contract = contract.copy()
+        self.assertNotEqual(copy_contract, contract)
+        self.assertEqual(copy_contract.db_json(), contract.db_json())
