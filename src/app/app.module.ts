@@ -17,6 +17,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -32,6 +33,7 @@ import { WeightComponent } from "./components/weight/weight.component";
 import { LoginComponent } from './components/login/login.component';
 import { AccountCreationComponent } from './components/account-creation/account-creation.component';
 import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { AccountCreationDialogComponent } from './components/account-creation/ac
     LoginComponent,
     AccountCreationComponent,
     AccountCreationDialogComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,7 @@ import { AccountCreationDialogComponent } from './components/account-creation/ac
     MatProgressSpinnerModule,
     MatCheckboxModule,
     MatCardModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent],

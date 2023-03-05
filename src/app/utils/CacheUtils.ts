@@ -1,6 +1,6 @@
 import { UserInfo } from "../models/Credentials";
 
-const TOKEN_STRING = "token";
+export const TOKEN_STRING = "token";
 const IS_ADMIN_STRING = "isAdmin";
 
 export class CacheUtils {
@@ -36,5 +36,10 @@ export class CacheUtils {
             throw new Error("User is not logged in");
         }
         return isAdmin === "true"? true : false;
+    }
+
+    public static emptyCache() {
+        localStorage.removeItem(TOKEN_STRING);
+        localStorage.removeItem(IS_ADMIN_STRING);
     }
 }
