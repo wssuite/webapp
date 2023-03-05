@@ -1,0 +1,18 @@
+<p>account-creation works!</p>
+<div class="accountCreationContainer">
+    <div class="sidebarContainer">
+        <button mat-raised-button class="createAcountButton" (click)="openCreateAccountDialog()">
+            Create New Account
+        </button>
+    </div>
+    <div class="accountContainer">
+        <mat-card class="accountCard" *ngFor="let account of accounts">
+            <mat-card-content>{{ account.username }}</mat-card-content>
+            <mat-card-actions>
+                <button  mat-raised-button>
+                    <mat-icon>delete</mat-icon>
+                </button>
+              </mat-card-actions>
+          </mat-card>
+    </div>
+</div>

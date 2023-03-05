@@ -13,3 +13,6 @@ export const SHIFT_GROUP_URL = BASE_URL + "/shiftGroup";
 export const FETCH_SHIFT_GROUP_NAMES = SHIFT_GROUP_URL + FETCH_NAMES;
 export const SHIFT_TYPE_URL = BASE_URL + "/shiftType";
 export const FETCH_SHIFT_TYPE_NAMES = SHIFT_TYPE_URL + FETCH_NAMES;
+export const USER_URL = BASE_URL + "/user";
+export const LOGIN_URL = USER_URL + "/login";
+export const LOGOUT_URL = USER_URL + "/logout"

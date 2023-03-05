@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import {MatCardModule} from '@angular/material/card';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -18,6 +19,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -40,6 +42,11 @@ import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutiv
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
 import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
+import { LoginComponent } from './components/login/login.component';
+import { AccountCreationComponent } from './components/account-creation/account-creation.component';
+import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
+import { HeaderComponent } from './components/header/header.component';
+import { NotConnectedComponent } from './components/not-connected/not-connected.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +69,11 @@ import { MinMaxConstraintComponent } from './components/min-max-constraint/min-m
     BooleanConstraintComponent,
     ContractCreationDialogComponent,
     MinMaxConstraintComponent,
+    LoginComponent,
+    AccountCreationComponent,
+    AccountCreationDialogComponent,
+    HeaderComponent,
+    NotConnectedComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +96,8 @@ import { MinMaxConstraintComponent } from './components/min-max-constraint/min-m
     MatCheckboxModule,
     MatExpansionModule,
     MatTooltipModule,
+    MatCardModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent],
