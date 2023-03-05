@@ -26,8 +26,8 @@ export class MinMaxConstraintComponent {
     this.maxValueErrorState = true;
 
     this.weightErrorState = true;
-    this.minWeightLabel = "weight";
-    this.maxWeightLabel = "weight";
+    this.minWeightLabel = "weight for min value";
+    this.maxWeightLabel = "weight for max value";
   }
 
   emitConstraint() {
