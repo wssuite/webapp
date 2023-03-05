@@ -141,3 +141,15 @@ class TestAuthenticationHandler(TestCase):
         self.handler.login(default_user)
         with self.assertRaises(CannotDeleteAdmin):
             self.handler.delete(default_user[user_username], random_hex)
+
+    @patch("uuid.uuid4")
+    def test_get_all_usernames(self, mock_uuid):
+        mock_uuid.side_effect = uuid_side_effect
+        self.handler.login(default_user)
+        actual_before = self.handler.get_all_usernames(random_hex)
+        expected_before = ["admin"]
+        self.create_additional_user_as_admin(mock_uuid)
+        actual_after = self.handler.get_all_usernames(random_hex)
+        expected_after = ["admin", "user"]
+        self.assertEqual(expected_before, actual_before)
+        self.assertEqual(expected_after, actual_after)

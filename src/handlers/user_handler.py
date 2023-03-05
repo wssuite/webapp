@@ -87,3 +87,8 @@ class AuthenticationHandler:
         if username == admin:
             raise CannotDeleteAdmin()
         self.user_dao.remove(username)
+
+    def get_all_usernames(self, token):
+        self.verify_user_is_admin(token)
+        users = self.user_dao.fetch_all_usernames()
+        return [user[user_username] for user in users]
