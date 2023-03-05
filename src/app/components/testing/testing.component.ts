@@ -13,7 +13,6 @@ import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
 })
 export class TestingComponent {
   constraint: MinMaxConstraint;
-
   constraintErrorState: boolean;
   weight = BASE_VALUE;
 

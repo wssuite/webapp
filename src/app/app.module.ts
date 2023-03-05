@@ -34,6 +34,7 @@ import { PatternElementComponent } from "./components/pattern-element/pattern-el
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
+import { IntegerConstraintComponent } from "./components/integer-constraint/integer-constraint.component";
 import { ShiftConstraintComponent } from "./components/shift-constraint/shift-constraint.component";
 import { MinMaxConsecutiveShiftComponent } from "./components/min-max-consecutive-shift/min-max-consecutive-shift.component";
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
@@ -52,6 +53,7 @@ import { MinMaxConstraintComponent } from './components/min-max-constraint/min-m
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
+    IntegerConstraintComponent,
     AlternativeShiftComponent,
     ShiftConstraintComponent,
     MinMaxConsecutiveShiftComponent,
