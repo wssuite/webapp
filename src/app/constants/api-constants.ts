@@ -3,5 +3,5 @@ export const TEST_URL = BASE_URL + "index/";
 export const SCHEDULE_URL = BASE_URL + "schedule/";
 export const NAME_FILTER_SCHEDULE_URL = SCHEDULE_URL + "nameFilter/";
 export const PROTOTYPE_SCHEDULE_URL = NAME_FILTER_SCHEDULE_URL + "prototype";
-export const USER_URL = "/user";
-export const LOGIN_URL = "/login";
+export const USER_URL = BASE_URL + "/user";
+export const LOGIN_URL = USER_URL + "/login";

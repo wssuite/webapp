@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MAIN_MENU } from 'src/app/constants/app-routes';
 import { Credentials, UserInfo } from 'src/app/models/Credentials';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 
 @Component({
@@ -33,9 +34,7 @@ export class LoginComponent {
     }
     this.apiService.login(credentials).subscribe({
       next: (value: UserInfo)=>{
-        localStorage.setItem("token", value.token);
-        localStorage.setItem("isAdmin", JSON.stringify(value.isAdmin));
-        this.apiService.userInfo.next(value);
+        CacheUtils.pushUserInfo(value);
         this.router.navigate(["/" + MAIN_MENU]);
       },
       error: (err: HttpErrorResponse)=> {
@@ -44,8 +43,6 @@ export class LoginComponent {
         })
       }
     })
-    //this.router.navigate(["/" + MAIN_MENU]);
-    //console.log("login" + this.username + this.password);
   }
 
   hasError():boolean{

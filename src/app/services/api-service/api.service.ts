@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, Subject } from "rxjs";
+import { Observable } from "rxjs";
 import {
   LOGIN_URL,
   PROTOTYPE_SCHEDULE_URL,
@@ -14,13 +14,7 @@ import { Credentials, UserInfo } from "src/app/models/Credentials";
 })
 export class APIService {
 
-  userInfo: Subject<UserInfo>;
-  $userInfo: Observable<UserInfo>;
-
-  constructor(private httpClient: HttpClient) {
-    this.userInfo = new Subject();
-    this.$userInfo = this.userInfo.asObservable();
-  }
+  constructor(private httpClient: HttpClient) {}
 
   login(credentials:Credentials): Observable<UserInfo> {
     return this.httpClient.post<UserInfo>(LOGIN_URL, credentials);

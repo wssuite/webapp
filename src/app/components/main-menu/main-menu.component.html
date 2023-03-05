@@ -1,14 +1,26 @@
 <div class="main-menu-page-buttons-container">
-  <button
-    *ngFor="let button of buttons; let i = index"
-    mat--button
-    align="getAlignemntDirection(i)"
-    (click)="redirect(button)"
-  >
-    <img [src]="button.icon" align="right" />
-    <span>
-      <h1>{{ button.title }}</h1>
-      {{ button.description }}
-    </span>
-  </button>
+  <div *ngFor="let button of buttons; let i = index">
+    <div *ngIf="i % 2 === 0; else elseBlock" class="start-buttons">
+      <button *ngIf="show(button)" mat--button align="getAlignemntDirection(button,i)"
+      (click)="redirect(button)"
+      >
+        <img [src]="button.icon" align="right" />
+        <span>
+          <h1>{{ button.title }}</h1>
+          {{ button.description }}
+        </span>
+      </button>  
+    </div>
+    <ng-template #elseBlock class="end-buttons">
+      <button *ngIf="show(button)" class="end-buttons" mat--button align="getAlignemntDirection(button,i)"
+      (click)="redirect(button)"
+      >
+        <img [src]="button.icon" align="right" />
+        <span>
+          <h1>{{ button.title }}</h1>
+          {{ button.description }}
+        </span>
+      </button>
+    </ng-template>
+  </div>
 </div>
