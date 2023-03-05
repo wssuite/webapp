@@ -43,3 +43,4 @@ default_shift_group_deletion_error = (
     "The shift group {} cannot be deleted because it is a default group"
 )
 nurse_not_found = "The nurse {} doesn't exist"
+nurse_group_not_found = "The nurse group {} doesn't exist"

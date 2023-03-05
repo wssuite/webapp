@@ -165,3 +165,15 @@ patrick_nurse_group = {
     nurse_group_nurses_list: ["patrick"],
     nurse_group_contracts_list: ["General"],
 }
+
+problematic_nurse_group = {
+    nurse_group_name: "problematic group",
+    nurse_group_contracts_list: ["FullTime_Not_Valid"],
+    nurse_group_nurses_list: ["patrick"],
+}
+
+not_problematic_group = {
+    nurse_group_name: "not problematic_group",
+    nurse_group_contracts_list: [],
+    nurse_group_nurses_list: ["patrick"],
+}

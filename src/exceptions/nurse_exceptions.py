@@ -4,6 +4,7 @@ from error_msg import (
     nurse_group_already_exist,
     nurse_not_found,
     deletion_error,
+    nurse_group_not_found,
 )
 
 
@@ -29,3 +30,9 @@ class CannotDeleteNurse(ProjectBaseException):
     def __init__(self, name):
         msg = f"the nurse {name}"
         super(CannotDeleteNurse, self).__init__(deletion_error.format(msg))
+
+
+class NurseGroupNotFound(ProjectBaseException):
+    def __init__(self, name):
+        msg = nurse_group_not_found.format(name)
+        super(NurseGroupNotFound, self).__init__(msg)
