@@ -52,7 +52,7 @@ export class ShiftTypeComponent implements OnInit{
 
 
 
-  openS() {
+  openShiftTypeDialog() {
     this.dialog.open(CreateShiftTypeDialogComponent,  
       { disableClose: true,  
         height: '60%',
