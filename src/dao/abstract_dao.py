@@ -1,5 +1,6 @@
 import pymongo
 import mongomock
+import json
 
 """
     We need to connect to the ip address of the container that
@@ -10,11 +11,24 @@ import mongomock
 
 
 def connect_to_db():
-    return pymongo.MongoClient("192.168.5.4", 27017)
+    file = open("config.json")
+    data = json.load(file)
+    file.close()
+    return pymongo.MongoClient(data["mongo_address"], 27017)
 
 
 def connect_to_fake_db():
     return mongomock.MongoClient()
+
+
+class DBConnection:
+    connection = None
+
+    @staticmethod
+    def get_connection():
+        if DBConnection.connection is None:
+            DBConnection.connection = connect_to_db()
+        return DBConnection.connection
 
 
 class AbstractDao:
