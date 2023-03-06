@@ -12,14 +12,12 @@ import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/cr
   styleUrls: ['./shift-group.component.css']
 })
 export class ShiftGroupComponent implements OnInit{
-  shiftsGroup: ShiftGroupInterface[];
-  shiftGroup: string[];
+  shiftsGroup: string[];
   panelOpenState: boolean
   connectedUser!: boolean;
   
   constructor(public dialog: MatDialog, private apiService: APIService) {
-    this.shiftsGroup = shiftGroupExample;
-    this.shiftGroup = [];
+    this.shiftsGroup = [];
     this.panelOpenState = false;
   }
   ngOnInit(): void {
@@ -32,9 +30,9 @@ export class ShiftGroupComponent implements OnInit{
   }
 
   getShiftsGroup(){
-    this.apiService.getShiftTypeNames().subscribe({
+    this.apiService.getShiftGroupNames().subscribe({
       next: (shiftsGroup: string[])=> {
-        this.shiftGroup = shiftsGroup;
+        this.shiftsGroup = shiftsGroup;
       },
       error: (error: HttpErrorResponse)=> {
         //this.openErrorDialog(error.error);
@@ -48,23 +46,27 @@ export class ShiftGroupComponent implements OnInit{
     })
   }*/
   openShiftGroupDialog() {
-    this.dialog.open(CreateShiftGroupDialogComponent,  
+    const dialog = this.dialog.open(CreateShiftGroupDialogComponent,  
       { disableClose: true,  
         height: '80%',
         width: '50%', 
         position: {top:'5vh',left: '25%', right: '25%'},
         data: {name: '', shifts: [], shiftsType: ''}
       });
+
+    dialog.afterClosed().subscribe(()=>{
+        this.getShiftsGroup;
+      })
   }
 
-  deleteShiftGroup(shiftGroup: ShiftGroupInterface){
-    const index = this.shiftsGroup.indexOf(shiftGroup);
+  deleteShiftGroup(shiftsGroup: string){
+    const index = this.shiftsGroup.indexOf(shiftsGroup);
     if (index > -1) {
       this.shiftsGroup.splice(index, 1);
     }
   }
 
-  modifyShiftGroup(shiftGroup: ShiftGroupInterface){
+  modifyShiftGroup(shiftGroup: string){
     const index = this.shiftsGroup.indexOf(shiftGroup);
     if (index > -1) {
       this.dialog.open(CreateShiftGroupDialogComponent,  

@@ -13,12 +13,10 @@ import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/crea
   styleUrls: ['./create-shift-group-dialog.component.css']
 })
 export class CreateShiftGroupDialogComponent implements OnInit {
-  availableShifts: ShiftInterface[];
-  selectedShift: ShiftInterface;
-  availableShiftsType: ShiftTypeInterface[];
-  selectedShiftType: ShiftTypeInterface;
-  shiftsType: ShiftTypeInterface[];
-  shifts: ShiftInterface[];
+  selectedShift: string;
+  selectedShiftType: string;
+  shiftsType: string[];
+  shifts: string[];
   possibleShifts: string[];
   possibleShiftsType: string[];
   inputControlForm = new FormGroup({
@@ -29,14 +27,14 @@ export class CreateShiftGroupDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: ShiftGroupInterface,
     private api: APIService,
     private dialog: MatDialog) {
-    this.availableShifts = shiftsExample;
-    this.selectedShift = this.availableShifts[0];
-    this.availableShiftsType = shiftsTypeExample;
-    this.selectedShiftType = this.availableShiftsType[0];
+    
+    this.possibleShiftsType = [];
+    this.selectedShiftType = this.possibleShiftsType[0];
     this.possibleShifts = [];
     this.possibleShiftsType= [];
     this.shiftsType = [];
     this.shifts = [];
+    this.selectedShift = this.possibleShifts[0];
 }
   ngOnInit(): void {
     try{
@@ -68,44 +66,46 @@ export class CreateShiftGroupDialogComponent implements OnInit {
   }
 
 addShift() {
-  const index = this.availableShifts.indexOf(this.selectedShift);
+  const index = this.possibleShifts.indexOf(this.selectedShift);
   if (index > -1) {
-    this.availableShifts.splice(index, 1);
+    this.possibleShifts.splice(index, 1);
   }
   this.shifts.push(this.selectedShift);
-  if (this.availableShifts.length > 0) {
-    this.selectedShift = this.availableShifts[0];
+  this.data.shifts.push(this.selectedShift);
+  if (this.possibleShifts.length > 0) {
+    this.selectedShift = this.possibleShifts[0];
   }
 }
 
-removeShift(shift: ShiftInterface) {
+removeShift(shift: string) {
   const index = this.shifts.indexOf(shift);
   if (index > -1) {
     this.shifts.splice(index, 1);
   }
   if (shift !== undefined && shift !== null) {
-    this.availableShifts.push(shift);
+    this.possibleShifts.push(shift);
   }
 }
 
 addShiftType() {
-  const index = this.availableShiftsType.indexOf(this.selectedShiftType);
+  const index = this.possibleShiftsType.indexOf(this.selectedShiftType);
   if (index > -1) {
-    this.availableShiftsType.splice(index, 1);
+    this.possibleShiftsType.splice(index, 1);
   }
   this.shiftsType.push(this.selectedShiftType);
-  if (this.availableShiftsType.length > 0) {
-    this.selectedShiftType = this.availableShiftsType[0];
+  this.data.shifts.push(this.selectedShiftType);
+  if (this.possibleShiftsType.length > 0) {
+    this.selectedShiftType = this.possibleShiftsType[0];
   }
 }
 
-removeShiftType(shiftType: ShiftTypeInterface) {
+removeShiftType(shiftType: string) {
   const index = this.shiftsType.indexOf(shiftType);
   if (index > -1) {
     this.shiftsType.splice(index, 1);
   }
   if (shiftType !== undefined && shiftType !== null) {
-    this.availableShiftsType.push(shiftType);
+    this.possibleShiftsType.push(shiftType);
   }
 }
 

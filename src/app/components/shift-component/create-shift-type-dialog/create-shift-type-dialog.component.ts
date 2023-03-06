@@ -58,6 +58,7 @@ addShift() {
     this.availableShifts.splice(index, 1);
   }
   this.shifts.push(this.selectedShift);
+  this.data.shifts.push(this.selectedShift.name);
   if (this.availableShifts.length > 0) {
     this.selectedShift = this.availableShifts[0];
   }
@@ -80,7 +81,6 @@ add() {
     //call api service to push the contract
     
     this.api.addShiftType(this.data).subscribe({
-      
       error: (err: HttpErrorResponse)=> {
         if(err.status === HttpStatusCode.Ok) {
           this.close();
@@ -92,7 +92,6 @@ add() {
     })
   }
   catch(e){
-    console.log(this.data);
     console.log("error")
     //this.openErrorDialog((e as Exception).getMessage())
   }

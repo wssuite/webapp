@@ -16,8 +16,6 @@ export class ShiftComponent implements OnInit {
   shifts: string[];
   connectedUser!: boolean;
 
-
-
   constructor(public dialog: MatDialog, private apiService: APIService) {
     this.panelOpenState = false;
     this.shifts = [];
