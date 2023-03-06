@@ -6,11 +6,10 @@ export interface ShiftInterface {
 
 export interface ShiftTypeInterface{
   name:string;
-  shifts: ShiftInterface[]
+  shifts: string[]
 }
 
 export interface ShiftGroupInterface{
   name:string;
-  shifts: ShiftInterface[]
-  shiftsType: ShiftTypeInterface[]
+  shifts: string[]
 }

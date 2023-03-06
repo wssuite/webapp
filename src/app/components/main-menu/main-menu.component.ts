@@ -11,7 +11,7 @@ import { CacheUtils } from "src/app/utils/CacheUtils";
   templateUrl: "./main-menu.component.html",
   styleUrls: ["./main-menu.component.css"],
 })
-export class MainMenuComponent implements OnInit, OnDestroy{
+export class MainMenuComponent implements OnInit{
   buttons: MainMenuButton[];
   isAdminUser!: boolean;
   connectedUser!: boolean
@@ -30,9 +30,6 @@ export class MainMenuComponent implements OnInit, OnDestroy{
     }
   }
 
-  ngOnDestroy(): void {
-      CacheUtils.emptyCache();
-  }
 
   getAlignmentDirection(button:MainMenuButton ,index: number): string {
     if(button.title === "User"){

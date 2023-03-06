@@ -56,6 +56,7 @@ export class APIService {
 
   addShift(shift: ShiftInterface):Observable<HttpResponse<string>>{
     try{
+      console.log("addShift");
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       return this.httpClient.post<HttpResponse<string>>(ADD_SHIFT_URL, shift, {

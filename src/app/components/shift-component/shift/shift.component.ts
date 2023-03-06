@@ -12,17 +12,15 @@ import { CreateShiftDialogComponent } from '../create-shift-dialog/create-shift-
   styleUrls: ['./shift.component.css']
 })
 export class ShiftComponent implements OnInit {
-  shifts: ShiftInterface[];
   panelOpenState: boolean;
-  shift: string[];
+  shifts: string[];
   connectedUser!: boolean;
 
 
 
   constructor(public dialog: MatDialog, private apiService: APIService) {
-    this.shifts = shiftsExample;
     this.panelOpenState = false;
-    this.shift = [];
+    this.shifts = [];
 
   }
   ngOnInit(): void {
@@ -35,9 +33,9 @@ export class ShiftComponent implements OnInit {
   }
 
   getShifts(){
-    this.apiService.getShiftTypeNames().subscribe({
+    this.apiService.getShiftNames().subscribe({
       next: (shift: string[])=> {
-        this.shift = shift;
+        this.shifts = shift;
       },
       error: (error: HttpErrorResponse)=> {
         //this.openErrorDialog(error.error);
@@ -52,16 +50,20 @@ export class ShiftComponent implements OnInit {
   }*/
 
   openShiftDialog() {
-    this.dialog.open(CreateShiftDialogComponent,  
+    const dialog = this.dialog.open(CreateShiftDialogComponent,  
       { disableClose: true,  
         height: '60%',
         width: '50%', 
         position: {top:'5vh',left: '25%', right: '25%'},
         data: {name: '', startTime: '', endTime: ''}
       });
+    
+      dialog.afterClosed().subscribe(()=>{
+        this.getShifts();
+      })
   }
 
-  deleteShift(shift: ShiftInterface){
+  deleteShift(shift: string){
     //Manque la vérification si le shift est dans un shift type ou group
     const index = this.shifts.indexOf(shift);
     if (index > -1) {
@@ -69,7 +71,7 @@ export class ShiftComponent implements OnInit {
     }
   }
 
-  modifyShift(shift: ShiftInterface){
+  /*modifyShift(shift: string){
     const index = this.shifts.indexOf(shift);
     if (index > -1) {
       this.dialog.open(CreateShiftDialogComponent,  
@@ -80,7 +82,7 @@ export class ShiftComponent implements OnInit {
           data: {shift}
         });
 
-  }
+  }*/
 }
 
-}
+

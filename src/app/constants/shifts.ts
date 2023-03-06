@@ -21,25 +21,7 @@ export const shiftsExample: ShiftInterface[] = [
 export const shiftsTypeExample: ShiftTypeInterface[] = [
     {
         name:"Rotating shift",
-        shifts: [    {
-            name: "Early",
-            startTime: "6h00 AM",
-            endTime: "11h00 AM"
-          },     
-          {
-            name: "Late",
-            startTime: "15h00 PM",
-            endTime: "20h00 PM"
-          }]},
-    {
-        name:"Night shift",
-        shifts:  [
-          {
-            name: "Early",
-            startTime: "6h00 AM",
-            endTime: "11h00 AM"
-          }
-        ]
+        shifts: [ "Early","Late","Night shift","Early"]
     },
     {
         name:"Permanent shift",
@@ -58,33 +40,7 @@ export const shiftsTypeExample: ShiftTypeInterface[] = [
 export const shiftGroupExample: ShiftGroupInterface[] = [    
     {
     name:"Work",
-    shifts: [    {
-        name: "Early",
-        startTime: "6h00 AM",
-        endTime: "11h00 AM"
-      },
-      {
-        name: "MidDay",
-        startTime: "11h00 AM",
-        endTime: "15Hh00 PM"
-      },
-      {
-         name: "Late",
-         startTime: "15h00 PM",
-         endTime: "20h00 PM"
-      }],
-    shiftsType: [    {
-        name:"Night shift",
-        shifts:  [          {
-            name: "Early",
-            startTime: "6h00 AM",
-            endTime: "11h00 AM"
-          }]
-    }]},
-{
-    name:"Rest",
-    shifts:  [],
-    shiftsType: []
+    shifts:[ "Early","Late","Permanent shift","Early"],
 }];
 
 

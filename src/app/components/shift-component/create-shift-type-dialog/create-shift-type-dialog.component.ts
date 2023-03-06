@@ -25,7 +25,6 @@ export class CreateShiftTypeDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CreateShiftTypeDialogComponent >,
     @Inject(MAT_DIALOG_DATA) public data: ShiftTypeInterface,
     private api: APIService,
-    private dialog: MatDialog
 ) {
     this.availableShifts = shiftsExample;
     this.selectedShift = this.availableShifts[0];
@@ -79,8 +78,9 @@ add() {
   try
   { 
     //call api service to push the contract
-    console.log(this.data);
+    
     this.api.addShiftType(this.data).subscribe({
+      
       error: (err: HttpErrorResponse)=> {
         if(err.status === HttpStatusCode.Ok) {
           this.close();
@@ -92,10 +92,12 @@ add() {
     })
   }
   catch(e){
+    console.log(this.data);
     console.log("error")
     //this.openErrorDialog((e as Exception).getMessage())
   }
 }
+
 
 /*openErrorDialog(message: string) {
   this.dialog.open(ErrorMessageDialogComponent, {
