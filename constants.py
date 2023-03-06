@@ -84,4 +84,7 @@ user_token = "token"
 empty_token = "empty"
 admin = "admin"
 utf8 = "utf-8"
+
+work = "Work"
+rest = "Rest"
 is_admin = "isAdmin"

@@ -1,49 +1,70 @@
 from src.dao.abstract_dao import DBConnection
-from src.dao.shift_dao import ShiftDao
+from src.handlers.shift_handler import ShiftHandler
 from flask import Blueprint, request, Response
-from src.models.shift import Shift
-from constants import shift_name
+from constants import shift_name, user_token, ok_message
+from src.exceptions.project_base_exception import ProjectBaseException
 
 mod = Blueprint("shift_controller", __name__, url_prefix="/shift")
 
-shift_dao = ShiftDao(DBConnection.get_connection())
+shift_handler = ShiftHandler(DBConnection.get_connection())
 
 
 @mod.route("/add", methods=["POST"])
 def add_shift():
-    shift_dict = request.json
-    shift = Shift().from_json(shift_dict)
-    shift_dao.insert_one_if_not_exist(shift.db_json())
-    return Response("OK", 200)
+    try:
+        token = request.args[user_token]
+        shift_dict = request.json
+        shift_handler.add(token, shift_dict)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchAll", methods=["GET"])
 def get_all_shifts():
-    return shift_dao.fetch_all()
+    try:
+        token = request.args[user_token]
+        return shift_handler.get_all(token)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchByName", methods=["GET"])
 def get_shift_by_name():
-    name = request.args[shift_name]
-    return shift_dao.find_by_name(name)
+    try:
+        token = request.args[user_token]
+        name = request.args[shift_name]
+        return shift_handler.get_by_name(token, name)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/remove", methods=["DELETE"])
 def remove_shift():
-    name = request.args[shift_name]
-    shift_dao.remove(name)
-    return Response("OK", 200)
+    try:
+        token = request.args[user_token]
+        name = request.args[shift_name]
+        shift_handler.delete(token, name)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchAllNames", methods=["GET"])
 def get_shifts_names():
-    shifts = shift_dao.fetch_all()
-    return [shift[shift_name] for shift in shifts]
+    try:
+        token = request.args[user_token]
+        return shift_handler.get_all_names(token)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/update", methods=["PUT"])
 def update_shift():
-    shift_dict = request.json
-    shift = Shift().from_json(shift_dict)
-    shift_dao.update(shift.db_json())
-    return Response("OK", 200)
+    try:
+        token = request.args[user_token]
+        shift_dict = request.json
+        shift_handler.update(token, shift_dict)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)

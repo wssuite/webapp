@@ -24,6 +24,10 @@ from constants import (
     min_constraint_value,
     min_max_consecutive_weekends,
     skill_name,
+    shift_type_name,
+    shift_type_shifts_lists,
+    shift_group_name,
+    shift_group_shifts_list,
 )
 
 general_contract_dict = {
@@ -74,6 +78,18 @@ full_time_valid_contract_with_general_update_to_invalid = {
     ],
 }
 
+full_time_contract_with_day_shift_type = {
+    contract_name: "FullTime_Valid",
+    contract_skills: [],
+    contract_constraints: [
+        {
+            constraint_name: alternative_shift,
+            shift_constraint: "Day",
+            constraint_weight: "1.0",
+        }
+    ],
+}
+
 min_cons_contract = {
     contract_name: "minConsContract",
     contract_skills: [],
@@ -99,6 +115,18 @@ late_shift = {
     shift_start_time: "18:00:00",
     shift_end_time: "24:00:00",
 }
+day_shift_type = {shift_type_name: "Day", shift_type_shifts_lists: ["Early"]}
+night_shift_type = {
+    shift_type_name: "Night",
+    shift_type_shifts_lists: ["Late"],
+}
+work_shift_group = {shift_group_name: "Work", shift_group_shifts_list: []}
+rest_shift_group = {shift_group_name: "Rest", shift_group_shifts_list: []}
+
+day_shift_group = {shift_group_name: "Day", shift_group_shifts_list: ["Early"]}
+night_shift_group = {shift_group_name: "Night", shift_group_shifts_list: []}
+test_work_shift_group = work_shift_group.copy()
+test_work_shift_group[shift_group_shifts_list] = ["Day"]
 
 nurse1 = {
     nurse_name: "nurse1",

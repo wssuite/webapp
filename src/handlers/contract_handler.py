@@ -192,5 +192,4 @@ class ContractHandler:
         return Contract().from_json(contract_dict).to_json()
 
     def get_all_names(self, token):
-        verify_token(token, self.user_dao)
         return [contract[contract_name] for contract in self.get_all(token)]
