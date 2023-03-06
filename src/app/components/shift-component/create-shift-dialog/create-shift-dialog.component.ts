@@ -1,7 +1,12 @@
-import { Component, Inject } from '@angular/core';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ShiftInterface } from 'src/app/models/Shift';
+import { APIService } from 'src/app/services/api-service/api.service';
+
+
+
 
 @Component({
   selector: 'app-create-shift-dialog',
@@ -9,22 +14,45 @@ import { ShiftInterface } from 'src/app/models/Shift';
   styleUrls: ['./create-shift-dialog.component.css']
 })
 export class CreateShiftDialogComponent {
+  
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });
-  constructor(public dialogRef: MatDialogRef<CreateShiftDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: ShiftInterface) { 
+  constructor(public dialogRef: MatDialogRef<CreateShiftDialogComponent >, 
+    @Inject(MAT_DIALOG_DATA) public data: ShiftInterface,  
+    private api: APIService,
+                                        
+    ) { 
 }
 
+
 add() {
-  //valide form
-  //call api service to push the shift
-  this.close();
+  console.log(this.data)
+  try
+  { 
+    //call api service to push the contract
+    console.log(this.data);
+    this.api.addShift(this.data).subscribe({
+      error: (err: HttpErrorResponse)=> {
+        if(err.status === HttpStatusCode.Ok) {
+          this.close();
+        }
+        else{
+          //this.openErrorDialog(err.error)
+        }
+      } 
+    })
+  }
+  catch(e){
+    console.log("error")
+    //this.openErrorDialog((e as Exception).getMessage())
+  }
 }
+
 
 close(){
   this.dialogRef.close();
 }
-
 
 
 }

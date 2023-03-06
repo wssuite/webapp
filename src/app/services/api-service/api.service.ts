@@ -2,6 +2,12 @@ import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
+  ADD_SHIFT_GROUP_URL,
+  ADD_SHIFT_TYPE_URL,
+  ADD_SHIFT_URL,
+  FETCH_SHIFT_GROUP_NAMES,
+  FETCH_SHIFT_NAMES,
+  FETCH_SHIFT_TYPE_NAMES,
   LOGIN_URL,
   LOGOUT_URL,
   PROTOTYPE_SCHEDULE_URL,
@@ -9,7 +15,9 @@ import {
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
+import { ShiftGroupInterface, ShiftInterface } from "src/app/models/Shift";
 import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
+import { Exception } from "src/app/utils/Exception";
 
 @Injectable({
   providedIn: "root",
@@ -46,11 +54,11 @@ export class APIService {
     });
   }
 
-  /*addShift(contract: ContractInterface):Observable<HttpResponse<string>>{
+  addShift(shift: ShiftInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<HttpResponse<string>>(ADD_CONTRACT_URL, contract, {
+      return this.httpClient.post<HttpResponse<string>>(ADD_SHIFT_URL, shift, {
         params: queryParams,
       });
     }catch(err){
@@ -58,11 +66,11 @@ export class APIService {
     }
   }
 
-  addShiftType(contract: ContractInterface):Observable<HttpResponse<string>>{
+  addShiftType(shiftType: ShiftInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<HttpResponse<string>>(ADD_CONTRACT_URL, contract, {
+      return this.httpClient.post<HttpResponse<string>>(ADD_SHIFT_TYPE_URL, shiftType, {
         params: queryParams,
       });
     }catch(err){
@@ -70,11 +78,11 @@ export class APIService {
     }
   }
 
-  addShiftGroup(contract: ContractInterface):Observable<HttpResponse<string>>{
+  addShiftGroup(shiftGroup: ShiftGroupInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<HttpResponse<string>>(ADD_CONTRACT_URL, contract, {
+      return this.httpClient.post<HttpResponse<string>>(ADD_SHIFT_GROUP_URL, shiftGroup, {
         params: queryParams,
       });
     }catch(err){
@@ -117,6 +125,6 @@ export class APIService {
     }catch(err){
       throw new Exception("user not logged in");
     }
-  }*/
+  }
 
 }
