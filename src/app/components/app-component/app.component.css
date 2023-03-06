@@ -14,6 +14,17 @@ span {
 h1{
     margin-left: 1vw;
 }
+
+.page-container{
+    background-color: #F6F6F6;
+    height: 90%
+}
+
+.navigation-bar{
+    height: 10vh;
+    background-color: white;
+}
+
 /**footer {
     height: 10vh;
     background-color: darkblue;
