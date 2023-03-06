@@ -1,5 +1,5 @@
 import { MatDialog } from "@angular/material/dialog";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { CONTRACTS, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
@@ -11,7 +11,7 @@ import { CacheUtils } from "src/app/utils/CacheUtils";
   templateUrl: "./main-menu.component.html",
   styleUrls: ["./main-menu.component.css"],
 })
-export class MainMenuComponent implements OnInit, OnDestroy{
+export class MainMenuComponent implements OnInit{
   buttons: MainMenuButton[];
   isAdminUser!: boolean;
   connectedUser!: boolean
@@ -28,10 +28,6 @@ export class MainMenuComponent implements OnInit, OnDestroy{
     catch(err){
       this.connectedUser = false;
     }
-  }
-
-  ngOnDestroy(): void {
-      CacheUtils.emptyCache();
   }
 
   getAlignmentDirection(button:MainMenuButton ,index: number): string {

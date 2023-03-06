@@ -14,18 +14,26 @@ import { ErrorMessageDialogComponent } from '../error-message-dialog/error-messa
 export class ContractsViewComponent implements OnInit{
 
   contracts: string[];
+  connectedUser!:boolean;
 
   constructor(private dialog: MatDialog, private apiService: APIService) {
     this.contracts = [];
   }
 
   ngOnInit(): void {
+    try{
       this.getContracts();
+      this.connectedUser = true;
+    }catch(err){
+      this.connectedUser = false;
+    }
   }
 
   getContracts(){
     this.apiService.getContractNames().subscribe({
-      next: (contracts: string[])=> this.contracts = contracts,
+      next: (contracts: string[])=> {
+        this.contracts = contracts;
+      },
       error: (error: HttpErrorResponse)=> {
         this.openErrorDialog(error.error);
       }

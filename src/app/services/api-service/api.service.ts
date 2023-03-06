@@ -102,6 +102,14 @@ export class APIService {
   }
 
   getContractNames():Observable<string[]> {
-    return this.httpClient.get<string[]>(FETCH_CONTRACT_NAMES);
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_CONTRACT_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
   }
 }
