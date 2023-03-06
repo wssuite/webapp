@@ -1,0 +1,28 @@
+.loginContainer{
+    display: inline;
+    justify-items: flex-start;
+    display: flex;
+}
+img{
+    height: 85vh;
+    margin-left: 5vw;
+}
+.loginFormContainer{
+    position: relative;
+    margin: auto;
+    float: inline-end;
+}
+label{
+    margin-right: 1vw;
+    font-size: large;
+}
+
+mat-form-field{
+    margin-bottom: 5vh;
+}
+
+button{
+    margin-right: 5vw;
+    margin-left: 5vw;
+    width:auto;
+}

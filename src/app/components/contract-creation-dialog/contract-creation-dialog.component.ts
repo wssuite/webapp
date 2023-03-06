@@ -29,38 +29,42 @@ export class ContractCreationDialogComponent implements OnInit{
     this.service.setContract(data.contract);
   }
   ngOnInit(): void {
-    this.api.getShiftNames().subscribe({
-      next: (shifts: string[])=>{
-        shifts.forEach((shift: string)=>{
-          this.possibleShifts.push(shift);
-        })
-      },
-      error: (error: HttpErrorResponse)=>{
-        this.openErrorDialog(error.error);
-      }
-    })
+    try{
+      this.api.getShiftNames().subscribe({
+        next: (shifts: string[])=>{
+          shifts.forEach((shift: string)=>{
+            this.possibleShifts.push(shift);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
 
-    this.api.getShiftTypeNames().subscribe({
-      next: (shifts: string[])=>{
-        shifts.forEach((shift: string)=>{
-          this.possibleShifts.push(shift);
-        })
-      },
-      error: (error: HttpErrorResponse)=>{
-        this.openErrorDialog(error.error);
-      }
-    })
+      this.api.getShiftTypeNames().subscribe({
+        next: (shifts: string[])=>{
+          shifts.forEach((shift: string)=>{
+            this.possibleShifts.push(shift);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
 
-    this.api.getShiftGroupNames().subscribe({
-      next: (shifts: string[])=>{
-        shifts.forEach((shift: string)=>{
-          this.possibleShifts.push(shift);
-        })
-      },
-      error: (error: HttpErrorResponse)=>{
-        this.openErrorDialog(error.error);
-      }
-    })
+      this.api.getShiftGroupNames().subscribe({
+        next: (shifts: string[])=>{
+          shifts.forEach((shift: string)=>{
+            this.possibleShifts.push(shift);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+    }catch(err){
+      //Do nothing
+    }
   }
 
   submit() {
