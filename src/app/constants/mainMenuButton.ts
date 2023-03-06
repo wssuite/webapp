@@ -25,9 +25,4 @@ export const MAIN_MENU_BUTTONS: MainMenuButton[] = [
     icon: ASSETS_FOLDER_LOCATION + "/time.png",
   },
 
-  {
-    title: "User",
-    description: "Allow admin to create and delete other users account",
-    icon: ASSETS_FOLDER_LOCATION + "/add-user.png"
-  }
 ];

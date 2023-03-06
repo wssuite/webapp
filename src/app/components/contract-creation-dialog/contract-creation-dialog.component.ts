@@ -1,7 +1,6 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { shiftsExample } from 'src/app/constants/shifts';
 import { Contract } from 'src/app/models/Contract';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
@@ -16,7 +15,7 @@ import { ErrorMessageDialogComponent } from '../error-message-dialog/error-messa
 export class ContractCreationDialogComponent implements OnInit{
 
   contractErrorState: boolean;
-  possibleShifts: string[];
+  possibleShifts!: string[];
 
   constructor(
     public dialogRef: MatDialogRef<ContractCreationDialogComponent>,
@@ -25,7 +24,6 @@ export class ContractCreationDialogComponent implements OnInit{
     private dialog: MatDialog,
   ){
     this.contractErrorState = true;
-    this.possibleShifts = shiftsExample;
     this.service.setContract(data.contract);
   }
   ngOnInit(): void {

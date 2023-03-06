@@ -1,19 +1,23 @@
 .main-menu-page-buttons-container{
-  position: relative;
-  display: block;
-  margin-left: 13vw;
-  margin-right: 7vw;
-  margin-top: 5vh;
+  width: 75vw;
+  margin-left: 20vw;
+  margin-top: 3vh;
 }
-button {
-  margin: 4vw;
-  height: max-content;
-  width: 500px;
 
+button {
+  margin: 1vw;
+  height: 27vh;
+  width: 30vw;
+  background-color: white;
+  border-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
 }
+
 img {
-  top: 0px;
-  right: 0px;
+  margin-left: 55px;
+  width: 13vh;
+  height: 6vw;
 }
 
 .start-buttons {
@@ -26,3 +30,20 @@ img {
   float: left;
 }
 
+h1{
+  font-weight: bolder;
+}
+
+button:hover{
+  background-color: #EAE9E9;
+  cursor: pointer;
+}
+
+span{
+  display: flex;
+  flex-direction: column;
+  text-align:left;
+  padding-left: 50px;
+  padding-right: 10px;
+  font-size: 20px;
+}
