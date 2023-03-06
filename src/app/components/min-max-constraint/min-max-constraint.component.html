@@ -9,7 +9,7 @@
     </div>
     <app-weight
       [(weight)]="constraint.minWeight"
-      (errorState)="updateWeightErrorState($event)"
+      (errorState)="updateMinWeightErrorState($event)"
       [label]="minWeightLabel"
     ></app-weight>
   </div>
@@ -23,7 +23,7 @@
     </div>
     <app-weight
       [(weight)]="constraint.maxWeight"
-      (errorState)="updateWeightErrorState($event)"
+      (errorState)="updateMaxWeightErrorState($event)"
       [label]="maxWeightLabel"
     ></app-weight>
   </div>
