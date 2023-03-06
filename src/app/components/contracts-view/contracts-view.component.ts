@@ -40,8 +40,11 @@ export class ContractsViewComponent implements OnInit{
     })
   }
   openContractCreationDialog(contract: Contract){
-    this.dialog.open(ContractCreationDialogComponent,
+    const dialog = this.dialog.open(ContractCreationDialogComponent,
       {data: {contract: contract},
+   })
+   dialog.afterClosed().subscribe(()=>{
+    this.getContracts()
    })
   }
 
