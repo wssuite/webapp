@@ -22,16 +22,13 @@ To run the server there are two options:
     1- Locally with python
     2- Docker
  # Locally with python
-    Create a virtual env: python3 -m virtualenv ~/venv
-    Activate the virtual environment: source ~/venv/bin/activate
+    Before running the server, the developper needs to install the dependencies:
+    To do so follow the tutorial in [1] to install a virtual environment:
+    [1] https://medium.com/co-learning-lounge/create-virtual-environment-python-windows-2021-d947c3a3ca78
     Install the requirements: pip install -r requirements.txt
     Run the server: python app.py
 
  Note: Those instructions were tested on linux, solution for Windows may be different
-
- # Docker
-    docker build -t frontserver .
-    docker run --rm -p 5000:5000 -v dataset:/app/dataset --name server frontserver
 
 To verify that the server is running correctly, in the browser go to:
     http://localhost:5000/index
