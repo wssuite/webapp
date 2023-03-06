@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { shiftsExample } from 'src/app/constants/shifts';
-import { Shift, ShiftGroup, ShiftType } from 'src/app/models/Shift';
+import { ShiftInterface, ShiftTypeInterface } from 'src/app/models/Shift';
 
 @Component({
   selector: 'app-create-shift-type-dialog',
@@ -10,16 +10,16 @@ import { Shift, ShiftGroup, ShiftType } from 'src/app/models/Shift';
   styleUrls: ['./create-shift-type-dialog.component.css']
 })
 export class CreateShiftTypeDialogComponent {
-  availableShifts: Shift[];
-  selectedShift: Shift;
-  shifts: Shift[];
+  availableShifts: ShiftInterface[];
+  selectedShift: ShiftInterface;
+  shifts: ShiftInterface[];
 
 
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<CreateShiftTypeDialogComponent >,@Inject(MAT_DIALOG_DATA) public data: ShiftType) {
+  constructor(public dialogRef: MatDialogRef<CreateShiftTypeDialogComponent >,@Inject(MAT_DIALOG_DATA) public data: ShiftTypeInterface) {
     this.availableShifts = shiftsExample;
     this.selectedShift = this.availableShifts[0];
     this.shifts = []
@@ -39,7 +39,7 @@ addShift() {
   }
 }
 
-removeShift(shift: Shift) {
+removeShift(shift: ShiftInterface) {
   const index = this.shifts.indexOf(shift);
   if (index > -1) {
     this.shifts.splice(index, 1);

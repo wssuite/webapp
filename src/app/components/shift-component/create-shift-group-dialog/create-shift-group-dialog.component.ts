@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { shiftsExample, shiftsTypeExample } from 'src/app/constants/shifts';
-import { Shift, ShiftGroup, ShiftType } from 'src/app/models/Shift';
+import { ShiftInterface, ShiftGroupInterface, ShiftTypeInterface } from 'src/app/models/Shift';
 import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/create-shift-type-dialog.component';
 
 @Component({
@@ -11,17 +11,17 @@ import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/crea
   styleUrls: ['./create-shift-group-dialog.component.css']
 })
 export class CreateShiftGroupDialogComponent {
-  availableShifts: Shift[];
-  selectedShift: Shift;
-  availableShiftsType: ShiftType[];
-  selectedShiftType: ShiftType;
-  shiftsType: ShiftType[];
-  shifts: Shift[];
+  availableShifts: ShiftInterface[];
+  selectedShift: ShiftInterface;
+  availableShiftsType: ShiftTypeInterface[];
+  selectedShiftType: ShiftTypeInterface;
+  shiftsType: ShiftTypeInterface[];
+  shifts: ShiftInterface[];
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<CreateShiftGroupDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: ShiftGroup) {
+  constructor(public dialogRef: MatDialogRef<CreateShiftGroupDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: ShiftGroupInterface) {
     this.availableShifts = shiftsExample;
     this.selectedShift = this.availableShifts[0];
     this.availableShiftsType = shiftsTypeExample;
@@ -41,7 +41,7 @@ addShift() {
   }
 }
 
-removeShift(shift: Shift) {
+removeShift(shift: ShiftInterface) {
   const index = this.shifts.indexOf(shift);
   if (index > -1) {
     this.shifts.splice(index, 1);
@@ -62,7 +62,7 @@ addShiftType() {
   }
 }
 
-removeShiftType(shiftType: ShiftType) {
+removeShiftType(shiftType: ShiftTypeInterface) {
   const index = this.shiftsType.indexOf(shiftType);
   if (index > -1) {
     this.shiftsType.splice(index, 1);

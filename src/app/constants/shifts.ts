@@ -1,6 +1,6 @@
-import { Shift, ShiftGroup, ShiftType } from "../models/Shift";
+import { ShiftInterface, ShiftGroupInterface, ShiftTypeInterface } from "../models/Shift";
 
-export const shiftsExample: Shift[] = [
+export const shiftsExample: ShiftInterface[] = [
     {
       name: "Early",
       startTime: "6h00 AM",
@@ -18,7 +18,7 @@ export const shiftsExample: Shift[] = [
     }
   ];
 
-export const shiftsTypeExample: ShiftType[] = [
+export const shiftsTypeExample: ShiftTypeInterface[] = [
     {
         name:"Rotating shift",
         shifts: [    {
@@ -55,7 +55,7 @@ export const shiftsTypeExample: ShiftType[] = [
     }
 ]
 
-export const shiftGroupExample: ShiftGroup[] = [    
+export const shiftGroupExample: ShiftGroupInterface[] = [    
     {
     name:"Work",
     shifts: [    {

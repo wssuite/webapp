@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { shiftsTypeExample } from 'src/app/constants/shifts';
-import { ShiftType } from 'src/app/models/Shift';
+import { ShiftTypeInterface } from 'src/app/models/Shift';
 import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/create-shift-type-dialog.component';
 
 
@@ -11,7 +11,7 @@ import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/crea
   styleUrls: ['./shift-type.component.css']
 })
 export class ShiftTypeComponent {
-  shiftsType: ShiftType[]
+  shiftsType: ShiftTypeInterface[]
   panelOpenState: boolean
 
   constructor(public dialog: MatDialog) {
@@ -30,7 +30,7 @@ export class ShiftTypeComponent {
       });
   }
 
-  deleteShiftType(shiftType: ShiftType){
+  deleteShiftType(shiftType: ShiftTypeInterface){
     //Manque la vérification si le shift est dans un shift type ou group
     const index = this.shiftsType.indexOf(shiftType);
     if (index > -1) {
@@ -38,7 +38,7 @@ export class ShiftTypeComponent {
     }
   }
 
-  modifyShiftType(shiftType: ShiftType){
+  modifyShiftType(shiftType: ShiftTypeInterface){
     const index = this.shiftsType.indexOf(shiftType);
     if (index > -1) {
       this.dialog.open(CreateShiftTypeDialogComponent,  

@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Shift } from 'src/app/models/Shift';
+import { ShiftInterface } from 'src/app/models/Shift';
 
 @Component({
   selector: 'app-create-shift-dialog',
@@ -12,7 +12,7 @@ export class CreateShiftDialogComponent {
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });
-  constructor(public dialogRef: MatDialogRef<CreateShiftDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: Shift ) { 
+  constructor(public dialogRef: MatDialogRef<CreateShiftDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: ShiftInterface) { 
 }
 
 add() {

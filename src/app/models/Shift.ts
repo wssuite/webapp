@@ -1,16 +1,16 @@
-export interface Shift {
+export interface ShiftInterface {
     name: string;
     startTime: string
     endTime: string;
   }
 
-export interface ShiftType{
+export interface ShiftTypeInterface{
   name:string;
-  shifts: Shift[]
+  shifts: ShiftInterface[]
 }
 
-export interface ShiftGroup{
+export interface ShiftGroupInterface{
   name:string;
-  shifts: Shift[]
-  shiftsType: ShiftType[]
+  shifts: ShiftInterface[]
+  shiftsType: ShiftTypeInterface[]
 }

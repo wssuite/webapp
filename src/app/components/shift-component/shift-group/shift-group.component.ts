@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { shiftGroupExample } from 'src/app/constants/shifts';
-import { ShiftGroup } from 'src/app/models/Shift';
+import { ShiftGroupInterface } from 'src/app/models/Shift';
 import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/create-shift-group-dialog.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/cr
   styleUrls: ['./shift-group.component.css']
 })
 export class ShiftGroupComponent {
-  shiftsGroup: ShiftGroup[]
+  shiftsGroup: ShiftGroupInterface[]
   panelOpenState: boolean
   
   constructor(public dialog: MatDialog) {
@@ -28,14 +28,14 @@ export class ShiftGroupComponent {
       });
   }
 
-  deleteShiftGroup(shiftGroup: ShiftGroup){
+  deleteShiftGroup(shiftGroup: ShiftGroupInterface){
     const index = this.shiftsGroup.indexOf(shiftGroup);
     if (index > -1) {
       this.shiftsGroup.splice(index, 1);
     }
   }
 
-  modifyShiftGroup(shiftGroup: ShiftGroup){
+  modifyShiftGroup(shiftGroup: ShiftGroupInterface){
     const index = this.shiftsGroup.indexOf(shiftGroup);
     if (index > -1) {
       this.dialog.open(CreateShiftGroupDialogComponent,  
