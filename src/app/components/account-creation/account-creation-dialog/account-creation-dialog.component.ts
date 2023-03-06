@@ -2,7 +2,6 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Account } from 'src/app/models/Account';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { Credentials } from 'src/app/models/Credentials';
 import { APIService } from 'src/app/services/api-service/api.service';
@@ -37,18 +36,10 @@ export class AccountCreationDialogComponent {
   addAccount() {
     try
     {
-      //this.service.setContract(this.data.contract)
-      //this.service.validateContract();
-      //call api service to push the contract
-      //const contractJson = this.service.getJson();
-      //console.log(contractJson);
-      let account = new Account();
       const credentials: Credentials = {
         username: this.username,
         password: this.password
       }
-      account.username = this.username;
-      account.password = this.password;
       this.api.addAccount(credentials).subscribe({
         error: (err: HttpErrorResponse)=> {
           if(err.status === HttpStatusCode.Ok) {
@@ -61,8 +52,6 @@ export class AccountCreationDialogComponent {
       })
     }
     catch(e){}
-
-    console.log("add done");
   }
 
   openErrorDialog(message: string) {

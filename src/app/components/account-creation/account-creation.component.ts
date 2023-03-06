@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountCreationDialogComponent } from './account-creation-dialog/account-creation-dialog.component';
 import { APIService } from 'src/app/services/api-service/api.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
+import { Credentials } from 'src/app/models/Credentials';
 
 @Component({
   selector: 'app-account-creation',
@@ -14,7 +15,7 @@ export class AccountCreationComponent {
   accounts: string[]
   connectedUser!:boolean;
   
-  constructor(public dialog: MatDialog, private apiService: APIService) {
+  constructor(public dialog: MatDialog, private api: APIService) {
     this.accounts = []
   }
   ngOnInit(): void {
@@ -29,7 +30,7 @@ export class AccountCreationComponent {
 
 
   getAccounts(){
-    this.apiService.getAccountsUsername().subscribe({
+    this.api.getAccountsUsername().subscribe({
       next: (usernames: string[])=> {
         this.accounts= usernames;
       },
@@ -38,6 +39,23 @@ export class AccountCreationComponent {
       }
     })
 
+  }
+
+  deleteAccount(account: string){
+    try
+    {
+      this.api.deleteAccount(account).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.getAccounts();
+          }
+          else{
+            this.openErrorDialog(err.error)
+          }
+        } 
+      })
+    }
+    catch(e){}
   }
 
   openErrorDialog(message: string) {

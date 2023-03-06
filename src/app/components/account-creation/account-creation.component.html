@@ -9,7 +9,7 @@
         <mat-card class="accountCard" *ngFor="let account of accounts">
             <mat-card-content>{{ account }}</mat-card-content>
             <mat-card-actions>
-                <button  mat-icon-button>
+                <button  mat-icon-button (click)="deleteAccount(account)">
                     <mat-icon>delete</mat-icon>
                 </button>
               </mat-card-actions>
