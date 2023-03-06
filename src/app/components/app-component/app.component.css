@@ -9,6 +9,11 @@ span {
     color: white;
     font-size: larger;
 }
+
+
+h1{
+    margin-left: 1vw;
+}
 /**footer {
     height: 10vh;
     background-color: darkblue;
