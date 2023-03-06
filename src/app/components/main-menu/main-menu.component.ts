@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { SCHEDULE_GENERATION } from "src/app/constants/app-routes";
+import { CREATE_ACCOUNT, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
 import { CacheUtils } from "src/app/utils/CacheUtils";
@@ -30,7 +30,7 @@ export class MainMenuComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(): void {
-      CacheUtils.emptyCache();
+      //CacheUtils.emptyCache();
   }
 
   getAlignmentDirection(button:MainMenuButton ,index: number): string {
@@ -44,6 +44,9 @@ export class MainMenuComponent implements OnInit, OnDestroy{
     switch (button.title) {
       case "Schedule":
         this.router.navigate(["/" + SCHEDULE_GENERATION]);
+        break;
+      case "User":
+        this.router.navigate(["/" + CREATE_ACCOUNT]);
         break;
       default:
         break;
