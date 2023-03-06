@@ -4,7 +4,6 @@ import { AccountCreationDialogComponent } from './account-creation-dialog/accoun
 import { APIService } from 'src/app/services/api-service/api.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
-import { Credentials } from 'src/app/models/Credentials';
 
 @Component({
   selector: 'app-account-creation',
@@ -55,7 +54,9 @@ export class AccountCreationComponent {
         } 
       })
     }
-    catch(e){}
+    catch(e){
+      console.log(e);
+    }
   }
 
   openErrorDialog(message: string) {

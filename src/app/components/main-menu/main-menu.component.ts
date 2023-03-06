@@ -29,10 +29,6 @@ export class MainMenuComponent implements OnInit, OnDestroy{
     }
   }
 
-  ngOnDestroy(): void {
-      //CacheUtils.emptyCache();
-  }
-
   getAlignmentDirection(button:MainMenuButton ,index: number): string {
     if(button.title === "User"){
       return "center";

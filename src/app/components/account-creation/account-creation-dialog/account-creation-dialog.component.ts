@@ -51,7 +51,9 @@ export class AccountCreationDialogComponent {
         } 
       })
     }
-    catch(e){}
+    catch(e){
+      console.log(e);
+    }
   }
 
   openErrorDialog(message: string) {

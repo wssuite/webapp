@@ -29,12 +29,10 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      console.log("queryparam", queryParams)
       return this.httpClient.post<HttpResponse<string>>(LOGOUT_URL, null, {
         params: queryParams
       });
     } catch(err){
-      console.log("error api");
       throw new Error("user not logged in")
     }
   }
