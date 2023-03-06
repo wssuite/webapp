@@ -27,7 +27,6 @@ export class CreateShiftDialogComponent {
 
 
 add() {
-  console.log(this.data)
   try
   { 
     //call api service to push the contract
@@ -48,6 +47,12 @@ add() {
     //this.openErrorDialog((e as Exception).getMessage())
   }
 }
+
+/*openErrorDialog(message: string) {
+  this.dialog.open(ErrorMessageDialogComponent, {
+    data: {message: message},
+  })
+}*/
 
 
 close(){

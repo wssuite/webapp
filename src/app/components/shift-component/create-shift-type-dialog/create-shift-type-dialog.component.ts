@@ -1,32 +1,57 @@
-import { Component, Inject } from '@angular/core';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { shiftsExample } from 'src/app/constants/shifts';
 import { ShiftInterface, ShiftTypeInterface } from 'src/app/models/Shift';
+import { APIService } from 'src/app/services/api-service/api.service';
 
 @Component({
   selector: 'app-create-shift-type-dialog',
   templateUrl: './create-shift-type-dialog.component.html',
   styleUrls: ['./create-shift-type-dialog.component.css']
 })
-export class CreateShiftTypeDialogComponent {
+export class CreateShiftTypeDialogComponent implements OnInit {
   availableShifts: ShiftInterface[];
   selectedShift: ShiftInterface;
   shifts: ShiftInterface[];
+  possibleShifts: String[];
 
 
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<CreateShiftTypeDialogComponent >,@Inject(MAT_DIALOG_DATA) public data: ShiftTypeInterface) {
+  constructor(public dialogRef: MatDialogRef<CreateShiftTypeDialogComponent >,
+    @Inject(MAT_DIALOG_DATA) public data: ShiftTypeInterface,
+    private api: APIService,
+    private dialog: MatDialog
+) {
     this.availableShifts = shiftsExample;
     this.selectedShift = this.availableShifts[0];
-    this.shifts = []
-    
-  
-  
+    this.shifts = [];
+    this.possibleShifts = []
+      
 }
+  ngOnInit(): void {
+    try{
+      this.api.getShiftNames().subscribe({
+        next: (shifts: string[])=>{
+          shifts.forEach((shift: string)=>{
+            this.possibleShifts.push(shift);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          //this.openErrorDialog(error.error);
+        }
+      })
+    }catch(err){
+      //Do nothing
+    }
+
+  }
+
+
 
 addShift() {
   const index = this.availableShifts.indexOf(this.selectedShift);
@@ -51,10 +76,32 @@ removeShift(shift: ShiftInterface) {
 
 
 add() {
-  //valide form
-  //call api service to push the shift type
-  this.close();
+  try
+  { 
+    //call api service to push the contract
+    console.log(this.data);
+    this.api.addShiftType(this.data).subscribe({
+      error: (err: HttpErrorResponse)=> {
+        if(err.status === HttpStatusCode.Ok) {
+          this.close();
+        }
+        else{
+          //this.openErrorDialog(err.error)
+        }
+      } 
+    })
+  }
+  catch(e){
+    console.log("error")
+    //this.openErrorDialog((e as Exception).getMessage())
+  }
 }
+
+/*openErrorDialog(message: string) {
+  this.dialog.open(ErrorMessageDialogComponent, {
+    data: {message: message},
+  })
+}*/
 
 close(){
   this.dialogRef.close();

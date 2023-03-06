@@ -1,8 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { shiftsExample, shiftsTypeExample } from 'src/app/constants/shifts';
 import { ShiftInterface, ShiftGroupInterface, ShiftTypeInterface } from 'src/app/models/Shift';
+import { APIService } from 'src/app/services/api-service/api.service';
 import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/create-shift-type-dialog.component';
 
 @Component({
@@ -10,25 +12,60 @@ import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/crea
   templateUrl: './create-shift-group-dialog.component.html',
   styleUrls: ['./create-shift-group-dialog.component.css']
 })
-export class CreateShiftGroupDialogComponent {
+export class CreateShiftGroupDialogComponent implements OnInit {
   availableShifts: ShiftInterface[];
   selectedShift: ShiftInterface;
   availableShiftsType: ShiftTypeInterface[];
   selectedShiftType: ShiftTypeInterface;
   shiftsType: ShiftTypeInterface[];
   shifts: ShiftInterface[];
+  possibleShifts: String[];
+  possibleShiftsType: String[];
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<CreateShiftGroupDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: ShiftGroupInterface) {
+  constructor(public dialogRef: MatDialogRef<CreateShiftGroupDialogComponent >, 
+    @Inject(MAT_DIALOG_DATA) public data: ShiftGroupInterface,
+    private api: APIService,
+    private dialog: MatDialog) {
     this.availableShifts = shiftsExample;
     this.selectedShift = this.availableShifts[0];
     this.availableShiftsType = shiftsTypeExample;
     this.selectedShiftType = this.availableShiftsType[0];
+    this.possibleShifts = [];
+    this.possibleShiftsType= [];
     this.shiftsType = [];
     this.shifts = [];
 }
+  ngOnInit(): void {
+    try{
+      this.api.getShiftNames().subscribe({
+        next: (shifts: string[])=>{
+          shifts.forEach((shift: string)=>{
+            this.possibleShifts.push(shift);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          //this.openErrorDialog(error.error);
+        }
+      })
+
+        this.api.getShiftTypeNames().subscribe({
+          next: (shiftsType: string[])=>{
+            shiftsType.forEach((shiftType: string)=>{
+              this.possibleShifts.push(shiftType);
+            })
+          },
+          error: (error: HttpErrorResponse)=>{
+            //this.openErrorDialog(error.error);
+          }
+        })
+    }catch(err){
+      //Do nothing
+    }
+
+  }
 
 addShift() {
   const index = this.availableShifts.indexOf(this.selectedShift);
@@ -74,10 +111,33 @@ removeShiftType(shiftType: ShiftTypeInterface) {
 
 
 add() {
-  //valide form
-  //call api service to push the shift group
-  this.close();
+  try
+  { 
+    //call api service to push the contract
+    console.log(this.data);
+    this.api.addShiftGroup(this.data).subscribe({
+      error: (err: HttpErrorResponse)=> {
+        if(err.status === HttpStatusCode.Ok) {
+          this.close();
+        }
+        else{
+          //this.openErrorDialog(err.error)
+        }
+      } 
+    })
+  }
+  catch(e){
+    console.log("error")
+    //this.openErrorDialog((e as Exception).getMessage())
+  }
 }
+
+/*openErrorDialog(message: string) {
+  this.dialog.open(ErrorMessageDialogComponent, {
+    data: {message: message},
+  })
+}*/
+
 
 close(){
   this.dialogRef.close();

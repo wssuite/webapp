@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { shiftGroupExample } from 'src/app/constants/shifts';
 import { ShiftGroupInterface } from 'src/app/models/Shift';
+import { APIService } from 'src/app/services/api-service/api.service';
 import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/create-shift-group-dialog.component';
 
 @Component({
@@ -9,15 +11,42 @@ import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/cr
   templateUrl: './shift-group.component.html',
   styleUrls: ['./shift-group.component.css']
 })
-export class ShiftGroupComponent {
-  shiftsGroup: ShiftGroupInterface[]
+export class ShiftGroupComponent implements OnInit{
+  shiftsGroup: ShiftGroupInterface[];
+  shiftGroup: string[];
   panelOpenState: boolean
+  connectedUser!: boolean;
   
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private apiService: APIService) {
     this.shiftsGroup = shiftGroupExample;
+    this.shiftGroup = [];
     this.panelOpenState = false;
   }
+  ngOnInit(): void {
+    try{
+      this.getShiftsGroup();
+      this.connectedUser = true;
+    }catch(err){
+      this.connectedUser = false;
+    }
+  }
 
+  getShiftsGroup(){
+    this.apiService.getShiftTypeNames().subscribe({
+      next: (shiftsGroup: string[])=> {
+        this.shiftGroup = shiftsGroup;
+      },
+      error: (error: HttpErrorResponse)=> {
+        //this.openErrorDialog(error.error);
+      }
+    })
+  }
+
+  /*openErrorDialog(message: string) {
+    this.dialog.open(ErrorMessageDialogComponent, {
+      data: {message: message},
+    })
+  }*/
   openShiftGroupDialog() {
     this.dialog.open(CreateShiftGroupDialogComponent,  
       { disableClose: true,  

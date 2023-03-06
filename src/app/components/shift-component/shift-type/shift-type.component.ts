@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { shiftsTypeExample } from 'src/app/constants/shifts';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
+import { APIService } from 'src/app/services/api-service/api.service';
 import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/create-shift-type-dialog.component';
 
 
@@ -10,17 +12,47 @@ import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/crea
   templateUrl: './shift-type.component.html',
   styleUrls: ['./shift-type.component.css']
 })
-export class ShiftTypeComponent {
-  shiftsType: ShiftTypeInterface[]
-  panelOpenState: boolean
+export class ShiftTypeComponent implements OnInit{
+  shiftsType: ShiftTypeInterface[];
+  shiftType: String[];
+  panelOpenState: boolean;
+  connectedUser!: boolean;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private apiService: APIService) {
     this.shiftsType = shiftsTypeExample;
     this.panelOpenState = false;
+    this.shiftType = [];
 
   }
+  ngOnInit(): void {
+    try{
+      this.getShiftsType();
+      this.connectedUser = true;
+    }catch(err){
+      this.connectedUser = false;
+    }
+  }
 
-  openShiftTypeDialog() {
+  getShiftsType(){
+    this.apiService.getShiftTypeNames().subscribe({
+      next: (shiftsType: string[])=> {
+        this.shiftType = shiftsType;
+      },
+      error: (error: HttpErrorResponse)=> {
+        //this.openErrorDialog(error.error);
+      }
+    })
+  }
+
+  /*openErrorDialog(message: string) {
+    this.dialog.open(ErrorMessageDialogComponent, {
+      data: {message: message},
+    })
+  }*/
+
+
+
+  openS() {
     this.dialog.open(CreateShiftTypeDialogComponent,  
       { disableClose: true,  
         height: '60%',

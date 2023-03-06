@@ -15,7 +15,7 @@ import {
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
-import { ShiftGroupInterface, ShiftInterface } from "src/app/models/Shift";
+import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "src/app/models/Shift";
 import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
 
@@ -66,7 +66,7 @@ export class APIService {
     }
   }
 
-  addShiftType(shiftType: ShiftInterface):Observable<HttpResponse<string>>{
+  addShiftType(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
