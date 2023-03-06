@@ -24,4 +24,10 @@ export const MAIN_MENU_BUTTONS: MainMenuButton[] = [
     description: "View and modify the  available Shift or create a new shift.",
     icon: ASSETS_FOLDER_LOCATION + "/time.png",
   },
+
+  {
+    title: "User",
+    description: "Allow admin to create and delete other users account",
+    icon: ASSETS_FOLDER_LOCATION + "/add-user.png"
+  }
 ];

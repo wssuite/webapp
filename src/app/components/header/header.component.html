@@ -1,0 +1,17 @@
+<div class="header-container">
+    <div class="end-buttons">
+        <button mat-icon-button>
+            <mat-icon>notifications</mat-icon>
+        </button>
+        <button class="user-icon" mat-icon-button [matMenuTriggerFor]="menu">
+            <img src="../../../assets/user.png">
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                <span>logout</span>
+            </button>
+        </mat-menu>
+        
+    </div>
+</div>

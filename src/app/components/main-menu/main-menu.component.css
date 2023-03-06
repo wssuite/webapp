@@ -1,12 +1,12 @@
 .main-menu-page-buttons-container{
-  position: fixed;
-  align-items: center;
-  margin-left: 7vw;
-  margin-right: 5vw;
-  margin-top: 10vh;
+  position: relative;
+  display: block;
+  margin-left: 13vw;
+  margin-right: 7vw;
+  margin-top: 5vh;
 }
 button {
-  margin: 5vw;
+  margin: 4vw;
   height: max-content;
   width: 500px;
 
@@ -14,5 +14,15 @@ button {
 img {
   top: 0px;
   right: 0px;
+}
+
+.start-buttons {
+  align-items: flex-start;
+  float: left;
+}
+
+.end-buttons {
+  align-items: flex-end;
+  float: left;
 }
 

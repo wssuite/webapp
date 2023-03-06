@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import {MatCardModule} from '@angular/material/card';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -47,10 +48,14 @@ import { ShiftTypeComponent } from './components/shift-component/shift-type/shif
 import { ShiftGroupComponent } from './components/shift-component/shift-group/shift-group.component';
 import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
 import { IntegerConstraintComponent } from "./components/integer-constraint/integer-constraint.component";
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
+import { LoginComponent } from './components/login/login.component';
+import { AccountCreationComponent } from './components/account-creation/account-creation.component';
+import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
+import { HeaderComponent } from './components/header/header.component';
+import { NotConnectedComponent } from './components/not-connected/not-connected.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +83,11 @@ import { BooleanConstraintComponent } from "./components/boolean-constraint/bool
     ShiftGroupComponent,
     SidenavShiftComponent,
     BooleanConstraintComponent,
+    LoginComponent,
+    AccountCreationComponent,
+    AccountCreationDialogComponent,
+    HeaderComponent,
+    NotConnectedComponent,
   ],
   imports: [
     BrowserModule,
