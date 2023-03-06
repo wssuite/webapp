@@ -19,8 +19,8 @@ export class CreateShiftGroupDialogComponent implements OnInit {
   selectedShiftType: ShiftTypeInterface;
   shiftsType: ShiftTypeInterface[];
   shifts: ShiftInterface[];
-  possibleShifts: String[];
-  possibleShiftsType: String[];
+  possibleShifts: string[];
+  possibleShiftsType: string[];
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });

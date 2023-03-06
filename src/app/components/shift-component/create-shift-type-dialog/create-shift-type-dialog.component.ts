@@ -15,7 +15,7 @@ export class CreateShiftTypeDialogComponent implements OnInit {
   availableShifts: ShiftInterface[];
   selectedShift: ShiftInterface;
   shifts: ShiftInterface[];
-  possibleShifts: String[];
+  possibleShifts: string[];
 
 
   inputControlForm = new FormGroup({

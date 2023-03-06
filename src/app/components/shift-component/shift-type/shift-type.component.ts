@@ -14,7 +14,7 @@ import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/crea
 })
 export class ShiftTypeComponent implements OnInit{
   shiftsType: ShiftTypeInterface[];
-  shiftType: String[];
+  shiftType: string[];
   panelOpenState: boolean;
   connectedUser!: boolean;
 
