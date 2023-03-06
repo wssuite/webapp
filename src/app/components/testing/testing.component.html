@@ -2,13 +2,18 @@
   <mat-expansion-panel-header>
     <mat-panel-title>{{ constraint.displayName }}</mat-panel-title>
   </mat-expansion-panel-header>
-  <app-integer-constraint
+  <app-min-max-constraint
     [constraint]="constraint"
     (errorState)="updateConstraintErrorState($event)"
-  ></app-integer-constraint>
+  ></app-min-max-constraint>
 </mat-expansion-panel>
 
+<p>The constraint has an error: {{ constraintErrorState }}.</p>
 <p>
-  The constraint has an error: {{ constraintErrorState }} and the weight is:
-  {{ constraint.weight }}. The value is : {{ constraint.value }}
+  Min value is: {{ constraint.minValue }} and its weight is
+  {{ constraint.minWeight }}.
+</p>
+<p>
+  Max value is : {{ constraint.maxValue }} and its value is:
+  {{ constraint.maxWeight }}
 </p>
