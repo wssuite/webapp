@@ -15,12 +15,12 @@
 </div>
 <div class="shiftSection">
   <H1 class="shiftSectionTitle">Shifts</H1>
-  <div *ngIf="availableShifts.length > 0">
+  <div *ngIf="possibleShifts.length > 0">
     <mat-form-field appearance="fill">
       <mat-label>Select a shift</mat-label>
       <mat-select [(value)]="selectedShift">
-        <mat-option *ngFor="let shift of availableShifts" [value]="shift">
-          {{ shift.name }}
+        <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
+          {{ shift}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -31,7 +31,7 @@
   <table class="shiftTable">
     <tr *ngFor="let shift of shifts">
       <td class="shiftName">
-        <mat-chip>{{ shift.name }}</mat-chip>
+        <mat-chip>{{ shift }}</mat-chip>
       </td>
       <button
         mat-raised-button

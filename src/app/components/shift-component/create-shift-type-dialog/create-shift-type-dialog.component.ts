@@ -12,10 +12,10 @@ import { APIService } from 'src/app/services/api-service/api.service';
   styleUrls: ['./create-shift-type-dialog.component.css']
 })
 export class CreateShiftTypeDialogComponent implements OnInit {
-  availableShifts: ShiftInterface[];
-  selectedShift: ShiftInterface;
-  shifts: ShiftInterface[];
   possibleShifts: string[];
+  selectedShift: string;
+  shifts: string[];
+
 
 
   inputControlForm = new FormGroup({
@@ -26,8 +26,8 @@ export class CreateShiftTypeDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: ShiftTypeInterface,
     private api: APIService,
 ) {
-    this.availableShifts = shiftsExample;
-    this.selectedShift = this.availableShifts[0];
+    this.possibleShifts = [];
+    this.selectedShift = this.possibleShifts[0];
     this.shifts = [];
     this.possibleShifts = []
       
@@ -53,24 +53,24 @@ export class CreateShiftTypeDialogComponent implements OnInit {
 
 
 addShift() {
-  const index = this.availableShifts.indexOf(this.selectedShift);
+  const index = this.possibleShifts.indexOf(this.selectedShift);
   if (index > -1) {
-    this.availableShifts.splice(index, 1);
+    this.possibleShifts.splice(index, 1);
   }
   this.shifts.push(this.selectedShift);
-  this.data.shifts.push(this.selectedShift.name);
-  if (this.availableShifts.length > 0) {
-    this.selectedShift = this.availableShifts[0];
+  this.data.shifts.push(this.selectedShift);
+  if (this.possibleShifts.length > 0) {
+    this.selectedShift = this.possibleShifts[0];
   }
 }
 
-removeShift(shift: ShiftInterface) {
+removeShift(shift: string) {
   const index = this.shifts.indexOf(shift);
   if (index > -1) {
     this.shifts.splice(index, 1);
   }
   if (shift !== undefined && shift !== null) {
-    this.availableShifts.push(shift);
+    this.possibleShifts.push(shift);
   }
 }
 
