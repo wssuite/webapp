@@ -48,3 +48,12 @@ def logout():
         return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/fetchAllUsernames", methods=["GET"])
+def get_all_usernames():
+    try:
+        token = request.args[user_token]
+        return handler.get_all_usernames(token)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)

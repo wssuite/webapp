@@ -33,3 +33,9 @@ class UserDao(AbstractDao):
         return self.collection.find_one(
             {user_token: token}, {mongo_id_field: 0}
         )
+
+    def fetch_all_usernames(self):
+        cursor = self.collection.find(
+            {}, {mongo_id_field: 0, user_username: 1}
+        )
+        return [username for username in cursor]

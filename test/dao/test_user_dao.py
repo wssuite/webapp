@@ -48,3 +48,9 @@ class TestUserDao(TestCase):
         ret_after = self.dao.find_by_username(user.username)
         self.assertEqual(None, ret_after)
         self.assertEqual(user.to_json(), ret_before)
+
+    def test_fetch_all_usernames(self):
+        self.insert_test_user()
+        actual = self.dao.fetch_all_usernames()
+        expected = [{user_username: self.user_dict[user_username]}]
+        self.assertEqual(expected, actual)

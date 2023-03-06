@@ -12,6 +12,7 @@ from constants import (
     user_token,
     user_password,
     empty_token,
+    is_admin,
 )
 from src.exceptions.user_exceptions import (
     UserNotExist,
@@ -96,18 +97,22 @@ class TestAuthenticationHandler(TestCase):
     def test_create_user_when_not_admin_raise_error(self, mock_uuid):
         user1_dict = self.create_additional_user_as_admin(mock_uuid)
         self.handler.logout(random_hex)
-        self.handler.login(user1_dict)
+        ret_login = self.handler.login(user1_dict)
+        expected_login = {user_token: random_hex, is_admin: False}
         user2_dict = {user_username: "user2", user_password: "passw0rd"}
         user2 = User().from_json(user2_dict)
         with self.assertRaises(AdminOnlyAction):
             self.handler.create_user(user2.db_json(), random_hex)
+        self.assertEqual(expected_login, ret_login)
 
     def create_additional_user_as_admin(self, mock_uuid):
         mock_uuid.side_effect = uuid_side_effect
         user1_dict = {user_username: "user", user_password: "passw0rd"}
         user1 = User().from_json(user1_dict)
-        self.handler.login(default_user)
+        ret_login = self.handler.login(default_user)
         self.handler.create_user(user1.db_json(), random_hex)
+        expected_login = {user_token: random_hex, is_admin: True}
+        self.assertEqual(expected_login, ret_login)
         return user1_dict
 
     @patch("uuid.uuid4")
@@ -136,3 +141,15 @@ class TestAuthenticationHandler(TestCase):
         self.handler.login(default_user)
         with self.assertRaises(CannotDeleteAdmin):
             self.handler.delete(default_user[user_username], random_hex)
+
+    @patch("uuid.uuid4")
+    def test_get_all_usernames(self, mock_uuid):
+        mock_uuid.side_effect = uuid_side_effect
+        self.handler.login(default_user)
+        actual_before = self.handler.get_all_usernames(random_hex)
+        expected_before = ["admin"]
+        self.create_additional_user_as_admin(mock_uuid)
+        actual_after = self.handler.get_all_usernames(random_hex)
+        expected_after = ["admin", "user"]
+        self.assertEqual(expected_before, actual_before)
+        self.assertEqual(expected_after, actual_after)
