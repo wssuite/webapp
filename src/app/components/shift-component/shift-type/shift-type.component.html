@@ -2,14 +2,14 @@
     <div class ="shiftTypeCard">
       <mat-card *ngFor="let shiftType of shiftsType">
         <mat-card-header>
-          <mat-card-title> {{ shiftType.name }}</mat-card-title>
+          <mat-card-title> {{ shiftType }}</mat-card-title>
         </mat-card-header>
         <mat-card-actions align="end">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
             <mat-icon>more_horiz</mat-icon>
           </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="modifyShiftType(shiftType)">
+              <button mat-menu-item>
                 <mat-icon>edit</mat-icon>
                 <span>Modify shift type</span>
               </button>

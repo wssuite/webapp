@@ -13,15 +13,13 @@ import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/crea
   styleUrls: ['./shift-type.component.css']
 })
 export class ShiftTypeComponent implements OnInit{
-  shiftsType: ShiftTypeInterface[];
-  shiftType: string[];
+  shiftsType: string[];
   panelOpenState: boolean;
   connectedUser!: boolean;
 
   constructor(public dialog: MatDialog, private apiService: APIService) {
-    this.shiftsType = shiftsTypeExample;
     this.panelOpenState = false;
-    this.shiftType = [];
+    this.shiftsType = [];
 
   }
   ngOnInit(): void {
@@ -36,7 +34,7 @@ export class ShiftTypeComponent implements OnInit{
   getShiftsType(){
     this.apiService.getShiftTypeNames().subscribe({
       next: (shiftsType: string[])=> {
-        this.shiftType = shiftsType;
+        this.shiftsType = shiftsType;
       },
       error: (error: HttpErrorResponse)=> {
         //this.openErrorDialog(error.error);
@@ -66,15 +64,29 @@ export class ShiftTypeComponent implements OnInit{
       })
   }
 
-  deleteShiftType(shiftType: ShiftTypeInterface){
+  deleteShiftType(shiftType_name: string){
     //Manque la vérification si le shift est dans un shift type ou group
-    const index = this.shiftsType.indexOf(shiftType);
+    const index = this.shiftsType.indexOf(shiftType_name);
     if (index > -1) {
       this.shiftsType.splice(index, 1);
     }
+    try
+    { 
+      //call api service to push the contract
+      console.log(shiftType_name);
+      this.apiService.removeShiftType(shiftType_name).subscribe({
+        error: (err: HttpErrorResponse)=> {
+            //this.openErrorDialog(err.error)
+          }
+      })
+    }
+    catch(e){
+      console.log("error")
+      //this.openErrorDialog((e as Exception).getMessage())
+    }
   }
 
-  modifyShiftType(shiftType: ShiftTypeInterface){
+  /*modifyShiftType(shiftType: ShiftTypeInterface){
     const index = this.shiftsType.indexOf(shiftType);
     if (index > -1) {
       this.dialog.open(CreateShiftTypeDialogComponent,  
@@ -86,6 +98,6 @@ export class ShiftTypeComponent implements OnInit{
         });
 
   }
-}
+}*/
 
 }

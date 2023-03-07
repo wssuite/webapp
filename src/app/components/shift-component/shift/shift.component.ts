@@ -61,11 +61,26 @@ export class ShiftComponent implements OnInit {
       })
   }
 
-  deleteShift(shift: string){
+  deleteShift(shift_name: string){
     //Manque la vérification si le shift est dans un shift type ou group
-    const index = this.shifts.indexOf(shift);
+    const index = this.shifts.indexOf(shift_name);
     if (index > -1) {
       this.shifts.splice(index, 1);
+    }
+
+    try
+    { 
+      //call api service to push the contract
+      console.log(shift_name);
+      this.apiService.removeShift(shift_name).subscribe({
+        error: (err: HttpErrorResponse)=> {
+            //this.openErrorDialog(err.error)
+          }
+      })
+    }
+    catch(e){
+      console.log("error")
+      //this.openErrorDialog((e as Exception).getMessage())
     }
   }
 

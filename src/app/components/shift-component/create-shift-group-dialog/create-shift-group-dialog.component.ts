@@ -52,7 +52,7 @@ export class CreateShiftGroupDialogComponent implements OnInit {
         this.api.getShiftTypeNames().subscribe({
           next: (shiftsType: string[])=>{
             shiftsType.forEach((shiftType: string)=>{
-              this.possibleShifts.push(shiftType);
+              this.possibleShiftsType.push(shiftType);
             })
           },
           error: (error: HttpErrorResponse)=>{

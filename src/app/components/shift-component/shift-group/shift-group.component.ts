@@ -59,25 +59,53 @@ export class ShiftGroupComponent implements OnInit{
       })
   }
 
-  deleteShiftGroup(shiftsGroup: string){
-    const index = this.shiftsGroup.indexOf(shiftsGroup);
+  deleteShiftGroup(shiftGroup_name: string){
+    const index = this.shiftsGroup.indexOf(shiftGroup_name);
     if (index > -1) {
       this.shiftsGroup.splice(index, 1);
     }
+
+    try
+    { 
+      //call api service to push the contract
+      console.log(shiftGroup_name);
+      this.apiService.removeShiftGroup(shiftGroup_name).subscribe({
+        error: (err: HttpErrorResponse)=> {
+            //this.openErrorDialog(err.error)
+          }
+        })
+      }
+      catch(e){
+      console.log("error")
+      //this.openErrorDialog((e as Exception).getMessage())
+      }
   }
 
-  modifyShiftGroup(shiftGroup: string){
-    const index = this.shiftsGroup.indexOf(shiftGroup);
-    if (index > -1) {
-      this.dialog.open(CreateShiftGroupDialogComponent,  
-        { disableClose: true,  
-          height: '60%',
-          width: '50%', 
-          position: {top:'5vh',left: '25%', right: '25%'},
-          data: {shiftGroup}
-        });
 
-  }
+ /* modifyShiftGroup(shiftGroup: string){
+    let shiftGroup;
+    this.apiService.getShiftGroup(shiftGroup).subscribe({
+      next: (shiftsGroup: string)=> {
+        shiftsGroup = shiftsGroup;
+      },
+      error: (error: HttpErrorResponse)=> {
+        //this.openErrorDialog(error.error);
+      }
+    })
+
+    const dialog = this.dialog.open(CreateShiftGroupDialogComponent,  
+      { disableClose: true,  
+        height: '80%',
+        width: '50%', 
+        position: {top:'5vh',left: '25%', right: '25%'},
+        data: {name: 'shiftGroup.name', shifts: [], shiftsType: ''}
+      });
+
+    dialog.afterClosed().subscribe(()=>{
+        this.apiService.mod
+      })
+
+  }*/
 }
 
-}
+
