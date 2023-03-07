@@ -5,12 +5,10 @@ export class Contract {
     // use of any type to be able to display the different templates
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constraints: any[];
-    skills: string[];
 
     constructor() {
         this.name = '';
         this.constraints = [];
-        this.skills = [];
     }
 
     toJson(): ContractInterface {
@@ -20,7 +18,6 @@ export class Contract {
         }
         return {
             name: this.name,
-            skills: this.skills,
             constraints: cs,
         }
     }
@@ -28,7 +25,6 @@ export class Contract {
 
 export interface ContractInterface {
     name: string;
-    skills: string[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constraints:any[];
 }

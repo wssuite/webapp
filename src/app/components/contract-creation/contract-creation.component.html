@@ -7,25 +7,8 @@
             [formControl]="nameFormCtrl"/>
         </mat-form-field>
     </div>
-    <div class="skills-section">
-        <div class="skills-section-header">
-            <H1> skills:</H1>
-            <button mat-mini-fab color="primary" (click)="addSkill()" class="add-skill-button" matTooltip="Add skill">
-                <mat-icon>add</mat-icon>
-            </button>
-        </div>
-        <br>
-        <div *ngFor="let skill of contract.skills; let i=index; trackBy: trackByFn">
-            <mat-form-field appearance="fill" class="skill-input" >
-                <mat-label>Enter a skill</mat-label>
-                <input matInput [(ngModel)]="contract.skills[i]" [formControl]="skillsFormCtrls[i]"/>
-            </mat-form-field>
-            <button mat-raised-button (click)="deleteSkill(i)" class="delete-skill-button" color="accent">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </div>
-    </div>
     <div class="constraints-section">
+        <h1>Constraints</h1>
         <div class="constraints-container">
             <div *ngFor="let constraint of contract.constraints; let i= index" class="constraint-container">
                 <mat-expansion-panel [expanded]="i === contract.constraints.length -1">
@@ -51,8 +34,8 @@
             </div>
 
         </div>
-        <h1>Constraints</h1>
-        <label>choose a constraint: </label>
+        
+        <h2>choose a constraint to be added </h2>
         <br>
         <div class="constraints" *ngFor="let constraint of possibleConstraints; let i= index">
             <button class="constraint-button" mat-raised-button (click)="addConstraint(constraint)">
