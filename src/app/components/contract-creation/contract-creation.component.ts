@@ -23,7 +23,7 @@ export class ContractCreationComponent implements OnInit {
   @Input() possibleShifts!: string[];
 
   possibleConstraints: string[];
-  chosenConstraint: string;
+  //chosenConstraint: string;
   constraintsErrorState: boolean[];
   nameFormCtrl: FormControl;
   unwantedPatternsId: string;
@@ -42,7 +42,7 @@ export class ContractCreationComponent implements OnInit {
     this.errorState = new EventEmitter();
 
     this.possibleConstraints = CONSTRAINTS;
-    this.chosenConstraint = '';
+    //this.chosenConstraint = '';
     this.constraintsErrorState = [];
     this.nameFormCtrl = new FormControl(null, Validators.required);
     this.unwantedPatternsId = UNWANTED_PATTERNS_ID;
@@ -62,9 +62,9 @@ export class ContractCreationComponent implements OnInit {
     }
   }
   
-  addConstraint() {
+  addConstraint(name: string) {
     let constraint;
-    switch(this.chosenConstraint) {
+    switch(name) {
       case UNWANTED_PATTERNS_DISPLAY_NAME:
         constraint = new UnwantedPatterns(UNWANTED_PATTERNS_ID, UNWANTED_PATTERNS_DISPLAY_NAME); 
         break;
@@ -103,7 +103,6 @@ export class ContractCreationComponent implements OnInit {
       
       default: break;
     }
-    console.log(constraint);
     this.contract.constraints.push(constraint);
     this.constraintsErrorState.push(true);
     this.emitContract();
