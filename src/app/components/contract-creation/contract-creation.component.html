@@ -40,7 +40,7 @@
         <br>
         <div class="constraints-container">
             <div *ngFor="let constraint of contract.constraints; let i= index" class="constraint-container">
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="i === contract.constraints.length -1">
                     <mat-expansion-panel-header>
                         <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -51,7 +51,7 @@
                         <app-min-max-consecutive-shift *ngSwitchCase="minMaxConsecutiveShiftTypeId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
                         <app-boolean-constraint *ngSwitchCase="identicalWeekendId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-boolean-constraint>
                         <app-boolean-constraint *ngSwitchCase="completeWeekendId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-boolean-constraint>
-                        <app-integer-constraint *ngSwitchCase="totalNumberWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-integer-constraint>
+                        <app-min-max-constraint *ngSwitchCase="totalNumberWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
                         <app-min-max-constraint *ngSwitchCase="minMaxConsecutiveWorkingWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
                         <app-min-max-constraint *ngSwitchCase="minMaxNbAssignmentsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
                         <div *ngSwitchDefault>Empty</div>

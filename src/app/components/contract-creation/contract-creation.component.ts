@@ -4,7 +4,7 @@ import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_
 import { AlternativeShift } from "src/app/models/AlternativeShift";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 import { Contract } from "src/app/models/Contract";
-import { IntegerConstraint } from "src/app/models/IntegerConstraint";
+//import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
 import { MinMaxShiftConstraint } from "src/app/models/MinMaxShiftConstraint";
 import { ShiftConstraint } from "src/app/models/ShiftConstraint";
@@ -90,7 +90,7 @@ export class ContractCreationComponent implements OnInit {
         break;
 
       case TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME:
-        constraint = new IntegerConstraint(TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME);
+        constraint = new MinMaxConstraint(TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME);
         break;
 
       case MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME:
