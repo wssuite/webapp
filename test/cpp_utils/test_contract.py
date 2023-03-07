@@ -42,8 +42,10 @@ class TestContract(TestCase):
                 },
                 {
                     constraint_name: total_weekends_in_four_weeks,
-                    integer_constraint_value: "1.0",
-                    constraint_weight: "hard",
+                    max_constraint_value: "5.0",
+                    max_constraint_weight: "hard",
+                    min_constraint_value: "1.0",
+                    min_constraint_weight: "5.0",
                 },
                 {
                     constraint_name: min_max_num_assignments_in_four_weeks,
