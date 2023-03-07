@@ -9,7 +9,7 @@ from src.dao.shift_group_dao import ShiftGroupDao
 from src.dao.skill_dao import SkillDao
 from src.exceptions.shift_exceptions import ShiftNotExist
 from constants import (
-    nurse_contracts,
+    nurse_direct_contracts,
     nurse_group_contracts_list,
     nurse_name,
     contract_name,
@@ -85,7 +85,7 @@ class ContractHandler:
         )
         nurse_groups = self.nurse_group_dao.get_with_contracts([contract.name])
         self.contract_validation_with_nurses(
-            nurses_with_contract, nurse_contracts, contract
+            nurses_with_contract, nurse_direct_contracts, contract
         )
         self.contract_validation_with_nurse_groups(
             nurse_groups, nurse_group_contracts_list, contract

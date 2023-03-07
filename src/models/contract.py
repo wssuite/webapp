@@ -63,7 +63,7 @@ class Contract(Jsonify, DBDocument):
     def from_json(self, data: dict):
         contract = Contract()
 
-        contract.name = data.setdefault(contract_name, [])
+        contract.name = data.setdefault(contract_name, "")
         contract.skills = data.setdefault(contract_skills, [])
 
         constraint_creator = ContractConstraintCreator()
@@ -97,3 +97,6 @@ class Contract(Jsonify, DBDocument):
 
     def merge_contract_constraints(self, another_contract):
         self.constraints.extend(another_contract.constraints)
+
+    def copy(self):
+        return Contract().from_json(self.to_json())

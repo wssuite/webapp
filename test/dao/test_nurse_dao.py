@@ -1,7 +1,13 @@
 from src.dao.nurse_dao import NurseDao, Nurse
 from unittest import TestCase
 from src.dao.abstract_dao import connect_to_fake_db
-from constants import nurse_name, nurse_contracts, nurse_id, nurse_username
+from constants import (
+    nurse_name,
+    nurse_direct_contracts,
+    nurse_id,
+    nurse_username,
+    nurse_inherited_contracts,
+)
 from src.exceptions.nurse_exceptions import NurseUsernameAlreadyExist
 
 
@@ -14,17 +20,17 @@ class TestNurseDao(TestCase):
     def setUp(self) -> None:
         self.nurse_dict = {
             nurse_name: "random",
-            nurse_contracts: ["FullTime"],
+            nurse_direct_contracts: ["FullTime"],
             nurse_username: "random",
         }
         self.nurse_invalid = {
             nurse_name: "ransom",
             nurse_username: "random",
-            nurse_contracts: ["FullTime"],
+            nurse_direct_contracts: ["FullTime"],
         }
         self.nurse_update = {
             nurse_name: "random",
-            nurse_contracts: ["FullTime", "random contract"],
+            nurse_direct_contracts: ["FullTime", "random contract"],
             nurse_username: "random",
         }
         self.dao = create_nurse_dao()
@@ -36,6 +42,7 @@ class TestNurseDao(TestCase):
         nurse = Nurse().from_json(self.nurse_dict)
         nurse_id_inserted = self.dao.insert_one(nurse.db_json())
         nurse_dict = self.nurse_dict.copy()
+        nurse_dict[nurse_inherited_contracts] = []
         nurse_dict[nurse_id] = str(nurse_id_inserted.inserted_id)
         all_nurses = self.dao.fetch_all()
         self.assertEqual(1, len(all_nurses))
@@ -53,6 +60,7 @@ class TestNurseDao(TestCase):
         inserted_id = self.dao.insert_one(nurse.db_json())
         nurse_dict = self.nurse_dict.copy()
         nurse_dict[nurse_id] = str(inserted_id.inserted_id)
+        nurse_dict[nurse_inherited_contracts] = []
         parTime = self.dao.get_with_contracts(["ParTime"])
         fullTime = self.dao.get_with_contracts(["FullTime"])
         self.assertEqual(0, len(parTime))

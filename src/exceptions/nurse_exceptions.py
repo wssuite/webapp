@@ -1,5 +1,11 @@
 from src.exceptions.project_base_exception import ProjectBaseException
-from error_msg import nurse_username_already_exist, nurse_group_already_exist
+from error_msg import (
+    nurse_username_already_exist,
+    nurse_group_already_exist,
+    nurse_not_found,
+    deletion_error,
+    nurse_group_not_found,
+)
 
 
 class NurseUsernameAlreadyExist(ProjectBaseException):
@@ -12,3 +18,21 @@ class NurseGroupAlreadyExist(ProjectBaseException):
     def __init__(self, name):
         msg = nurse_group_already_exist.format(name)
         super(NurseGroupAlreadyExist, self).__init__(msg)
+
+
+class NurseNotFound(ProjectBaseException):
+    def __init__(self, name):
+        msg = nurse_not_found.format(name)
+        super(NurseNotFound, self).__init__(msg)
+
+
+class CannotDeleteNurse(ProjectBaseException):
+    def __init__(self, name):
+        msg = f"the nurse {name}"
+        super(CannotDeleteNurse, self).__init__(deletion_error.format(msg))
+
+
+class NurseGroupNotFound(ProjectBaseException):
+    def __init__(self, name):
+        msg = nurse_group_not_found.format(name)
+        super(NurseGroupNotFound, self).__init__(msg)

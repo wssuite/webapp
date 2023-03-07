@@ -13,7 +13,7 @@ from constants import (
     shift_start_time,
     shift_end_time,
     nurse_name,
-    nurse_contracts,
+    nurse_direct_contracts,
     nurse_group_name,
     nurse_group_contracts_list,
     nurse_group_nurses_list,
@@ -130,7 +130,7 @@ test_work_shift_group[shift_group_shifts_list] = ["Day"]
 
 nurse1 = {
     nurse_name: "nurse1",
-    nurse_contracts: ["FullTime_Valid", "minConsContract"],
+    nurse_direct_contracts: ["FullTime_Valid", "minConsContract"],
     nurse_username: "nurse1",
 }
 
@@ -153,3 +153,27 @@ nurse_skill = {skill_name: "Nurse"}
 head_nurse_skill = {skill_name: "HeadNurse"}
 sociologist_skill = {skill_name: "Sociologist"}
 skill_array = ["Nurse", "HeadNurse", "Sociologist", "Nurse"]
+
+patrick_nurse = {
+    nurse_name: "Patrick",
+    nurse_direct_contracts: ["FullTime_Valid"],
+    nurse_username: "patrick",
+}
+
+patrick_nurse_group = {
+    nurse_group_name: "patrick's group",
+    nurse_group_nurses_list: ["patrick"],
+    nurse_group_contracts_list: ["General"],
+}
+
+problematic_nurse_group = {
+    nurse_group_name: "problematic group",
+    nurse_group_contracts_list: ["FullTime_Not_Valid"],
+    nurse_group_nurses_list: ["patrick"],
+}
+
+not_problematic_group = {
+    nurse_group_name: "not problematic_group",
+    nurse_group_contracts_list: [],
+    nurse_group_nurses_list: ["patrick"],
+}

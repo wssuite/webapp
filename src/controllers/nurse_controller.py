@@ -1,47 +1,69 @@
 from flask import Blueprint, request, Response
-from src.dao.nurse_dao import NurseDao, Nurse
+from src.handlers.nurse_handler import NurseHandler
 from src.dao.abstract_dao import DBConnection
-from constants import nurse_username
+from constants import nurse_username, user_token, ok_message
+from src.exceptions.project_base_exception import ProjectBaseException
 
 mod = Blueprint("nurse_controller", __name__, url_prefix="/nurse")
 
-nurse_dao = NurseDao(DBConnection.get_connection())
+nurse_handler = NurseHandler(DBConnection.get_connection())
 
 
 @mod.route("/add", methods=["POST"])
 def add_nurse():
-    nurse_dict = request.json
-    nurse = Nurse().from_json(nurse_dict)
-    return str(nurse_dao.insert_one(nurse.db_json()).inserted_id)
+    try:
+        nurse_dict = request.json
+        token = request.args[user_token]
+        return nurse_handler.add(token, nurse_dict)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchAll", methods=["GET"])
 def get_all_nurses():
-    return nurse_dao.fetch_all()
+    try:
+        token = request.args[user_token]
+        return nurse_handler.get_all(token)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchByUsername", methods=["GET"])
 def get_nurse_by_username():
-    username = request.args[nurse_username]
-    return nurse_dao.find_by_username(username)
+    try:
+        token = request.args[user_token]
+        username = request.args[nurse_username]
+        return nurse_handler.get_by_username(token, username)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/remove", methods=["DELETE"])
 def delete_nurse():
-    username = request.args[nurse_username]
-    nurse_dao.remove(username)
-    return Response("OK", 200)
+    try:
+        token = request.args[user_token]
+        username = request.args[nurse_username]
+        nurse_handler.delete(token, username)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/fetchAllUsernames", methods=["GET"])
 def get_nurses_usernames():
-    all_nurses = nurse_dao.fetch_all()
-    return [nurse[nurse_username] for nurse in all_nurses]
+    try:
+        token = request.args[user_token]
+        return nurse_handler.get_all_usernames(token)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
 
 
 @mod.route("/update", methods=["PUT"])
 def update_nurse():
-    update_dict = request.json
-    nurse = Nurse().from_json(update_dict)
-    nurse_dao.update(nurse.db_json())
-    return Response("OK", 200)
+    try:
+        token = request.args[user_token]
+        update_dict = request.json
+        nurse_handler.update(token, update_dict)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
