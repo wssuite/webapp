@@ -14,7 +14,6 @@ from constants import (
     constraint_name,
     contract_name,
     contract_constraints,
-    contract_skills,
     integer_constraint_value,
     constraint_weight,
     shift_constraint,
@@ -32,7 +31,6 @@ class TestContract(TestCase):
     def setUp(self) -> None:
         self.contract_dict = {
             contract_name: "FullTime",
-            contract_skills: ["nurse, HeadNurse"],
             contract_constraints: [
                 {
                     constraint_name: number_of_free_days_after_shift,
@@ -106,7 +104,6 @@ class TestContract(TestCase):
         contract = Contract()
         self.assertEqual("", contract.name)
         self.assertEqual(0, len(contract.constraints))
-        self.assertEqual(0, len(contract.skills))
 
     def test_create_contract_from_json_contract_details_is_not_empty(self):
         contract = Contract().from_json(self.contract_dict)
