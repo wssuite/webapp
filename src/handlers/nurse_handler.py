@@ -65,20 +65,6 @@ class NurseHandler:
 
     def update(self, token, json):
         nurse, contract_validator = self.insertion_validations(token, json)
-        contract_by_nurse_group = (
-            get_contracts_by_nurse_groups_including_nurse(
-                nurse.username, self.nurse_group_dao
-            )
-        )
-        for group in contract_by_nurse_group.keys():
-            merged_contract = Contract()
-            merged_contract.name = group
-            for contract_name in contract_by_nurse_group[group]:
-                contract_dict = self.contract_dao.find_by_name(contract_name)
-                contract = Contract().from_json(contract_dict)
-                merged_contract.merge_contract_constraints(contract)
-            contract_validator.add_contract_constraints(merged_contract)
-
         before_update = self.get_by_username(token, nurse.username)
         nurse.id = before_update[nurse_id]
         self.nurse_dao.update(nurse.db_json())

@@ -19,7 +19,6 @@ from test_constants import (
 from constants import user_token
 from src.exceptions.contract_exceptions import (
     ContractNotExist,
-    ContractContradictionException,
 )
 from constants import (
     nurse_direct_contracts,
@@ -63,14 +62,6 @@ class TestNurseHandler(TestCase):
         actual = self.handler.get_all_usernames(random_hex)
         expected = ["patrick", "nurse1"]
         self.assertEqual(expected, actual)
-
-    def test_update_nurse_to_include_a_contradicting_contract_raise_error(
-        self,
-    ):
-        update = patrick_nurse.copy()
-        update[nurse_direct_contracts] = ["FullTime_Not_Valid"]
-        with self.assertRaises(ContractContradictionException):
-            self.handler.update(random_hex, update)
 
     def test_update_nurse_without_contract_contradiction_succeed(self):
         update = patrick_nurse.copy()
