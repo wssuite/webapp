@@ -9,6 +9,7 @@ from src.models.constraints import (
     ContractMinMaxShiftConstraint,
     ContractUnwantedPatterns,
     ContractAlternativeShift,
+    ContractUnwantedSkills,
 )
 
 from constants import (
@@ -25,6 +26,8 @@ from constants import (
     contract_name,
     contract_constraints,
     contract_shifts,
+    unwanted_skills,
+    contract_skills,
 )
 
 from src.models.db_document import DBDocument
@@ -42,6 +45,7 @@ class ContractConstraintCreator:
             complete_weekends: ContractBooleanConstraint,
             alternative_shift: ContractAlternativeShift,
             unwanted_pattern: ContractUnwantedPatterns,
+            unwanted_skills: ContractUnwantedSkills,
         }
 
     def create_contact_constraint(self, data) -> ContractConstraint:
@@ -56,6 +60,7 @@ class Contract(Jsonify, DBDocument):
         self.name = ""
         self.constraints: List[ContractConstraint] = []
         self.shifts = []
+        self.skills = []
 
     def from_json(self, data: dict):
         contract = Contract()
@@ -69,6 +74,7 @@ class Contract(Jsonify, DBDocument):
             )
             contract.constraints.append(new_constraint)
             shifts = new_constraint.get_shift()
+            contract.skills.extend(new_constraint.get_skills())
             for shift in shifts:
                 if shift not in contract.shifts:
                     contract.shifts.append(shift)
@@ -87,6 +93,7 @@ class Contract(Jsonify, DBDocument):
     def db_json(self):
         basic_json = self.to_json()
         basic_json[contract_shifts] = self.shifts
+        basic_json[contract_skills] = self.skills
         return basic_json
 
     def merge_contract_constraints(self, another_contract):

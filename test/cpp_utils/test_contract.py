@@ -24,6 +24,8 @@ from constants import (
     unwanted_pattern_elements,
     pattern_element_shift,
     pattern_element_day,
+    unwanted_skills,
+    contract_skills,
 )
 
 
@@ -37,6 +39,11 @@ class TestContract(TestCase):
                     integer_constraint_value: "1.0",
                     constraint_weight: "hard",
                     shift_constraint: "Early",
+                },
+                {
+                    constraint_name: unwanted_skills,
+                    contract_skills: ["Nurse"],
+                    constraint_weight: "hard",
                 },
                 {
                     constraint_name: total_weekends_in_four_weeks,
@@ -109,10 +116,11 @@ class TestContract(TestCase):
         contract = Contract().from_json(self.contract_dict)
         self.assertEqual(self.contract_dict, contract.to_json())
         self.assertEqual(["Early", "Late"], contract.shifts)
+        self.assertEqual(["Nurse"], contract.skills)
 
     def test_two_merged_contract_constraints_are_added(self):
         contract = Contract().from_json(self.contract_dict)
-        self.assertEqual(9, len(contract.constraints))
+        self.assertEqual(10, len(contract.constraints))
         added_constraint = ContractMinMaxConstraint().from_json(
             {
                 constraint_name: min_max_num_assignments_in_four_weeks,
@@ -131,7 +139,7 @@ class TestContract(TestCase):
         modified_contract_dict[contract_constraints].append(
             added_constraint.to_json()
         )
-        self.assertEqual(10, len(contract.constraints))
+        self.assertEqual(11, len(contract.constraints))
         self.assertEqual(modified_contract_dict, contract.to_json())
 
     def test_copy_contract_returns_another_object(self):
