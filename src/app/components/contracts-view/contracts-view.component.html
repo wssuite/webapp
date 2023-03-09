@@ -1,5 +1,6 @@
 <div *ngIf="connectedUser; else elseBlock">
     <app-header></app-header>
+    <button class="create-button" mat-raised-button color="primary"  (click)="createNewContract()">Create new contract</button>
     <div class="contracts-container">
         <div class ="contract-cards-container" >
         <mat-card *ngFor="let contract of contracts">
@@ -27,7 +28,6 @@
                 </mat-card-actions>
             </mat-card>
         </div>
-        <button class="create-button" mat-raised-button color="primary"  (click)="createNewContract()">Create new contract</button>
     </div>
 </div>
 <ng-template #elseBlock>

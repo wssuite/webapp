@@ -6,6 +6,9 @@
             <input matInput [(ngModel)]="contract.name"
             [formControl]="nameFormCtrl"/>
         </mat-form-field>
+        <mat-error *ngIf="this.nameExist()">
+            Name is already used
+        </mat-error>
     </div>
     <div class="constraints-section">
         <h1>Constraints</h1>
