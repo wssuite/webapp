@@ -63,6 +63,18 @@ export class ContractCreationDialogComponent implements OnInit{
           this.openErrorDialog(error.error);
         }
       })
+
+      this.api.getAllSkills().subscribe({
+        next:(skills: string[])=>{
+          skills.forEach((skill: string)=>{
+            this.possibleSkills.push(skill);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+      
     }catch(err){
       //Do nothing
     }

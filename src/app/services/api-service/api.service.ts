@@ -7,6 +7,7 @@ import {
   FETCH_SHIFT_GROUP_NAMES,
   FETCH_SHIFT_NAMES,
   FETCH_SHIFT_TYPE_NAMES,
+  FETCH_SKILLS,
   LOGIN_URL,
   LOGOUT_URL,
   PROTOTYPE_SCHEDULE_URL,
@@ -106,6 +107,18 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       return this.httpClient.get<string[]>(FETCH_CONTRACT_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  getAllSkills(): Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_SKILLS, {
         params: queryParams,
       });
     }catch(err){
