@@ -2,7 +2,7 @@ from pymongo.collection import Collection
 
 from src.dao.abstract_dao import AbstractDao
 from src.models.skill import Skill, skill_name
-from constants import mongo_id_field
+from constants import mongo_id_field, profile
 
 
 class SkillDao(AbstractDao):
@@ -12,13 +12,13 @@ class SkillDao(AbstractDao):
 
     def insert_many(self, skills):
         for skill in skills:
-            if self.exist(skill) is False:
-                skill_object = Skill()
-                skill_object.name = skill
+            skill_object = Skill().from_json(skill)
+            if self.exist(skill_object.name, skill_object.profile) is False:
                 self.collection.insert_one(skill_object.db_json())
 
-    def exist(self, name):
-        return self.collection.find_one({skill_name: name}) is not None
+    def exist(self, name, profile_name):
+        return self.collection.find_one(
+            {skill_name: name}, {profile: profile_name}) is not None
 
     def get_all(self):
         skills = []

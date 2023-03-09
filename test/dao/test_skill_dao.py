@@ -5,14 +5,13 @@ from test_constants import (
     nurse_skill,
     head_nurse_skill,
     sociologist_skill,
-    skill_array,
 )
 
 
 class TestShiftDao(TestCase):
     def setUp(self) -> None:
         self.dao = SkillDao(connect_to_fake_db())
-        self.skills = skill_array
+        self.skills = [nurse_skill, head_nurse_skill, sociologist_skill]
 
     def test_insert_many_without_duplicates(self):
         expected = [nurse_skill, head_nurse_skill, sociologist_skill]
