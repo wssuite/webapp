@@ -47,6 +47,7 @@ import { AccountCreationComponent } from './components/account-creation/account-
 import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NotConnectedComponent } from './components/not-connected/not-connected.component';
+import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { NotConnectedComponent } from './components/not-connected/not-connected.
     AccountCreationDialogComponent,
     HeaderComponent,
     NotConnectedComponent,
+    UnwantedSkillsComponent,
   ],
   imports: [
     BrowserModule,

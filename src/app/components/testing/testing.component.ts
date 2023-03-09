@@ -8,7 +8,8 @@ import {
     FREE_DAYS_AFTER_SHIFT_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME,
     MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME,
     TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID,
-    MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, } from 'src/app/constants/constraints';
+    MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME,
+    UNWANTED_SKILLS_DISPLAY_NAME, UNWANTED_SKILLS_ID, } from 'src/app/constants/constraints';
 import { shiftsExample } from 'src/app/constants/shifts';
 import { AlternativeShift } from 'src/app/models/AlternativeShift';
 import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
@@ -17,6 +18,7 @@ import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 import { MinMaxConstraint } from 'src/app/models/MinMaxConstraint';
+import { UnwantedSkills } from "src/app/models/UnwantedSkills";
 
 @Component({
   selector: "app-testing",
@@ -44,6 +46,11 @@ export class TestingComponent {
   minMaxConstraint: MinMaxConstraint;
   minMaxErrorConstraint: boolean;
 
+  unwantedSkillsConstraint: UnwantedSkills;
+  unWantedSkillsErrorState: boolean;
+
+  SKILLS = ["Nurse", "headNurse", "Physiatre"];
+
   constructor() {
     this.possibleShifts = shiftsExample;
     this.alternativeConstraint = new AlternativeShift(ALTERNATIVE_SHIFT_ID,ALTERNATIVE_SHIFT_DISPLAY_NAME);
@@ -54,6 +61,8 @@ export class TestingComponent {
     this.minMaxShiftConstraintErrorState = true;
     this.unwantedPatternsConstraint = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
     this.unwantedPatternsErrorState = true;
+    this.unwantedSkillsConstraint = new UnwantedSkills(UNWANTED_SKILLS_ID, UNWANTED_SKILLS_DISPLAY_NAME);
+    this.unWantedSkillsErrorState = true;
     this.booleanConstraint = new BooleanConstraint(
       IDENTICAL_WEEKEND_ID,
       IDENTICAL_WEEKEND_DISPLAY_NAME
@@ -76,6 +85,10 @@ export class TestingComponent {
   
   updateAlternativeConstraintErrorState(e: boolean){
     this.alternativeShiftConstraintErrorState = e;
+  }
+
+  updateSkillsErrorState(e:boolean) {
+    this.unWantedSkillsErrorState = e;
   }
 
   updateShiftConstraintErrorState(e:boolean) {
