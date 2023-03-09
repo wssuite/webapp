@@ -5,7 +5,7 @@ from test_constants import (
     late_shift,
     random_hex,
     default_user,
-    work_shift_group,
+    work_shift_group, profile1
 )
 from src.dao.abstract_dao import connect_to_fake_db
 from unittest import TestCase
@@ -33,32 +33,32 @@ class TestShiftHandler(TestCase):
         pass
 
     def test_add_new_shift(self):
-        actual_before = self.handler.get_all_names(random_hex)
+        actual_before = self.handler.get_all_names(random_hex, profile1)
         expected_before = ["Early"]
         self.handler.add(random_hex, late_shift)
-        actual_after = self.handler.get_all_names(random_hex)
+        actual_after = self.handler.get_all_names(random_hex, profile1)
         expected_after = ["Early", "Late"]
         self.assertEqual(expected_before, actual_before)
         self.assertEqual(expected_after, actual_after)
 
     def test_update_shift(self):
-        actual_before = self.handler.get_by_name(random_hex, "Early")
+        actual_before = self.handler.get_by_name(random_hex, "Early", profile1)
         update_early_shift = early_shift.copy()
         update_early_shift[shift_start_time] = "09:00:00"
         self.handler.update(random_hex, update_early_shift.copy())
-        actual_after = self.handler.get_by_name(random_hex, "Early")
+        actual_after = self.handler.get_by_name(random_hex, "Early", profile1)
         self.assertEqual(early_shift, actual_before)
         self.assertEqual(update_early_shift, actual_after)
 
     def test_delete_shift(self):
         self.handler.shift_dao.insert_one_if_not_exist(late_shift.copy())
         with self.assertRaises(CannotDeleteShift):
-            self.handler.delete(random_hex, "Early")
-        self.handler.delete(random_hex, "Late")
-        actual = self.handler.get_all(random_hex)
+            self.handler.delete(random_hex, "Early", profile1)
+        self.handler.delete(random_hex, "Late", profile1)
+        actual = self.handler.get_all(random_hex, profile1)
         expected = [early_shift]
         self.assertEqual(expected, actual)
 
     def test_get_shift_by_name_if_not_exist_raise_error(self):
         with self.assertRaises(ShiftNotExist):
-            self.handler.get_by_name(random_hex, "MidDay")
+            self.handler.get_by_name(random_hex, "MidDay", profile1)
