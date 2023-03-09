@@ -11,3 +11,9 @@ class Profile(Jsonify, DBDocument):
 
     def db_json(self) -> dict:
         return self.to_json()
+
+    def to_json(self):
+        return {
+            profile_name: self.name,
+            profile_creator: self.creator,
+        }
