@@ -8,6 +8,6 @@ class SkillHandler:
         self.user_dao = UserDao(mongo)
         self.skill_dao = SkillDao(mongo)
 
-    def get_all(self, token):
+    def get_all(self, token, profile):
         verify_token(token, self.user_dao)
-        return self.skill_dao.get_all()
+        return self.skill_dao.get_all(profile)
