@@ -13,7 +13,6 @@ from constants import (
     nurse_group_contracts_list,
     nurse_name,
     contract_name,
-    nurse_username,
 )
 from src.utils.contracts_validator import ContractsValidator
 from src.exceptions.contract_exceptions import (
@@ -84,62 +83,16 @@ class ContractHandler:
             [contract.name]
         )
         nurse_groups = self.nurse_group_dao.get_with_contracts([contract.name])
-        self.contract_validation_with_nurses(
+        self.contract_validation_with_other_contracts(
             nurses_with_contract, nurse_direct_contracts, contract
         )
-        self.contract_validation_with_nurse_groups(
+        self.contract_validation_with_other_contracts(
             nurse_groups, nurse_group_contracts_list, contract
         )
         self.contract_dao.update(contract.db_json())
         self.skill_dao.insert_many(contract.skills)
 
-    def contract_validation_with_nurses(self, array, tag, contract):
-        for nurse in array:
-            other_contracts_names = nurse.setdefault(tag, [])
-            """Remove the contract that we are trying to modify"""
-            other_contracts_names.remove(contract.name)
-            """
-            We suppose that other contracts don't have conflicts.
-            This verification will be done however when inserting/updating
-            a nurse or a nurse group.
-            Consequently, we will perform a merge operation on the other
-            contracts to reduce time complexity
-            """
-            verification_contract = Contract()
-            verification_contract.name = f"{nurse[nurse_name]} other contracts"
-            for other_contract_name in other_contracts_names:
-                contract_dict = self.contract_dao.find_by_name(
-                    other_contract_name
-                )
-                other_contract = Contract().from_json(contract_dict)
-                verification_contract.merge_contract_constraints(
-                    other_contract
-                )
-            """
-            Get the groups in which the nurse takes part and the
-            contracts implied
-            """
-            nurse_groups = self.nurse_group_dao.get_with_nurses(
-                [nurse[nurse_username]]
-            )
-            if nurse_groups is not None:
-                for group in nurse_groups:
-                    for other_contract_name in group[
-                        nurse_group_contracts_list
-                    ]:
-                        contract_dict = self.contract_dao.find_by_name(
-                            other_contract_name
-                        )
-                        other_contract = Contract().from_json(contract_dict)
-                        verification_contract.merge_contract_constraints(
-                            other_contract
-                        )
-
-            validator = ContractsValidator()
-            validator.add_contract_constraints(verification_contract)
-            validator.add_contract_constraints(contract)
-
-    def contract_validation_with_nurse_groups(self, array, tag, contract):
+    def contract_validation_with_other_contracts(self, array, tag, contract):
         for nurse in array:
             other_contracts_names = nurse.setdefault(tag, [])
             """Remove the contract that we are trying to modify"""

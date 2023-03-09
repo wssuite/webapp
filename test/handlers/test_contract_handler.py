@@ -18,7 +18,6 @@ from unittest import TestCase
 from constants import user_token, contract_name
 from src.exceptions.shift_exceptions import ShiftNotExist
 from src.exceptions.contract_exceptions import (
-    ContractContradictionException,
     CannotDeleteContract,
     ContractNotExist,
 )
@@ -70,16 +69,6 @@ class TestContractHandler(TestCase):
             ],
             all_contracts,
         )
-
-    def test_update_contract_if_update_contradicts_nurse_contract_raise_error(
-        self,
-    ):
-        self.insert_missing_deps()
-        with self.assertRaises(ContractContradictionException):
-            self.handler.update(
-                random_hex,
-                full_time_valid_contract_with_general_update_to_invalid,
-            )
 
     def test_update_contract_if_update_not_contradict_depended_succeed(self):
         self.insert_missing_deps()

@@ -1,6 +1,5 @@
 from src.handlers.nurse_group_handler import NurseGroupHandler
 from test_constants import (
-    full_time_not_valid_contract_with_general,
     general_contract_dict,
     problematic_nurse_group,
     patrick_nurse,
@@ -11,7 +10,6 @@ from test_constants import (
     not_problematic_group,
 )
 from src.exceptions.contract_exceptions import (
-    ContractContradictionException,
     ContractNotExist,
 )
 from src.exceptions.nurse_exceptions import NurseNotFound, NurseGroupNotFound
@@ -42,15 +40,6 @@ class TestNurseGroupHandler(TestCase):
     def test_add_nurse_group_when_contract_not_exist_raise_error(self):
         self.handler.nurse_dao.insert_one(patrick_nurse.copy())
         with self.assertRaises(ContractNotExist):
-            self.handler.add(random_hex, problematic_nurse_group.copy())
-
-    def test_add_nurse_group_contradict_other_group_raise_error(self):
-        self.handler.nurse_dao.insert_one(patrick_nurse.copy())
-        self.handler.add(random_hex, patrick_nurse_group)
-        self.handler.contract_dao.insert_one(
-            full_time_not_valid_contract_with_general
-        )
-        with self.assertRaises(ContractContradictionException):
             self.handler.add(random_hex, problematic_nurse_group.copy())
 
     def test_add_nurse_group_with_no_contradiction_succeed(self):

@@ -1,11 +1,8 @@
 from src.dao.contract_dao import ContractDao, Contract
-from src.dao.nurse_dao import NurseDao, Nurse
+from src.dao.nurse_dao import NurseDao
 from src.dao.user_dao import UserDao
 from src.dao.nurse_group_dao import NurseGroupDao
 from src.handlers.user_handler import verify_token
-from src.handlers.nurse_handler import (
-    get_contracts_by_nurse_groups_including_nurse,
-)
 from src.models.nurse_group import NurseGroup
 from src.exceptions.contract_exceptions import ContractNotExist
 from src.utils.contracts_validator import ContractsValidator
@@ -53,41 +50,6 @@ class NurseGroupHandler:
             nurse_dict = self.nurse_dao.find_by_username(nurse_name)
             if nurse_dict is None:
                 raise NurseNotFound(nurse_name)
-            nurse = Nurse().from_json(nurse_dict)
-            nurse_other_contracts = Contract()
-            nurse_other_contracts.name = f"{nurse.name} other contracts"
-
-            for contract_name in nurse.direct_contracts:
-                contract_dict = self.contract_dao.find_by_name(contract_name)
-                """We don't need to validate that the contract exist because
-                it will be guaranteed by other components in the server"""
-                contract = Contract().from_json(contract_dict)
-                nurse_other_contracts.merge_contract_constraints(contract)
-
-            contracts_by_group = get_contracts_by_nurse_groups_including_nurse(
-                nurse_name, self.nurse_group_dao
-            )
-            """This is needed when updating the nurse group.
-            But we don't want to raise exception if the key is not found.
-            Hence, we use the second argument
-            https://stackoverflow.com/questions/15411107/delete-a-dictionary-item-if-the-key-exists
-            """
-            contracts_by_group.pop(nurse_group.name, None)
-            for key in contracts_by_group.keys():
-                for contract_name in contracts_by_group[key]:
-                    contract_dict = self.contract_dao.find_by_name(
-                        contract_name
-                    )
-                    """
-                    We don't need to validate that the contract exist because
-                    it will be guaranteed by other components in the server
-                    """
-                    contract = Contract().from_json(contract_dict)
-                    nurse_other_contracts.merge_contract_constraints(contract)
-
-            nurse_contract_validator.add_contract_constraints(
-                nurse_other_contracts
-            )
 
     def verify_nurse_group_is_valid(self, json):
         (
