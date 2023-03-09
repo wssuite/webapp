@@ -1,6 +1,5 @@
 from constants import (
     contract_name,
-    contract_skills,
     contract_constraints,
     constraint_name,
     constraint_weight,
@@ -38,7 +37,6 @@ profile1 = "profile1"
 
 general_contract_dict = {
     contract_name: "General",
-    contract_skills: [],
     profile: profile1,
     contract_constraints: [
         {
@@ -51,7 +49,6 @@ general_contract_dict = {
 
 full_time_not_valid_contract_with_general = {
     contract_name: "FullTime_Not_Valid",
-    contract_skills: [],
     profile: profile1,
     contract_constraints: [
         {
@@ -64,7 +61,6 @@ full_time_not_valid_contract_with_general = {
 
 full_time_valid_contract_with_general = {
     contract_name: "FullTime_Valid",
-    contract_skills: [],
     profile: profile1,
     contract_constraints: [
         {
@@ -77,7 +73,6 @@ full_time_valid_contract_with_general = {
 
 full_time_valid_contract_with_general_update_to_invalid = {
     contract_name: "FullTime_Valid",
-    contract_skills: [],
     profile: profile1,
     contract_constraints: [
         {
@@ -90,7 +85,6 @@ full_time_valid_contract_with_general_update_to_invalid = {
 
 full_time_contract_with_day_shift_type = {
     contract_name: "FullTime_Valid",
-    contract_skills: [],
     profile: profile1,
     contract_constraints: [
         {
@@ -103,7 +97,6 @@ full_time_contract_with_day_shift_type = {
 
 min_cons_contract = {
     contract_name: "minConsContract",
-    contract_skills: [],
     profile: profile1,
     contract_constraints: [
         {

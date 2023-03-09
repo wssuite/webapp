@@ -7,6 +7,7 @@ from constants import (
     mongo_all_operation,
     contract_shifts,
     profile,
+    contract_skills,
 )
 from src.exceptions.contract_exceptions import (
     ContractAlreadyExistException,
@@ -42,7 +43,7 @@ class ContractDao(AbstractDao):
     def find_by_name(self, name, profile_name):
         return self.collection.find_one(
             {contract_name: name, profile: profile_name},
-            {mongo_id_field: 0, contract_shifts: 0},
+            {mongo_id_field: 0, contract_shifts: 0, contract_skills: 0},
         )
 
     def exist(self, name, profile_name):
