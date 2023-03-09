@@ -30,7 +30,7 @@ class NurseGroupHandler:
         nurse_group_merged_contract.name = f"{nurse_group.name} contract"
         contract_validator = ContractsValidator()
         for contract_name in nurse_group.contracts:
-            contract_dict = self.contract_dao.find_by_name(contract_name)
+            contract_dict = self.contract_dao.find_by_name(contract_name, nurse_group.profile)
             if contract_dict is None:
                 raise ContractNotExist(contract_name)
             contract = Contract().from_json(contract_dict)
@@ -47,7 +47,7 @@ class NurseGroupHandler:
             nurse_contract_validator.add_contract_constraints(
                 nurse_group_contract_copy
             )
-            nurse_dict = self.nurse_dao.find_by_username(nurse_name)
+            nurse_dict = self.nurse_dao.find_by_username(nurse_name, nurse_group.profile)
             if nurse_dict is None:
                 raise NurseNotFound(nurse_name)
 
@@ -71,23 +71,23 @@ class NurseGroupHandler:
         nurse_group = self.verify_nurse_group_is_valid(json)
         self.nurse_group_dao.update(nurse_group.db_json())
 
-    def get_all(self, token):
+    def get_all(self, token, profile):
         verify_token(token, self.user_dao)
-        return self.nurse_group_dao.fetch_all()
+        return self.nurse_group_dao.fetch_all(profile)
 
-    def get_all_names(self, token):
+    def get_all_names(self, token, profile):
         return [
             nurse_group[nurse_group_name]
-            for nurse_group in self.get_all(token)
+            for nurse_group in self.get_all(token, profile)
         ]
 
-    def delete(self, token, name):
+    def delete(self, token, name, profile):
         verify_token(token, self.user_dao)
-        self.nurse_group_dao.remove(name)
+        self.nurse_group_dao.remove(name, profile)
 
-    def get_by_name(self, token, name):
+    def get_by_name(self, token, name, profile):
         verify_token(token, self.user_dao)
-        nurse_group_dict = self.nurse_group_dao.find_by_name(name)
+        nurse_group_dict = self.nurse_group_dao.find_by_name(name, profile)
         if nurse_group_dict is None:
             raise NurseGroupNotFound(name)
         nurse_group = NurseGroup().from_json(nurse_group_dict)

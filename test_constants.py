@@ -201,22 +201,26 @@ patrick_nurse = {
     nurse_name: "Patrick",
     nurse_direct_contracts: ["FullTime_Valid"],
     nurse_username: "patrick",
+    profile: profile1,
 }
 
 patrick_nurse_group = {
     nurse_group_name: "patrick's group",
     nurse_group_nurses_list: ["patrick"],
     nurse_group_contracts_list: ["General"],
+    profile: profile1,
 }
 
 problematic_nurse_group = {
     nurse_group_name: "problematic group",
     nurse_group_contracts_list: ["FullTime_Not_Valid"],
     nurse_group_nurses_list: ["patrick"],
+    profile: profile1,
 }
 
 not_problematic_group = {
     nurse_group_name: "not problematic_group",
     nurse_group_contracts_list: [],
     nurse_group_nurses_list: ["patrick"],
+    profile: profile1,
 }

@@ -7,7 +7,7 @@ from test_constants import (
     default_user,
     random_hex,
     full_time_contract_with_day_shift_type,
-    not_problematic_group,
+    not_problematic_group, profile1
 )
 from src.exceptions.contract_exceptions import (
     ContractNotExist,
@@ -46,7 +46,7 @@ class TestNurseGroupHandler(TestCase):
         self.handler.nurse_dao.insert_one(patrick_nurse.copy())
         self.handler.add(random_hex, patrick_nurse_group.copy())
         self.handler.add(random_hex, not_problematic_group.copy())
-        actual = self.handler.get_all_names(random_hex)
+        actual = self.handler.get_all_names(random_hex, profile1)
         expected = ["patrick's group", "not problematic_group"]
         self.assertEqual(expected, actual)
 
@@ -57,14 +57,14 @@ class TestNurseGroupHandler(TestCase):
         update = patrick_nurse_group.copy()
         update[nurse_group_contracts_list] = []
         self.handler.update(random_hex, update)
-        actual = self.handler.get_by_name(random_hex, "patrick's group")
+        actual = self.handler.get_by_name(random_hex, "patrick's group", profile1)
         self.assertEqual(update, actual)
 
     def test_delete_nurse_group_succeed(self):
         self.handler.nurse_dao.insert_one(patrick_nurse.copy())
         self.handler.add(random_hex, patrick_nurse_group.copy())
-        before = self.handler.get_by_name(random_hex, "patrick's group")
-        self.handler.delete(random_hex, "patrick's group")
+        before = self.handler.get_by_name(random_hex, "patrick's group", profile1)
+        self.handler.delete(random_hex, "patrick's group", profile1)
         self.assertEqual(patrick_nurse_group, before)
         with self.assertRaises(NurseGroupNotFound):
-            self.handler.get_by_name(random_hex, "patrick's group")
+            self.handler.get_by_name(random_hex, "patrick's group", profile1)
