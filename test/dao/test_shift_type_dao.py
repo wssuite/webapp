@@ -27,7 +27,7 @@ class TestShiftTypeDao(TestCase):
 
     def test_insert_shift_type_when_not_exist_succeed(self):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
-        all_shift_types = self.dao.fetch_all()
+        all_shift_types = self.dao.fetch_all(profile1)
         self.assertEqual(1, len(all_shift_types))
         self.assertEqual(self.shift_type, all_shift_types[0])
 
@@ -38,9 +38,9 @@ class TestShiftTypeDao(TestCase):
 
     def test_remove_shift_type(self):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
-        shift_type_len_before = len(self.dao.fetch_all())
-        self.dao.remove(self.shift_type[shift_type_name])
-        shift_type_len_after = len(self.dao.fetch_all())
+        shift_type_len_before = len(self.dao.fetch_all(profile1))
+        self.dao.remove(self.shift_type[shift_type_name], self.shift_type[profile])
+        shift_type_len_after = len(self.dao.fetch_all(profile1))
         self.assertEqual(1, shift_type_len_before)
         self.assertEqual(0, shift_type_len_after)
 
@@ -48,14 +48,14 @@ class TestShiftTypeDao(TestCase):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
         self.dao.update(self.shift_type_update)
         shift_type_updated = self.dao.find_by_name(
-            self.shift_type[shift_type_name]
+            self.shift_type[shift_type_name], self.shift_type[profile]
         )
         self.assertEqual(self.shift_type_update, shift_type_updated)
 
     def test_get_shift_types_including_shifts(self):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
-        night_shift_types = self.dao.get_including_shifts(["Night"])
+        night_shift_types = self.dao.get_including_shifts(["Night"], profile1)
         self.assertEqual(0, len(night_shift_types))
-        early_shift_types = self.dao.get_including_shifts(["Early"])
+        early_shift_types = self.dao.get_including_shifts(["Early"], profile1)
         self.assertEqual(1, len(early_shift_types))
         self.assertEqual(self.shift_type, early_shift_types[0])
