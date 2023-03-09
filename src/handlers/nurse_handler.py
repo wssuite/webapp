@@ -16,9 +16,9 @@ from constants import (
 
 
 def get_contracts_by_nurse_groups_including_nurse(
-    username, nurse_group_dao: NurseGroupDao
+    username, nurse_group_dao: NurseGroupDao, profile
 ):
-    groups = nurse_group_dao.get_with_nurses([username])
+    groups = nurse_group_dao.get_with_nurses([username], profile)
     ret = {}
     for group in groups:
         ret[group[nurse_group_name]] = group[nurse_group_contracts_list]
@@ -37,7 +37,7 @@ class NurseHandler:
         nurse = Nurse().from_json(json)
         contract_validator = ContractsValidator()
         for contract_string in nurse.direct_contracts:
-            contract_dict = self.contract_dao.find_by_name(contract_string)
+            contract_dict = self.contract_dao.find_by_name(contract_string, nurse.profile)
             if contract_dict is None:
                 raise ContractNotExist(contract_string)
             contract = Contract().from_json(contract_dict)
@@ -65,7 +65,7 @@ class NurseHandler:
 
     def update(self, token, json):
         nurse, contract_validator = self.insertion_validations(token, json)
-        before_update = self.get_by_username(token, nurse.username)
+        before_update = self.get_by_username(token, nurse.username, nurse.profile)
         nurse.id = before_update[nurse_id]
         self.nurse_dao.update(nurse.db_json())
 
@@ -75,30 +75,30 @@ class NurseHandler:
     to the list of inherited contracts
     """
 
-    def get_by_username(self, token, nurse_to_be_found_username):
+    def get_by_username(self, token, nurse_to_be_found_username, profile):
         verify_token(token, self.user_dao)
         nurse_dict = self.nurse_dao.find_by_username(
-            nurse_to_be_found_username
+            nurse_to_be_found_username, profile
         )
         if nurse_dict is None:
             raise NurseNotFound(nurse_to_be_found_username)
         nurse = Nurse().from_json(nurse_dict)
         contract_by_nurse_group = (
             get_contracts_by_nurse_groups_including_nurse(
-                nurse.username, self.nurse_group_dao
+                nurse.username, self.nurse_group_dao, nurse.profile
             )
         )
         for group in contract_by_nurse_group.keys():
             nurse.inherited_contracts.extend(contract_by_nurse_group[group])
         return nurse.to_json()
 
-    def get_all(self, token):
+    def get_all(self, token, profile):
         verify_token(token, self.user_dao)
-        all_nurses = self.nurse_dao.fetch_all()
+        all_nurses = self.nurse_dao.fetch_all(profile)
         for nurse in all_nurses:
             contract_by_nurse_group = (
                 get_contracts_by_nurse_groups_including_nurse(
-                    nurse[nurse_username], self.nurse_group_dao
+                    nurse[nurse_username], self.nurse_group_dao, profile
                 )
             )
             inherited_contracts = []
@@ -107,14 +107,14 @@ class NurseHandler:
             nurse[nurse_inherited_contracts] = inherited_contracts
         return all_nurses
 
-    def get_all_usernames(self, token):
+    def get_all_usernames(self, token, profile):
         verify_token(token, self.user_dao)
-        all_nurses = self.nurse_dao.fetch_all()
+        all_nurses = self.nurse_dao.fetch_all(profile)
         return [nurse[nurse_username] for nurse in all_nurses]
 
-    def delete(self, token, name):
+    def delete(self, token, name, profile):
         verify_token(token, self.user_dao)
-        usage = self.nurse_group_dao.get_with_nurses([name])
+        usage = self.nurse_group_dao.get_with_nurses([name], profile)
         if len(usage) > 0:
             raise CannotDeleteNurse(name)
-        self.nurse_dao.remove(name)
+        self.nurse_dao.remove(name, profile)
