@@ -1,6 +1,7 @@
 from unittest import TestCase
 from src.models.shift_type import ShiftType
-from constants import shift_type_name, shift_type_shifts_lists
+from constants import shift_type_name, shift_type_shifts_lists, profile
+from test_constants import profile1
 
 
 class TestShiftType(TestCase):
@@ -8,6 +9,7 @@ class TestShiftType(TestCase):
         self.shift_type_dict = {
             shift_type_name: "Day",
             shift_type_shifts_lists: ["Early", "MidDay"],
+            profile: profile1,
         }
 
     def tearDown(self) -> None:

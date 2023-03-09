@@ -1,15 +1,11 @@
 from unittest import TestCase
 from src.models.shift import Shift
-from constants import shift_name, shift_start_time, shift_end_time
+from test_constants import early_shift
 
 
 class TestShift(TestCase):
     def setUp(self) -> None:
-        self.shift_dict = {
-            shift_name: "Early",
-            shift_start_time: "06:30:00",
-            shift_end_time: "12:00:00",
-        }
+        self.shift_dict = early_shift.copy()
 
     def tearDown(self) -> None:
         pass

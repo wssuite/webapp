@@ -6,9 +6,10 @@ from constants import (
     nurse_direct_contracts,
     nurse_id,
     nurse_username,
-    nurse_inherited_contracts,
+    nurse_inherited_contracts, profile
 )
 from src.exceptions.nurse_exceptions import NurseUsernameAlreadyExist
+from test_constants import profile1
 
 
 def create_nurse_dao():
@@ -22,16 +23,19 @@ class TestNurseDao(TestCase):
             nurse_name: "random",
             nurse_direct_contracts: ["FullTime"],
             nurse_username: "random",
+            profile: profile1,
         }
         self.nurse_invalid = {
             nurse_name: "ransom",
             nurse_username: "random",
             nurse_direct_contracts: ["FullTime"],
+            profile: profile1,
         }
         self.nurse_update = {
             nurse_name: "random",
             nurse_direct_contracts: ["FullTime", "random contract"],
             nurse_username: "random",
+            profile: profile1,
         }
         self.dao = create_nurse_dao()
 

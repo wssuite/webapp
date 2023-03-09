@@ -1,8 +1,9 @@
 from src.dao.shift_type_dao import ShiftTypeDao
 from unittest import TestCase
 from src.dao.abstract_dao import connect_to_fake_db
-from constants import shift_type_name, shift_type_shifts_lists
+from constants import shift_type_name, shift_type_shifts_lists, profile
 from src.exceptions.shift_exceptions import ShiftTypeAlreadyExistException
+from test_constants import profile1
 
 
 class TestShiftTypeDao(TestCase):
@@ -11,6 +12,7 @@ class TestShiftTypeDao(TestCase):
         self.shift_type = {
             shift_type_name: "Day",
             shift_type_shifts_lists: ["Early", "MidDay"],
+            profile: profile1,
         }
         self.shift_type_update = {
             shift_type_name: "Day",
@@ -20,6 +22,7 @@ class TestShiftTypeDao(TestCase):
                 "Afternoon",
                 "MidDay",
             ],
+            profile: profile1,
         }
 
     def test_insert_shift_type_when_not_exist_succeed(self):

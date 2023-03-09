@@ -27,12 +27,15 @@ from constants import (
     shift_type_name,
     shift_type_shifts_lists,
     shift_group_name,
-    shift_group_shifts_list,
+    shift_group_shifts_list, profile,
 )
+
+profile1 = "profile1"
 
 general_contract_dict = {
     contract_name: "General",
     contract_skills: [],
+    profile: profile1,
     contract_constraints: [
         {
             constraint_name: alternative_shift,
@@ -45,6 +48,7 @@ general_contract_dict = {
 full_time_not_valid_contract_with_general = {
     contract_name: "FullTime_Not_Valid",
     contract_skills: [],
+    profile: profile1,
     contract_constraints: [
         {
             constraint_name: alternative_shift,
@@ -57,6 +61,7 @@ full_time_not_valid_contract_with_general = {
 full_time_valid_contract_with_general = {
     contract_name: "FullTime_Valid",
     contract_skills: [],
+    profile: profile1,
     contract_constraints: [
         {
             constraint_name: alternative_shift,
@@ -69,6 +74,7 @@ full_time_valid_contract_with_general = {
 full_time_valid_contract_with_general_update_to_invalid = {
     contract_name: "FullTime_Valid",
     contract_skills: [],
+    profile: profile1,
     contract_constraints: [
         {
             constraint_name: alternative_shift,
@@ -81,6 +87,7 @@ full_time_valid_contract_with_general_update_to_invalid = {
 full_time_contract_with_day_shift_type = {
     contract_name: "FullTime_Valid",
     contract_skills: [],
+    profile: profile1,
     contract_constraints: [
         {
             constraint_name: alternative_shift,
@@ -93,6 +100,7 @@ full_time_contract_with_day_shift_type = {
 min_cons_contract = {
     contract_name: "minConsContract",
     contract_skills: [],
+    profile: profile1,
     contract_constraints: [
         {
             constraint_name: min_max_consecutive_weekends,
@@ -108,23 +116,46 @@ early_shift = {
     shift_name: "Early",
     shift_start_time: "08:00:00",
     shift_end_time: "16:00:00",
+    profile: profile1,
 }
 
 late_shift = {
     shift_name: "Late",
     shift_start_time: "18:00:00",
     shift_end_time: "24:00:00",
+    profile: profile1,
 }
-day_shift_type = {shift_type_name: "Day", shift_type_shifts_lists: ["Early"]}
+day_shift_type = {
+    shift_type_name: "Day",
+    shift_type_shifts_lists: ["Early"],
+    profile: profile1,
+}
 night_shift_type = {
     shift_type_name: "Night",
     shift_type_shifts_lists: ["Late"],
+    profile: profile1,
 }
-work_shift_group = {shift_group_name: "Work", shift_group_shifts_list: []}
-rest_shift_group = {shift_group_name: "Rest", shift_group_shifts_list: []}
+work_shift_group = {
+    shift_group_name: "Work",
+    shift_group_shifts_list: [],
+    profile: profile1,
+}
+rest_shift_group = {
+    shift_group_name: "Rest",
+    shift_group_shifts_list: [],
+    profile: profile1,
+}
 
-day_shift_group = {shift_group_name: "Day", shift_group_shifts_list: ["Early"]}
-night_shift_group = {shift_group_name: "Night", shift_group_shifts_list: []}
+day_shift_group = {
+    shift_group_name: "Day",
+    shift_group_shifts_list: ["Early"],
+    profile: profile1,
+}
+night_shift_group = {
+    shift_group_name: "Night",
+    shift_group_shifts_list: [],
+    profile: profile1,
+}
 test_work_shift_group = work_shift_group.copy()
 test_work_shift_group[shift_group_shifts_list] = ["Day"]
 
@@ -132,12 +163,14 @@ nurse1 = {
     nurse_name: "nurse1",
     nurse_direct_contracts: ["FullTime_Valid", "minConsContract"],
     nurse_username: "nurse1",
+    profile: profile1,
 }
 
 nurse_group1 = {
     nurse_group_name: "group1",
     nurse_group_nurses_list: ["nurse1"],
     nurse_group_contracts_list: ["General"],
+    profile: profile1,
 }
 random_hex = "12345678123456781234567812345678"
 
@@ -145,13 +178,23 @@ nurse_group2 = {
     nurse_group_name: "group2",
     nurse_group_nurses_list: [],
     nurse_group_contracts_list: ["FullTime_Valid", "minConsContract"],
+    profile: profile1,
 }
 
 default_user = {user_password: admin, user_username: admin}
 
-nurse_skill = {skill_name: "Nurse"}
-head_nurse_skill = {skill_name: "HeadNurse"}
-sociologist_skill = {skill_name: "Sociologist"}
+nurse_skill = {
+    skill_name: "Nurse",
+    profile: profile1,
+}
+head_nurse_skill = {
+    skill_name: "HeadNurse",
+    profile: profile1,
+}
+sociologist_skill = {
+    skill_name: "Sociologist",
+    profile: profile1,
+}
 skill_array = ["Nurse", "HeadNurse", "Sociologist", "Nurse"]
 
 patrick_nurse = {

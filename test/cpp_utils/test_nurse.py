@@ -4,8 +4,9 @@ from constants import (
     nurse_name,
     nurse_username,
     nurse_direct_contracts,
-    nurse_id,
+    nurse_id, profile
 )
+from test_constants import profile1, patrick_nurse
 
 
 class TestNurse(TestCase):
@@ -13,6 +14,7 @@ class TestNurse(TestCase):
         self.nurse_without_contract = {
             nurse_name: "nurse",
             nurse_username: "nurse",
+            profile: profile1,
         }
 
     def tearDown(self) -> None:

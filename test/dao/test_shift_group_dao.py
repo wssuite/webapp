@@ -3,9 +3,10 @@ from src.exceptions.shift_exceptions import (
     ShiftGroupAlreadyExistException,
     ShiftNotExist,
 )
-from constants import shift_group_name, shift_group_shifts_list
+from constants import shift_group_name, shift_group_shifts_list, profile
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.shift_group_dao import ShiftGroupDao
+from  test_constants import profile1
 
 
 class TestShiftGroupDao(TestCase):
@@ -14,10 +15,12 @@ class TestShiftGroupDao(TestCase):
         self.shift_group = {
             shift_group_name: "Work",
             shift_group_shifts_list: ["Early", "Day", "Midnight"],
+            profile: profile1,
         }
         self.shift_group_update = {
             shift_group_name: "Work",
             shift_group_shifts_list: ["Early", "Day", "Midnight", "Night"],
+            profile: profile1,
         }
 
     def tearDown(self) -> None:
