@@ -1,5 +1,5 @@
 from src.models.stringify import Stringify
-from pykson import StringField, ObjectListField
+from pykson import StringField, ObjectListField, ListField
 from constants import (
     constraint_name,
     integer_constraint_value,
@@ -10,6 +10,7 @@ from constants import (
     min_constraint_weight,
     max_constraint_weight,
     unwanted_pattern_elements,
+    contract_skills,
 )
 from src.models.pattern_element import PatternElement
 from src.models.jsonify import Jsonify
@@ -46,6 +47,9 @@ class ContractConstraint(BaseConstraint):
         pass
 
     def get_shift(self):
+        return []
+
+    def get_skills(self):
         return []
 
 
@@ -147,3 +151,18 @@ class ContractAlternativeShift(ContractConstraint):
 
     def get_shift(self):
         return [self.shift]
+
+
+class ContractUnwantedSkills(ContractConstraint):
+    name = StringField(serialized_name=constraint_name)
+    unwanted_skills = ListField(str, serialized_name=contract_skills)
+    weight = StringField(serialized_name=constraint_weight)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def repr(self):
+        return self.name
+
+    def get_skills(self):
+        return self.unwanted_skills

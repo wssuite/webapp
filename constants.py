@@ -50,7 +50,7 @@ complete_weekends = "CompleteWeekends"
 identical_shift_during_weekend = "IdentShiftTypesDuringWeekend"
 alternative_shift = "AlternativeShift"
 unwanted_pattern = "unwantedPatterns"
-
+unwanted_skills = "unwantedSkills"
 
 """Contract"""
 sub_contract_names = "subContractNames"
