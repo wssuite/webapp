@@ -29,6 +29,9 @@ from constants import (
     shift_group_name,
     shift_group_shifts_list,
     profile,
+    profile_name,
+    profile_creator,
+    profile_access,
 )
 
 profile1 = "profile1"
@@ -224,4 +227,9 @@ not_problematic_group = {
     nurse_group_contracts_list: [],
     nurse_group_nurses_list: ["patrick"],
     profile: profile1,
+}
+test_profile = {
+    profile_name: profile1,
+    profile_creator: admin,
+    profile_access: [admin],
 }

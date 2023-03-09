@@ -90,3 +90,8 @@ work = "Work"
 rest = "Rest"
 is_admin = "isAdmin"
 profile = "profile"
+
+"""Profile"""
+profile_name = "Profile"
+profile_access = "access"
+profile_creator = "creator"
