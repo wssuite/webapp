@@ -73,12 +73,12 @@ class TestConstraints(TestCase):
             constraint_name: unwanted_pattern,
             unwanted_pattern_elements: [
                 {
-                    pattern_element_day: "Monday",
-                    pattern_element_shift: "Early",
+                    pattern_element_day: ["Monday"],
+                    pattern_element_shift: ["Early"],
                 },
                 {
-                    pattern_element_day: "Thursday",
-                    pattern_element_shift: "Late",
+                    pattern_element_day: ["Thursday"],
+                    pattern_element_shift: ["Late"],
                 },
             ],
             constraint_weight: "hard",

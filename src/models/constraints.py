@@ -131,7 +131,13 @@ class ContractUnwantedPatterns(ContractConstraint):
         }
 
     def get_shift(self):
-        return [element.get_shift() for element in self.pattern_elements]
+        shifts = []
+        for element in self.pattern_elements:
+            for shift in element.get_shift():
+                if shift not in shifts:
+                    shifts.append(shift)
+
+        return shifts
 
 
 class ContractAlternativeShift(ContractConstraint):

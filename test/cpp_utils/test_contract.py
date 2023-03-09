@@ -81,12 +81,16 @@ class TestContract(TestCase):
                     constraint_name: unwanted_pattern,
                     unwanted_pattern_elements: [
                         {
-                            pattern_element_shift: "Late",
-                            pattern_element_day: "Monday",
+                            pattern_element_shift: ["Late", "Early", "MidDay"],
+                            pattern_element_day: [
+                                "Monday",
+                                "Wednesday",
+                                "Friday",
+                            ],
                         },
                         {
-                            pattern_element_shift: "Early",
-                            pattern_element_day: "Tuesday",
+                            pattern_element_shift: ["Early"],
+                            pattern_element_day: ["Tuesday"],
                         },
                     ],
                     constraint_weight: "hard",
@@ -111,7 +115,7 @@ class TestContract(TestCase):
     def test_create_contract_from_json_contract_details_is_not_empty(self):
         contract = Contract().from_json(self.contract_dict)
         self.assertEqual(self.contract_dict, contract.to_json())
-        self.assertEqual(["Early", "Late"], contract.shifts)
+        self.assertEqual(["Early", "Late", "MidDay"], contract.shifts)
 
     def test_two_merged_contract_constraints_are_added(self):
         contract = Contract().from_json(self.contract_dict)
