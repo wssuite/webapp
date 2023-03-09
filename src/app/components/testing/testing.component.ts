@@ -1,10 +1,10 @@
 import { Component } from "@angular/core";
 import {
   BASE_VALUE,
-  MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID,
-  MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME,
+  UNWANTED_SKILLS_DISPLAY_NAME,
+  UNWANTED_SKILLS_ID,
 } from "src/app/constants/constraints";
-import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
+import { UnwantedSkills } from "src/app/models/UnwantedSkills";
 
 @Component({
   selector: "app-testing",
@@ -12,14 +12,15 @@ import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
   styleUrls: ["./testing.component.css"],
 })
 export class TestingComponent {
-  constraint: MinMaxConstraint;
+  constraint: UnwantedSkills;
   constraintErrorState: boolean;
   weight = BASE_VALUE;
+  SKILLS = ["Nurse", "headNurse", "Physiatre"]
 
   constructor() {
-    this.constraint = new MinMaxConstraint(
-      MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID,
-      MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME
+    this.constraint = new UnwantedSkills(
+      UNWANTED_SKILLS_ID,
+      UNWANTED_SKILLS_DISPLAY_NAME
     );
     this.constraintErrorState = true;
   }

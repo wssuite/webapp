@@ -2,18 +2,17 @@
   <mat-expansion-panel-header>
     <mat-panel-title>{{ constraint.displayName }}</mat-panel-title>
   </mat-expansion-panel-header>
-  <app-min-max-constraint
-    [constraint]="constraint"
+  <app-unwanted-skills
+    [(constraint)]="constraint"
     (errorState)="updateConstraintErrorState($event)"
-  ></app-min-max-constraint>
+    [skills]="SKILLS"
+  ></app-unwanted-skills>
 </mat-expansion-panel>
 
 <p>The constraint has an error: {{ constraintErrorState }}.</p>
 <p>
-  Min value is: {{ constraint.minValue }} and its weight is
-  {{ constraint.minWeight }}.
+  The constraint has {{ constraint.skills.length }} skills.
 </p>
 <p>
-  Max value is : {{ constraint.maxValue }} and its value is:
-  {{ constraint.maxWeight }}
+  The constraint weight is: {{ constraint.weight }}
 </p>
