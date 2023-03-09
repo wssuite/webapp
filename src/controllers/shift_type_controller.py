@@ -1,6 +1,6 @@
 from src.dao.abstract_dao import DBConnection
 from src.handlers.shift_type_handler import ShiftTypeHandler
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, profile
 from constants import shift_type_name, user_token, ok_message
 from src.exceptions.project_base_exception import ProjectBaseException
 
@@ -24,7 +24,8 @@ def add_shift_type():
 def get_all_shift_types():
     try:
         token = request.args[user_token]
-        return shift_type_handler.get_all(token)
+        profile_name = request.args[profile]
+        return shift_type_handler.get_all(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -34,7 +35,8 @@ def get_shift_type_by_name():
     try:
         token = request.args[user_token]
         name = request.args[shift_type_name]
-        return shift_type_handler.get_by_name(token, name)
+        profile_name = request.args[profile]
+        return shift_type_handler.get_by_name(token, name, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -44,7 +46,8 @@ def remove_shift_type():
     try:
         token = request.args[user_token]
         name = request.args[shift_type_name]
-        shift_type_handler.delete(token, name)
+        profile_name = request.args[profile]
+        shift_type_handler.delete(token, name, profile_name)
         return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)
@@ -54,7 +57,8 @@ def remove_shift_type():
 def get_shift_types_names():
     try:
         token = request.args[user_token]
-        return shift_type_handler.get_all_names(token)
+        profile_name = request.args[profile]
+        return shift_type_handler.get_all_names(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
