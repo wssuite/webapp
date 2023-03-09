@@ -27,9 +27,11 @@ class TestShiftDao(TestCase):
 
     def test_insert_shift_when_not_exist_succeeds(self):
         self.dao.insert_one_if_not_exist(self.shift.copy())
-        all_shifts = self.dao.fetch_all()
+        all_shifts = self.dao.fetch_all(profile1)
+        profile2_shifts = self.dao.fetch_all("profile2")
         self.assertEqual(1, len(all_shifts))
         self.assertEqual(self.shift, all_shifts[0])
+        self.assertEqual(0, len(profile2_shifts))
 
     def test_insert_shift_when_exist_raises_exception(self):
         self.dao.insert_one_if_not_exist(self.shift.copy())
@@ -38,14 +40,14 @@ class TestShiftDao(TestCase):
 
     def test_remove_shift(self):
         self.dao.insert_one_if_not_exist(self.shift.copy())
-        shift_len_before = len(self.dao.fetch_all())
-        self.dao.remove(self.shift[shift_name])
-        shift_len_after = len(self.dao.fetch_all())
+        shift_len_before = len(self.dao.fetch_all(profile1))
+        self.dao.remove(self.shift[shift_name], self.shift[profile])
+        shift_len_after = len(self.dao.fetch_all(profile1))
         self.assertEqual(0, shift_len_after)
         self.assertEqual(1, shift_len_before)
 
     def test_update_shift(self):
         self.dao.insert_one_if_not_exist(self.shift.copy())
         self.dao.update(self.shift_update)
-        shift = self.dao.find_by_name(self.shift[shift_name])
+        shift = self.dao.find_by_name(self.shift[shift_name], self.shift[profile])
         self.assertEqual(self.shift_update, shift)
