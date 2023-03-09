@@ -3,7 +3,7 @@
     <button class="create-button" mat-raised-button color="primary"  (click)="createNewContract()">Create new contract</button>
     <div class="contracts-container">
         <div class ="contract-cards-container" >
-        <mat-card *ngFor="let contract of contracts">
+        <mat-card *ngFor="let contract of displayedContracts">
                 <mat-card-header>
                     <mat-card-title> {{ contract }}</mat-card-title>
                 </mat-card-header>
@@ -29,6 +29,8 @@
             </mat-card>
         </div>
     </div>
+    <mat-paginator class="paginator" [length]="contracts.length" [pageSize]="pageSize" 
+        (page)="handlePageEvent($event)" showFirstLastButtons="true" ></mat-paginator>
 </div>
 <ng-template #elseBlock>
     <app-not-connected></app-not-connected>

@@ -20,6 +20,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -102,6 +103,7 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     MatTooltipModule,
     MatCardModule,
     MatMenuModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
