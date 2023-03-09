@@ -3,7 +3,7 @@ export const UNWANTED_PATTERNS_ID= "unwantedPatterns";
 export const UNWANTED_PATTERNS_DISPLAY_NAME = "Unwanted patterns"
 export const TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID = "TotalWeekendsInFourWeeks";
 export const TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME =
-  "Total Weekends in Four Weeks";
+  "Minimum and Maximum Number of Weekends in Four Weeks";
 export const ALTERNATIVE_SHIFT_ID="AlternativeShift";
 export const ALTERNATIVE_SHIFT_DISPLAY_NAME="Alternative shift"
 export const FREE_DAYS_AFTER_SHIFT_ID = "NumberOfFreeDaysAfterShift";
@@ -22,11 +22,15 @@ export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID =
 export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME =
   "Minimim and Maximum of consecutive working weekends";
 
+export const UNWANTED_SKILLS_ID="unwantedSkills";
+export const UNWANTED_SKILLS_DISPLAY_NAME = "Unwanted skills";
+
 export const CONSTRAINTS = [
     UNWANTED_PATTERNS_DISPLAY_NAME, ALTERNATIVE_SHIFT_DISPLAY_NAME,
     FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME,
     IDENTICAL_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME,
     MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME,
+    UNWANTED_SKILLS_DISPLAY_NAME
 ];
 
 export const DISPLAY_NAME_ID_MAP: Map<string,string> = new Map();

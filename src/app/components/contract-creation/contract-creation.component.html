@@ -7,40 +7,11 @@
             [formControl]="nameFormCtrl"/>
         </mat-form-field>
     </div>
-    <div class="skills-section">
-        <div class="skills-section-header">
-            <H1> skills:</H1>
-            <button mat-mini-fab color="primary" (click)="addSkill()" class="add-skill-button" matTooltip="Add skill">
-                <mat-icon>add</mat-icon>
-            </button>
-        </div>
-        <br>
-        <div *ngFor="let skill of contract.skills; let i=index; trackBy: trackByFn">
-            <mat-form-field appearance="fill" class="skill-input" >
-                <mat-label>Enter a skill</mat-label>
-                <input matInput [(ngModel)]="contract.skills[i]" [formControl]="skillsFormCtrls[i]"/>
-            </mat-form-field>
-            <button mat-raised-button (click)="deleteSkill(i)" class="delete-skill-button" color="accent">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </div>
-    </div>
     <div class="constraints-section">
         <h1>Constraints</h1>
-        <label>choose a constraint: </label>
-        <mat-form-field appearance="fill" class="constraint-select">
-            <mat-label>Choose a constraint: </mat-label>
-            <mat-select [(value)]="chosenConstraint">
-                <mat-option *ngFor="let constraint of possibleConstraints" [value]="constraint">
-                    {{constraint}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <button mat-raised-button class="add-button" (click)="addConstraint()">Add constraint</button>
-        <br>
         <div class="constraints-container">
             <div *ngFor="let constraint of contract.constraints; let i= index" class="constraint-container">
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="i === contract.constraints.length -1">
                     <mat-expansion-panel-header>
                         <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -51,9 +22,10 @@
                         <app-min-max-consecutive-shift *ngSwitchCase="minMaxConsecutiveShiftTypeId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
                         <app-boolean-constraint *ngSwitchCase="identicalWeekendId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-boolean-constraint>
                         <app-boolean-constraint *ngSwitchCase="completeWeekendId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-boolean-constraint>
-                        <app-integer-constraint *ngSwitchCase="totalNumberWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-integer-constraint>
+                        <app-min-max-constraint *ngSwitchCase="totalNumberWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
                         <app-min-max-constraint *ngSwitchCase="minMaxConsecutiveWorkingWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
                         <app-min-max-constraint *ngSwitchCase="minMaxNbAssignmentsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
+                        <app-unwanted-skills *ngSwitchCase="unwantedSkillsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [skills]="possibleSkills"></app-unwanted-skills>
                         <div *ngSwitchDefault>Empty</div>
                     </ng-container>
                 </mat-expansion-panel>
@@ -62,6 +34,14 @@
                 </button>
             </div>
 
+        </div>
+        
+        <h2>choose a constraint to be added </h2>
+        <br>
+        <div class="constraints" *ngFor="let constraint of possibleConstraints; let i= index">
+            <button class="constraint-button" mat-raised-button (click)="addConstraint(constraint)">
+                {{ constraint }}
+            </button>
         </div>
     </div>
 </div>

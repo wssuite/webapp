@@ -14,7 +14,7 @@ import { CacheUtils } from "src/app/utils/CacheUtils";
 export class MainMenuComponent implements OnInit{
   buttons: MainMenuButton[];
   isAdminUser!: boolean;
-  connectedUser!: boolean
+  connectedUser!: boolean;
 
   constructor(private router: Router, private dialog: MatDialog) {
     this.buttons = MAIN_MENU_BUTTONS;

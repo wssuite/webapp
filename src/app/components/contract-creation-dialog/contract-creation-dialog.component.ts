@@ -17,6 +17,8 @@ export class ContractCreationDialogComponent implements OnInit{
   contractErrorState: boolean;
   possibleShifts!: string[];
 
+  possibleSkills = ["Nurse", "HeadNurse", "Physiatre"];
+
   constructor(
     public dialogRef: MatDialogRef<ContractCreationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data : {contract: Contract},

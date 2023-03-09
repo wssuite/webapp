@@ -16,9 +16,13 @@ mat-expansion-panel {
 
 .constraint-container {
     flex-direction: row;
-    margin-bottom: 5vh;
+    margin-bottom: 2vh;
     align-content: space-between;
     display:inline-flex;
+}
+
+.constraints-container{
+    margin-top: 5vh;
 }
 
 label {
@@ -51,4 +55,13 @@ mat-expansion-panel {
 
 .delete-skill-button {
     margin-left: 1vw;
+}
+.constraint-button{
+    margin-right: 1vw;
+    margin-top: 1vh;
+
+}
+
+.constraints{
+    display: inline-flex;
 }
