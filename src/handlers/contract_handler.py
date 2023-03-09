@@ -44,7 +44,6 @@ class ContractHandler:
     def add(self, token, json):
         contract = self.insertion_verification(token, json)
         self.contract_dao.insert_one(contract.db_json())
-        self.skill_dao.insert_many(contract.skills)
 
     def verify_contract_shifts_exist(self, shifts):
         not_exist_shifts = []
@@ -90,7 +89,6 @@ class ContractHandler:
             nurse_groups, nurse_group_contracts_list, contract
         )
         self.contract_dao.update(contract.db_json())
-        self.skill_dao.insert_many(contract.skills)
 
     def contract_validation_with_other_contracts(self, array, tag, contract):
         for nurse in array:
