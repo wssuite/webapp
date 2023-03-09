@@ -7,7 +7,8 @@ from test_constants import (
     day_shift_group,
     random_hex,
     default_user,
-    early_shift, profile1
+    early_shift,
+    profile1,
 )
 from unittest import TestCase
 from constants import user_token, shift_group_shifts_list
@@ -51,22 +52,30 @@ class TestShiftGroupHandler(TestCase):
     def test_update_shift_group_with_nonexistent_shifts_raise_error(self):
         self.handler.shift_dao.insert_one_if_not_exist(early_shift.copy())
         self.handler.add(random_hex, day_shift_group.copy())
-        shift_group_before = self.handler.get_by_name(random_hex, "Day", profile1)
+        shift_group_before = self.handler.get_by_name(
+            random_hex, "Day", profile1
+        )
         update = shift_group_before.copy()
         update[shift_group_shifts_list] = ["MidDay"]
         with self.assertRaises(ShiftNotExist):
             self.handler.update(random_hex, update)
-        shift_group_after = self.handler.get_by_name(random_hex, "Day", profile1)
+        shift_group_after = self.handler.get_by_name(
+            random_hex, "Day", profile1
+        )
         self.assertEqual(shift_group_before, shift_group_after)
 
     def test_update_shift_group_with_empty_shifts_succeed(self):
         self.handler.shift_dao.insert_one_if_not_exist(early_shift.copy())
         self.handler.add(random_hex, day_shift_group.copy())
-        shift_group_before = self.handler.get_by_name(random_hex, "Day", profile1)
+        shift_group_before = self.handler.get_by_name(
+            random_hex, "Day", profile1
+        )
         update = shift_group_before.copy()
         update[shift_group_shifts_list] = []
         self.handler.update(random_hex, update)
-        shift_group_after = self.handler.get_by_name(random_hex, "Day", profile1)
+        shift_group_after = self.handler.get_by_name(
+            random_hex, "Day", profile1
+        )
         self.assertNotEqual(shift_group_before, shift_group_after)
 
     def test_delete_default_shift_group_raise_error(self):

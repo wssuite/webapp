@@ -12,7 +12,8 @@ from test_constants import (
     nurse_group1,
     random_hex,
     nurse_group2,
-    min_cons_contract, profile1
+    min_cons_contract,
+    profile1,
 )
 from unittest import TestCase
 from constants import user_token, contract_name, profile
@@ -75,7 +76,7 @@ class TestContractHandler(TestCase):
         self.handler.update(random_hex, full_time_valid_contract_with_general)
         contract = self.handler.contract_dao.find_by_name(
             full_time_valid_contract_with_general[contract_name],
-            full_time_valid_contract_with_general[profile]
+            full_time_valid_contract_with_general[profile],
         )
         self.assertEqual(full_time_valid_contract_with_general, contract)
 
@@ -84,7 +85,8 @@ class TestContractHandler(TestCase):
         with self.assertRaises(CannotDeleteContract):
             self.handler.delete(
                 random_hex,
-                full_time_valid_contract_with_general[contract_name], profile1
+                full_time_valid_contract_with_general[contract_name],
+                profile1,
             )
 
     def test_delete_contract_if_contract_not_have_depended_object_succeeds(
@@ -93,7 +95,8 @@ class TestContractHandler(TestCase):
         self.insert_missing_deps()
         self.handler.delete(
             random_hex,
-            full_time_not_valid_contract_with_general[contract_name], profile1
+            full_time_not_valid_contract_with_general[contract_name],
+            profile1,
         )
         contracts = self.handler.contract_dao.fetch_all(profile1)
         self.assertEqual(3, len(contracts))
@@ -101,7 +104,9 @@ class TestContractHandler(TestCase):
     def test_get_contract_by_name_if_exist_return_contract(self):
         self.insert_missing_deps()
         contract = self.handler.get_by_name(
-            random_hex, full_time_valid_contract_with_general[contract_name], profile1
+            random_hex,
+            full_time_valid_contract_with_general[contract_name],
+            profile1,
         )
         self.assertEqual(full_time_valid_contract_with_general, contract)
 
@@ -109,7 +114,8 @@ class TestContractHandler(TestCase):
         with self.assertRaises(ContractNotExist):
             self.handler.get_by_name(
                 random_hex,
-                full_time_valid_contract_with_general[contract_name], profile1
+                full_time_valid_contract_with_general[contract_name],
+                profile1,
             )
 
     def test_get_all_contract_names(self):

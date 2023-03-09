@@ -5,7 +5,8 @@ from constants import (
     shift_type_shifts_lists,
     mongo_id_field,
     mongo_set_operation,
-    mongo_all_operation, profile
+    mongo_all_operation,
+    profile,
 )
 from src.exceptions.shift_exceptions import ShiftTypeAlreadyExistException
 from src.models.shift_type import ShiftType
@@ -25,8 +26,7 @@ class ShiftTypeDao(AbstractDao):
         self.collection: Collection = self.db.shift_types
 
     def insert_one_if_not_exist(self, shift_type: dict):
-        exist = self.exist(shift_type[shift_type_name],
-                           shift_type[profile])
+        exist = self.exist(shift_type[shift_type_name], shift_type[profile])
         if exist is True:
             raise ShiftTypeAlreadyExistException(shift_type[shift_type_name])
 
@@ -34,8 +34,7 @@ class ShiftTypeDao(AbstractDao):
 
     def find_by_name(self, name, profile_name):
         return self.collection.find_one(
-            {shift_type_name: name, profile: profile_name},
-            {mongo_id_field: 0}
+            {shift_type_name: name, profile: profile_name}, {mongo_id_field: 0}
         )
 
     def exist(self, name, profile_name):
@@ -43,25 +42,31 @@ class ShiftTypeDao(AbstractDao):
         return shift_type is not None
 
     def fetch_all(self, profile_name):
-        cursor = self.collection.find({profile: profile_name},
-                                      {mongo_id_field: 0})
+        cursor = self.collection.find(
+            {profile: profile_name}, {mongo_id_field: 0}
+        )
         return get_shift_types_from_cursor(cursor)
 
     def remove(self, name, profile_name):
         self.collection.find_one_and_delete(
-            {shift_type_name: name, profile: profile_name})
+            {shift_type_name: name, profile: profile_name}
+        )
 
     def update(self, shift_type: dict):
         self.collection.find_one_and_update(
-            {shift_type_name: shift_type[shift_type_name],
-             profile: shift_type[profile]},
+            {
+                shift_type_name: shift_type[shift_type_name],
+                profile: shift_type[profile],
+            },
             {mongo_set_operation: shift_type},
         )
 
     def get_including_shifts(self, shifts, profile_name):
         cursor = self.collection.find(
-            {shift_type_shifts_lists: {mongo_all_operation: shifts},
-             profile: profile_name},
+            {
+                shift_type_shifts_lists: {mongo_all_operation: shifts},
+                profile: profile_name,
+            },
             {mongo_id_field: 0},
         )
         return get_shift_types_from_cursor(cursor)

@@ -8,7 +8,8 @@ from constants import (
     mongo_set_operation,
     mongo_all_operation,
     nurse_username,
-    nurse_direct_contracts, profile
+    nurse_direct_contracts,
+    profile,
 )
 from src.exceptions.nurse_exceptions import NurseUsernameAlreadyExist
 
@@ -40,13 +41,15 @@ class NurseDao(AbstractDao):
         return mongo_id
 
     def fetch_all(self, profile_name):
-        list_nurse = self.collection.find({profile: profile_name}, {mongo_id_field: 0})
+        list_nurse = self.collection.find(
+            {profile: profile_name}, {mongo_id_field: 0}
+        )
         return get_nurses_from_cursor(list_nurse)
 
     def find_by_username(self, username, profile_name):
         return self.collection.find_one(
             {nurse_username: username, profile: profile_name},
-            {mongo_id_field: 0}
+            {mongo_id_field: 0},
         )
 
     def exist(self, username, profile_name):
@@ -55,19 +58,24 @@ class NurseDao(AbstractDao):
 
     def get_with_contracts(self, contracts, profile_name):
         cursor = self.collection.find(
-            {nurse_direct_contracts: {mongo_all_operation: contracts},
-             profile: profile_name},
+            {
+                nurse_direct_contracts: {mongo_all_operation: contracts},
+                profile: profile_name,
+            },
             {mongo_id_field: 0},
         )
         return get_nurses_from_cursor(cursor)
 
     def update(self, nurse_dict):
         self.collection.find_one_and_update(
-            {nurse_username: nurse_dict[nurse_username],
-             profile: nurse_dict[profile]},
+            {
+                nurse_username: nurse_dict[nurse_username],
+                profile: nurse_dict[profile],
+            },
             {mongo_set_operation: nurse_dict},
         )
 
     def remove(self, username, profile_name):
         self.collection.find_one_and_delete(
-            {nurse_username: username, profile: profile_name})
+            {nurse_username: username, profile: profile_name}
+        )

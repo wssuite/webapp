@@ -37,7 +37,9 @@ class ShiftTypeHandler:
         shift_type = ShiftType().from_json(json)
         self.verify_shifts_exist(shift_type.shifts, shift_type.profile)
         self.shift_type_dao.insert_one_if_not_exist(shift_type.db_json())
-        add_shift_in_work_shift_group(shift_type.name, self.shift_group_dao, shift_type.profile)
+        add_shift_in_work_shift_group(
+            shift_type.name, self.shift_group_dao, shift_type.profile
+        )
 
     def update(self, token, json):
         verify_token(token, self.user_dao)
@@ -49,7 +51,9 @@ class ShiftTypeHandler:
         verify_token(token, self.user_dao)
         usage = []
         usage.extend(self.contract_dao.get_including_shifts([name], profile))
-        usage.extend(self.shift_group_dao.get_including_shifts([name], profile))
+        usage.extend(
+            self.shift_group_dao.get_including_shifts([name], profile)
+        )
         if len(usage) > 1:
             raise CannotDeleteShiftType(name)
         self.shift_type_dao.remove(name, profile)
@@ -68,5 +72,6 @@ class ShiftTypeHandler:
 
     def get_all_names(self, token, profile):
         return [
-            shift_type[shift_type_name] for shift_type in self.get_all(token, profile)
+            shift_type[shift_type_name]
+            for shift_type in self.get_all(token, profile)
         ]

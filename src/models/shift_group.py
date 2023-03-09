@@ -1,8 +1,7 @@
 from src.models.jsonify import Jsonify
 from src.models.db_document import DBDocument
 from pykson import ListField, StringField
-from constants import (shift_group_name,
-                       shift_group_shifts_list, profile)
+from constants import shift_group_name, shift_group_shifts_list, profile
 
 """
 The conceptual difference between a shift type and a shift

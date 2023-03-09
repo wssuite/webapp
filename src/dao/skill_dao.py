@@ -17,13 +17,18 @@ class SkillDao(AbstractDao):
                 self.collection.insert_one(skill_object.db_json())
 
     def exist(self, name, profile_name):
-        return self.collection.find_one(
-            {skill_name: name}, {profile: profile_name}) is not None
+        return (
+            self.collection.find_one(
+                {skill_name: name}, {profile: profile_name}
+            )
+            is not None
+        )
 
     def get_all(self, profile_name):
         skills = []
-        cursor = self.collection.find({profile: profile_name},
-                                      {mongo_id_field: 0})
+        cursor = self.collection.find(
+            {profile: profile_name}, {mongo_id_field: 0}
+        )
         for element in cursor:
             skill = Skill().from_json(element)
             skills.append(skill.to_json())

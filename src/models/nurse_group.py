@@ -4,7 +4,8 @@ from pykson import ListField, StringField
 from constants import (
     nurse_group_name,
     nurse_group_nurses_list,
-    nurse_group_contracts_list, profile
+    nurse_group_contracts_list,
+    profile,
 )
 
 

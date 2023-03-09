@@ -40,8 +40,9 @@ class TestShiftGroupDao(TestCase):
     def test_remove_shift_group(self):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
         shift_groups_before = self.dao.fetch_all(profile1)
-        self.dao.remove(self.shift_group[shift_group_name],
-                        self.shift_group[profile])
+        self.dao.remove(
+            self.shift_group[shift_group_name], self.shift_group[profile]
+        )
         shift_groups_after = self.dao.fetch_all(profile1)
         self.assertEqual(1, len(shift_groups_before))
         self.assertEqual(0, len(shift_groups_after))
@@ -49,8 +50,9 @@ class TestShiftGroupDao(TestCase):
     def test_update_shift_group(self):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
         self.dao.update(self.shift_group_update.copy())
-        shift_group = self.dao.find_by_name(self.shift_group[shift_group_name],
-                                            self.shift_group[profile])
+        shift_group = self.dao.find_by_name(
+            self.shift_group[shift_group_name], self.shift_group[profile]
+        )
         self.assertEqual(self.shift_group_update, shift_group)
 
     def test_get_shift_groups_including_shifts(self):
@@ -83,7 +85,9 @@ class TestShiftGroupDao(TestCase):
 
     def test_remove_shift_to_nonexistent_group_raise_error(self):
         with self.assertRaises(ShiftNotExist):
-            self.dao.delete_shift_from_shift_group_list("Work", "Early", profile1)
+            self.dao.delete_shift_from_shift_group_list(
+                "Work", "Early", profile1
+            )
 
     def test_remove_shift_from_existing_group_succeed(self):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())

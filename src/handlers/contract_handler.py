@@ -82,7 +82,9 @@ class ContractHandler:
         nurses_with_contract = self.nurse_dao.get_with_contracts(
             [contract.name], contract.profile
         )
-        nurse_groups = self.nurse_group_dao.get_with_contracts([contract.name], contract.profile)
+        nurse_groups = self.nurse_group_dao.get_with_contracts(
+            [contract.name], contract.profile
+        )
         self.contract_validation_with_other_contracts(
             nurses_with_contract, nurse_direct_contracts, contract
         )
@@ -145,4 +147,7 @@ class ContractHandler:
         return Contract().from_json(contract_dict).to_json()
 
     def get_all_names(self, token, profile):
-        return [contract[contract_name] for contract in self.get_all(token, profile)]
+        return [
+            contract[contract_name]
+            for contract in self.get_all(token, profile)
+        ]

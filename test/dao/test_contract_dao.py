@@ -5,12 +5,14 @@ from test_constants import (
     general_contract_dict,
     full_time_valid_contract_with_general,
     full_time_not_valid_contract_with_general,
-    full_time_valid_contract_with_general_update_to_invalid, profile1
+    full_time_valid_contract_with_general_update_to_invalid,
+    profile1,
 )
 from constants import (
     contract_name,
     mongo_id_field,
-    contract_constraints, profile
+    contract_constraints,
+    profile,
 )
 from src.exceptions.contract_exceptions import (
     ContractAlreadyExistException,
@@ -55,7 +57,7 @@ class TestContractDao(TestCase):
         )
         result = self.dao.find_by_name(
             full_time_valid_contract_with_general[contract_name],
-            full_time_valid_contract_with_general[profile]
+            full_time_valid_contract_with_general[profile],
         )
         self.assertEqual(
             full_time_valid_contract_with_general_update_to_invalid[
@@ -81,15 +83,17 @@ class TestContractDao(TestCase):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
         self.dao.remove(
             full_time_valid_contract_with_general[contract_name],
-            full_time_valid_contract_with_general[profile]
+            full_time_valid_contract_with_general[profile],
         )
         fetch_all_contracts = self.dao.fetch_all(profile1)
         self.assertEqual(0, len(fetch_all_contracts))
 
     def test_delete_contract_if_not_exist_does_nothing(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
-        self.dao.remove(general_contract_dict[contract_name],
-                        general_contract_dict[profile])
+        self.dao.remove(
+            general_contract_dict[contract_name],
+            general_contract_dict[profile],
+        )
         fetch_all_contracts = self.dao.fetch_all(profile1)
         self.assertEqual(1, len(fetch_all_contracts))
 

@@ -27,7 +27,8 @@ from constants import (
     shift_type_name,
     shift_type_shifts_lists,
     shift_group_name,
-    shift_group_shifts_list, profile,
+    shift_group_shifts_list,
+    profile,
 )
 
 profile1 = "profile1"

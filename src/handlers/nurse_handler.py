@@ -37,7 +37,9 @@ class NurseHandler:
         nurse = Nurse().from_json(json)
         contract_validator = ContractsValidator()
         for contract_string in nurse.direct_contracts:
-            contract_dict = self.contract_dao.find_by_name(contract_string, nurse.profile)
+            contract_dict = self.contract_dao.find_by_name(
+                contract_string, nurse.profile
+            )
             if contract_dict is None:
                 raise ContractNotExist(contract_string)
             contract = Contract().from_json(contract_dict)
@@ -65,7 +67,9 @@ class NurseHandler:
 
     def update(self, token, json):
         nurse, contract_validator = self.insertion_validations(token, json)
-        before_update = self.get_by_username(token, nurse.username, nurse.profile)
+        before_update = self.get_by_username(
+            token, nurse.username, nurse.profile
+        )
         nurse.id = before_update[nurse_id]
         self.nurse_dao.update(nurse.db_json())
 

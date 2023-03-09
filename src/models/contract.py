@@ -25,7 +25,8 @@ from constants import (
     contract_name,
     contract_constraints,
     contract_skills,
-    contract_shifts, profile
+    contract_shifts,
+    profile,
 )
 
 from src.models.db_document import DBDocument

@@ -6,7 +6,8 @@ from constants import (
     nurse_direct_contracts,
     nurse_username,
     admin,
-    nurse_inherited_contracts, profile
+    nurse_inherited_contracts,
+    profile,
 )
 
 from src.models.db_document import DBDocument
@@ -28,5 +29,5 @@ class Nurse(Jsonify, DBDocument):
             nurse_username: self.username,
             nurse_direct_contracts: self.direct_contracts,
             nurse_id: self.id,
-            profile: self.profile
+            profile: self.profile,
         }

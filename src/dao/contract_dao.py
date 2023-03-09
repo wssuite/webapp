@@ -5,7 +5,8 @@ from constants import (
     mongo_id_field,
     mongo_set_operation,
     mongo_all_operation,
-    contract_shifts, profile
+    contract_shifts,
+    profile,
 )
 from src.exceptions.contract_exceptions import (
     ContractAlreadyExistException,
@@ -27,21 +28,21 @@ class ContractDao(AbstractDao):
         self.collection: Collection = self.db.contracts
 
     def insert_one(self, contract: dict):
-        exist = self.exist(contract[contract_name],
-                           contract[profile])
+        exist = self.exist(contract[contract_name], contract[profile])
         if exist is True:
             raise ContractAlreadyExistException(contract[contract_name])
         self.collection.insert_one(contract)
 
     def fetch_all(self, profile_name):
-        cursor = self.collection.find({profile: profile_name},
-                                      {mongo_id_field: 0})
+        cursor = self.collection.find(
+            {profile: profile_name}, {mongo_id_field: 0}
+        )
         return get_contracts_from_cursor(cursor)
 
     def find_by_name(self, name, profile_name):
         return self.collection.find_one(
             {contract_name: name, profile: profile_name},
-            {mongo_id_field: 0, contract_shifts: 0}
+            {mongo_id_field: 0, contract_shifts: 0},
         )
 
     def exist(self, name, profile_name):
@@ -50,18 +51,23 @@ class ContractDao(AbstractDao):
 
     def update(self, contract: dict):
         self.collection.find_one_and_update(
-            {contract_name: contract[contract_name],
-             profile: contract[profile]},
+            {
+                contract_name: contract[contract_name],
+                profile: contract[profile],
+            },
             {mongo_set_operation: contract},
         )
 
     def remove(self, name, profile_name):
         self.collection.find_one_and_delete(
-            {contract_name: name, profile: profile_name})
+            {contract_name: name, profile: profile_name}
+        )
 
     def get_including_shifts(self, shifts_array, profile_name):
         contracts = self.collection.find(
-            {contract_shifts: {mongo_all_operation: shifts_array},
-             profile: profile_name}
+            {
+                contract_shifts: {mongo_all_operation: shifts_array},
+                profile: profile_name,
+            }
         )
         return get_contracts_from_cursor(contracts)

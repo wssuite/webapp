@@ -49,5 +49,7 @@ class TestShiftDao(TestCase):
     def test_update_shift(self):
         self.dao.insert_one_if_not_exist(self.shift.copy())
         self.dao.update(self.shift_update)
-        shift = self.dao.find_by_name(self.shift[shift_name], self.shift[profile])
+        shift = self.dao.find_by_name(
+            self.shift[shift_name], self.shift[profile]
+        )
         self.assertEqual(self.shift_update, shift)

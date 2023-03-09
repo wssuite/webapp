@@ -4,9 +4,10 @@ from constants import (
     nurse_name,
     nurse_username,
     nurse_direct_contracts,
-    nurse_id, profile
+    nurse_id,
+    profile,
 )
-from test_constants import profile1, patrick_nurse
+from test_constants import profile1
 
 
 class TestNurse(TestCase):

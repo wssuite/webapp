@@ -9,7 +9,7 @@ class TestShiftGroups(TestCase):
         self.shift_group_dict = {
             shift_group_name: "Work",
             shift_group_shifts_list: ["Day", "Early", "Midnight"],
-            profile: profile1
+            profile: profile1,
         }
 
     def tearDown(self) -> None:

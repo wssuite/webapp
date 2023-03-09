@@ -8,7 +8,8 @@ from src.dao.abstract_dao import connect_to_fake_db
 from constants import (
     nurse_group_name,
     nurse_group_contracts_list,
-    nurse_group_nurses_list, profile
+    nurse_group_nurses_list,
+    profile,
 )
 from test_constants import profile1
 
@@ -24,13 +25,13 @@ class TestNurseDao(TestCase):
             nurse_group_name: "random",
             nurse_group_contracts_list: ["FullTime"],
             nurse_group_nurses_list: ["Patrick"],
-            profile: profile1
+            profile: profile1,
         }
         self.nurse_group_update = {
             nurse_group_name: "random",
             nurse_group_contracts_list: ["FullTime", "random contract"],
             nurse_group_nurses_list: ["Eve"],
-            profile: profile1
+            profile: profile1,
         }
         self.dao = create_nurse_group_dao()
 
@@ -78,7 +79,7 @@ class TestNurseDao(TestCase):
         result = self.nurse_group_update.copy()
         nurse_updated = self.dao.find_by_name(
             self.nurse_group_dict[nurse_group_name],
-            self.nurse_group_dict[profile]
+            self.nurse_group_dict[profile],
         )
         self.assertEqual(result, nurse_updated)
 

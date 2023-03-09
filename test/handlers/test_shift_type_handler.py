@@ -6,7 +6,8 @@ from test_constants import (
     test_work_shift_group,
     late_shift,
     early_shift,
-    full_time_contract_with_day_shift_type, profile1
+    full_time_contract_with_day_shift_type,
+    profile1,
 )
 from src.dao.abstract_dao import connect_to_fake_db
 from unittest import TestCase

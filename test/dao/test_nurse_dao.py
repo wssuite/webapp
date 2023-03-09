@@ -6,7 +6,8 @@ from constants import (
     nurse_direct_contracts,
     nurse_id,
     nurse_username,
-    nurse_inherited_contracts, profile
+    nurse_inherited_contracts,
+    profile,
 )
 from src.exceptions.nurse_exceptions import NurseUsernameAlreadyExist
 from test_constants import profile1
@@ -78,8 +79,7 @@ class TestNurseDao(TestCase):
         result = self.nurse_update.copy()
         result[nurse_id] = str(inserted_id.inserted_id)
         nurse_updated = self.dao.find_by_username(
-            self.nurse_dict[nurse_username],
-            self.nurse_dict[profile]
+            self.nurse_dict[nurse_username], self.nurse_dict[profile]
         )
         self.assertEqual(result, nurse_updated)
 

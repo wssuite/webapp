@@ -5,7 +5,8 @@ from test_constants import (
     late_shift,
     random_hex,
     default_user,
-    work_shift_group, profile1
+    work_shift_group,
+    profile1,
 )
 from src.dao.abstract_dao import connect_to_fake_db
 from unittest import TestCase

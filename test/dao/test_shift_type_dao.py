@@ -39,7 +39,9 @@ class TestShiftTypeDao(TestCase):
     def test_remove_shift_type(self):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
         shift_type_len_before = len(self.dao.fetch_all(profile1))
-        self.dao.remove(self.shift_type[shift_type_name], self.shift_type[profile])
+        self.dao.remove(
+            self.shift_type[shift_type_name], self.shift_type[profile]
+        )
         shift_type_len_after = len(self.dao.fetch_all(profile1))
         self.assertEqual(1, shift_type_len_before)
         self.assertEqual(0, shift_type_len_after)
