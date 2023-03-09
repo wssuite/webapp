@@ -7,8 +7,11 @@ mat-checkbox {
 }
 
 .weight-container{
+    display: flex;
+    margin: 1vh;
     background-color: #EFF2F7;
     border-radius: 12px;
-    width: 18vw;
-    padding: 2vh 
+    width: 45vw;
+    padding: 2vh;
+    padding-bottom: 4vh 
 }
