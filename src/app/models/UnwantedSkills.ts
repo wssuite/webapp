@@ -1,5 +1,6 @@
 import { BASE_VALUE } from "../constants/constraints";
-import { Constraint, ConstraintInterface } from "./Constraint";
+import { Exception } from "../utils/Exception";
+import { Constraint } from "./Constraint";
 
 export class UnwantedSkills extends Constraint{
     skills: string[]
@@ -12,10 +13,32 @@ export class UnwantedSkills extends Constraint{
     }
     
     validateConstraint(c: Constraint): void {
-        throw new Error("Method not implemented.");
+        const constraint = c as UnwantedSkills;
+        if(!constraint){
+            return;
+        }
+
+        if(this.displayName !== constraint.displayName) {
+            return;
+        }
+        constraint.skills.forEach((s:string)=>{
+            if(this.skills.includes(s)){
+                throw new Exception(this.getRepetitiveErrorMessage())
+            }
+        })
     }
     
-    toJson(): ConstraintInterface {
-        throw new Error("Method not implemented.");
+    toJson(): unwantedSkillsInterface {
+        return {
+            name: this.name,
+            skills: this.skills,
+            weight: this.weight,
+        }
     }
+}
+
+export interface unwantedSkillsInterface {
+    name: string;
+    skills: string[];
+    weight: string;
 }

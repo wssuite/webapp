@@ -1,6 +1,7 @@
 <div class="dialog-container">
     <div class="contract-container">
-        <app-contract-creation [(contract)]="data.contract" [possibleShifts]="possibleShifts" (errorState)="updateContractErrorState($event)"></app-contract-creation>
+        <app-contract-creation [(contract)]="data.contract" [possibleShifts]="possibleShifts" 
+            (errorState)="updateContractErrorState($event)" [possibleSkills]="possibleSkills"></app-contract-creation>
     </div>
     <div mat-dialog-action class="buttons-container">
         <button mat-raised-button color="warn" [mat-dialog-close]="true">

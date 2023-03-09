@@ -25,6 +25,7 @@
                         <app-min-max-constraint *ngSwitchCase="totalNumberWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
                         <app-min-max-constraint *ngSwitchCase="minMaxConsecutiveWorkingWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
                         <app-min-max-constraint *ngSwitchCase="minMaxNbAssignmentsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
+                        <app-unwanted-skills *ngSwitchCase="unwantedSkillsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [skills]="possibleSkills"></app-unwanted-skills>
                         <div *ngSwitchDefault>Empty</div>
                     </ng-container>
                 </mat-expansion-panel>

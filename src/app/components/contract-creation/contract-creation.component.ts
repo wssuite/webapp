@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
-import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_ID, CONSTRAINTS, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID } from "src/app/constants/constraints";
+import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_ID, CONSTRAINTS, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID, UNWANTED_SKILLS_DISPLAY_NAME, UNWANTED_SKILLS_ID } from "src/app/constants/constraints";
 import { AlternativeShift } from "src/app/models/AlternativeShift";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 import { Contract } from "src/app/models/Contract";
@@ -8,6 +8,7 @@ import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
 import { MinMaxShiftConstraint } from "src/app/models/MinMaxShiftConstraint";
 import { ShiftConstraint } from "src/app/models/ShiftConstraint";
 import { UnwantedPatterns } from "src/app/models/UnwantedPatterns";
+import { UnwantedSkills } from "src/app/models/UnwantedSkills";
 
 @Component({
   selector: "app-contract-creation",
@@ -20,6 +21,7 @@ export class ContractCreationComponent {
   @Output() contractChange: EventEmitter<Contract>;
   @Output() errorState: EventEmitter<boolean>;
   @Input() possibleShifts!: string[];
+  @Input() possibleSkills!: string[];
 
   possibleConstraints: string[];
   constraintsErrorState: boolean[];
@@ -33,6 +35,8 @@ export class ContractCreationComponent {
   totalNumberWeekendsId: string;
   minMaxConsecutiveWorkingWeekendsId: string;
   minMaxNbAssignmentsId: string;
+  unwantedSkillsId: string;
+
 
   constructor() {
     this.contractChange = new EventEmitter();
@@ -50,6 +54,7 @@ export class ContractCreationComponent {
     this.totalNumberWeekendsId = TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID;
     this.minMaxConsecutiveWorkingWeekendsId = MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID;
     this.minMaxNbAssignmentsId = MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID;
+    this.unwantedSkillsId = UNWANTED_SKILLS_ID;
   }
   
   addConstraint(name: string) {
@@ -91,6 +96,10 @@ export class ContractCreationComponent {
         constraint = new MinMaxConstraint(MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME);
         break;
       
+      case UNWANTED_SKILLS_DISPLAY_NAME:
+        constraint = new UnwantedSkills(UNWANTED_SKILLS_ID, UNWANTED_SKILLS_DISPLAY_NAME);
+      break;
+
       default: break;
     }
     this.contract.constraints.push(constraint);
