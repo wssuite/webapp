@@ -19,11 +19,14 @@ export class ContractsViewComponent implements OnInit{
   connectedUser!:boolean;
   displayedContracts: string[];
   pageSize = 6;
+  page!: PageEvent;
+  indexBefore: number;
 
   constructor(private dialog: MatDialog, private apiService: APIService,
     private contarctService: ContractService) {
     this.contracts = [];
     this.displayedContracts = [];
+    this.indexBefore = 0;
   }
 
   ngOnInit(): void {
@@ -39,7 +42,7 @@ export class ContractsViewComponent implements OnInit{
     this.apiService.getContractNames().subscribe({
       next: (contracts: string[])=> {
         this.contracts = contracts;
-        this.setDisplayedContracts(0);
+        this.setDisplayedContracts(this.indexBefore);
       },
       error: (error: HttpErrorResponse)=> {
         this.openErrorDialog(error.error);
@@ -48,6 +51,7 @@ export class ContractsViewComponent implements OnInit{
   }
 
   openContractCreationDialog(contract: Contract){
+    this.indexBefore = this.page.pageIndex;
     const dialog = this.dialog.open(ContractCreationDialogComponent,
       {data: {contract: contract, contractList: this.contracts},
    })
@@ -78,8 +82,9 @@ export class ContractsViewComponent implements OnInit{
       }
     })
   }
-  
+
   handlePageEvent(e: PageEvent){
+    this.page = e;
     this.setDisplayedContracts(e.pageIndex);
   }
 
