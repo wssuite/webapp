@@ -7,7 +7,7 @@ from constants import (
     user_token,
     profile,
     user_username,
-    duplicate_name
+    duplicate_name,
 )
 
 mod = Blueprint("profile_controller", __name__, url_prefix="/profile")

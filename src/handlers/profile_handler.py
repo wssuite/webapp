@@ -4,7 +4,7 @@ from constants import (
     user_username,
     work_shift_group,
     profile,
-    rest_shift_group
+    rest_shift_group,
 )
 from src.models.shift_group import ShiftGroup
 
