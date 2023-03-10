@@ -1,9 +1,12 @@
 import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { SHIFT } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
+import { Contract } from "src/app/models/Contract";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
+import { ContractCreationDialogComponent } from "../contract-creation-dialog/contract-creation-dialog.component";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 
 @Component({
@@ -14,9 +17,9 @@ import { CacheUtils } from "src/app/utils/CacheUtils";
 export class MainMenuComponent implements OnInit{
   buttons: MainMenuButton[];
   isAdminUser!: boolean;
-  connectedUser!: boolean
+  connectedUser!: boolean;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private dialog: MatDialog) {
     this.buttons = MAIN_MENU_BUTTONS;
   }
 
@@ -46,6 +49,13 @@ export class MainMenuComponent implements OnInit{
       case "Shift":
         this.router.navigate(["/" + SHIFT]);
         break;
+
+      case "Contracts":
+        this.dialog.open(ContractCreationDialogComponent,
+           {data: {contract: new Contract()},
+        })
+        break;
+
       default:
         break;
     }

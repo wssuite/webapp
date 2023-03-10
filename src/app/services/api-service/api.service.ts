@@ -10,6 +10,7 @@ import {
   FETCH_SHIFT_GROUP_NAMES,
   FETCH_SHIFT_NAMES,
   FETCH_SHIFT_TYPE_BY_NAMES,
+  ADD_CONTRACT_URL,
   FETCH_SHIFT_TYPE_NAMES,
   LOGIN_URL,
   LOGOUT_URL,
@@ -23,6 +24,7 @@ import {
   UPDATE_SHIFT_GROUP_URL,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
+import { ContractInterface } from "src/app/models/Contract";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
 import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "src/app/models/Shift";
 import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
@@ -47,7 +49,7 @@ export class APIService {
         params: queryParams
       });
     } catch(err){
-      throw new Error("user not logged in")
+      throw new Exception("user not logged in")
     }
   }
 
@@ -69,6 +71,18 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       return this.httpClient.post<HttpResponse<string>>(ADD_SHIFT_URL, shift, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+  
+  addContract(contract: ContractInterface):Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.post<HttpResponse<string>>(ADD_CONTRACT_URL, contract, {
         params: queryParams,
       });
     }catch(err){

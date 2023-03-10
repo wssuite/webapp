@@ -11,6 +11,10 @@
                 <mat-icon>logout</mat-icon>
                 <span>logout</span>
             </button>
+            <button *ngIf="isAdmin" mat-menu-item (click)="goToCreateAccount()">
+                <img class="add-user" src="../../assets/add-user.png">
+                <span> Create new user</span>
+            </button>
         </mat-menu>
         
     </div>
