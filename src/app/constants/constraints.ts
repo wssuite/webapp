@@ -28,3 +28,6 @@ export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID =
   "minMaxConsecutiveWorkingWeekends";
 export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME =
   "minimim maximum working weekends";
+
+export const UNWANTED_SKILLS_ID="unwantedSkills";
+export const UNWANTED_SKILLS_DISPLAY_NAME = "Unwanted skills";
