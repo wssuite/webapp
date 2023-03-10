@@ -6,6 +6,10 @@ import {
   Validators,
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
+import {
+  WEIGHT_MAX_VALUE,
+  WEIGHT_MIN_VALUE,
+} from "src/app/constants/constraints";
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
 
 export class CustomErrorStateMatcher implements ErrorStateMatcher {
@@ -49,7 +53,8 @@ export class WeightComponent {
     this.inputCtrl = new FormControl({ value: this.weight, disabled: false }, [
       Validators.required,
       Validators.pattern(WEIGHT_ALLOWED_INTEGERS),
-      Validators.min(-100),
+      Validators.min(WEIGHT_MIN_VALUE),
+      Validators.max(WEIGHT_MAX_VALUE),
     ]);
     this.matcher = new CustomErrorStateMatcher();
     this.errorState = new EventEmitter();

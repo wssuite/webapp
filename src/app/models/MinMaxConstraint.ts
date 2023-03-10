@@ -1,4 +1,4 @@
-import { BASE_VALUE, NON_ZERO_VALUE } from "../constants/constraints";
+import { BASE_VALUE, WEIGHT_INITIAL_VALUE } from "../constants/constraints";
 import { Constraint } from "./Constraint";
 
 export class MinMaxConstraint extends Constraint {
@@ -11,7 +11,7 @@ export class MinMaxConstraint extends Constraint {
     super(name, displayName);
     this.minValue = BASE_VALUE;
     this.maxValue = BASE_VALUE;
-    this.minWeight = NON_ZERO_VALUE;
-    this.maxWeight = NON_ZERO_VALUE;
+    this.minWeight = WEIGHT_INITIAL_VALUE;
+    this.maxWeight = WEIGHT_INITIAL_VALUE;
   }
 }
