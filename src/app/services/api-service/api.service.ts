@@ -18,6 +18,7 @@ import {
   REMOVE_SHIFT_TYPE_URL,
   REMOVE_SHIFT_URL,
   TEST_URL,
+  UPDATE_SHIFT_URL,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
@@ -87,6 +88,11 @@ export class APIService {
     }
   }
 
+  updateShift(shift: ShiftInterface):Observable<HttpResponse<string>> {
+    return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_URL, shift);
+  }
+
+
   addShiftType(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
@@ -140,7 +146,6 @@ export class APIService {
   }
 
 
-
   getShiftNames():Observable<string[]> {
     try{
       let queryParams = new HttpParams();
@@ -153,12 +158,12 @@ export class APIService {
     }
   }
 
-  getShift(shift_name: string):Observable<ShiftInterface[]> {
+  getShiftByName(shift_name: string):Observable<ShiftInterface> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shift_name);
-      return this.httpClient.get<ShiftInterface[]>(FETCH_SHIFT_BY_NAMES, {
+      return this.httpClient.get<ShiftInterface>(FETCH_SHIFT_BY_NAMES, {
         params: queryParams,
       });
     }catch(err){
@@ -178,7 +183,7 @@ export class APIService {
     }
   }
 
-  getShiftGroup(shiftGroup_name: string):Observable<ShiftGroupInterface[]> {
+  getShiftGroupByName(shiftGroup_name: string):Observable<ShiftGroupInterface[]> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
@@ -190,7 +195,6 @@ export class APIService {
       throw new Exception("user not logged in")
     }
   }
-
 
   getShiftTypeNames():Observable<string[]> {
     try{
@@ -204,7 +208,7 @@ export class APIService {
     }
   }
 
-  getShiftType(shiftType_name: string):Observable<ShiftTypeInterface[]> {
+  getShiftTypeByName(shiftType_name: string):Observable<ShiftTypeInterface[]> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());

@@ -1,0 +1,16 @@
+<div class="title" mat-dialog-title>Shift</div>
+<div class="dialog-container">
+    <div class="shift-container">
+        <app-shift-creation [(shift)]="data.shift"  (errorState)="updateShiftErrorState($event)"></app-shift-creation>
+    </div>
+    <div mat-dialog-action class="buttons-container">
+        <button [disabled]="shiftErrorState"  mat-raised-button color="primary" (click)="add()">
+            Add
+        </button>
+        <button  mat-raised-button color="warn" [mat-dialog-close]="true">
+            Cancel
+        </button>
+    </div>
+</div>
+    
+    

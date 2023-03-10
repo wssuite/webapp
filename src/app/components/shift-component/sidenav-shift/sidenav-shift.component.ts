@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { SCHEDULE_GENERATION, SHIFT, SHIFT_GROUP, SHIFT_TYPE } from 'src/app/constants/app-routes';
+import { SHIFT, SHIFT_GROUP, SHIFT_TYPE } from 'src/app/constants/app-routes';
 import { SHIFT_MENU_BUTTONS } from 'src/app/constants/shiftButton';
-import { CreateShiftDialogComponent } from '../create-shift-dialog/create-shift-dialog.component';
+  
 
 @Component({
   selector: 'app-sidenav-shift',

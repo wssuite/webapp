@@ -37,8 +37,8 @@ import { PatternElementComponent } from "./components/pattern-element/pattern-el
 import { UnwantedPatternsComponent } from "./components/unwanted-patterns/unwanted-patterns.component";
 import { NumericInputComponent } from "./components/numeric-input/numeric-input.component";
 import { TestingComponent } from "./components/testing/testing.component";
-import { ShiftComponent } from './components/shift-component/shift/shift.component';
-import { CreateShiftDialogComponent } from './components/shift-component/create-shift-dialog/create-shift-dialog.component';
+import { ShiftsViewComponent } from './components/shift-component/shifts-view/shifts-view.component';
+import { ShiftCreationDialogComponent } from './components/shift-component/shift-creation-dialog/shift-creation-dialog.component';
 import { ShiftConstraintComponent } from './components/shift-constraint/shift-constraint.component';
 import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -56,6 +56,7 @@ import { AccountCreationComponent } from './components/account-creation/account-
 import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NotConnectedComponent } from './components/not-connected/not-connected.component';
+import { ShiftCreationComponent } from './components/shift-component/shift-creation/shift-creation.component';
 
 @NgModule({
   declarations: [
@@ -70,8 +71,8 @@ import { NotConnectedComponent } from './components/not-connected/not-connected.
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
-    ShiftComponent,
-    CreateShiftDialogComponent,
+    ShiftsViewComponent,
+    ShiftCreationDialogComponent,
     IntegerConstraintComponent,
     AlternativeShiftComponent,
     ShiftConstraintComponent,
@@ -88,6 +89,7 @@ import { NotConnectedComponent } from './components/not-connected/not-connected.
     AccountCreationDialogComponent,
     HeaderComponent,
     NotConnectedComponent,
+    ShiftCreationComponent,
   ],
   imports: [
     BrowserModule,

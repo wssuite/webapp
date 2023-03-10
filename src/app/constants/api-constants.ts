@@ -12,12 +12,14 @@ const ADD_STRING = "/add";
 const REMOVE_STRING = "/remove"
 const FETCH_NAMES="/fetchAllNames";
 const FETCH_BY_NAMES = "/fetchByName";
+const UPDATE= "/update"
 
 export const SHIFT_URL= BASE_URL + "/shift";
 export const FETCH_SHIFT_NAMES = SHIFT_URL + FETCH_NAMES;
 export const FETCH_SHIFT_BY_NAMES = SHIFT_URL + FETCH_BY_NAMES;
 export const ADD_SHIFT_URL = SHIFT_URL + ADD_STRING;
 export const REMOVE_SHIFT_URL = SHIFT_URL + REMOVE_STRING;
+export const UPDATE_SHIFT_URL = SHIFT_URL + UPDATE;
 
 
 export const SHIFT_TYPE_URL = BASE_URL + "/shiftType";

@@ -9,7 +9,7 @@
       <mat-icon>more_horiz</mat-icon>
     </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="modifyShift(shift)">
           <mat-icon>edit</mat-icon>
           <span>Modify shift</span>
         </button>
@@ -17,15 +17,11 @@
           <mat-icon>delete</mat-icon>
           <span>Detele shift</span>
         </button>
-        <button mat-menu-item>
-          <mat-icon>cloud_upload</mat-icon>
-          <span>Export shift</span>
-        </button>
       </mat-menu>
   </mat-card-actions>
 </mat-card>
 </div>
 <app-sidenav-shift></app-sidenav-shift>
-<button class="buttonCreate" mat-raised-button color="primary"  (click)="openShiftDialog()">Create new shift</button>
+<button class="buttonCreate" mat-raised-button color="primary"  (click)="createNewShift()">Create new shift</button>
 </div>
 

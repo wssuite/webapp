@@ -8,7 +8,7 @@ import { MainMenuComponent } from "./components/main-menu/main-menu.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
 import { ShiftGroupComponent } from "./components/shift-component/shift-group/shift-group.component";
 import { ShiftTypeComponent } from "./components/shift-component/shift-type/shift-type.component";
-import { ShiftComponent } from "./components/shift-component/shift/shift.component";
+import { ShiftsViewComponent } from "./components/shift-component/shifts-view/shifts-view.component";
 import { TestingComponent } from "./components/testing/testing.component";
 import {
   CREATE_ACCOUNT,
@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: CREATE_CONTRACT, component: ContractCreationComponent },
   { path: SCHEDULE_GENERATION, component: ScheduleGenerationComponent },
   { path: TESTING, component: TestingComponent },
-  { path: SHIFT, component: ShiftComponent},
+  { path: SHIFT, component: ShiftsViewComponent},
   { path: SHIFT_TYPE, component: ShiftTypeComponent},
   { path: SHIFT_GROUP, component: ShiftGroupComponent},
   { path: CREATE_ACCOUNT, component: AccountCreationComponent },
