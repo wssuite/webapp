@@ -4,65 +4,62 @@ import { MatDialog } from '@angular/material/dialog';
 import { shiftsTypeExample } from 'src/app/constants/shifts';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
-import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/create-shift-type-dialog.component';
+import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
+import { ShiftTypeCreationDialogComponent } from '../shift-type-creation-dialog/shift-type-creation-dialog.component';
 
 
 @Component({
-  selector: 'app-shift-type',
-  templateUrl: './shift-type.component.html',
-  styleUrls: ['./shift-type.component.css']
+  selector: 'app-shifts-type-view',
+  templateUrl: './shifts-type-view.component.html',
+  styleUrls: ['./shifts-type-view.component.css']
 })
-export class ShiftTypeComponent implements OnInit{
+export class ShiftsTypeViewComponent implements OnInit{
+  
   shiftsType: string[];
-  panelOpenState: boolean;
-  connectedUser!: boolean;
 
-  constructor(public dialog: MatDialog, private apiService: APIService) {
-    this.panelOpenState = false;
+
+  constructor(private dialog: MatDialog, private apiService: APIService) {
     this.shiftsType = [];
 
   }
   ngOnInit(): void {
-    try{
-      this.getShiftsType();
-      this.connectedUser = true;
-    }catch(err){
-      this.connectedUser = false;
-    }
+    this.getShiftsType();
   }
 
   getShiftsType(){
     this.apiService.getShiftTypeNames().subscribe({
-      next: (shiftsType: string[])=> {
-        this.shiftsType = shiftsType;
-      },
+      next: (shiftsType: string[])=> this.shiftsType = shiftsType,
       error: (error: HttpErrorResponse)=> {
-        //this.openErrorDialog(error.error);
+        this.openErrorDialog(error.error);
       }
     })
   }
 
-  /*openErrorDialog(message: string) {
-    this.dialog.open(ErrorMessageDialogComponent, {
-      data: {message: message},
-    })
-  }*/
-
-
-
-  openShiftTypeDialog() {
-    const dialog = this.dialog.open(CreateShiftTypeDialogComponent,  
+  openShiftTypeCreationDialog(shift_type: ShiftTypeInterface) {
+    const dialog = this.dialog.open(ShiftTypeCreationDialogComponent,  
       { disableClose: true,  
         height: '60%',
         width: '50%', 
         position: {top:'5vh',left: '25%', right: '25%'},
-        data: {name: '', shifts: []}
+        data: {shift_type}
       });
 
       dialog.afterClosed().subscribe(()=>{
         this. getShiftsType;
       })
   }
+
+  openErrorDialog(message: string) {
+    this.dialog.open(ErrorMessageDialogComponent, {
+      data: {message: message},
+    })
+  }
+
+  createNewShiftType(){
+    const newShiftType = {name: '', shifts: []};
+    this.openShiftTypeCreationDialog(newShiftType); 
+  }
+
 
   deleteShiftType(shiftType_name: string){
     //Manque la vérification si le shift est dans un shift type ou group
@@ -86,18 +83,6 @@ export class ShiftTypeComponent implements OnInit{
     }
   }
 
-  /*modifyShiftType(shiftType: ShiftTypeInterface){
-    const index = this.shiftsType.indexOf(shiftType);
-    if (index > -1) {
-      this.dialog.open(CreateShiftTypeDialogComponent,  
-        { disableClose: true,  
-          height: '60%',
-          width: '50%', 
-          position: {top:'5vh',left: '25%', right: '25%'},
-          data: {shiftType}
-        });
-
-  }
-}*/
+      
 
 }

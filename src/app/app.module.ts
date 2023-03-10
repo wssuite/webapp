@@ -43,8 +43,8 @@ import { ShiftConstraintComponent } from './components/shift-constraint/shift-co
 import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { CreateShiftGroupDialogComponent } from './components/shift-component/create-shift-group-dialog/create-shift-group-dialog.component';
-import { CreateShiftTypeDialogComponent } from './components/shift-component/create-shift-type-dialog/create-shift-type-dialog.component';
-import { ShiftTypeComponent } from './components/shift-component/shift-type/shift-type.component';
+import { ShiftTypeCreationDialogComponent } from './components/shift-component/shift-type-creation-dialog/shift-type-creation-dialog.component';
+import { ShiftsTypeViewComponent } from './components/shift-component/shifts-type-view/shifts-type-view.component';
 import { ShiftGroupComponent } from './components/shift-component/shift-group/shift-group.component';
 import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
@@ -57,6 +57,7 @@ import { AccountCreationDialogComponent } from './components/account-creation/ac
 import { HeaderComponent } from './components/header/header.component';
 import { NotConnectedComponent } from './components/not-connected/not-connected.component';
 import { ShiftCreationComponent } from './components/shift-component/shift-creation/shift-creation.component';
+import { ShiftTypeCreationComponent } from './components/shift-component/shift-type-creation/shift-type-creation.component';
 
 @NgModule({
   declarations: [
@@ -79,8 +80,8 @@ import { ShiftCreationComponent } from './components/shift-component/shift-creat
     MinMaxConsecutiveShiftComponent,
     UnwantedPatternsComponent,
     CreateShiftGroupDialogComponent,
-    CreateShiftTypeDialogComponent,
-    ShiftTypeComponent,
+    ShiftTypeCreationDialogComponent,
+    ShiftsTypeViewComponent,
     ShiftGroupComponent,
     SidenavShiftComponent,
     BooleanConstraintComponent,
@@ -90,6 +91,7 @@ import { ShiftCreationComponent } from './components/shift-component/shift-creat
     HeaderComponent,
     NotConnectedComponent,
     ShiftCreationComponent,
+    ShiftTypeCreationComponent,
   ],
   imports: [
     BrowserModule,

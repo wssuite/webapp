@@ -7,11 +7,11 @@ import { ShiftInterface, ShiftTypeInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
 
 @Component({
-  selector: 'app-create-shift-type-dialog',
-  templateUrl: './create-shift-type-dialog.component.html',
-  styleUrls: ['./create-shift-type-dialog.component.css']
+  selector: 'app-shift-type-creation-dialog',
+  templateUrl: './shift-type-creation-dialog.component.html',
+  styleUrls: ['./shift-type-creation-dialog.component.css']
 })
-export class CreateShiftTypeDialogComponent implements OnInit {
+export class ShiftTypeCreationDialogComponent implements OnInit {
   possibleShifts: string[];
   selectedShift: string;
   shifts: string[];
@@ -22,7 +22,7 @@ export class CreateShiftTypeDialogComponent implements OnInit {
     name: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<CreateShiftTypeDialogComponent >,
+  constructor(public dialogRef: MatDialogRef<ShiftTypeCreationDialogComponent >,
     @Inject(MAT_DIALOG_DATA) public data: ShiftTypeInterface,
     private api: APIService,
 ) {

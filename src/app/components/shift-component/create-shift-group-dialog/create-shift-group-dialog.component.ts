@@ -5,7 +5,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { shiftsExample, shiftsTypeExample } from 'src/app/constants/shifts';
 import { ShiftInterface, ShiftGroupInterface, ShiftTypeInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
-import { CreateShiftTypeDialogComponent } from '../create-shift-type-dialog/create-shift-type-dialog.component';
+import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
+import { ShiftTypeCreationDialogComponent } from '../shift-type-creation-dialog/shift-type-creation-dialog.component';
 
 @Component({
   selector: 'app-create-shift-group-dialog',
@@ -45,7 +46,7 @@ export class CreateShiftGroupDialogComponent implements OnInit {
           })
         },
         error: (error: HttpErrorResponse)=>{
-          //this.openErrorDialog(error.error);
+          this.openErrorDialog(error.error);
         }
       })
 
@@ -56,7 +57,7 @@ export class CreateShiftGroupDialogComponent implements OnInit {
             })
           },
           error: (error: HttpErrorResponse)=>{
-            //this.openErrorDialog(error.error);
+            this.openErrorDialog(error.error);
           }
         })
     }catch(err){
@@ -132,11 +133,11 @@ add() {
   }
 }
 
-/*openErrorDialog(message: string) {
+openErrorDialog(message: string) {
   this.dialog.open(ErrorMessageDialogComponent, {
     data: {message: message},
   })
-}*/
+}
 
 
 close(){

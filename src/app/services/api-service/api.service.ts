@@ -19,6 +19,8 @@ import {
   REMOVE_SHIFT_URL,
   TEST_URL,
   UPDATE_SHIFT_URL,
+  UPDATE_SHIFT_TYPE_URL,
+  UPDATE_SHIFT_GROUP_URL,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
@@ -119,6 +121,10 @@ export class APIService {
     }
   }
 
+  updateShiftType(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>> {
+    return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_TYPE_URL, shiftType);
+  }
+
   addShiftGroup(shiftGroup: ShiftGroupInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
@@ -145,6 +151,9 @@ export class APIService {
     }
   }
 
+  updateShiftGroup(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>> {
+    return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_GROUP_URL, shiftType);
+  }
 
   getShiftNames():Observable<string[]> {
     try{
