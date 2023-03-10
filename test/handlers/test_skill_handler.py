@@ -6,7 +6,7 @@ from test_constants import (
     nurse_skill,
     head_nurse_skill,
     sociologist_skill,
-    profile1,
+    profile1, test_profile
 )
 from unittest import TestCase
 from constants import user_token
@@ -20,6 +20,7 @@ class TestSkillHandler(TestCase):
         skill_array = [nurse_skill, head_nurse_skill, sociologist_skill]
         self.handler.user_dao.insert_one(user.copy())
         self.handler.skill_dao.insert_many(skill_array)
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def tearDown(self) -> None:
         pass

@@ -1,8 +1,6 @@
 from src.handlers.base_handler import BaseHandler
 from src.models.profile import Profile
-from constants import user_username, profile_creator, profile_access
-from src.dao.profile_dao import ProfileDao
-from src.exceptions.user_exceptions import ProfileAccessException
+from constants import user_username
 
 
 class ProfileHandler(BaseHandler):
@@ -24,29 +22,27 @@ class ProfileHandler(BaseHandler):
             user[user_username]
         )
 
-    def verify_profile_creator_access(self, token, name):
-        user = self.verify_token(token)
-        profile = self.profile_dao.find_by_name(name)
-        if user[user_username] != profile[profile_creator]:
-            raise ProfileAccessException(
-                user[user_username], profile[profile_creator])
-        return profile
-
-    def verify_profile_accessors_access(self, token, name):
-        user = self.verify_token(token)
-        profile = self.profile_dao.find_by_name(name)
-        if user[user_username] not in profile[profile_access]:
-            raise ProfileAccessException(
-                user[user_username], profile[profile_access])
-        return profile
-
     def delete_profile(self, token, name):
         self.verify_profile_creator_access(token, name)
         self.profile_dao.remove(name)
+        self.shift_dao.delete_all(name)
+        self.skill_dao.delete_all(name)
+        self.shift_type_dao.delete_all(name)
+        self.shift_group_dao.delete_all(name)
+        self.contract_dao.delete_all(name)
+        self.nurse_dao.delete_all(name)
+        self.nurse_group_dao.delete_all(name)
 
     def duplicate(self, token, name, other_name):
         self.verify_profile_accessors_access(token, name)
         self.create_profile(token, other_name)
+        self.shift_dao.duplicate(name, other_name)
+        self.skill_dao.duplicate(name, other_name)
+        self.shift_type_dao.duplicate(name, other_name)
+        self.shift_group_dao.duplicate(name, other_name)
+        self.contract_dao.duplicate(name, other_name)
+        self.nurse_dao.duplicate(name, other_name)
+        self.nurse_group_dao.duplicate(name, other_name)
 
     def share(self, token, name, other_user):
         self.verify_profile_accessors_access(token, name)

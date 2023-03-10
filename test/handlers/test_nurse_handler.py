@@ -16,6 +16,7 @@ from test_constants import (
     patrick_nurse_group,
     full_time_not_valid_contract_with_general,
     profile1,
+    test_profile
 )
 from constants import user_token
 from src.exceptions.contract_exceptions import (
@@ -47,6 +48,7 @@ class TestNurseHandler(TestCase):
         self.handler.contract_dao.insert_one(
             full_time_not_valid_contract_with_general.copy()
         )
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def tearDown(self) -> None:
         pass

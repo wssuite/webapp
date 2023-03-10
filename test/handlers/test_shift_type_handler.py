@@ -7,7 +7,7 @@ from test_constants import (
     late_shift,
     early_shift,
     full_time_contract_with_day_shift_type,
-    profile1,
+    profile1, test_profile
 )
 from src.dao.abstract_dao import connect_to_fake_db
 from unittest import TestCase
@@ -35,6 +35,7 @@ class TestShiftHandler(TestCase):
             test_work_shift_group.copy()
         )
         self.handler.shift_dao.insert_one_if_not_exist(early_shift)
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def tearDown(self) -> None:
         pass

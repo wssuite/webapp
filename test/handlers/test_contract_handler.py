@@ -14,6 +14,7 @@ from test_constants import (
     nurse_group2,
     min_cons_contract,
     profile1,
+    test_profile
 )
 from unittest import TestCase
 from constants import user_token, contract_name, profile
@@ -43,6 +44,7 @@ class TestContractHandler(TestCase):
             full_time_not_valid_contract_with_general.copy()
         )
         self.handler.contract_dao.insert_one(min_cons_contract.copy())
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def insert_missing_deps(self):
         self.handler.shift_dao.insert_one_if_not_exist(early_shift.copy())

@@ -9,6 +9,7 @@ from test_constants import (
     default_user,
     early_shift,
     profile1,
+    test_profile
 )
 from unittest import TestCase
 from constants import user_token, shift_group_shifts_list
@@ -31,6 +32,7 @@ class TestShiftGroupHandler(TestCase):
         )
         contract = Contract().from_json(full_time_contract_with_day_shift_type)
         self.handler.contract_dao.insert_one(contract.db_json())
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def tearDown(self) -> None:
         pass

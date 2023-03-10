@@ -111,28 +111,28 @@ class ContractHandler(BaseHandler):
     be used by any nurse nor any nurse groups
     """
 
-    def delete(self, token, name, profile):
-        super().delete(token, name, profile)
+    def delete(self, token, name, profile_name):
+        super().delete(token, name, profile_name)
         usage = []
-        usage.extend(self.nurse_dao.get_with_contracts([name], profile))
-        usage.extend(self.nurse_group_dao.get_with_contracts([name], profile))
+        usage.extend(self.nurse_dao.get_with_contracts([name], profile_name))
+        usage.extend(self.nurse_group_dao.get_with_contracts([name], profile_name))
         if len(usage) > 0:
             raise CannotDeleteContract(name)
-        self.contract_dao.remove(name, profile)
+        self.contract_dao.remove(name, profile_name)
 
-    def get_all(self, token, profile):
-        super().get_all(token, profile)
-        return self.contract_dao.fetch_all(profile)
+    def get_all(self, token, profile_name):
+        super().get_all(token, profile_name)
+        return self.contract_dao.fetch_all(profile_name)
 
-    def get_by_name(self, token, name, profile):
-        super().get_by_name(token, name, profile)
-        contract_dict = self.contract_dao.find_by_name(name, profile)
+    def get_by_name(self, token, name, profile_name):
+        super().get_by_name(token, name, profile_name)
+        contract_dict = self.contract_dao.find_by_name(name, profile_name)
         if contract_dict is None:
             raise ContractNotExist(name)
         return Contract().from_json(contract_dict).to_json()
 
-    def get_all_names(self, token, profile):
+    def get_all_names(self, token, profile_name):
         return [
             contract[contract_name]
-            for contract in self.get_all(token, profile)
+            for contract in self.get_all(token, profile_name)
         ]
