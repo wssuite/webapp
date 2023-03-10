@@ -92,7 +92,9 @@ class TestNurseDao(TestCase):
         self.assertEqual(1, len(all_nurse_groups_before))
         self.assertEqual(0, len(all_nurse_groups_after))
 
-    def test_delete_all_nurses_from_profile_deletes_items_for_specific_profile(self):
+    def test_delete_all_nurses_from_profile_deletes_items_for_specific_profile(
+        self,
+    ):
         nurse_group = NurseGroup().from_json(self.nurse_group_dict)
         self.dao.insert_one_if_not_exist(nurse_group.db_json())
         profile1_nurse_groups_before = self.dao.fetch_all(profile1)

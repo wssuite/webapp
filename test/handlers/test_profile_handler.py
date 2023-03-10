@@ -7,7 +7,9 @@ from test_constants import (
     random_hex,
     user1,
     random_hex2,
-    test_profile, profile_access, user1_name
+    test_profile,
+    profile_access,
+    user1_name,
 )
 from constants import user_token
 from src.models.user import User
@@ -27,7 +29,7 @@ class TestProfileHandler(TestCase):
         pass
 
     def test_create_profile(self):
-        self.handler.create_profile(random_hex,profile1)
+        self.handler.create_profile(random_hex, profile1)
         all_profiles = self.handler.profile_dao.fetch_all()
         self.assertEqual(1, len(all_profiles))
         expected = test_profile.copy()

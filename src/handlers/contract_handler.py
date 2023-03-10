@@ -115,7 +115,9 @@ class ContractHandler(BaseHandler):
         super().delete(token, name, profile_name)
         usage = []
         usage.extend(self.nurse_dao.get_with_contracts([name], profile_name))
-        usage.extend(self.nurse_group_dao.get_with_contracts([name], profile_name))
+        usage.extend(
+            self.nurse_group_dao.get_with_contracts([name], profile_name)
+        )
         if len(usage) > 0:
             raise CannotDeleteContract(name)
         self.contract_dao.remove(name, profile_name)

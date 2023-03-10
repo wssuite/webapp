@@ -6,7 +6,7 @@ from test_constants import (
     head_nurse_skill,
     sociologist_skill,
     profile1,
-    profile2
+    profile2,
 )
 
 
@@ -23,7 +23,9 @@ class TestShiftDao(TestCase):
         self.assertEqual(expected, result)
         self.assertEqual([], empty_skills)
 
-    def test_delete_all_skills_from_profile_deletes_items_for_specific_profile(self):
+    def test_delete_all_skills_from_profile_deletes_items_for_specific_profile(
+        self,
+    ):
         self.dao.insert_many(self.skills)
         profile1_skills_before = self.dao.get_all(profile1)
         self.dao.duplicate(profile1, profile2)
@@ -33,4 +35,3 @@ class TestShiftDao(TestCase):
         self.assertEqual(3, len(profile1_skills_before))
         self.assertEqual(3, len(profile2_skills))
         self.assertEqual(0, len(profile1_skills_after))
-

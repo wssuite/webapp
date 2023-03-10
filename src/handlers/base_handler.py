@@ -43,7 +43,8 @@ class BaseHandler:
         profile_dict = self.profile_dao.find_by_name(name)
         if user[user_username] != profile_dict[profile_creator]:
             raise ProfileAccessException(
-                user[user_username], profile_dict[profile_creator])
+                user[user_username], profile_dict[profile_creator]
+            )
         return profile_dict
 
     def verify_profile_accessors_access(self, token, name):
@@ -51,13 +52,15 @@ class BaseHandler:
         profile_dict = self.profile_dao.find_by_name(name)
         if user[user_username] not in profile_dict[profile_access]:
             raise ProfileAccessException(
-                user[user_username], profile_dict[profile_access])
+                user[user_username], profile_dict[profile_access]
+            )
         return profile_dict
 
     """
     The following methods are used by handlers which treat a profile element
     eg: ContractHandler
     """
+
     def add(self, token, json):
         self.verify_profile_accessors_access(token, json[profile])
 

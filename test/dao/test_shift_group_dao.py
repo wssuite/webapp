@@ -102,7 +102,9 @@ class TestShiftGroupDao(TestCase):
             ["Day", "Midnight"], shift_group_after[shift_group_shifts_list]
         )
 
-    def test_delete_all_shift_groups_from_profile_deletes_items_for_specific_profile(self):
+    def test_delete_all_shift_groups_from_profile_deletes_items_for_profile(
+        self,
+    ):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
         profile1_shift_groups_before = self.dao.fetch_all(profile1)
         self.dao.duplicate(profile1, profile2)

@@ -7,7 +7,7 @@ from test_constants import (
     default_user,
     work_shift_group,
     profile1,
-    test_profile
+    test_profile,
 )
 from src.dao.abstract_dao import connect_to_fake_db
 from unittest import TestCase

@@ -62,7 +62,9 @@ class TestShiftTypeDao(TestCase):
         self.assertEqual(1, len(early_shift_types))
         self.assertEqual(self.shift_type, early_shift_types[0])
 
-    def test_delete_all_shift_types_from_profile_deletes_items_for_specific_profile(self):
+    def test_delete_all_shift_types_from_profile_deletes_items_for_profile(
+        self,
+    ):
         self.dao.insert_one_if_not_exist(self.shift_type.copy())
         profile1_shift_types_before = self.dao.fetch_all(profile1)
         self.dao.duplicate(profile1, profile2)

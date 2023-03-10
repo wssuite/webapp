@@ -4,7 +4,6 @@ from constants import user_username
 
 
 class ProfileHandler(BaseHandler):
-
     def __init__(self, mongo):
         super().__init__(mongo)
 
@@ -18,9 +17,7 @@ class ProfileHandler(BaseHandler):
 
     def get_all_profiles(self, token):
         user = self.verify_token(token)
-        return self.profile_dao.fetch_all_with_user_access(
-            user[user_username]
-        )
+        return self.profile_dao.fetch_all_with_user_access(user[user_username])
 
     def delete_profile(self, token, name):
         self.verify_profile_creator_access(token, name)

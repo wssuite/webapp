@@ -16,7 +16,7 @@ from test_constants import (
     patrick_nurse_group,
     full_time_not_valid_contract_with_general,
     profile1,
-    test_profile
+    test_profile,
 )
 from constants import user_token
 from src.exceptions.contract_exceptions import (

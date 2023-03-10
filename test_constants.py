@@ -182,7 +182,11 @@ nurse_group2 = {
 }
 user1_name = "user1"
 default_user = {user_password: admin, user_username: admin}
-user1 = {user_password: admin, user_username: user1_name, user_token: random_hex2}
+user1 = {
+    user_password: admin,
+    user_username: user1_name,
+    user_token: random_hex2,
+}
 nurse_skill = {
     skill_name: "Nurse",
     profile: profile1,

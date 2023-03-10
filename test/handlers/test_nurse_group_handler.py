@@ -9,7 +9,7 @@ from test_constants import (
     full_time_contract_with_day_shift_type,
     not_problematic_group,
     profile1,
-    test_profile
+    test_profile,
 )
 from src.exceptions.contract_exceptions import (
     ContractNotExist,

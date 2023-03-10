@@ -46,5 +46,7 @@ nurse_not_found = "The nurse {} doesn't exist"
 nurse_group_not_found = "The nurse group {} doesn't exist"
 
 profile_already_exist = "The profile {} already exists. Try another name"
-not_enough_access = ("The user {} don't have access to perform this action,"
-                     "only {} have access to perform this action.")
+not_enough_access = (
+    "The user {} don't have access to perform this action,"
+    "only {} have access to perform this action."
+)

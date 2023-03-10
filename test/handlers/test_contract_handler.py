@@ -14,7 +14,7 @@ from test_constants import (
     nurse_group2,
     min_cons_contract,
     profile1,
-    test_profile
+    test_profile,
 )
 from unittest import TestCase
 from constants import user_token, contract_name, profile

@@ -54,7 +54,9 @@ class TestShiftDao(TestCase):
         )
         self.assertEqual(self.shift_update, shift)
 
-    def test_delete_all_shifts_from_profile_deletes_items_for_specific_profile(self):
+    def test_delete_all_shifts_from_profile_deletes_items_for_specific_profile(
+        self,
+    ):
         self.dao.insert_one_if_not_exist(self.shift.copy())
         profile1_shifts_before = self.dao.fetch_all(profile1)
         self.dao.duplicate(profile1, profile2)

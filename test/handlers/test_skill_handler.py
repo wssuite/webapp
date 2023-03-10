@@ -6,7 +6,8 @@ from test_constants import (
     nurse_skill,
     head_nurse_skill,
     sociologist_skill,
-    profile1, test_profile
+    profile1,
+    test_profile,
 )
 from unittest import TestCase
 from constants import user_token

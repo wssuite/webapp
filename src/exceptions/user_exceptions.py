@@ -7,7 +7,7 @@ from error_msg import (
     admin_only,
     delete_admin_error,
     login_required_error,
-    not_enough_access
+    not_enough_access,
 )
 
 
