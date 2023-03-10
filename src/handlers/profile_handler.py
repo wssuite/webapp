@@ -9,7 +9,6 @@ class ProfileHandler(BaseHandler):
 
     def __init__(self, mongo):
         super().__init__(mongo)
-        self.profile_dao = ProfileDao(mongo)
 
     def create_profile(self, token, profile_name):
         user = self.verify_token(token)

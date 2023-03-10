@@ -1,6 +1,6 @@
-from src.dao.contract_dao import ContractDao, Contract
+from src.dao.contract_dao import Contract
 from src.utils.contracts_validator import ContractsValidator
-from src.dao.nurse_dao import NurseDao, Nurse
+from src.dao.nurse_dao import Nurse
 from src.dao.nurse_group_dao import NurseGroupDao
 from src.handlers.base_handler import BaseHandler
 from src.exceptions.contract_exceptions import ContractNotExist
@@ -27,9 +27,6 @@ def get_contracts_by_nurse_groups_including_nurse(
 class NurseHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
-        self.nurse_dao = NurseDao(mongo)
-        self.contract_dao = ContractDao(mongo)
-        self.nurse_group_dao = NurseGroupDao(mongo)
 
     def insertion_validations(self, json):
         nurse = Nurse().from_json(json)

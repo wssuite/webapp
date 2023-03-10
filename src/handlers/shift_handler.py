@@ -1,7 +1,5 @@
-from src.dao.shift_dao import ShiftDao, Shift
-from src.dao.shift_type_dao import ShiftTypeDao
+from src.dao.shift_dao import Shift
 from src.dao.shift_group_dao import ShiftGroupDao
-from src.dao.contract_dao import ContractDao
 from src.handlers.base_handler import BaseHandler
 from src.exceptions.shift_exceptions import CannotDeleteShift, ShiftNotExist
 from constants import shift_name, work
@@ -22,10 +20,6 @@ def remove_shift_from_work_shift_group(
 class ShiftHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
-        self.shift_dao = ShiftDao(mongo)
-        self.shift_type_dao = ShiftTypeDao(mongo)
-        self.shift_group_dao = ShiftGroupDao(mongo)
-        self.contract_dao = ContractDao(mongo)
 
     def add(self, token, json):
         super().add(token, json)

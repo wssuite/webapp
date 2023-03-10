@@ -1,11 +1,5 @@
 from src.handlers.base_handler import BaseHandler
-from src.dao.contract_dao import ContractDao, Contract
-from src.dao.nurse_group_dao import NurseGroupDao
-from src.dao.nurse_dao import NurseDao
-from src.dao.shift_dao import ShiftDao
-from src.dao.shift_type_dao import ShiftTypeDao
-from src.dao.shift_group_dao import ShiftGroupDao
-from src.dao.skill_dao import SkillDao
+from src.dao.contract_dao import Contract
 from src.exceptions.shift_exceptions import ShiftNotExist
 from constants import (
     nurse_direct_contracts,
@@ -23,13 +17,6 @@ from src.exceptions.contract_exceptions import (
 class ContractHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
-        self.contract_dao = ContractDao(mongo)
-        self.nurse_dao = NurseDao(mongo)
-        self.nurse_group_dao = NurseGroupDao(mongo)
-        self.shift_dao = ShiftDao(mongo)
-        self.shift_type_dao = ShiftTypeDao(mongo)
-        self.shift_group_dao = ShiftGroupDao(mongo)
-        self.skill_dao = SkillDao(mongo)
 
     """
     To add a contract we will perform a check on the token

@@ -1,7 +1,4 @@
-from src.dao.shift_type_dao import ShiftTypeDao, ShiftType
-from src.dao.contract_dao import ContractDao
-from src.dao.shift_group_dao import ShiftGroupDao
-from src.dao.shift_dao import ShiftDao
+from src.dao.shift_type_dao import ShiftType
 from constants import shift_type_name
 from src.handlers.base_handler import BaseHandler
 from src.exceptions.shift_exceptions import (
@@ -17,10 +14,6 @@ from src.handlers.shift_handler import (
 class ShiftTypeHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
-        self.shift_type_dao = ShiftTypeDao(mongo)
-        self.shift_group_dao = ShiftGroupDao(mongo)
-        self.contract_dao = ContractDao(mongo)
-        self.shift_dao = ShiftDao(mongo)
 
     def verify_shifts_exist(self, shifts, profile):
         not_exist_shifts = []

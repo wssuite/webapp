@@ -1,6 +1,4 @@
-from src.dao.contract_dao import ContractDao, Contract
-from src.dao.nurse_dao import NurseDao
-from src.dao.nurse_group_dao import NurseGroupDao
+from src.dao.contract_dao import Contract
 from src.handlers.base_handler import BaseHandler
 from src.models.nurse_group import NurseGroup
 from src.exceptions.contract_exceptions import ContractNotExist
@@ -19,9 +17,6 @@ the contracts coming from other groups contradict the contracts in this group
 class NurseGroupHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
-        self.nurse_group_dao = NurseGroupDao(mongo)
-        self.nurse_dao = NurseDao(mongo)
-        self.contract_dao = ContractDao(mongo)
 
     def verify_nurse_group_contracts(self, json):
         nurse_group = NurseGroup().from_json(json)
