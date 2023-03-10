@@ -4,7 +4,9 @@ from src.dao.abstract_dao import AbstractDao
 from constants import (
     profile_name,
     profile_access,
-    mongo_id_field, mongo_all_operation, mongo_set_operation
+    mongo_id_field,
+    mongo_all_operation,
+    mongo_set_operation,
 )
 from src.exceptions.profile_exceptions import ProfileAlreadyExist
 
@@ -29,24 +31,25 @@ class ProfileDao(AbstractDao):
         self.collection.insert_one(json)
 
     def find_by_name(self, name):
-        return self.collection.find_one({profile_name: name},
-                                        {mongo_id_field: 0})
+        return self.collection.find_one(
+            {profile_name: name}, {mongo_id_field: 0}
+        )
 
     def exist(self, name):
         return self.find_by_name(name) is not None
 
     def fetch_all_with_user_access(self, username):
         cursor = self.collection.find(
-            {profile_access: {mongo_all_operation: [username]}},
-            {})
+            {profile_access: {mongo_all_operation: [username]}}, {}
+        )
         return get_profiles_from_cursor(cursor)
 
     def fetch_all(self):
-        cursor = self.collection.find(
-            {}, {})
+        cursor = self.collection.find({}, {})
         return get_profiles_from_cursor(cursor)
 
     """We can suppose that the profile exists"""
+
     def add_access_to_user(self, name, username):
         profile_dict = self.find_by_name(name)
         access = profile_dict[profile_access]
@@ -55,7 +58,8 @@ class ProfileDao(AbstractDao):
         profile_dict[profile_access] = access
         self.collection.find_one_and_update(
             {profile_name: profile_dict[profile_name]},
-            {mongo_set_operation: profile_dict})
+            {mongo_set_operation: profile_dict},
+        )
 
     def remove_access_from_user(self, name, username):
         profile_dict = self.find_by_name(name)
@@ -65,7 +69,8 @@ class ProfileDao(AbstractDao):
         profile_dict[profile_access] = access
         self.collection.find_one_and_update(
             {profile_name: profile_dict[profile_name]},
-            {mongo_set_operation: profile_dict})
+            {mongo_set_operation: profile_dict},
+        )
 
     def remove(self, name):
         self.collection.find_one_and_delete({profile_name: name})

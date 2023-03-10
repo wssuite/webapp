@@ -1,4 +1,3 @@
-from src.dao.user_dao import UserDao
 from src.dao.contract_dao import ContractDao
 from src.dao.shift_group_dao import ShiftGroupDao, ShiftGroup
 from src.dao.shift_type_dao import ShiftTypeDao
@@ -9,12 +8,12 @@ from src.exceptions.shift_exceptions import (
     CannotDeleteDefaultShiftGroup,
     CannotDeleteShiftGroup,
 )
-from src.handlers.user_handler import verify_token
+from src.handlers.base_handler import BaseHandler
 
 
-class ShiftGroupHandler:
+class ShiftGroupHandler(BaseHandler):
     def __init__(self, mongo):
-        self.user_dao = UserDao(mongo)
+        super().__init__(mongo)
         self.shift_dao = ShiftDao(mongo)
         self.shift_type_dao = ShiftTypeDao(mongo)
         self.shift_group_dao = ShiftGroupDao(mongo)
@@ -31,19 +30,19 @@ class ShiftGroupHandler:
             raise ShiftNotExist(not not_exist_shifts)
 
     def add(self, token, json):
-        verify_token(token, self.user_dao)
+        super().add(token, json)
         shift_group = ShiftGroup().from_json(json)
         self.verify_shifts_exist(shift_group.shifts, shift_group.profile)
         self.shift_group_dao.insert_one_if_not_exist(shift_group.db_json())
 
     def update(self, token, json):
-        verify_token(token, self.user_dao)
+        super().update(token, json)
         shift_group = ShiftGroup().from_json(json)
         self.verify_shifts_exist(shift_group.shifts, shift_group.profile)
         self.shift_group_dao.update(shift_group.db_json())
 
     def delete(self, token, name, profile):
-        verify_token(token, self.user_dao)
+        super().delete(token, name, profile)
         if name == work or name == rest:
             raise CannotDeleteDefaultShiftGroup(name)
         usage = self.contract_dao.get_including_shifts([name], profile)
@@ -52,11 +51,11 @@ class ShiftGroupHandler:
         self.shift_group_dao.remove(name, profile)
 
     def get_all(self, token, profile):
-        verify_token(token, self.user_dao)
+        super().get_all(token, profile)
         return self.shift_group_dao.fetch_all(profile)
 
     def get_by_name(self, token, name, profile):
-        verify_token(token, self.user_dao)
+        super().get_by_name(token, name, profile)
         shift_group_dict = self.shift_group_dao.find_by_name(name, profile)
         if shift_group_dict is None:
             raise ShiftNotExist(name)

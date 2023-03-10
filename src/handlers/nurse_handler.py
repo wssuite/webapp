@@ -2,8 +2,7 @@ from src.dao.contract_dao import ContractDao, Contract
 from src.utils.contracts_validator import ContractsValidator
 from src.dao.nurse_dao import NurseDao, Nurse
 from src.dao.nurse_group_dao import NurseGroupDao
-from src.handlers.user_handler import verify_token
-from src.dao.user_dao import UserDao
+from src.handlers.base_handler import BaseHandler
 from src.exceptions.contract_exceptions import ContractNotExist
 from src.exceptions.nurse_exceptions import NurseNotFound, CannotDeleteNurse
 from constants import (
@@ -25,15 +24,14 @@ def get_contracts_by_nurse_groups_including_nurse(
     return ret
 
 
-class NurseHandler:
+class NurseHandler(BaseHandler):
     def __init__(self, mongo):
+        super().__init__(mongo)
         self.nurse_dao = NurseDao(mongo)
         self.contract_dao = ContractDao(mongo)
         self.nurse_group_dao = NurseGroupDao(mongo)
-        self.user_dao = UserDao(mongo)
 
-    def insertion_validations(self, token, json):
-        verify_token(token, self.user_dao)
+    def insertion_validations(self, json):
         nurse = Nurse().from_json(json)
         contract_validator = ContractsValidator()
         for contract_string in nurse.direct_contracts:
@@ -53,7 +51,8 @@ class NurseHandler:
     """
 
     def add(self, token, json):
-        nurse, contract_validator = self.insertion_validations(token, json)
+        super().add(token, json)
+        nurse, contract_validator = self.insertion_validations(json)
         inserted_id = self.nurse_dao.insert_one(nurse.db_json())
         return str(inserted_id.inserted_id)
 
@@ -66,7 +65,8 @@ class NurseHandler:
     """
 
     def update(self, token, json):
-        nurse, contract_validator = self.insertion_validations(token, json)
+        super().update(token, json)
+        nurse, contract_validator = self.insertion_validations(json)
         before_update = self.get_by_username(
             token, nurse.username, nurse.profile
         )
@@ -80,7 +80,7 @@ class NurseHandler:
     """
 
     def get_by_username(self, token, nurse_to_be_found_username, profile):
-        verify_token(token, self.user_dao)
+        self.verify_token(token)
         nurse_dict = self.nurse_dao.find_by_username(
             nurse_to_be_found_username, profile
         )
@@ -97,7 +97,7 @@ class NurseHandler:
         return nurse.to_json()
 
     def get_all(self, token, profile):
-        verify_token(token, self.user_dao)
+        super().get_all(token, profile)
         all_nurses = self.nurse_dao.fetch_all(profile)
         for nurse in all_nurses:
             contract_by_nurse_group = (
@@ -112,12 +112,12 @@ class NurseHandler:
         return all_nurses
 
     def get_all_usernames(self, token, profile):
-        verify_token(token, self.user_dao)
+        self.verify_token(token)
         all_nurses = self.nurse_dao.fetch_all(profile)
         return [nurse[nurse_username] for nurse in all_nurses]
 
     def delete(self, token, name, profile):
-        verify_token(token, self.user_dao)
+        super().delete(token, name, profile)
         usage = self.nurse_group_dao.get_with_nurses([name], profile)
         if len(usage) > 0:
             raise CannotDeleteNurse(name)

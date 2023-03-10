@@ -10,7 +10,9 @@ class Profile(Jsonify, DBDocument):
     creator = StringField(serialized_name=profile_creator)
 
     def db_json(self) -> dict:
-        return self.to_json()
+        json = self.to_json()
+        json[profile_access] = self.access
+        return json
 
     def to_json(self):
         return {
