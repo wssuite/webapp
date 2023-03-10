@@ -1,23 +1,23 @@
 <div class="shift-container" (mouseleave)="emitShift()"></div>
-    <div class="name-section">
+    <div class="name-section" >
     <label>Shift Name</label>
     <div><mat-form-field class = "nameForm" appearance="fill">
       <mat-label>Enter shift name</mat-label>
-      <input matInput [(ngModel)]="shift.name" [formControl]="nameShiftFormCtrl">
+      <input matInput [(ngModel)]="shift.name" [formControl]="nameShiftFormCtrl" (keyup)="emitShift()">
     </mat-form-field>
     </div>
     </div>
     <div class = "duration-section">
     <label>Duration</label>
-    <div class="startTime-section">
+    <div class="startTime-section" (mouseleave)="emitShift()" (mouseleave)="setEndTime()">
         <div class="label" mat-label>Start Time</div>
             <mat-form-field appearance="outline">
                 <mat-label>Start Time</mat-label>
-                <input
+                <input (mouseleave)="setEndTime()"
                   type="text"
                   matInput
                   [ngxTimepicker]="timepickerStart"
-                  [format]="12"
+                  [format]="24"
                   readonly
                   [formControl]="startTimeFormCtrl"
                   [value]="shift.startTime"
@@ -27,7 +27,7 @@
                 <mat-icon
                   matPrefix
                   *ngIf="startTimeFormCtrl.value && !startTimeFormCtrl.disabled"
-                  (click)="onClearStartTime($event)"
+                  (click)="onClearStartTime()"
                 >
                   close
                 </mat-icon>
@@ -40,13 +40,14 @@
                 >
               </mat-form-field>
               
-              <ngx-material-timepicker
+              <ngx-material-timepicker 
                 #timepickerStart
                 [disable]="true"
+                (timeChanged)="setEndTime()"
               ></ngx-material-timepicker>
 
     </div>
-    <div class="endTime-section">
+    <div class="endTime-section"  (mouseleave)="emitShift()">
         <div class="label" mat-label>End Time</div>
             <mat-form-field appearance="outline">
                 <mat-label>End Time</mat-label>
@@ -54,7 +55,7 @@
                   type="text"
                   matInput
                   [ngxTimepicker]="timepickerEnd"
-                  [format]="12"
+                  [format]="24"
                   readonly
                   [formControl]="endTimeFormCtrl"
                   [value]="shift.endTime"
@@ -64,7 +65,7 @@
                 <mat-icon
                   matPrefix
                   *ngIf="endTimeFormCtrl.value && !endTimeFormCtrl.disabled"
-                  (click)="onClearEndTime($event)"
+                  (click)="onClearEndTime()"
                 >
                   close
                 </mat-icon>

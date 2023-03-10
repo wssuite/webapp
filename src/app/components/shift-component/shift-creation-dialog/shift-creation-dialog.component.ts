@@ -16,20 +16,22 @@ export class ShiftCreationDialogComponent{
 
   @Output() errorState: EventEmitter<boolean>;
   shiftErrorState: boolean;
+  initShiftName: string;
   constructor(public dialogRef: MatDialogRef<ShiftCreationDialogComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: {shift: ShiftInterface},  
+    @Inject(MAT_DIALOG_DATA) public data: {shift: ShiftInterface, shifts: string[]},  
     private api: APIService,
     private dialog: MatDialog,                                       
     ) { 
       this.errorState = new EventEmitter();
       this.shiftErrorState = true;
+      this.initShiftName = data.shift.name;
 }
 
 add() {
   try
   { 
     console.log(this.data.shift);
-    if(this.data.shift.name == ""){
+    if(this.initShiftName == ""){
     this.api.addShift(this.data.shift).subscribe({
       error: (err: HttpErrorResponse)=> {
         if(err.status === HttpStatusCode.Ok) {

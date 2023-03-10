@@ -15,13 +15,20 @@ import { ShiftCreationDialogComponent } from '../shift-creation-dialog/shift-cre
 export class ShiftsViewComponent implements OnInit {
   
   shifts: string[];
+  connectedUser!:boolean;
+  
 
   constructor(public dialog: MatDialog, private apiService: APIService) {
     this.shifts = [];
   }
 
   ngOnInit(): void {
-    this.getShifts();
+    try{
+      this.getShifts();
+      this.connectedUser = true;
+    }catch(err){
+      this.connectedUser = false;
+    }
   }
 
   getShifts(){
@@ -41,7 +48,7 @@ export class ShiftsViewComponent implements OnInit {
         height: '85%',
         width: '55%', 
         position: {top:'5vh',left: '25%', right: '25%'},
-        data: {shift},
+        data: {shift:shift,shifts:this.shifts},
       });
     
       dialog.afterClosed().subscribe(()=>{

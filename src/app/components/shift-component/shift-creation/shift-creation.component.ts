@@ -2,6 +2,7 @@ import { Time } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ShiftInterface } from 'src/app/models/Shift';
+import { Exception } from 'src/app/utils/Exception';
 
 @Component({
   selector: 'app-shift-creation',
@@ -35,52 +36,41 @@ export class ShiftCreationComponent implements OnInit{
 
   ngOnInit(): void {
     this.inputDisabled = this.shift.name === ""? false: true;
-    this.inputDisabled = this.shift.startTime === ""? false: true;
-    this.inputDisabled = this.shift.endTime === ""? false: true;
     this.nameShiftFormCtrl = new FormControl({value: this.shift.name, disabled: this.inputDisabled},
       Validators.required);
-    this.startTimeFormCtrl = new FormControl({value: this.shift.startTime, disabled: this.inputDisabled},
+    this.startTimeFormCtrl = new FormControl({value: this.shift.startTime, disabled: false},
       Validators.required);
-    this.endTimeFormCtrl = new FormControl({value: this.shift.name, disabled: this.inputDisabled},
+    this.endTimeFormCtrl = new FormControl({value: this.shift.name, disabled: false},
         Validators.required);
       this.shiftStartName = this.shift.name;
   }
 
   convertTime(time: string): Time{
-    let hours = Number(time.match(/^(\d+)/)![1]);
-    let minutes = Number(time.match(/:(\d+)/)![1]);
-
+    if (time === undefined || time === '') {
+      throw new Exception("");
+    }
+    const timeArray = time.split(":")
+    const hours = Number(timeArray[0]);
+    const minutes = Number(timeArray[1]);
+    
     return {hours,minutes};
 
   }
 
-  setEndTime(time: string){
-    let endHours = 0;
-    let endAMPM = "";
-    let startTime = this.convertTime(time)
-    let AMPM = time.match(/\s(.*)$/)![1];
-
-    if(AMPM == "PM"){
-      if (startTime.hours<12) startTime.hours = startTime.hours+12;
-      endHours = startTime.hours+8;
-      if (endHours > 24){
-        endHours - 24;
-        endAMPM = "AM"
-      }
+  setEndTime(){
+    if (this.shift.startTime === undefined || this.shift.startTime === '') {
+      return;
     }
-    if(AMPM == "AM") {
-      if (startTime.hours==12) startTime.hours = startTime.hours-12;
-      endHours = startTime.hours+8;
-      if (endHours > 12){
-        endHours - 12;
-        endAMPM = "PM"
-      }
-      }
-    this.shift.endTime = (endHours.toString()+':'+startTime.minutes.toString()+' '+endAMPM);
+    let endHours = 0;
+    let startTime = this.convertTime(this.shift.startTime)
+    endHours = startTime.hours+8;
+    if(endHours > 24){
+      endHours = endHours - 24
+    }
+    this.shift.endTime = (endHours.toString()+':'+startTime.minutes.toString());
   }
 
   emitShift(){
-    console.log("leave")
     this.shiftChange.emit(this.shift);
     this.emitErrorState();
   }
@@ -95,12 +85,14 @@ export class ShiftCreationComponent implements OnInit{
   }
 
 
-  onClearStartTime($event: Event) {
+  onClearStartTime() {
     this.startTimeFormCtrl.setValue(null);
+    this.onClearEndTime()
   }
 
-  onClearEndTime($event: Event) {
+  onClearEndTime() {
     this.endTimeFormCtrl.setValue(null);
+    this.emitShift();
   }
   
   openFromIconStartTime(timepicker: { open: () => void }) {

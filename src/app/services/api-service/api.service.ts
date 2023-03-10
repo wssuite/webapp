@@ -91,9 +91,15 @@ export class APIService {
   }
 
   updateShift(shift: ShiftInterface):Observable<HttpResponse<string>> {
-    return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_URL, shift);
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_URL, shift,{params: queryParams});
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+    
   }
-
 
   addShiftType(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>>{
     try{
