@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
 
 @Component({
@@ -6,10 +6,11 @@ import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
   templateUrl: "./min-max-constraint.component.html",
   styleUrls: ["./min-max-constraint.component.css"],
 })
-export class MinMaxConstraintComponent {
+export class MinMaxConstraintComponent implements OnInit{
   @Input() constraint!: MinMaxConstraint;
   @Output() constraintChange: EventEmitter<MinMaxConstraint>;
   @Output() errorState: EventEmitter<boolean>;
+  constraintCopy!: MinMaxConstraint;
 
   minValueErrorState: boolean;
   maxValueErrorState: boolean;
@@ -33,6 +34,10 @@ export class MinMaxConstraintComponent {
     this.maxWeightLabel = "weight for max value";
   }
 
+  ngOnInit(): void {
+    this.constraintCopy = this.constraint.clone();    
+  }
+
   emitConstraint() {
     this.constraintChange.emit(this.constraint);
     this.emitErrorState();
@@ -43,7 +48,8 @@ export class MinMaxConstraintComponent {
       this.minWeightErrorState ||
         this.maxWeightErrorState ||
         this.minValueErrorState ||
-        this.maxValueErrorState
+        this.maxValueErrorState ||
+        this.constraint.equals(this.constraintCopy)
     );
   }
 

@@ -26,6 +26,17 @@ export class PatternElement {
         this.dayName = p.dayName;
         this.shiftId = p.shiftId;
     }
+
+    clone(): PatternElement {
+        const ret = new PatternElement();
+        ret.dayName = this.dayName;
+        ret.shiftId = this.shiftId;
+        return ret;
+    }
+
+    equals(p:PatternElement): boolean {
+        return this.dayName === p.dayName && this.shiftId === p.shiftId;
+    }
 }
 
 export interface PatternElementInterface{

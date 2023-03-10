@@ -8,7 +8,7 @@ export class BooleanConstraint extends Constraint {
     super(id, name);
     this.weight = BASE_VALUE;
   }
-
+  
   validateConstraint(c: Constraint): void{
     const constraint = c as BooleanConstraint;
     if(!constraint){
@@ -19,7 +19,7 @@ export class BooleanConstraint extends Constraint {
         throw new Exception(this.getRepetitiveErrorMessage())
       }
       throw new Exception(this.getContradictionErrorMessage());
-
+      
     }
   }
 
@@ -29,9 +29,19 @@ export class BooleanConstraint extends Constraint {
       weight: this.weight,
     }
   }
-
+  
   fromJson(c: BooleanConstraintInterface): void {
     this.weight = c.weight;
+  }
+
+  clone(): BooleanConstraint {
+    const ret = new BooleanConstraint(this.name, this.displayName);
+    ret.weight = this.weight;
+    return ret;
+  }
+
+  equals(c: BooleanConstraint): boolean {
+    return c.name === this.name && c.weight === this.weight;
   }
 }
 

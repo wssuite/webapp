@@ -36,6 +36,18 @@ export class ShiftConstraint extends IntegerConstraint {
         super.fromJson(c as IntegerConstraintInterface);
         this.shiftId = c.shiftId;
     }
+
+    override clone(): ShiftConstraint {
+        const ret = new ShiftConstraint(this.name, this.displayName);
+        ret.value = this.value;
+        ret.weight = this.weight;
+        ret.shiftId = this.shiftId;
+        return ret;
+    }
+
+    override equals(c: ShiftConstraint): boolean {
+        return super.equals(c) && this.shiftId === c.shiftId;
+    }
 }
 
 export interface ShiftConstraintInterface extends IntegerConstraintInterface {

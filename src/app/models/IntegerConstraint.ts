@@ -10,7 +10,7 @@ export class IntegerConstraint extends Constraint {
     this.value = BASE_VALUE;
     this.weight = BASE_VALUE;
   }
-
+  
   validateConstraint(c: Constraint): void {
     const constraint = c as IntegerConstraint;
     if(!constraint){
@@ -22,13 +22,13 @@ export class IntegerConstraint extends Constraint {
     if(this.value === constraint.value
       && this.weight === constraint.weight){
         throw new Exception(this.getRepetitiveErrorMessage());
-    }
-    if((this.value === constraint.value && this.weight !== constraint.weight)
+      }
+      if((this.value === constraint.value && this.weight !== constraint.weight)
     || (this.value !== constraint.value && this.weight === constraint.weight)) {
       throw new Exception(this.getContradictionErrorMessage());
     }
   }
-
+  
   toJson(): IntegerConstraintInterface {
     return {
       name: this.name,
@@ -36,10 +36,21 @@ export class IntegerConstraint extends Constraint {
       weight: this.weight
     }
   }
-
+  
   fromJson(c: IntegerConstraintInterface): void {
-      this.value = c.value;
-      this.weight = c.weight;
+    this.value = c.value;
+    this.weight = c.weight;
+  }
+
+  clone(): IntegerConstraint {
+    const ret = new IntegerConstraint(this.name, this.displayName);
+    ret.value = this.value;
+    ret.weight = this.weight;
+    return ret;
+  }
+
+  equals(c: IntegerConstraint): boolean {
+    return this.name === c.name && this.value === c.value && this.weight === c.weight;
   }
 }
 

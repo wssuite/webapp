@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 
 @Component({
@@ -6,10 +6,11 @@ import { IntegerConstraint } from "src/app/models/IntegerConstraint";
   templateUrl: "./integer-constraint.component.html",
   styleUrls: ["./integer-constraint.component.css"],
 })
-export class IntegerConstraintComponent {
+export class IntegerConstraintComponent implements OnInit{
   @Input() constraint!: IntegerConstraint;
   @Output() constraintChange: EventEmitter<IntegerConstraint>;
   @Output() errorState: EventEmitter<boolean>;
+  constraintCopy!: IntegerConstraint;
 
   weightErrorState: boolean;
   valueErrorState: boolean;
@@ -28,13 +29,18 @@ export class IntegerConstraintComponent {
     this.weightLabel = "weight";
   }
 
+  ngOnInit(): void {
+    this.constraintCopy = this.constraint.clone();    
+  }
+
   emitConstraint() {
     this.constraintChange.emit(this.constraint);
     this.emitErrorState();
   }
 
   emitErrorState() {
-    this.errorState.emit(this.weightErrorState || this.valueErrorState);
+    this.errorState.emit(this.weightErrorState || this.valueErrorState
+      || this.constraint.equals(this.constraintCopy));
   }
 
   updateWeightErrorState(e: boolean) {

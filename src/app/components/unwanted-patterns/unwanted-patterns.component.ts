@@ -15,6 +15,7 @@ export class UnwantedPatternsComponent implements OnInit {
   @Output() errorState: EventEmitter<boolean>;
   weightErrorState: boolean;
   weightLabel: string;
+  constraintCopy!: UnwantedPatterns;
 
   @Input() possibleShifts!: string[];
 
@@ -28,8 +29,14 @@ export class UnwantedPatternsComponent implements OnInit {
 
   ngOnInit(): void {
     for(let i=0; i < this.constraint.patternElements.length; i++) {
-      this.patternErrors.push(true);
+      if(this.constraint.patternElements[i].dayName === ""){
+        this.patternErrors.push(true);
+      }
+      else{
+        this.patternErrors.push(false);
+      }
     }
+    this.constraintCopy = this.constraint.clone();
   }
 
   addPattern() {
@@ -64,7 +71,7 @@ export class UnwantedPatternsComponent implements OnInit {
     if(this.patternErrors.indexOf(true) > -1 || this.weightErrorState === true) {
       errorState = true;
     }
-    this.errorState.emit(errorState);
+    this.errorState.emit(errorState || this.constraint.equals(this.constraintCopy));
   }
   
   updateWeightErrorState(e:boolean) {

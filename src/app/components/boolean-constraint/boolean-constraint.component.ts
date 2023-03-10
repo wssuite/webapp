@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { WEIGHT_LABEL } from "src/app/constants/constraints";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 
@@ -7,10 +7,11 @@ import { BooleanConstraint } from "src/app/models/BooleanConstraint";
   templateUrl: "./boolean-constraint.component.html",
   styleUrls: ["./boolean-constraint.component.css"],
 })
-export class BooleanConstraintComponent {
+export class BooleanConstraintComponent implements OnInit{
   @Input() constraint!: BooleanConstraint;
   @Output() constraintChange: EventEmitter<BooleanConstraint>;
   @Output() errorState: EventEmitter<boolean>;
+  constraintCopy!: BooleanConstraint;
 
   weightErrorState: boolean;
   weightLabel: string;
@@ -23,13 +24,17 @@ export class BooleanConstraintComponent {
     this.weightLabel = WEIGHT_LABEL;
   }
 
+  ngOnInit(): void {
+    this.constraintCopy = this.constraint.clone()    
+  }
+
   emitConstraint() {
     this.constraintChange.emit(this.constraint);
     this.emitErrorState();
   }
 
   emitErrorState() {
-    this.errorState.emit(this.weightErrorState);
+    this.errorState.emit(this.weightErrorState || this.constraint.equals(this.constraintCopy));
   }
 
   updateWeightErrorState(e: boolean) {

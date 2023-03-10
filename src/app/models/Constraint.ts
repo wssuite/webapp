@@ -18,6 +18,10 @@ export abstract class Constraint {
   abstract toJson():ConstraintInterface;
 
   abstract fromJson(c: ConstraintInterface):void;
+
+  abstract clone(): Constraint;
+
+  abstract equals(c: Constraint): boolean;
 }
 
 export interface ConstraintInterface {

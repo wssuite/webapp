@@ -17,6 +17,7 @@ export class ShiftConstraintComponent implements OnInit{
   selectFormCtrl: FormControl;
   weightLabel: string;
   valueErrorState: boolean;
+  constraintCopy!: ShiftConstraint;
 
   constructor(){
     this.constraintChange = new EventEmitter();
@@ -29,10 +30,12 @@ export class ShiftConstraintComponent implements OnInit{
 
   ngOnInit(): void {
       this.selectFormCtrl.setValue(this.constraint.shiftId);
+      this.constraintCopy = this.constraint.clone();
   }
 
   emitErrorState() {
-    this.errorState.emit(this.selectFormCtrl.hasError('required') || this.weightErrorState || this.valueErrorState);
+    this.errorState.emit(this.selectFormCtrl.hasError('required') || this.weightErrorState || this.valueErrorState
+    || this.constraint.equals(this.constraintCopy));
   }
 
   emitConstraint() {

@@ -21,6 +21,8 @@ export class PatternElementComponent implements OnInit{
   daySelectorFormControl: FormControl;
   shiftSelectorFormControl: FormControl;
 
+  elementCopy!: PatternElement;
+
   constructor() {
     this.possibleDays = DateUtils.days;
     this.elementChange = new EventEmitter<PatternElement>();
@@ -32,6 +34,7 @@ export class PatternElementComponent implements OnInit{
   ngOnInit(): void {
     this.daySelectorFormControl.setValue(this.element.dayName);
     this.shiftSelectorFormControl.setValue(this.element.shiftId);  
+    this.elementCopy = this.element.clone();
   }
 
   emitElement(){
@@ -40,6 +43,7 @@ export class PatternElementComponent implements OnInit{
   }
 
   emitErrorState() {
-    this.errorState.emit(this.daySelectorFormControl.hasError('required') || this.shiftSelectorFormControl.hasError('required'))
+    this.errorState.emit(this.daySelectorFormControl.hasError('required') || this.shiftSelectorFormControl.hasError('required')
+      || this.element.equals(this.elementCopy))
   }
 }
