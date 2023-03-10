@@ -92,6 +92,15 @@ is_admin = "isAdmin"
 profile = "profile"
 
 """Profile"""
-profile_name = "Profile"
+profile_name = "profile"
 profile_access = "access"
 profile_creator = "creator"
+
+work_shift_group = {
+    shift_group_name: work,
+    shift_group_shifts_list: [],
+}
+rest_shift_group = {
+    shift_group_name: rest,
+    shift_group_shifts_list: [],
+}

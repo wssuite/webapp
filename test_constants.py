@@ -31,6 +31,7 @@ from constants import (
     profile_name,
     profile_creator,
     profile_access,
+    user_token,
 )
 
 profile1 = "profile1"
@@ -170,6 +171,7 @@ nurse_group1 = {
     profile: profile1,
 }
 random_hex = "12345678123456781234567812345678"
+random_hex2 = "12345678123456781234567812345679"
 
 nurse_group2 = {
     nurse_group_name: "group2",
@@ -177,9 +179,9 @@ nurse_group2 = {
     nurse_group_contracts_list: ["FullTime_Valid", "minConsContract"],
     profile: profile1,
 }
-
+user1_name = "user1"
 default_user = {user_password: admin, user_username: admin}
-
+user1 = {user_password: admin, user_username: user1_name, user_token: random_hex2}
 nurse_skill = {
     skill_name: "Nurse",
     profile: profile1,
