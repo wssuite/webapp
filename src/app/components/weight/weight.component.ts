@@ -63,12 +63,16 @@ export class WeightComponent implements OnInit{
   update() {
     this.numberChecks++;
     if (!this.disabled) {
-      this.weight = this.localWeight === ""? "0": this.localWeight;
-    } else {
-      if(this.weight !== "hard"){
-        this.localWeight = this.weight;
+      this.weight = this.localWeight === ""? this.weight: this.localWeight;
+      if(this.weight === "hard"){
+        this.weight = "0";
       }
-      this.weight = "hard";
+    } 
+    else {
+        if(this.weight !== "hard"){
+          this.localWeight = this.weight;
+        }
+        this.weight = "hard";
     }
     this.inputCtrl = this.updateFormControl(this.disabled);
     this.emitWeight();
