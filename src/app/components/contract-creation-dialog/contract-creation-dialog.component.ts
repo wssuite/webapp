@@ -1,7 +1,6 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { shiftsExample } from 'src/app/constants/shifts';
 import { Contract } from 'src/app/models/Contract';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
@@ -16,53 +15,70 @@ import { ErrorMessageDialogComponent } from '../error-message-dialog/error-messa
 export class ContractCreationDialogComponent implements OnInit{
 
   contractErrorState: boolean;
-  possibleShifts: string[];
-  //contractCopy: Contract;
+  possibleShifts!: string[];
+
+  possibleSkills = ["Nurse", "HeadNurse", "Physiatre"];
 
   constructor(
     public dialogRef: MatDialogRef<ContractCreationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data : {contract: Contract},
+    @Inject(MAT_DIALOG_DATA) public data : {contract: Contract, contractList: string[]},
     private service: ContractService, private api: APIService,
     private dialog: MatDialog,
   ){
     this.contractErrorState = true;
-    this.possibleShifts = shiftsExample;
     this.service.setContract(data.contract);
     //this.contractCopy = data.contract;
   }
   ngOnInit(): void {
-    this.api.getShiftNames().subscribe({
-      next: (shifts: string[])=>{
-        shifts.forEach((shift: string)=>{
-          this.possibleShifts.push(shift);
-        })
-      },
-      error: (error: HttpErrorResponse)=>{
-        this.openErrorDialog(error.error);
-      }
-    })
+    this.possibleShifts = [];
+    try{
+      this.api.getShiftNames().subscribe({
+        next: (shifts: string[])=>{
+          shifts.forEach((shift: string)=>{
+            this.possibleShifts.push(shift);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
 
-    this.api.getShiftTypeNames().subscribe({
-      next: (shifts: string[])=>{
-        shifts.forEach((shift: string)=>{
-          this.possibleShifts.push(shift);
-        })
-      },
-      error: (error: HttpErrorResponse)=>{
-        this.openErrorDialog(error.error);
-      }
-    })
+      this.api.getShiftTypeNames().subscribe({
+        next: (shifts: string[])=>{
+          shifts.forEach((shift: string)=>{
+            this.possibleShifts.push(shift);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
 
-    this.api.getShiftGroupNames().subscribe({
-      next: (shifts: string[])=>{
-        shifts.forEach((shift: string)=>{
-          this.possibleShifts.push(shift);
-        })
-      },
-      error: (error: HttpErrorResponse)=>{
-        this.openErrorDialog(error.error);
-      }
-    })
+      this.api.getShiftGroupNames().subscribe({
+        next: (shifts: string[])=>{
+          shifts.forEach((shift: string)=>{
+            this.possibleShifts.push(shift);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+
+      this.api.getAllSkills().subscribe({
+        next:(skills: string[])=>{
+          skills.forEach((skill: string)=>{
+            this.possibleSkills.push(skill);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+      
+    }catch(err){
+      //Do nothing
+    }
   }
 
   submit() {

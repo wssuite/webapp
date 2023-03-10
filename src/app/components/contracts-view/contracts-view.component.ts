@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
@@ -15,27 +16,43 @@ import { ErrorMessageDialogComponent } from '../error-message-dialog/error-messa
 export class ContractsViewComponent implements OnInit{
 
   contracts: string[];
+  connectedUser!:boolean;
+  displayedContracts: string[];
+  pageSize = 6;
 
   constructor(private dialog: MatDialog, private apiService: APIService,
     private contarctService: ContractService) {
     this.contracts = [];
+    this.displayedContracts = [];
   }
 
   ngOnInit(): void {
+    try{
       this.getContracts();
+      this.connectedUser = true;
+    }catch(err){
+      this.connectedUser = false;
+    }
   }
 
   getContracts(){
     this.apiService.getContractNames().subscribe({
-      next: (contracts: string[])=> this.contracts = contracts,
+      next: (contracts: string[])=> {
+        this.contracts = contracts;
+        this.setDisplayedContracts(0);
+      },
       error: (error: HttpErrorResponse)=> {
         this.openErrorDialog(error.error);
       }
     })
   }
+
   openContractCreationDialog(contract: Contract){
-    this.dialog.open(ContractCreationDialogComponent,
-      {data: {contract: contract},
+    const dialog = this.dialog.open(ContractCreationDialogComponent,
+      {data: {contract: contract, contractList: this.contracts},
+   })
+   dialog.afterClosed().subscribe(()=>{
+    this.getContracts()
    })
   }
 
@@ -60,5 +77,18 @@ export class ContractsViewComponent implements OnInit{
         this.openErrorDialog(error.error);
       }
     })
+  }
+  
+  handlePageEvent(e: PageEvent){
+    this.setDisplayedContracts(e.pageIndex);
+  }
+
+  setDisplayedContracts(index: number){
+    let startIndex = index * this.pageSize;
+    this.displayedContracts = [];
+    const endIndex = ((startIndex + this.pageSize) > this.contracts.length)? this.contracts.length : startIndex + this.pageSize;
+    for(startIndex; startIndex < endIndex; startIndex++){
+      this.displayedContracts.push(this.contracts[startIndex]);
+    }
   }
 }

@@ -6,7 +6,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
-import { POSITIVE_NUMBERS } from "src/app/constants/regex";
+import { WEIGHT_POSITIVE_NUMBERS } from "src/app/constants/regex";
 
 export class CustomErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -48,7 +48,7 @@ export class WeightComponent implements OnInit{
     this.localWeight = "";
     this.inputCtrl = new FormControl({ value: this.weight, disabled: false }, [
       Validators.required,
-      Validators.pattern(POSITIVE_NUMBERS),
+      Validators.pattern(WEIGHT_POSITIVE_NUMBERS),
       Validators.min(0),
     ]);
     this.matcher = new CustomErrorStateMatcher();
@@ -85,7 +85,7 @@ export class WeightComponent implements OnInit{
     }
     return new FormControl({ value: this.weight, disabled: false }, [
       Validators.required,
-      Validators.pattern(POSITIVE_NUMBERS),
+      Validators.pattern(WEIGHT_POSITIVE_NUMBERS),
       Validators.min(0),
     ]);
   }

@@ -1,0 +1,26 @@
+.constraint-container{
+    display: flex;
+    justify-content: space-between;
+    top:0%;
+    /*display: inline-flex;*/
+    margin-right: 2vw;
+}
+.skills-section{
+    display: flex;
+    flex-direction: column;
+}
+
+button{
+    margin-right: 1vw;
+    margin-left: 1vw;
+}
+
+app-weight{
+    display: flex;
+    position: relative;
+    /*align-items: flex-end;*/
+    top:0%;
+    /*display: inline-flex;*/
+    float: right;
+    margin-right: 2vw;
+}

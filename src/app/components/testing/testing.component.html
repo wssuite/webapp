@@ -74,3 +74,21 @@
 Max value is : {{ minMaxConstraint.maxValue }} and its value is:
 {{ minMaxConstraint.maxWeight }}
 </p>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+      <mat-panel-title>{{ unwantedSkillsConstraint.displayName }}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-unwanted-skills
+      [constraint]="unwantedSkillsConstraint"
+      (errorState)="updateSkillsErrorState($event)"
+      [skills]="SKILLS"
+    ></app-unwanted-skills>
+</mat-expansion-panel>
+<p>
+  The constraint has an Error: {{unWantedSkillsErrorState}}
+</p>
+<p>
+The number of skills in the constraint is : {{ unwantedSkillsConstraint.skills.length }} and the weight is:
+{{ unwantedSkillsConstraint.weight }}
+</p>
