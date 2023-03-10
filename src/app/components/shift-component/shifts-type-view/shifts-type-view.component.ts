@@ -43,6 +43,7 @@ export class ShiftsTypeViewComponent implements OnInit{
         position: {top:'5vh',left: '25%', right: '25%'},
         data: {shift_type}
       });
+      console.log("allo");
 
       dialog.afterClosed().subscribe(()=>{
         this. getShiftsType;

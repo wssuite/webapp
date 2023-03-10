@@ -58,6 +58,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { NotConnectedComponent } from './components/not-connected/not-connected.component';
 import { ShiftCreationComponent } from './components/shift-component/shift-creation/shift-creation.component';
 import { ShiftTypeCreationComponent } from './components/shift-component/shift-type-creation/shift-type-creation.component';
+import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
+import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +94,8 @@ import { ShiftTypeCreationComponent } from './components/shift-component/shift-t
     NotConnectedComponent,
     ShiftCreationComponent,
     ShiftTypeCreationComponent,
+    MinMaxConstraintComponent,
+    UnwantedSkillsComponent,
   ],
   imports: [
     BrowserModule,

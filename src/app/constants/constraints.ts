@@ -17,3 +17,14 @@ export const FREE_DAYS_AFTER_SHIFT_DISPLAY_MAME = "free days after shift";
 export const MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID = "minMaxConsecutiveShiftType";
 export const MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME =
   "minimum maximum consecutive shift type";
+export const MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID =
+  "minMaxNumberOfAssignmentsInFourWeeks";
+export const MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME =
+  "min max number of assignments in four weeks";
+export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID =
+  "minMaxConsecutiveWorkingWeekends";
+export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME =
+  "minimim maximum working weekends";
+
+export const UNWANTED_SKILLS_ID="unwantedSkills";
+export const UNWANTED_SKILLS_DISPLAY_NAME = "Unwanted skills";

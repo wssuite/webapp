@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import {
-  TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME,
-  TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_ID,
+  BASE_VALUE,
+  UNWANTED_SKILLS_DISPLAY_NAME,
+  UNWANTED_SKILLS_ID,
 } from "src/app/constants/constraints";
-import { IntegerConstraint } from "src/app/models/IntegerConstraint";
+import { UnwantedSkills } from "src/app/models/UnwantedSkills";
 
 @Component({
   selector: "app-testing",
@@ -11,12 +12,18 @@ import { IntegerConstraint } from "src/app/models/IntegerConstraint";
   styleUrls: ["./testing.component.css"],
 })
 export class TestingComponent {
-  constraint: IntegerConstraint = new IntegerConstraint(
-    TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_ID,
-    TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME
-  );
+  constraint: UnwantedSkills;
+  constraintErrorState: boolean;
+  weight = BASE_VALUE;
+  SKILLS = ["Nurse", "headNurse", "Physiatre"]
 
-  constraintErrorState = true;
+  constructor() {
+    this.constraint = new UnwantedSkills(
+      UNWANTED_SKILLS_ID,
+      UNWANTED_SKILLS_DISPLAY_NAME
+    );
+    this.constraintErrorState = true;
+  }
 
   updateConstraintErrorState(e: boolean) {
     this.constraintErrorState = e;

@@ -12,6 +12,7 @@ export class ShiftCreationComponent implements OnInit{
   @Input() shift!: ShiftInterface;
   @Output() shiftChange: EventEmitter<ShiftInterface>;
   @Output() errorState: EventEmitter<boolean>;
+  @Input() shifts!: string[]
 
 
 
@@ -19,6 +20,7 @@ export class ShiftCreationComponent implements OnInit{
   startTimeFormCtrl: FormControl;
   endTimeFormCtrl: FormControl;
   inputDisabled: boolean;
+  shiftStartName!: string;
 
 
   constructor(){
@@ -41,6 +43,7 @@ export class ShiftCreationComponent implements OnInit{
       Validators.required);
     this.endTimeFormCtrl = new FormControl({value: this.shift.name, disabled: this.inputDisabled},
         Validators.required);
+      this.shiftStartName = this.shift.name;
   }
 
   convertTime(time: string): Time{
@@ -83,9 +86,14 @@ export class ShiftCreationComponent implements OnInit{
   }
 
   emitErrorState() {
-    this.errorState.emit(this.startTimeFormCtrl.hasError('required')||this.endTimeFormCtrl.hasError('required') || this.nameShiftFormCtrl.hasError('required'));
+    this.errorState.emit(this.startTimeFormCtrl.hasError('required')||this.endTimeFormCtrl.hasError('required') || this.nameShiftFormCtrl.hasError('required') || (this.nameExist() && this.shiftStartName === '') );
     console.log("error");
   }
+
+  nameExist(): boolean {
+    return this.shifts.includes(this.shift.name);
+  }
+
 
   onClearStartTime($event: Event) {
     this.startTimeFormCtrl.setValue(null);
