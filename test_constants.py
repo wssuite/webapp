@@ -35,6 +35,7 @@ from constants import (
 )
 
 profile1 = "profile1"
+profile2 = "profile2"
 
 general_contract_dict = {
     contract_name: "General",

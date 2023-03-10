@@ -46,3 +46,13 @@ class ShiftDao(AbstractDao):
             {shift_name: shift[shift_name], profile: shift[profile]},
             {mongo_set_operation: shift},
         )
+
+    def delete_all(self, profile_name):
+        self.collection.delete_many({profile: profile_name})
+
+    def duplicate(self, profile1, profile2):
+        shifts = self.fetch_all(profile1)
+        for shift in shifts:
+            shift_object = Shift().from_json(shift)
+            shift_object.profile = profile2
+            self.collection.insert_one(shift_object.db_json())

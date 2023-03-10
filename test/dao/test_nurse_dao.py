@@ -10,7 +10,7 @@ from constants import (
     profile,
 )
 from src.exceptions.nurse_exceptions import NurseUsernameAlreadyExist
-from test_constants import profile1
+from test_constants import profile1, profile2
 
 
 def create_nurse_dao():
@@ -91,3 +91,15 @@ class TestNurseDao(TestCase):
         all_nurses_after = self.dao.fetch_all(profile1)
         self.assertEqual(1, len(all_nurses_before))
         self.assertEqual(0, len(all_nurses_after))
+
+    def test_delete_all_nurses_from_profile_deletes_items_for_specific_profile(self):
+        nurse = Nurse().from_json(self.nurse_dict)
+        self.dao.insert_one(nurse.db_json())
+        profile1_before = self.dao.fetch_all(profile1)
+        self.dao.duplicate(profile1, profile2)
+        self.dao.delete_all(profile1)
+        profile1_after = self.dao.fetch_all(profile1)
+        profile2_nurses = self.dao.fetch_all(profile2)
+        self.assertEqual(1, len(profile1_before))
+        self.assertEqual(1, len(profile2_nurses))
+        self.assertEqual(0, len(profile1_after))

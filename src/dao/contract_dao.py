@@ -72,3 +72,13 @@ class ContractDao(AbstractDao):
             }
         )
         return get_contracts_from_cursor(contracts)
+
+    def delete_all(self, profile_name):
+        self.collection.delete_many({profile: profile_name})
+
+    def duplicate(self, profile1, profile2):
+        contracts = self.fetch_all(profile1)
+        for contract in contracts:
+            contract_object = Contract().from_json(contract)
+            contract_object.profile = profile2
+            self.collection.insert_one(contract_object.db_json())

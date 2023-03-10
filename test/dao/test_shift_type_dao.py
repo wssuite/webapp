@@ -3,7 +3,7 @@ from unittest import TestCase
 from src.dao.abstract_dao import connect_to_fake_db
 from constants import shift_type_name, shift_type_shifts_lists, profile
 from src.exceptions.shift_exceptions import ShiftTypeAlreadyExistException
-from test_constants import profile1
+from test_constants import profile1, profile2
 
 
 class TestShiftTypeDao(TestCase):
@@ -61,3 +61,14 @@ class TestShiftTypeDao(TestCase):
         early_shift_types = self.dao.get_including_shifts(["Early"], profile1)
         self.assertEqual(1, len(early_shift_types))
         self.assertEqual(self.shift_type, early_shift_types[0])
+
+    def test_delete_all_shift_types_from_profile_deletes_items_for_specific_profile(self):
+        self.dao.insert_one_if_not_exist(self.shift_type.copy())
+        profile1_shift_types_before = self.dao.fetch_all(profile1)
+        self.dao.duplicate(profile1, profile2)
+        self.dao.delete_all(profile1)
+        profile1_shift_types_after = self.dao.fetch_all(profile1)
+        profile2_shift_types = self.dao.fetch_all(profile2)
+        self.assertEqual(1, len(profile1_shift_types_before))
+        self.assertEqual(1, len(profile2_shift_types))
+        self.assertEqual(0, len(profile1_shift_types_after))

@@ -70,3 +70,13 @@ class ShiftTypeDao(AbstractDao):
             {mongo_id_field: 0},
         )
         return get_shift_types_from_cursor(cursor)
+
+    def delete_all(self, profile_name):
+        self.collection.delete_many({profile: profile_name})
+
+    def duplicate(self, profile1, profile2):
+        shift_types = self.fetch_all(profile1)
+        for shift_type in shift_types:
+            shift_type_object = ShiftType().from_json(shift_type)
+            shift_type_object.profile = profile2
+            self.collection.insert_one(shift_type_object.db_json())

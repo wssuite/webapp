@@ -7,6 +7,7 @@ from test_constants import (
     full_time_not_valid_contract_with_general,
     full_time_valid_contract_with_general_update_to_invalid,
     profile1,
+    profile2
 )
 from constants import (
     contract_name,
@@ -115,3 +116,20 @@ class TestContractDao(TestCase):
             [general_contract_dict, full_time_not_valid_contract_with_general],
             early_contracts,
         )
+
+    def test_delete_all_contracts_from_profile_deletes_items_for_specific_profile(self):
+        contract1 = Contract().from_json(general_contract_dict)
+        self.dao.insert_one(contract1.db_json().copy())
+        contract2 = Contract().from_json(
+            full_time_not_valid_contract_with_general
+        )
+        self.dao.insert_one(contract2.db_json().copy())
+        contracts_profile1_before = self.dao.fetch_all(profile1)
+        self.dao.duplicate(profile1, profile2)
+        self.dao.delete_all(profile1)
+        contracts_profile1_after = self.dao.fetch_all(profile1)
+        contracts_profile2 = self.dao.fetch_all(profile2)
+        self.assertEqual(2, len(contracts_profile1_before))
+        self.assertEqual(2, len(contracts_profile2))
+        self.assertEqual(0, len(contracts_profile1_after))
+

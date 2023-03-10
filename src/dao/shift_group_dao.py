@@ -92,3 +92,13 @@ class ShiftGroupDao(AbstractDao):
         if shift_name in shift_group[shift_group_shifts_list]:
             shift_group[shift_group_shifts_list].remove(shift_name)
             self.update(dict(shift_group))
+
+    def delete_all(self, profile_name):
+        self.collection.delete_many({profile: profile_name})
+
+    def duplicate(self, profile1, profile2):
+        shift_groups = self.fetch_all(profile1)
+        for shift_group in shift_groups:
+            shift_object = ShiftGroup().from_json(shift_group)
+            shift_object.profile = profile2
+            self.collection.insert_one(shift_object.db_json())

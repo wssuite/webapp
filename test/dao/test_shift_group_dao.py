@@ -6,7 +6,7 @@ from src.exceptions.shift_exceptions import (
 from constants import shift_group_name, shift_group_shifts_list, profile
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.shift_group_dao import ShiftGroupDao
-from test_constants import profile1
+from test_constants import profile1, profile2
 
 
 class TestShiftGroupDao(TestCase):
@@ -101,3 +101,14 @@ class TestShiftGroupDao(TestCase):
         self.assertEqual(
             ["Day", "Midnight"], shift_group_after[shift_group_shifts_list]
         )
+
+    def test_delete_all_shift_groups_from_profile_deletes_items_for_specific_profile(self):
+        self.dao.insert_one_if_not_exist(self.shift_group.copy())
+        profile1_shift_groups_before = self.dao.fetch_all(profile1)
+        self.dao.duplicate(profile1, profile2)
+        self.dao.delete_all(profile1)
+        profile1_shift_groups_after = self.dao.fetch_all(profile1)
+        profile2_shift_groups = self.dao.fetch_all(profile2)
+        self.assertEqual(1, len(profile1_shift_groups_before))
+        self.assertEqual(1, len(profile2_shift_groups))
+        self.assertEqual(0, len(profile1_shift_groups_after))

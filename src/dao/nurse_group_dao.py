@@ -81,3 +81,13 @@ class NurseGroupDao(AbstractDao):
         self.collection.find_one_and_delete(
             {nurse_group_name: name, profile: profile_name}
         )
+
+    def delete_all(self, profile_name):
+        self.collection.delete_many({profile: profile_name})
+
+    def duplicate(self, profile1, profile2):
+        nurse_groups = self.fetch_all(profile1)
+        for nurse_group in nurse_groups:
+            nurse_group_object = NurseGroup().from_json(nurse_group)
+            nurse_group_object.profile = profile2
+            self.collection.insert_one(nurse_group_object.db_json())

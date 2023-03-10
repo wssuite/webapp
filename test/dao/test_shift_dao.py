@@ -3,7 +3,7 @@ from unittest import TestCase
 from src.dao.abstract_dao import connect_to_fake_db
 from constants import shift_name, shift_start_time, shift_end_time, profile
 from src.exceptions.shift_exceptions import ShiftAlreadyExistException
-from test_constants import profile1
+from test_constants import profile1, profile2
 
 
 class TestShiftDao(TestCase):
@@ -53,3 +53,14 @@ class TestShiftDao(TestCase):
             self.shift[shift_name], self.shift[profile]
         )
         self.assertEqual(self.shift_update, shift)
+
+    def test_delete_all_shifts_from_profile_deletes_items_for_specific_profile(self):
+        self.dao.insert_one_if_not_exist(self.shift.copy())
+        profile1_shifts_before = self.dao.fetch_all(profile1)
+        self.dao.duplicate(profile1, profile2)
+        self.dao.delete_all(profile1)
+        profile1_shifts_after = self.dao.fetch_all(profile1)
+        profile2_shifts = self.dao.fetch_all(profile2)
+        self.assertEqual(1, len(profile1_shifts_before))
+        self.assertEqual(1, len(profile2_shifts))
+        self.assertEqual(0, len(profile1_shifts_after))

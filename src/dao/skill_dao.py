@@ -34,3 +34,13 @@ class SkillDao(AbstractDao):
             skills.append(skill.to_json())
 
         return skills
+
+    def delete_all(self, profile_name):
+        self.collection.delete_many({profile: profile_name})
+
+    def duplicate(self, profile1, profile2):
+        skills = self.get_all(profile1)
+        for skill in skills:
+            skill_object = Skill().from_json(skill)
+            skill_object.profile = profile2
+            self.collection.insert_one(skill_object.db_json())
