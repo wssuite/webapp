@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { SHIFT } from "src/app/constants/app-routes";

@@ -62,7 +62,7 @@ export class ShiftCreationComponent implements OnInit{
       return;
     }
     let endHours = 0;
-    let startTime = this.convertTime(this.shift.startTime)
+    const startTime = this.convertTime(this.shift.startTime)
     endHours = startTime.hours+8;
     if(endHours > 24){
       endHours = endHours - 24

@@ -2,9 +2,10 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { shiftsExample } from 'src/app/constants/shifts';
-import { ShiftInterface, ShiftTypeInterface } from 'src/app/models/Shift';
+import { ShiftTypeInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { Exception } from 'src/app/utils/Exception';
+import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
 @Component({
   selector: 'app-shift-type-creation-dialog',
@@ -25,6 +26,7 @@ export class ShiftTypeCreationDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ShiftTypeCreationDialogComponent >,
     @Inject(MAT_DIALOG_DATA) public data: ShiftTypeInterface,
     private api: APIService,
+    private dialog: MatDialog,  
 ) {
     this.possibleShifts = [];
     this.selectedShift = this.possibleShifts[0];
@@ -41,7 +43,7 @@ export class ShiftTypeCreationDialogComponent implements OnInit {
           })
         },
         error: (error: HttpErrorResponse)=>{
-          //this.openErrorDialog(error.error);
+          this.openErrorDialog(error.error);
         }
       })
     }catch(err){
@@ -86,23 +88,23 @@ add() {
           this.close();
         }
         else{
-          //this.openErrorDialog(err.error)
+          this.openErrorDialog(err.error)
         }
       } 
     })
   }
   catch(e){
     console.log("error")
-    //this.openErrorDialog((e as Exception).getMessage())
+    this.openErrorDialog((e as Exception).getMessage())
   }
 }
 
 
-/*openErrorDialog(message: string) {
+openErrorDialog(message: string) {
   this.dialog.open(ErrorMessageDialogComponent, {
     data: {message: message},
   })
-}*/
+}
 
 close(){
   this.dialogRef.close();

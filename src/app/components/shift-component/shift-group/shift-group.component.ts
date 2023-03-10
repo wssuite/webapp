@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { shiftGroupExample } from 'src/app/constants/shifts';
-import { ShiftGroupInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { Exception } from 'src/app/utils/Exception';
+import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/create-shift-group-dialog.component';
 
 @Component({
@@ -35,16 +35,16 @@ export class ShiftGroupComponent implements OnInit{
         this.shiftsGroup = shiftsGroup;
       },
       error: (error: HttpErrorResponse)=> {
-        //this.openErrorDialog(error.error);
+        this.openErrorDialog(error.error);
       }
     })
   }
 
-  /*openErrorDialog(message: string) {
+  openErrorDialog(message: string) {
     this.dialog.open(ErrorMessageDialogComponent, {
       data: {message: message},
     })
-  }*/
+  }
   openShiftGroupDialog() {
     const dialog = this.dialog.open(CreateShiftGroupDialogComponent,  
       { disableClose: true,  
@@ -71,13 +71,13 @@ export class ShiftGroupComponent implements OnInit{
       console.log(shiftGroup_name);
       this.apiService.removeShiftGroup(shiftGroup_name).subscribe({
         error: (err: HttpErrorResponse)=> {
-            //this.openErrorDialog(err.error)
+            this.openErrorDialog(err.error)
           }
         })
       }
       catch(e){
       console.log("error")
-      //this.openErrorDialog((e as Exception).getMessage())
+      this.openErrorDialog((e as Exception).getMessage())
       }
   }
 

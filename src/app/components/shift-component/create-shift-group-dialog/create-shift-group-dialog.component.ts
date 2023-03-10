@@ -2,11 +2,10 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { shiftsExample, shiftsTypeExample } from 'src/app/constants/shifts';
-import { ShiftInterface, ShiftGroupInterface, ShiftTypeInterface } from 'src/app/models/Shift';
+import { ShiftGroupInterface} from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
-import { ShiftTypeCreationDialogComponent } from '../shift-type-creation-dialog/shift-type-creation-dialog.component';
+
 
 @Component({
   selector: 'app-create-shift-group-dialog',

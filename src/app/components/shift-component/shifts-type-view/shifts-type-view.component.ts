@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { shiftsTypeExample } from 'src/app/constants/shifts';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ShiftTypeCreationDialogComponent } from '../shift-type-creation-dialog/shift-type-creation-dialog.component';
 
@@ -73,13 +73,13 @@ export class ShiftsTypeViewComponent implements OnInit{
       console.log(shiftType_name);
       this.apiService.removeShiftType(shiftType_name).subscribe({
         error: (err: HttpErrorResponse)=> {
-            //this.openErrorDialog(err.error)
+            this.openErrorDialog(err.error)
           }
       })
     }
     catch(e){
       console.log("error")
-      //this.openErrorDialog((e as Exception).getMessage())
+      this.openErrorDialog((e as Exception).getMessage())
     }
   }
 
