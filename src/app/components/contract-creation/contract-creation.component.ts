@@ -38,6 +38,7 @@ export class ContractCreationComponent implements OnInit{
   minMaxNbAssignmentsId: string;
   inputDisabled: boolean;
   unwantedSkillsId: string;
+  contractStartName!: string;
 
 
   constructor() {
@@ -64,6 +65,7 @@ export class ContractCreationComponent implements OnInit{
     this.inputDisabled = this.contract.name === ""? false: true;
     this.nameFormCtrl = new FormControl({value: this.contract.name, disabled: this.inputDisabled},
       Validators.required);
+    this.contractStartName = this.contract.name;
   }
   
   addConstraint(name: string) {
@@ -133,7 +135,7 @@ export class ContractCreationComponent implements OnInit{
 
   emitErrorState() {
     this.errorState.emit(this.nameFormCtrl.hasError('required') ||
-                this.constraintsErrorState.includes(true) || this.nameExist());
+                this.constraintsErrorState.includes(true) || (this.nameExist() && this.contractStartName === ''));
   }
 
   nameExist(): boolean {

@@ -6,7 +6,7 @@
             <input matInput [(ngModel)]="contract.name"
             [formControl]="nameFormCtrl"/>
         </mat-form-field>
-        <mat-error *ngIf="this.nameExist()">
+        <mat-error *ngIf="nameExist() && contractStartName ===''">
             Name is already used
         </mat-error>
     </div>
