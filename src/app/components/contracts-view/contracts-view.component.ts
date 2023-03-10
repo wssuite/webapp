@@ -51,7 +51,7 @@ export class ContractsViewComponent implements OnInit{
   }
 
   openContractCreationDialog(contract: Contract){
-    this.indexBefore = this.page.pageIndex;
+    this.indexBefore = this.page === undefined? 0: this.page.pageIndex;
     const dialog = this.dialog.open(ContractCreationDialogComponent,
       {data: {contract: contract, contractList: this.contracts},
    })

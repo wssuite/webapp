@@ -134,6 +134,7 @@ export class ContractCreationComponent implements OnInit{
   }
 
   emitErrorState() {
+    console.log(this.constraintsErrorState);
     this.errorState.emit(this.nameFormCtrl.hasError('required') ||
                 this.constraintsErrorState.includes(true) || (this.nameExist() && this.contractStartName === ''));
   }

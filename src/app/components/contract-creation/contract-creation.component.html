@@ -12,7 +12,7 @@
     </div>
     <div class="constraints-section">
         <h1>Constraints</h1>
-        <div class="constraints-container">
+        <div class="constraints-container" (mouseleave)="emitContract()">
             <div *ngFor="let constraint of contract.constraints; let i= index" class="constraint-container">
                 <mat-expansion-panel [expanded]="i === contract.constraints.length -1">
                     <mat-expansion-panel-header>
