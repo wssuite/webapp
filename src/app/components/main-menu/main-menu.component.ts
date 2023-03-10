@@ -1,11 +1,9 @@
 import { MatDialog } from "@angular/material/dialog";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { SCHEDULE_GENERATION } from "src/app/constants/app-routes";
+import { CONTRACTS, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
-import { Contract } from "src/app/models/Contract";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
-import { ContractCreationDialogComponent } from "../contract-creation-dialog/contract-creation-dialog.component";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 
 @Component({
@@ -13,7 +11,7 @@ import { CacheUtils } from "src/app/utils/CacheUtils";
   templateUrl: "./main-menu.component.html",
   styleUrls: ["./main-menu.component.css"],
 })
-export class MainMenuComponent implements OnInit, OnDestroy{
+export class MainMenuComponent implements OnInit{
   buttons: MainMenuButton[];
   isAdminUser!: boolean;
   connectedUser!: boolean;
@@ -32,10 +30,6 @@ export class MainMenuComponent implements OnInit, OnDestroy{
     }
   }
 
-  ngOnDestroy(): void {
-      CacheUtils.emptyCache();
-  }
-
   getAlignmentDirection(button:MainMenuButton ,index: number): string {
     if(button.title === "User"){
       return "center";
@@ -50,9 +44,7 @@ export class MainMenuComponent implements OnInit, OnDestroy{
         break;
 
       case "Contracts":
-        this.dialog.open(ContractCreationDialogComponent,
-           {data: {contract: new Contract()},
-        })
+        this.router.navigate(["/" + CONTRACTS]);
         break;
 
       default:

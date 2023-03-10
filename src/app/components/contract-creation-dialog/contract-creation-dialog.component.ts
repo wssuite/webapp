@@ -21,7 +21,7 @@ export class ContractCreationDialogComponent implements OnInit{
 
   constructor(
     public dialogRef: MatDialogRef<ContractCreationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data : {contract: Contract},
+    @Inject(MAT_DIALOG_DATA) public data : {contract: Contract, contractList: string[]},
     private service: ContractService, private api: APIService,
     private dialog: MatDialog,
   ){
@@ -29,6 +29,7 @@ export class ContractCreationDialogComponent implements OnInit{
     this.service.setContract(data.contract);
   }
   ngOnInit(): void {
+    this.possibleShifts = [];
     try{
       this.api.getShiftNames().subscribe({
         next: (shifts: string[])=>{
@@ -62,6 +63,18 @@ export class ContractCreationDialogComponent implements OnInit{
           this.openErrorDialog(error.error);
         }
       })
+
+      this.api.getAllSkills().subscribe({
+        next:(skills: string[])=>{
+          skills.forEach((skill: string)=>{
+            this.possibleSkills.push(skill);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+      
     }catch(err){
       //Do nothing
     }

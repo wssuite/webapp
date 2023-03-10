@@ -20,6 +20,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
@@ -42,6 +43,7 @@ import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutiv
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
 import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
+import { ContractsViewComponent } from './components/contracts-view/contracts-view.component';
 import { LoginComponent } from './components/login/login.component';
 import { AccountCreationComponent } from './components/account-creation/account-creation.component';
 import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
@@ -70,6 +72,7 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     BooleanConstraintComponent,
     ContractCreationDialogComponent,
     MinMaxConstraintComponent,
+    ContractsViewComponent,
     LoginComponent,
     AccountCreationComponent,
     AccountCreationDialogComponent,
@@ -99,7 +102,8 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     MatExpansionModule,
     MatTooltipModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

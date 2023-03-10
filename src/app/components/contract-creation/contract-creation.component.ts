@@ -22,6 +22,7 @@ export class ContractCreationComponent {
   @Output() errorState: EventEmitter<boolean>;
   @Input() possibleShifts!: string[];
   @Input() possibleSkills!: string[];
+  @Input() contracts!: string[]
 
   possibleConstraints: string[];
   constraintsErrorState: boolean[];
@@ -124,6 +125,10 @@ export class ContractCreationComponent {
 
   emitErrorState() {
     this.errorState.emit(this.nameFormCtrl.hasError('required') ||
-                this.constraintsErrorState.includes(true));
+                this.constraintsErrorState.includes(true) || this.nameExist());
+  }
+
+  nameExist(): boolean {
+    return this.contracts.includes(this.contract.name);
   }
 }
