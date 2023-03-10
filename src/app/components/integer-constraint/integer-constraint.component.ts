@@ -11,7 +11,6 @@ export class IntegerConstraintComponent implements OnInit{
   @Input() constraint!: IntegerConstraint;
   @Output() constraintChange: EventEmitter<IntegerConstraint>;
   @Output() errorState: EventEmitter<boolean>;
-  constraintCopy!: IntegerConstraint;
 
   weightErrorState: boolean;
   valueErrorState: boolean;
@@ -31,7 +30,6 @@ export class IntegerConstraintComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.constraintCopy = this.constraint.clone();
     this.weightErrorState = this.constraint.weight === BASE_VALUE;
   }
 
@@ -41,8 +39,7 @@ export class IntegerConstraintComponent implements OnInit{
   }
 
   emitErrorState() {
-    this.errorState.emit(this.weightErrorState || this.valueErrorState
-      || this.constraint.equals(this.constraintCopy));
+    this.errorState.emit(this.weightErrorState || this.valueErrorState);
   }
 
   updateWeightErrorState(e: boolean) {

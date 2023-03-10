@@ -13,7 +13,6 @@ export class UnwantedSkillsComponent implements OnInit{
   @Input() constraint!: UnwantedSkills;
   @Input() skills!: string[];
   skillsFormCtrl: FormControl[];
-  constraintCopy!: UnwantedSkills;
 
   @Output() errorState: EventEmitter<boolean>;
   @Output() constraintChange: EventEmitter<UnwantedSkills>;
@@ -35,7 +34,6 @@ export class UnwantedSkillsComponent implements OnInit{
       this.skillsFormCtrl.push(newFormControl);
     }
     this.weightError = this.constraint.weight === BASE_VALUE;
-    this.constraintCopy = this.constraint.clone();
   }
 
   createFormControl(): FormControl {
@@ -60,7 +58,7 @@ export class UnwantedSkillsComponent implements OnInit{
         break;
       }
     }
-    this.errorState.emit(skillsError || this.weightError || this.constraint.equals(this.constraintCopy));
+    this.errorState.emit(skillsError || this.weightError);
   }
   
   addSkill() {

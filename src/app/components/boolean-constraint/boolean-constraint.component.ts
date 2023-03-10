@@ -11,7 +11,6 @@ export class BooleanConstraintComponent implements OnInit{
   @Input() constraint!: BooleanConstraint;
   @Output() constraintChange: EventEmitter<BooleanConstraint>;
   @Output() errorState: EventEmitter<boolean>;
-  constraintCopy!: BooleanConstraint;
 
   weightErrorState: boolean;
   weightLabel: string;
@@ -25,7 +24,6 @@ export class BooleanConstraintComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.constraintCopy = this.constraint.clone();
     this.weightErrorState = this.constraint.weight === BASE_VALUE;  
   }
 
@@ -35,7 +33,7 @@ export class BooleanConstraintComponent implements OnInit{
   }
 
   emitErrorState() {
-    this.errorState.emit(this.weightErrorState || this.constraint.equals(this.constraintCopy));
+    this.errorState.emit(this.weightErrorState);
   }
 
   updateWeightErrorState(e: boolean) {

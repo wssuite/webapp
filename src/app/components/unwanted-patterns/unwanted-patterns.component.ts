@@ -16,7 +16,6 @@ export class UnwantedPatternsComponent implements OnInit {
   @Output() errorState: EventEmitter<boolean>;
   weightErrorState: boolean;
   weightLabel: string;
-  constraintCopy!: UnwantedPatterns;
 
   @Input() possibleShifts!: string[];
 
@@ -38,7 +37,6 @@ export class UnwantedPatternsComponent implements OnInit {
       }
     }
     this.weightErrorState = this.constraint.weight === BASE_VALUE;
-    this.constraintCopy = this.constraint.clone();
   }
 
   addPattern() {
@@ -73,7 +71,7 @@ export class UnwantedPatternsComponent implements OnInit {
     if(this.patternErrors.indexOf(true) > -1 || this.weightErrorState === true) {
       errorState = true;
     }
-    this.errorState.emit(errorState || this.constraint.equals(this.constraintCopy));
+    this.errorState.emit(errorState);
   }
   
   updateWeightErrorState(e:boolean) {

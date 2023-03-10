@@ -11,7 +11,6 @@ export class MinMaxConstraintComponent implements OnInit{
   @Input() constraint!: MinMaxConstraint;
   @Output() constraintChange: EventEmitter<MinMaxConstraint>;
   @Output() errorState: EventEmitter<boolean>;
-  constraintCopy!: MinMaxConstraint;
 
   minValueErrorState: boolean;
   maxValueErrorState: boolean;
@@ -36,7 +35,6 @@ export class MinMaxConstraintComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.constraintCopy = this.constraint.clone();
     this.minValueErrorState = this.constraint.minValue === '';
     this.maxValueErrorState = this.constraint.maxValue === '';
     this.maxWeightErrorState = this.constraint.maxWeight === BASE_VALUE;
@@ -53,8 +51,7 @@ export class MinMaxConstraintComponent implements OnInit{
       this.minWeightErrorState ||
         this.maxWeightErrorState ||
         this.minValueErrorState ||
-        this.maxValueErrorState ||
-        this.constraint.equals(this.constraintCopy)
+        this.maxValueErrorState
     );
   }
 

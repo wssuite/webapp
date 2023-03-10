@@ -18,9 +18,6 @@ export class AlternativeShiftComponent implements OnInit{
   shiftSelectorCtrl: FormControl;
   weightLabel: string;
 
-  constraintCopy!: AlternativeShift;
-
-
   constructor(){
     this.constraintChange = new EventEmitter();
     this.errorState = new EventEmitter();
@@ -32,7 +29,6 @@ export class AlternativeShiftComponent implements OnInit{
 
   ngOnInit(): void {
     this.shiftSelectorCtrl.setValue(this.constraint.shiftId);
-    this.constraintCopy = this.constraint.clone();
     this.weightErrorState = this.constraint.weight === BASE_VALUE;    
   }
 
@@ -42,8 +38,7 @@ export class AlternativeShiftComponent implements OnInit{
   }
 
   emitErrorState() {
-    this.errorState.emit(this.shiftSelectorCtrl.hasError('required') || this.weightErrorState
-      || this.constraint.equals(this.constraintCopy));
+    this.errorState.emit(this.shiftSelectorCtrl.hasError('required') || this.weightErrorState);
   }
 
   updateWeightErrorState(e: boolean) {
