@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -95,5 +95,18 @@ export class ContractsViewComponent implements OnInit{
     for(startIndex; startIndex < endIndex; startIndex++){
       this.displayedContracts.push(this.contracts[startIndex]);
     }
+  }
+
+  deleteContract(contract:string){
+    this.apiService.deleteContract(contract).subscribe({
+      error:(error: HttpErrorResponse)=>{
+        if(error.status === HttpStatusCode.Ok){
+          this.getContracts();
+        }
+        else {
+          this.openErrorDialog(error.error);
+        }
+      }
+    })
   }
 }

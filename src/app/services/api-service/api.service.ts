@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
   ADD_CONTRACT_URL,
+  DELETE_CONTRACT,
   FETCH_CONTRACT_BY_NAME,
   FETCH_CONTRACT_NAMES,
   FETCH_SHIFT_GROUP_NAMES,
@@ -149,6 +150,19 @@ export class APIService {
         params: queryParams,
       });
     }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  deleteContract(contract:string):Observable<HttpResponse<string>> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("name", contract);
+      return this.httpClient.delete<HttpResponse<string>>(DELETE_CONTRACT,{
+        params: queryParams,
+      });
+    } catch(err){
       throw new Exception("user not logged in");
     }
   }
