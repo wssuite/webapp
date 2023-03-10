@@ -24,4 +24,5 @@ export const MAIN_MENU_BUTTONS: MainMenuButton[] = [
     description: "View and modify the  available Shift or create a new shift.",
     icon: ASSETS_FOLDER_LOCATION + "/time.png",
   },
+
 ];

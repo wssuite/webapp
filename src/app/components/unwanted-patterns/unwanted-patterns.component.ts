@@ -33,10 +33,7 @@ export class UnwantedPatternsComponent implements OnInit {
   }
 
   addPattern() {
-    const newPattern: PatternElement = {
-      dayName:'',
-      shiftId:'',
-    };
+    const newPattern: PatternElement = new PatternElement();
     this.constraint.patternElements.push(newPattern);
     this.patternErrors.push(true);
     this.emitConstraint();

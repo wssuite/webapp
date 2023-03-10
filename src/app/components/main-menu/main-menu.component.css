@@ -20,6 +20,16 @@ img {
   height: 6vw;
 }
 
+.start-buttons {
+  align-items: flex-start;
+  float: left;
+}
+
+.end-buttons {
+  align-items: flex-end;
+  float: left;
+}
+
 h1{
   font-weight: bolder;
 }
