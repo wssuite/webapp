@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { BASE_VALUE } from "src/app/constants/constraints";
 import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 
 @Component({
@@ -30,7 +31,8 @@ export class IntegerConstraintComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.constraintCopy = this.constraint.clone();    
+    this.constraintCopy = this.constraint.clone();
+    this.weightErrorState = this.constraint.weight === BASE_VALUE;
   }
 
   emitConstraint() {

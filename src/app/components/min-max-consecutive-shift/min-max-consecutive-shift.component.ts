@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { BASE_VALUE } from 'src/app/constants/constraints';
 import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
 
 @Component({
@@ -37,6 +38,10 @@ export class MinMaxConsecutiveShiftComponent implements OnInit{
   ngOnInit(): void {
       this.selectFormCtrl.setValue(this.constraint.shiftId);
       this.constraintCopy = this.constraint.clone();
+      this.minValueErrorState = this.constraint.minValue === '';
+      this.maxValueErrorState = this.constraint.maxValue === '';
+      this.maxWeightErrorState = this.constraint.maxWeight === BASE_VALUE;
+      this.minWeightErrorState = this.constraint.minWeight === BASE_VALUE;
   }
 
   emitErrorState(){

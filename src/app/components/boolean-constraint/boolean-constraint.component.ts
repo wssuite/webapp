@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { WEIGHT_LABEL } from "src/app/constants/constraints";
+import { BASE_VALUE, WEIGHT_LABEL } from "src/app/constants/constraints";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 
 @Component({
@@ -25,7 +25,8 @@ export class BooleanConstraintComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.constraintCopy = this.constraint.clone()    
+    this.constraintCopy = this.constraint.clone();
+    this.weightErrorState = this.constraint.weight === BASE_VALUE;  
   }
 
   emitConstraint() {

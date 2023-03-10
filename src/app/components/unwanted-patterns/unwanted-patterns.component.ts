@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { BASE_VALUE } from 'src/app/constants/constraints';
 import { PatternElement } from 'src/app/models/PatternElement';
 import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
 
@@ -36,6 +37,7 @@ export class UnwantedPatternsComponent implements OnInit {
         this.patternErrors.push(false);
       }
     }
+    this.weightErrorState = this.constraint.weight === BASE_VALUE;
     this.constraintCopy = this.constraint.clone();
   }
 

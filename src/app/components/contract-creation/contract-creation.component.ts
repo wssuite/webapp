@@ -66,6 +66,9 @@ export class ContractCreationComponent implements OnInit{
     this.nameFormCtrl = new FormControl({value: this.contract.name, disabled: this.inputDisabled},
       Validators.required);
     this.contractStartName = this.contract.name;
+    for(let i = 0; i< this.contract.constraints.length; i++){
+      this.constraintsErrorState.push(true)
+    }
   }
   
   addConstraint(name: string) {
@@ -124,7 +127,8 @@ export class ContractCreationComponent implements OnInit{
   }
 
   removeConstraint(index: number) {
-    this.contract.constraints.splice(index);
+    this.contract.constraints.splice(index,1);
+    this.constraintsErrorState.splice(index,1);
     this.emitContract()
   }
 
