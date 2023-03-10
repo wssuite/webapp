@@ -104,3 +104,5 @@ rest_shift_group = {
     shift_group_name: rest,
     shift_group_shifts_list: [],
 }
+
+duplicate_name = "other_profile_name"

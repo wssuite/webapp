@@ -1,6 +1,12 @@
 from src.handlers.base_handler import BaseHandler
 from src.models.profile import Profile
-from constants import user_username
+from constants import (
+    user_username,
+    work_shift_group,
+    profile,
+    rest_shift_group
+)
+from src.models.shift_group import ShiftGroup
 
 
 class ProfileHandler(BaseHandler):
@@ -9,11 +15,19 @@ class ProfileHandler(BaseHandler):
 
     def create_profile(self, token, profile_name):
         user = self.verify_token(token)
-        profile = Profile()
-        profile.name = profile_name
-        profile.creator = user[user_username]
-        profile.access = [user[user_username]]
-        self.profile_dao.insert_if_not_exist(profile.db_json())
+        profile_object = Profile()
+        profile_object.name = profile_name
+        profile_object.creator = user[user_username]
+        profile_object.access = [user[user_username]]
+        self.profile_dao.insert_if_not_exist(profile_object.db_json())
+        w_group_dict = work_shift_group.copy()
+        w_group_dict[profile] = profile_name
+        w_group = ShiftGroup().from_json(w_group_dict)
+        self.shift_group_dao.insert_one_if_not_exist(w_group.db_json())
+        r_group_dict = rest_shift_group.copy()
+        r_group_dict[profile] = profile_name
+        r_group = ShiftGroup().from_json(r_group_dict)
+        self.shift_group_dao.insert_one_if_not_exist(r_group.db_json())
 
     def get_all_profiles(self, token):
         user = self.verify_token(token)
