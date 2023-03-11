@@ -61,6 +61,7 @@ export class HeaderComponent implements OnInit{
 
   openCreateProfileDialog() {
     const dialog = this.dialog.open(CreateProfileDialogComponent,{
+      data: {profiles: this.profiles},
       disableClose: true,  
       height: '65%',
       width: '55%', 
@@ -106,6 +107,7 @@ export class HeaderComponent implements OnInit{
 
   duplicate() {
     const dialog = this.dialog.open(DuplicateProfileComponent,{
+      data: {profiles: this.profiles},
       disableClose: true,  
       height: '65%',
       width: '55%', 

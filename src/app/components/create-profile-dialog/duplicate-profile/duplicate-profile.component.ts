@@ -1,7 +1,8 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BaseProfile } from 'src/app/models/Profile';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
@@ -15,14 +16,20 @@ export class DuplicateProfileComponent {
   name: string;
   nameCtrl: FormControl;
 
+  profileNames: string[];
+
   constructor(public dialogRef: MatDialogRef<DuplicateProfileComponent>, private api: APIService,
-    private dialog: MatDialog){
+    private dialog: MatDialog, @Inject(MAT_DIALOG_DATA)public data:{profiles:BaseProfile[]}){
     this.name = '';
     this.nameCtrl = new FormControl(null, Validators.required);
+    this.profileNames = [];
+    data.profiles.forEach((p:BaseProfile)=>{
+      this.profileNames.push(p.profile);
+    })
   }
   
   nameExist(): boolean{
-    return false;
+    return this.profileNames.includes(this.name);
   }
 
   create(){
