@@ -7,3 +7,4 @@ export const SHIFT_TYPE = "shift-type"
 export const SHIFT_GROUP = "shift-group"
 export const CREATE_ACCOUNT = "create-account"
 export const TESTING = "testing";
+export const CONTRACTS="contracts";

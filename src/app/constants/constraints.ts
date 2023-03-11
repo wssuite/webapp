@@ -5,11 +5,11 @@ export const TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID = "TotalWeekendsInFourWeeks";
 export const TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME =
   "Minimum and Maximum Number of Weekends in Four Weeks";
 export const ALTERNATIVE_SHIFT_ID="AlternativeShift";
-export const ALTERNATIVE_SHIFT_DISPLAY_NAME="Alternative shift"
+export const ALTERNATIVE_SHIFT_DISPLAY_NAME="Unwanted shift"
 export const FREE_DAYS_AFTER_SHIFT_ID = "NumberOfFreeDaysAfterShift";
 export const FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME = "Number of free days after shift";
 export const MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID = "MinMaxConsecutiveShiftType";
-export const MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME = "Minimum and Maximum of consecutive shift type";
+export const MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME = "Minimum and Maximum of consecutive type";
 export const IDENTICAL_WEEKEND_ID = "IdentShiftTypesDuringWeekend";
 export const IDENTICAL_WEEKEND_DISPLAY_NAME = "Identical shift types during Weekend";
 export const COMPLETE_WEEKEND_ID = "CompleteWeekends";

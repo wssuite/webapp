@@ -12,6 +12,7 @@ import {
   FETCH_SHIFT_TYPE_BY_NAMES,
   ADD_CONTRACT_URL,
   FETCH_SHIFT_TYPE_NAMES,
+  FETCH_SKILLS,
   LOGIN_URL,
   LOGOUT_URL,
   PROTOTYPE_SCHEDULE_URL,
@@ -22,6 +23,7 @@ import {
   UPDATE_SHIFT_URL,
   UPDATE_SHIFT_TYPE_URL,
   UPDATE_SHIFT_GROUP_URL,
+  FETCH_CONTRACT_NAMES,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { ContractInterface } from "src/app/models/Contract";
@@ -251,4 +253,27 @@ export class APIService {
   }
 
 
+  getContractNames():Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_CONTRACT_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  getAllSkills(): Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_SKILLS, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
 }
