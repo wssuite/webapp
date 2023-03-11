@@ -55,9 +55,20 @@ export class AccountCreationDialogComponent {
     }
   }
 
+  confirmPassword(): boolean {
+    return this.password !== this.passwordConfirmation;
+  }
+
   hasError():boolean{
-    this.disabled = this.password !== this.passwordConfirmation;
+    this.disabled = this.confirmPassword();
     return this.passwordControlForm.hasError('required') || this.usernameControlForm.hasError('required') || this.passwordConfirmationControlForm.hasError('required') || this.disabled;
+  }
+
+  getErrorMessage() {
+    if(this.passwordConfirmation === ""){
+      return "";
+    }
+      return 'Please make sure yours password match.';
   }
 
   openErrorDialog(message: string) {

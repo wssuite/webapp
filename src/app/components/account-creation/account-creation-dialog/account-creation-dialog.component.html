@@ -43,6 +43,7 @@
             [(ngModel)]="passwordConfirmation"
         />
         </mat-form-field>
+        <mat-error *ngIf="confirmPassword()">{{getErrorMessage()}}</mat-error>
     </div>
 </div>
 <div mat-dialog-action class="buttons-container">
