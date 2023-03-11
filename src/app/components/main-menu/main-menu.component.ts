@@ -1,6 +1,6 @@
-import { CONTRACTS, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
-import { MatDialog } from "@angular/material/dialog";
+import { CONTRACTS, SCHEDULE_GENERATION, SHIFT } from "src/app/constants/app-routes";
 import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
@@ -30,6 +30,7 @@ export class MainMenuComponent implements OnInit{
     }
   }
 
+
   getAlignmentDirection(button:MainMenuButton ,index: number): string {
     if(button.title === "User"){
       return "center";
@@ -42,6 +43,10 @@ export class MainMenuComponent implements OnInit{
       case "Schedule":
         this.router.navigate(["/" + SCHEDULE_GENERATION]);
         break;
+      case "Shift":
+        this.router.navigate(["/" + SHIFT]);
+        break;
+
       case "Contracts":
         this.router.navigate(["/" + CONTRACTS]);
         break;

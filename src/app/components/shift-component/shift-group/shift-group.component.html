@@ -1,0 +1,29 @@
+<div class="shiftGroup">
+    <div class ="shiftGroupCard">
+      <mat-card *ngFor="let shiftGroup of shiftsGroup">
+        <mat-card-header>
+          <mat-card-title> {{ shiftGroup}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-actions align="end">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>edit</mat-icon>
+                <span>Modify shift group</span>
+              </button>
+              <button mat-menu-item (click)="deleteShiftGroup(shiftGroup)">
+                <mat-icon>delete</mat-icon>
+                <span>Detele shift group</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>cloud_upload</mat-icon>
+                <span>Export shift group</span>
+              </button>
+            </mat-menu>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+<app-sidenav-shift></app-sidenav-shift>
+<button mat-raised-button class="buttonCreate" color="primary"  (click)="openShiftGroupDialog()">Create new shift group</button>

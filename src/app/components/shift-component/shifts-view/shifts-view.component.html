@@ -1,0 +1,34 @@
+<div *ngIf="connectedUser; else elseBlock">
+  <app-header></app-header>
+  <div class="shift">
+    <div class ="shiftCard" >
+      <mat-card *ngFor="let shift of shifts">
+      <mat-card-header>
+        <mat-card-title> {{ shift }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-actions align="end">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="modifyShift(shift)">
+              <mat-icon>edit</mat-icon>
+              <span>Modify shift</span>
+            </button>
+            <button mat-menu-item (click)="deleteShift(shift)">
+              <mat-icon>delete</mat-icon>
+              <span>Detele shift</span>
+            </button>
+          </mat-menu>
+      </mat-card-actions>
+    </mat-card>
+    </div>
+  <app-sidenav-shift></app-sidenav-shift>
+  <button class="buttonCreate" mat-raised-button color="primary"  (click)="createNewShift()">Create new shift</button>
+  </div>
+</div>
+<ng-template #elseBlock>
+  <app-not-connected></app-not-connected>
+</ng-template>
+
+
