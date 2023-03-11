@@ -1,7 +1,7 @@
+import { CREATE_ACCOUNT, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MatDialog } from "@angular/material/dialog";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { CONTRACTS, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
 import { CacheUtils } from "src/app/utils/CacheUtils";
@@ -42,11 +42,9 @@ export class MainMenuComponent implements OnInit{
       case "Schedule":
         this.router.navigate(["/" + SCHEDULE_GENERATION]);
         break;
-
-      case "Contracts":
-        this.router.navigate(["/" + CONTRACTS]);
+      case "User":
+        this.router.navigate(["/" + CREATE_ACCOUNT]);
         break;
-
       default:
         break;
     }
