@@ -1,17 +1,28 @@
-<div (mouseleave)="emitWeight()">
-    <label> weight: </label>
-    <mat-form-field appearance="fill">
-        <mat-label>Enter the weight</mat-label>
-        <input matInput [(ngModel)]="weight" [errorStateMatcher]="matcher" [formControl]="inputCtrl">    
-        <mat-error
-            *ngIf="
-            inputCtrl.hasError('pattern') ||
-            inputCtrl.hasError('required') ||
-            inputCtrl.hasError('min')
-            "
-            >
-            Please enter a valid postive number!
-        </mat-error>
-    </mat-form-field>
-    <mat-checkbox (change)="update()">Impose constraint</mat-checkbox>
+<div class="weight-container">
+  <label> {{ label }} (soft): </label>
+  <mat-form-field appearance="fill">
+    <mat-label>Enter the weight</mat-label>
+    <input
+      matInput
+      [(ngModel)]="weight"
+      [errorStateMatcher]="matcher"
+      [formControl]="inputCtrl"
+      placeholder="Ex: 2.0"
+      (keyup)="emitWeight()"
+    />
+    <mat-error
+      *ngIf="
+        inputCtrl.hasError('pattern') ||
+        inputCtrl.hasError('required') ||
+        inputCtrl.hasError('min')
+      "
+    >
+      Please enter a valid postive number lower than 10 and up to two digits
+      after the floatting point!
+    </mat-error>
+  </mat-form-field>
+  <br />
+  <mat-checkbox (change)="update()"
+    >Constraint must be respected (hard)</mat-checkbox
+  >
 </div>

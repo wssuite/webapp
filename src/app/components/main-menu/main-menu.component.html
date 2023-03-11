@@ -6,7 +6,7 @@
         <button *ngIf="show(button)" mat--button align="getAlignemntDirection(button,i)"
         (click)="redirect(button)"
         >
-          <img [src]="button.icon" align="right" />
+          <img [src]="button.icon" align="left" />
           <span>
             <h1>{{ button.title }}</h1>
             {{ button.description }}
@@ -17,7 +17,7 @@
         <button *ngIf="show(button)" class="end-buttons" mat--button align="getAlignemntDirection(button,i)"
         (click)="redirect(button)"
         >
-          <img [src]="button.icon" align="right" />
+          <img [src]="button.icon" align="left" />
           <span>
             <h1>{{ button.title }}</h1>
             {{ button.description }}

@@ -5,14 +5,22 @@ import {
   ADD_ACCOUNT_URL,
   DELETE_ACCOUNT_URL,
   GET_USERNAMES,
+  ADD_CONTRACT_URL,
+  FETCH_CONTRACT_NAMES,
+  FETCH_SHIFT_GROUP_NAMES,
+  FETCH_SHIFT_NAMES,
+  FETCH_SHIFT_TYPE_NAMES,
+  FETCH_SKILLS,
   LOGIN_URL,
   LOGOUT_URL,
   PROTOTYPE_SCHEDULE_URL,
   TEST_URL,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
+import { ContractInterface } from "src/app/models/Contract";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
 import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
+import { Exception } from "src/app/utils/Exception";
 
 @Injectable({
   providedIn: "root",
@@ -33,7 +41,7 @@ export class APIService {
         params: queryParams
       });
     } catch(err){
-      throw new Error("user not logged in")
+      throw new Exception("user not logged in")
     }
   }
 
@@ -85,4 +93,75 @@ export class APIService {
     }
   }
 
+  addContract(contract: ContractInterface):Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.post<HttpResponse<string>>(ADD_CONTRACT_URL, contract, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  getShiftNames():Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_SHIFT_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in")
+    }
+  }
+
+  getShiftGroupNames():Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_SHIFT_GROUP_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  getShiftTypeNames():Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_SHIFT_TYPE_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  getContractNames():Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_CONTRACT_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  getAllSkills(): Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_SKILLS, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
 }

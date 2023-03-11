@@ -1,0 +1,8 @@
+.additional-items {
+    display: flex;
+    position: relative;
+    align-items: start;
+    top:0%;
+    display: inline-flex;
+    float: right;
+}

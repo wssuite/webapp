@@ -1,6 +1,7 @@
+import { CREATE_ACCOUNT, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
+import { MatDialog } from "@angular/material/dialog";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { CREATE_ACCOUNT, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
 import { CacheUtils } from "src/app/utils/CacheUtils";
@@ -13,9 +14,9 @@ import { CacheUtils } from "src/app/utils/CacheUtils";
 export class MainMenuComponent implements OnInit{
   buttons: MainMenuButton[];
   isAdminUser!: boolean;
-  connectedUser!: boolean
+  connectedUser!: boolean;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private dialog: MatDialog) {
     this.buttons = MAIN_MENU_BUTTONS;
   }
 
