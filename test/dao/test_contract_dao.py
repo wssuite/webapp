@@ -6,8 +6,15 @@ from test_constants import (
     full_time_valid_contract_with_general,
     full_time_not_valid_contract_with_general,
     full_time_valid_contract_with_general_update_to_invalid,
+    profile1,
+    profile2,
 )
-from constants import contract_name, mongo_id_field, contract_constraints
+from constants import (
+    contract_name,
+    mongo_id_field,
+    contract_constraints,
+    profile,
+)
 from src.exceptions.contract_exceptions import (
     ContractAlreadyExistException,
 )
@@ -41,7 +48,7 @@ class TestContractDao(TestCase):
             general_contract_dict,
             full_time_valid_contract_with_general,
         ]
-        fetched_list = self.dao.fetch_all()
+        fetched_list = self.dao.fetch_all(profile1)
         self.assertEqual(contract_list, fetched_list)
 
     def test_update_contract_if_contract_exist_contract_get_updated(self):
@@ -50,7 +57,8 @@ class TestContractDao(TestCase):
             full_time_valid_contract_with_general_update_to_invalid.copy()
         )
         result = self.dao.find_by_name(
-            full_time_valid_contract_with_general[contract_name]
+            full_time_valid_contract_with_general[contract_name],
+            full_time_valid_contract_with_general[profile],
         )
         self.assertEqual(
             full_time_valid_contract_with_general_update_to_invalid[
@@ -66,7 +74,7 @@ class TestContractDao(TestCase):
     def test_update_contract_if_contract_not_exist_contract_not_updated(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
         self.dao.update(general_contract_dict.copy())
-        fetch_all_contracts = self.dao.fetch_all()
+        fetch_all_contracts = self.dao.fetch_all(profile1)
         self.assertEqual(1, len(fetch_all_contracts))
         self.assertEqual(
             full_time_valid_contract_with_general, fetch_all_contracts[0]
@@ -74,14 +82,20 @@ class TestContractDao(TestCase):
 
     def test_delete_contract_if_exist_get_deleted(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
-        self.dao.remove(full_time_valid_contract_with_general[contract_name])
-        fetch_all_contracts = self.dao.fetch_all()
+        self.dao.remove(
+            full_time_valid_contract_with_general[contract_name],
+            full_time_valid_contract_with_general[profile],
+        )
+        fetch_all_contracts = self.dao.fetch_all(profile1)
         self.assertEqual(0, len(fetch_all_contracts))
 
     def test_delete_contract_if_not_exist_does_nothing(self):
         self.dao.insert_one(full_time_valid_contract_with_general.copy())
-        self.dao.remove(general_contract_dict[contract_name])
-        fetch_all_contracts = self.dao.fetch_all()
+        self.dao.remove(
+            general_contract_dict[contract_name],
+            general_contract_dict[profile],
+        )
+        fetch_all_contracts = self.dao.fetch_all(profile1)
         self.assertEqual(1, len(fetch_all_contracts))
 
     def test_get_contracts_including_shifts(self):
@@ -93,8 +107,8 @@ class TestContractDao(TestCase):
         self.dao.insert_one(contract1.db_json().copy())
         self.dao.insert_one(contract2.db_json().copy())
         self.dao.insert_one(contract3.db_json().copy())
-        early_contracts = self.dao.get_including_shifts(["Early"])
-        late_contracts = self.dao.get_including_shifts(["Late"])
+        early_contracts = self.dao.get_including_shifts(["Early"], profile1)
+        late_contracts = self.dao.get_including_shifts(["Late"], profile1)
         self.assertEqual(
             [full_time_valid_contract_with_general], late_contracts
         )
@@ -102,3 +116,21 @@ class TestContractDao(TestCase):
             [general_contract_dict, full_time_not_valid_contract_with_general],
             early_contracts,
         )
+
+    def test_delete_all_contracts_from_profile_deletes_items_for_profile(
+        self,
+    ):
+        contract1 = Contract().from_json(general_contract_dict)
+        self.dao.insert_one(contract1.db_json().copy())
+        contract2 = Contract().from_json(
+            full_time_not_valid_contract_with_general
+        )
+        self.dao.insert_one(contract2.db_json().copy())
+        contracts_profile1_before = self.dao.fetch_all(profile1)
+        self.dao.duplicate(profile1, profile2)
+        self.dao.delete_all(profile1)
+        contracts_profile1_after = self.dao.fetch_all(profile1)
+        contracts_profile2 = self.dao.fetch_all(profile2)
+        self.assertEqual(2, len(contracts_profile1_before))
+        self.assertEqual(2, len(contracts_profile2))
+        self.assertEqual(0, len(contracts_profile1_after))

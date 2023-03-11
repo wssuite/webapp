@@ -7,6 +7,7 @@ from error_msg import (
     admin_only,
     delete_admin_error,
     login_required_error,
+    not_enough_access,
 )
 
 
@@ -44,3 +45,9 @@ class CannotDeleteAdmin(ProjectBaseException):
 class LoginRequired(ProjectBaseException):
     def __init__(self):
         super(LoginRequired, self).__init__(login_required_error)
+
+
+class ProfileAccessException(ProjectBaseException):
+    def __init__(self, user, allowed_users):
+        msg = not_enough_access.format(user, allowed_users)
+        super(ProfileAccessException, self).__init__(msg)

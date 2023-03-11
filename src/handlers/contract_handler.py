@@ -1,12 +1,5 @@
-from src.handlers.user_handler import verify_token
-from src.dao.user_dao import UserDao
-from src.dao.contract_dao import ContractDao, Contract
-from src.dao.nurse_group_dao import NurseGroupDao
-from src.dao.nurse_dao import NurseDao
-from src.dao.shift_dao import ShiftDao
-from src.dao.shift_type_dao import ShiftTypeDao
-from src.dao.shift_group_dao import ShiftGroupDao
-from src.dao.skill_dao import SkillDao
+from src.handlers.base_handler import BaseHandler
+from src.dao.contract_dao import Contract
 from src.exceptions.shift_exceptions import ShiftNotExist
 from constants import (
     nurse_direct_contracts,
@@ -21,16 +14,9 @@ from src.exceptions.contract_exceptions import (
 )
 
 
-class ContractHandler:
+class ContractHandler(BaseHandler):
     def __init__(self, mongo):
-        self.user_dao = UserDao(mongo)
-        self.contract_dao = ContractDao(mongo)
-        self.nurse_dao = NurseDao(mongo)
-        self.nurse_group_dao = NurseGroupDao(mongo)
-        self.shift_dao = ShiftDao(mongo)
-        self.shift_type_dao = ShiftTypeDao(mongo)
-        self.shift_group_dao = ShiftGroupDao(mongo)
-        self.skill_dao = SkillDao(mongo)
+        super().__init__(mongo)
 
     """
     To add a contract we will perform a check on the token
@@ -42,15 +28,16 @@ class ContractHandler:
     """
 
     def add(self, token, json):
-        contract = self.insertion_verification(token, json)
+        super().add(token, json)
+        contract = self.insertion_verification(json)
         self.contract_dao.insert_one(contract.db_json())
 
-    def verify_contract_shifts_exist(self, shifts):
+    def verify_contract_shifts_exist(self, shifts, profile):
         not_exist_shifts = []
         for shift in shifts:
-            shift_dict = self.shift_dao.find_by_name(shift)
-            shift_type = self.shift_type_dao.find_by_name(shift)
-            shift_group = self.shift_group_dao.find_by_name(shift)
+            shift_dict = self.shift_dao.find_by_name(shift, profile)
+            shift_type = self.shift_type_dao.find_by_name(shift, profile)
+            shift_group = self.shift_group_dao.find_by_name(shift, profile)
             exist = (
                 shift_dict is not None
                 or shift_group is not None
@@ -62,10 +49,9 @@ class ContractHandler:
         if len(not_exist_shifts) > 0:
             raise ShiftNotExist(shifts)
 
-    def insertion_verification(self, token, json) -> Contract:
-        verify_token(token, self.user_dao)
+    def insertion_verification(self, json) -> Contract:
         contract = Contract().from_json(json)
-        self.verify_contract_shifts_exist(contract.shifts)
+        self.verify_contract_shifts_exist(contract.shifts, contract.profile)
         return contract
 
     """
@@ -77,11 +63,14 @@ class ContractHandler:
     """
 
     def update(self, token, json):
-        contract = self.insertion_verification(token, json)
+        super().update(token, json)
+        contract = self.insertion_verification(json)
         nurses_with_contract = self.nurse_dao.get_with_contracts(
-            [contract.name]
+            [contract.name], contract.profile
         )
-        nurse_groups = self.nurse_group_dao.get_with_contracts([contract.name])
+        nurse_groups = self.nurse_group_dao.get_with_contracts(
+            [contract.name], contract.profile
+        )
         self.contract_validation_with_other_contracts(
             nurses_with_contract, nurse_direct_contracts, contract
         )
@@ -106,7 +95,7 @@ class ContractHandler:
             verification_contract.name = f"{nurse[nurse_name]} other contracts"
             for other_contract_name in other_contracts_names:
                 contract_dict = self.contract_dao.find_by_name(
-                    other_contract_name
+                    other_contract_name, contract.profile
                 )
                 other_contract = Contract().from_json(contract_dict)
                 verification_contract.merge_contract_constraints(
@@ -122,25 +111,30 @@ class ContractHandler:
     be used by any nurse nor any nurse groups
     """
 
-    def delete(self, token, name):
-        verify_token(token, self.user_dao)
+    def delete(self, token, name, profile_name):
+        super().delete(token, name, profile_name)
         usage = []
-        usage.extend(self.nurse_dao.get_with_contracts([name]))
-        usage.extend(self.nurse_group_dao.get_with_contracts([name]))
+        usage.extend(self.nurse_dao.get_with_contracts([name], profile_name))
+        usage.extend(
+            self.nurse_group_dao.get_with_contracts([name], profile_name)
+        )
         if len(usage) > 0:
             raise CannotDeleteContract(name)
-        self.contract_dao.remove(name)
+        self.contract_dao.remove(name, profile_name)
 
-    def get_all(self, token):
-        verify_token(token, self.user_dao)
-        return self.contract_dao.fetch_all()
+    def get_all(self, token, profile_name):
+        super().get_all(token, profile_name)
+        return self.contract_dao.fetch_all(profile_name)
 
-    def get_by_name(self, token, name):
-        verify_token(token, self.user_dao)
-        contract_dict = self.contract_dao.find_by_name(name)
+    def get_by_name(self, token, name, profile_name):
+        super().get_by_name(token, name, profile_name)
+        contract_dict = self.contract_dao.find_by_name(name, profile_name)
         if contract_dict is None:
             raise ContractNotExist(name)
         return Contract().from_json(contract_dict).to_json()
 
-    def get_all_names(self, token):
-        return [contract[contract_name] for contract in self.get_all(token)]
+    def get_all_names(self, token, profile_name):
+        return [
+            contract[contract_name]
+            for contract in self.get_all(token, profile_name)
+        ]

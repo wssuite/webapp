@@ -1,7 +1,7 @@
 from flask import Blueprint, request, Response
 from src.handlers.nurse_handler import NurseHandler
 from src.dao.abstract_dao import DBConnection
-from constants import nurse_username, user_token, ok_message
+from constants import nurse_username, user_token, ok_message, profile
 from src.exceptions.project_base_exception import ProjectBaseException
 
 mod = Blueprint("nurse_controller", __name__, url_prefix="/nurse")
@@ -23,7 +23,8 @@ def add_nurse():
 def get_all_nurses():
     try:
         token = request.args[user_token]
-        return nurse_handler.get_all(token)
+        profile_name = request.args[profile]
+        return nurse_handler.get_all(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -33,7 +34,8 @@ def get_nurse_by_username():
     try:
         token = request.args[user_token]
         username = request.args[nurse_username]
-        return nurse_handler.get_by_username(token, username)
+        profile_name = request.args[profile]
+        return nurse_handler.get_by_username(token, username, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -43,7 +45,8 @@ def delete_nurse():
     try:
         token = request.args[user_token]
         username = request.args[nurse_username]
-        nurse_handler.delete(token, username)
+        profile_name = request.args[profile]
+        nurse_handler.delete(token, username, profile_name)
         return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)
@@ -53,7 +56,8 @@ def delete_nurse():
 def get_nurses_usernames():
     try:
         token = request.args[user_token]
-        return nurse_handler.get_all_usernames(token)
+        profile_name = request.args[profile]
+        return nurse_handler.get_all_usernames(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 

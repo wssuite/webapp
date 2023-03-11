@@ -1,11 +1,11 @@
 from src.models.skill import Skill
 from unittest import TestCase
-from constants import skill_name
+from test_constants import nurse_skill
 
 
 class TestSkill(TestCase):
     def setUp(self) -> None:
-        self.skill_dict = {skill_name: "Nurse"}
+        self.skill_dict = nurse_skill.copy()
 
     def tearDown(self) -> None:
         pass

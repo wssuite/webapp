@@ -1,25 +1,23 @@
-from src.handlers.user_handler import verify_token
-from src.dao.user_dao import UserDao
-from src.dao.skill_dao import SkillDao, skill_name
+from src.dao.skill_dao import skill_name
+from src.handlers.base_handler import BaseHandler
 
 
-class SkillHandler:
+class SkillHandler(BaseHandler):
     def __init__(self, mongo):
-        self.user_dao = UserDao(mongo)
-        self.skill_dao = SkillDao(mongo)
-
-    def get_all(self, token):
-        verify_token(token, self.user_dao)
-        return self.skill_dao.get_all()
+        super().__init__(mongo)
 
     def add(self, token, json):
-        verify_token(token, self.user_dao)
+        super().add(token, json)
         return self.skill_dao.insert_one_if_not_exist(json)
 
-    def delete(self, token, name):
-        verify_token(token, self.user_dao)
+    def delete(self, token, name, profile_name):
+        super().delete(token, name, profile_name)
         return self.skill_dao.remove(name)
 
-    def get_all_names(self, token):
+    def get_all_names(self, token, profile_name):
         return [skill[skill_name]
-                for skill in self.get_all(token)]
+                for skill in self.get_all(token, profile_name)]
+
+    def get_all(self, token, profile):
+        super().get_all(token, profile)
+        return self.skill_dao.get_all(profile)

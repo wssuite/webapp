@@ -1,9 +1,8 @@
 from flask import Blueprint, request, Response
 from src.handlers.contract_handler import ContractHandler
 from src.dao.abstract_dao import DBConnection
-from constants import ok_message, contract_name
+from constants import ok_message, contract_name, user_token, profile
 from src.exceptions.project_base_exception import ProjectBaseException
-from constants import user_token
 
 mod = Blueprint("contract_controller", __name__, url_prefix="/contract")
 
@@ -25,7 +24,8 @@ def add_contract():
 def get_all_contracts():
     try:
         token = request.args[user_token]
-        return contract_handler.get_all(token)
+        profile_name = request.args[profile]
+        return contract_handler.get_all(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -35,7 +35,8 @@ def get_contract_by_name():
     try:
         name = request.args[contract_name]
         token = request.args[user_token]
-        return contract_handler.get_by_name(token, name)
+        profile_name = request.args[profile]
+        return contract_handler.get_by_name(token, name, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -45,7 +46,8 @@ def delete_contract():
     try:
         name = request.args[contract_name]
         token = request.args[user_token]
-        contract_handler.delete(token, name)
+        profile_name = request.args[profile]
+        contract_handler.delete(token, name, profile_name)
         return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)
@@ -55,7 +57,8 @@ def delete_contract():
 def get_contracts_names():
     try:
         token = request.args[user_token]
-        return contract_handler.get_all_names(token)
+        profile_name = request.args[profile]
+        return contract_handler.get_all_names(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 

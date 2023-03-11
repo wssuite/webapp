@@ -13,9 +13,11 @@ from test_constants import (
     random_hex,
     nurse_group2,
     min_cons_contract,
+    profile1,
+    test_profile,
 )
 from unittest import TestCase
-from constants import user_token, contract_name
+from constants import user_token, contract_name, profile
 from src.exceptions.shift_exceptions import ShiftNotExist
 from src.exceptions.contract_exceptions import (
     CannotDeleteContract,
@@ -42,6 +44,7 @@ class TestContractHandler(TestCase):
             full_time_not_valid_contract_with_general.copy()
         )
         self.handler.contract_dao.insert_one(min_cons_contract.copy())
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def insert_missing_deps(self):
         self.handler.shift_dao.insert_one_if_not_exist(early_shift.copy())
@@ -58,7 +61,7 @@ class TestContractHandler(TestCase):
 
     def test_contract_addition(self):
         self.insert_missing_deps()
-        all_contracts = self.handler.get_all(random_hex)
+        all_contracts = self.handler.get_all(random_hex, profile1)
         self.assertEqual(4, len(all_contracts))
         self.assertEqual(
             [
@@ -74,7 +77,8 @@ class TestContractHandler(TestCase):
         self.insert_missing_deps()
         self.handler.update(random_hex, full_time_valid_contract_with_general)
         contract = self.handler.contract_dao.find_by_name(
-            full_time_valid_contract_with_general[contract_name]
+            full_time_valid_contract_with_general[contract_name],
+            full_time_valid_contract_with_general[profile],
         )
         self.assertEqual(full_time_valid_contract_with_general, contract)
 
@@ -84,6 +88,7 @@ class TestContractHandler(TestCase):
             self.handler.delete(
                 random_hex,
                 full_time_valid_contract_with_general[contract_name],
+                profile1,
             )
 
     def test_delete_contract_if_contract_not_have_depended_object_succeeds(
@@ -93,14 +98,17 @@ class TestContractHandler(TestCase):
         self.handler.delete(
             random_hex,
             full_time_not_valid_contract_with_general[contract_name],
+            profile1,
         )
-        contracts = self.handler.contract_dao.fetch_all()
+        contracts = self.handler.contract_dao.fetch_all(profile1)
         self.assertEqual(3, len(contracts))
 
     def test_get_contract_by_name_if_exist_return_contract(self):
         self.insert_missing_deps()
         contract = self.handler.get_by_name(
-            random_hex, full_time_valid_contract_with_general[contract_name]
+            random_hex,
+            full_time_valid_contract_with_general[contract_name],
+            profile1,
         )
         self.assertEqual(full_time_valid_contract_with_general, contract)
 
@@ -109,6 +117,7 @@ class TestContractHandler(TestCase):
             self.handler.get_by_name(
                 random_hex,
                 full_time_valid_contract_with_general[contract_name],
+                profile1,
             )
 
     def test_get_all_contract_names(self):
@@ -119,5 +128,5 @@ class TestContractHandler(TestCase):
             min_cons_contract[contract_name],
             full_time_valid_contract_with_general[contract_name],
         ]
-        names = self.handler.get_all_names(random_hex)
+        names = self.handler.get_all_names(random_hex, profile1)
         self.assertEqual(expected, names)

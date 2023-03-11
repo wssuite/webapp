@@ -3,10 +3,11 @@ from src.handlers.skill_handler import SkillHandler
 from test_constants import (
     random_hex,
     default_user,
-    skill_array,
     nurse_skill,
     head_nurse_skill,
     sociologist_skill,
+    profile1,
+    test_profile,
 )
 from unittest import TestCase
 from constants import user_token
@@ -17,13 +18,15 @@ class TestSkillHandler(TestCase):
         self.handler = SkillHandler(connect_to_fake_db())
         user = default_user.copy()
         user[user_token] = random_hex
+        skill_array = [nurse_skill, head_nurse_skill, sociologist_skill]
         self.handler.user_dao.insert_one(user.copy())
         self.handler.skill_dao.insert_many(skill_array)
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def tearDown(self) -> None:
         pass
 
     def test_get_all_skills(self):
         expected = [nurse_skill, head_nurse_skill, sociologist_skill]
-        actual = self.handler.get_all(random_hex)
+        actual = self.handler.get_all(random_hex, profile1)
         self.assertEqual(expected, actual)
