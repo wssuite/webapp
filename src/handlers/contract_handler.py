@@ -12,6 +12,7 @@ from src.exceptions.contract_exceptions import (
     CannotDeleteContract,
     ContractNotExist,
 )
+from src.exceptions.skill_exceptions import SkillNotExist
 
 
 class ContractHandler(BaseHandler):
@@ -47,11 +48,22 @@ class ContractHandler(BaseHandler):
                 not_exist_shifts.append(shift)
 
         if len(not_exist_shifts) > 0:
-            raise ShiftNotExist(shifts)
+            raise ShiftNotExist(not_exist_shifts)
+
+    def verify_contract_skills_exist(self, skills, profile):
+        non_existent_skills = []
+        for skill in skills:
+            exist = self.skill_dao.exist(skill, profile)
+            if exist is False:
+                non_existent_skills.append(skill)
+
+        if len(non_existent_skills) > 0:
+            raise SkillNotExist(non_existent_skills)
 
     def insertion_verification(self, json) -> Contract:
         contract = Contract().from_json(json)
         self.verify_contract_shifts_exist(contract.shifts, contract.profile)
+        self.verify_contract_skills_exist(contract.skills, contract.profile)
         return contract
 
     """

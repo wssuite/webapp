@@ -15,6 +15,7 @@ from test_constants import (
     min_cons_contract,
     profile1,
     test_profile,
+    unwanted_skills_contract,
 )
 from unittest import TestCase
 from constants import user_token, contract_name, profile
@@ -23,6 +24,7 @@ from src.exceptions.contract_exceptions import (
     CannotDeleteContract,
     ContractNotExist,
 )
+from src.exceptions.skill_exceptions import SkillNotExist
 
 
 class TestContractHandler(TestCase):
@@ -72,6 +74,10 @@ class TestContractHandler(TestCase):
             ],
             all_contracts,
         )
+
+    def test_add_contract_with_non_existent_skill_raise_error(self):
+        with self.assertRaises(SkillNotExist):
+            self.handler.add(random_hex, unwanted_skills_contract)
 
     def test_update_contract_if_update_not_contradict_depended_succeed(self):
         self.insert_missing_deps()

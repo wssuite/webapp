@@ -51,3 +51,4 @@ not_enough_access = (
     "The user {} don't have access to perform this action,"
     "only {} have access to perform this action."
 )
+skill_not_exist = "Cannot proceed the following skills do not exist {}"

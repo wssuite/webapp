@@ -1,5 +1,5 @@
 from src.exceptions.project_base_exception import ProjectBaseException
-from error_msg import skill_already_exist, deletion_error
+from error_msg import skill_already_exist, deletion_error, skill_not_exist
 
 
 class SkillAlreadyExists(ProjectBaseException):
@@ -13,3 +13,9 @@ class CannotDeleteSkill(ProjectBaseException):
         skill = f"the skill {name}"
         msg = deletion_error.format(skill)
         super(CannotDeleteSkill, self).__init__(msg)
+
+
+class SkillNotExist(ProjectBaseException):
+    def __init__(self, skills):
+        msg = skill_not_exist.format(skills)
+        super(SkillNotExist, self).__init__(msg)
