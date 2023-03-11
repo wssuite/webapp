@@ -28,3 +28,12 @@ class SkillDao(AbstractDao):
             skills.append(skill.to_json())
 
         return skills
+
+    def insert_one_if_not_exist(self, json):
+        exist = self.exist(json[skill_name])
+        if exist is True:
+            raise
+        self.collection.insert_one(json)
+
+    def remove(self, name):
+        self.collection.find_one_and_delete({skill_name: name})
