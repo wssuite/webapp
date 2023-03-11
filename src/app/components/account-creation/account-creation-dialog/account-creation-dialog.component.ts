@@ -20,6 +20,7 @@ export class AccountCreationDialogComponent {
   usernameControlForm: FormControl;
   passwordControlForm : FormControl;
   passwordConfirmationControlForm: FormControl;
+  disabled: boolean;
 
   constructor(public dialogRef: MatDialogRef<AccountCreationDialogComponent >,  private api: APIService, private dialog: MatDialog) { 
     this.username = "";
@@ -28,6 +29,7 @@ export class AccountCreationDialogComponent {
     this.usernameControlForm = new FormControl(null, Validators.required);
     this.passwordControlForm = new FormControl(null, Validators.required);
     this.passwordConfirmationControlForm = new FormControl(null, Validators.required);
+    this.disabled = true;
   }
   
   addAccount() {
@@ -54,8 +56,8 @@ export class AccountCreationDialogComponent {
   }
 
   hasError():boolean{
-    console.log("validate required",this.passwordControlForm.hasError('required'), this.usernameControlForm.hasError('required'),this.passwordConfirmationControlForm.hasError('required') )
-    return this.passwordControlForm.hasError('required') || this.usernameControlForm.hasError('required') || this.passwordConfirmationControlForm.hasError('required');
+    this.disabled = this.password !== this.passwordConfirmation;
+    return this.passwordControlForm.hasError('required') || this.usernameControlForm.hasError('required') || this.passwordConfirmationControlForm.hasError('required') || this.disabled;
   }
 
   openErrorDialog(message: string) {
