@@ -30,3 +30,4 @@ export const CREATE_EMPTY_PROFILE = PROFILE_URL + "/createEmpty";
 export const FETACH_PROFILES = PROFILE_URL + FETCH_ALL;
 const DUPLICATE = "/duplicate";
 export const DUPLICATE_PROFILE= PROFILE_URL + DUPLICATE;
+export const DELETE_PROFILE = PROFILE_URL + DELETE_STRING;

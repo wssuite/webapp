@@ -53,6 +53,7 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
 import { CreateProfileDialogComponent } from './components/create-profile-dialog/create-profile-dialog.component';
 import { CreateEmptyProfileDialogComponent } from './components/create-profile-dialog/create-empty-profile-dialog/create-empty-profile-dialog.component';
 import { ImportProfileDialogComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
+import { DuplicateProfileComponent } from './components/create-profile-dialog/duplicate-profile/duplicate-profile.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { ImportProfileDialogComponent } from './components/create-profile-dialog
     CreateProfileDialogComponent,
     CreateEmptyProfileDialogComponent,
     ImportProfileDialogComponent,
+    DuplicateProfileComponent,
   ],
   imports: [
     BrowserModule,

@@ -17,6 +17,8 @@ import {
   LOGOUT_URL,
   PROTOTYPE_SCHEDULE_URL,
   TEST_URL,
+  DUPLICATE_PROFILE,
+  DELETE_PROFILE,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { ContractInterface } from "src/app/models/Contract";
@@ -24,13 +26,14 @@ import { Credentials, UserInfo } from "src/app/models/Credentials";
 import { BaseProfile } from "src/app/models/Profile";
 import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
+import { ProfileService } from "../profile/profile.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class APIService {
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private profileService: ProfileService) {}
 
   login(credentials:Credentials): Observable<UserInfo> {
     return this.httpClient.post<UserInfo>(LOGIN_URL, credentials);
@@ -189,6 +192,33 @@ export class APIService {
         params: queryParams,
       });
     } catch(err) {
+      throw new Exception("user not logged in");
+    }
+  }
+
+  duplicateProfile(newProfileName: string): Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("profile", this.profileService.getProfile());
+      queryParams = queryParams.append("other_profile_name", newProfileName);
+      return this.httpClient.post<HttpResponse<string>>(DUPLICATE_PROFILE, null, {
+        params: queryParams,
+      })
+    } catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+  
+  deleteProfile(): Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("profile", this.profileService.getProfile());
+      return this.httpClient.delete<HttpResponse<string>>(DELETE_PROFILE, {
+        params: queryParams,
+      })
+    } catch(err){
       throw new Exception("user not logged in");
     }
   }

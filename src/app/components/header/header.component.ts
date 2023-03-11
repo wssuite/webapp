@@ -6,8 +6,10 @@ import { Router } from '@angular/router';
 import { CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
 import { BaseProfile } from 'src/app/models/Profile';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { CreateProfileDialogComponent } from '../create-profile-dialog/create-profile-dialog.component';
+import { DuplicateProfileComponent } from '../create-profile-dialog/duplicate-profile/duplicate-profile.component';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 
 @Component({
@@ -24,7 +26,7 @@ export class HeaderComponent implements OnInit{
   username!: string;
   
   constructor(private apiService: APIService, private router: Router,
-    private dialog: MatDialog){
+    private dialog: MatDialog, private profileService: ProfileService){
       this.profiles = [];
       this.profileSelectorFormCtrl = new FormControl();
     }
@@ -48,6 +50,7 @@ export class HeaderComponent implements OnInit{
         }
         else{
           this.profile = this.profiles[this.profiles.length - 1]
+          this.profileService.setProfile(this.profile.profile);
         }
       },
       error: (error: HttpErrorResponse)=>{
@@ -98,13 +101,31 @@ export class HeaderComponent implements OnInit{
 
   handleSelectionChange(){
     console.log(this.profile);
+    this.profileService.setProfile(this.profile.profile);
   }
 
   duplicate() {
-    //call api to duplicate the profile
+    const dialog = this.dialog.open(DuplicateProfileComponent,{
+      disableClose: true,  
+      height: '65%',
+      width: '55%', 
+      position: {top:'5vh',left: '25%', right: '25%'},
+    })
+    dialog.afterClosed().subscribe(()=>{
+      this.getProfiles();
+    })
   }
 
   deleteProfile(){
-    // call api to delete profile
+    this.apiService.deleteProfile().subscribe({
+      error: (err: HttpErrorResponse)=>{
+        if(err.status !== HttpStatusCode.Ok){
+          this.openErrorDialog(err.error);
+        }
+        else{
+          this.getProfiles();
+        }
+      }
+    })
   }
 }
