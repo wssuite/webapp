@@ -98,7 +98,11 @@ class TestAuthenticationHandler(TestCase):
         user1_dict = self.create_additional_user_as_admin(mock_uuid)
         self.handler.logout(random_hex)
         ret_login = self.handler.login(user1_dict)
-        expected_login = {user_token: random_hex, is_admin: False}
+        expected_login = {
+            user_token: random_hex,
+            is_admin: False,
+            user_username: user1_dict[user_username],
+        }
         user2_dict = {user_username: "user2", user_password: "passw0rd"}
         user2 = User().from_json(user2_dict)
         with self.assertRaises(AdminOnlyAction):
@@ -111,7 +115,11 @@ class TestAuthenticationHandler(TestCase):
         user1 = User().from_json(user1_dict)
         ret_login = self.handler.login(default_user)
         self.handler.create_user(user1.db_json(), random_hex)
-        expected_login = {user_token: random_hex, is_admin: True}
+        expected_login = {
+            user_token: random_hex,
+            is_admin: True,
+            user_username: admin,
+        }
         self.assertEqual(expected_login, ret_login)
         return user1_dict
 

@@ -61,7 +61,7 @@ class AuthenticationHandler(BaseHandler):
         token = uuid.uuid4().hex
         user_dict[user_token] = token
         self.user_dao.update(user_dict)
-        ret = {user_token: token, is_admin: True}
+        ret = {user_token: token, is_admin: True, user_username: user.username}
         if user.username != admin:
             ret[is_admin] = False
         return ret

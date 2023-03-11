@@ -10,6 +10,7 @@ from src.controllers import (
     contract_controller,
     user_controller,
     skill_controller,
+    profile_controller,
 )
 import config
 from flask_cors import CORS
@@ -38,6 +39,7 @@ def create_app():
     flask_app.register_blueprint(contract_controller.mod)
     flask_app.register_blueprint(user_controller.mod)
     flask_app.register_blueprint(skill_controller.mod)
+    flask_app.register_blueprint(profile_controller.mod)
     return flask_app
 
 
