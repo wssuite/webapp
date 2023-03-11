@@ -73,6 +73,15 @@ class ContractDao(AbstractDao):
         )
         return get_contracts_from_cursor(contracts)
 
+    def get_including_skills(self, skills_array, profile_name):
+        contracts = self.collection.find(
+            {
+                contract_skills: {mongo_all_operation: skills_array},
+                profile: profile_name,
+            }
+        )
+        return get_contracts_from_cursor(contracts)
+
     def delete_all(self, profile_name):
         self.collection.delete_many({profile: profile_name})
 

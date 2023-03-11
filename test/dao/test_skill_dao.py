@@ -8,6 +8,8 @@ from test_constants import (
     profile1,
     profile2,
 )
+from src.exceptions.skill_exceptions import SkillAlreadyExists
+from constants import skill_name
 
 
 class TestShiftDao(TestCase):
@@ -22,6 +24,23 @@ class TestShiftDao(TestCase):
         empty_skills = self.dao.get_all(profile2)
         self.assertEqual(expected, result)
         self.assertEqual([], empty_skills)
+
+    def test_insert_skill_succeed_if_skill_not_exist(self):
+        self.dao.insert_one_if_not_exist(nurse_skill.copy())
+        skills_before = self.dao.get_all(profile1)
+        with self.assertRaises(SkillAlreadyExists):
+            self.dao.insert_one_if_not_exist(nurse_skill.copy())
+        skills_after = self.dao.get_all(profile1)
+        self.assertEqual(skills_before, skills_after)
+
+    def test_remove_skill(self):
+        self.dao.insert_one_if_not_exist(nurse_skill.copy())
+        self.dao.remove(nurse_skill[skill_name], profile2)
+        skills_after_profile2 = self.dao.get_all(profile1)
+        self.dao.remove(nurse_skill[skill_name], profile1)
+        skills_after_profile1 = self.dao.get_all(profile1)
+        self.assertEqual(1, len(skills_after_profile2))
+        self.assertEqual(0, len(skills_after_profile1))
 
     def test_delete_all_skills_from_profile_deletes_items_for_specific_profile(
         self,

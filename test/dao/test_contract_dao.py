@@ -8,6 +8,7 @@ from test_constants import (
     full_time_valid_contract_with_general_update_to_invalid,
     profile1,
     profile2,
+    unwanted_skills_contract,
 )
 from constants import (
     contract_name,
@@ -134,3 +135,14 @@ class TestContractDao(TestCase):
         self.assertEqual(2, len(contracts_profile1_before))
         self.assertEqual(2, len(contracts_profile2))
         self.assertEqual(0, len(contracts_profile1_after))
+
+    def test_get_contracts_by_skills(self):
+        contract = Contract().from_json(unwanted_skills_contract.copy())
+        self.dao.insert_one(contract.db_json().copy())
+        contract_with_nurse_skill = self.dao.get_including_skills(
+            ["Nurse"], profile1
+        )
+        self.assertEqual(1, len(contract_with_nurse_skill))
+        self.assertEqual(
+            unwanted_skills_contract, contract_with_nurse_skill[0]
+        )

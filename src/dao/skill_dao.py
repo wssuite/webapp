@@ -1,5 +1,5 @@
 from pymongo.collection import Collection
-
+from src.exceptions.skill_exceptions import SkillAlreadyExists
 from src.dao.abstract_dao import AbstractDao
 from src.models.skill import Skill, skill_name
 from constants import mongo_id_field, profile
@@ -38,12 +38,13 @@ class SkillDao(AbstractDao):
     def insert_one_if_not_exist(self, json):
         exist = self.exist(json[skill_name], json[profile])
         if exist is True:
-            raise
+            raise SkillAlreadyExists(json[skill_name])
         self.collection.insert_one(json)
 
     def remove(self, name, profile_name):
         self.collection.find_one_and_delete(
-            {skill_name: name, profile: profile_name})
+            {skill_name: name, profile: profile_name}
+        )
 
     def delete_all(self, profile_name):
         self.collection.delete_many({profile: profile_name})

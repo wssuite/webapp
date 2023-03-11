@@ -32,6 +32,8 @@ from constants import (
     profile_creator,
     profile_access,
     user_token,
+    unwanted_skills,
+    contract_skills,
 )
 
 profile1 = "profile1"
@@ -107,6 +109,18 @@ min_cons_contract = {
             max_constraint_weight: "hard",
             min_constraint_value: "1.0",
             min_constraint_weight: "5.0",
+        }
+    ],
+}
+
+unwanted_skills_contract = {
+    contract_name: "unwantedSkillsContract",
+    profile: profile1,
+    contract_constraints: [
+        {
+            constraint_name: unwanted_skills,
+            contract_skills: ["Nurse"],
+            constraint_weight: "hard",
         }
     ],
 }
