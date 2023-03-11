@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import {  MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { Credentials } from 'src/app/models/Credentials';
 import { APIService } from 'src/app/services/api-service/api.service';
