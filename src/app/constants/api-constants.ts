@@ -20,3 +20,6 @@ export const LOGIN_URL = USER_URL + "/login";
 export const LOGOUT_URL = USER_URL + "/logout"
 export const SKILLS_URL = BASE_URL + "/skill";
 export const FETCH_SKILLS = SHIFT_URL + FETCH_ALL;
+export const PROFILE_URL = BASE_URL + "/profile";
+export const CREATE_EMPTY_PROFILE = PROFILE_URL + "/createEmpty";
+export const FETACH_PROFILES = PROFILE_URL + FETCH_ALL;

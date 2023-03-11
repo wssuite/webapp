@@ -50,6 +50,9 @@ import { AccountCreationDialogComponent } from './components/account-creation/ac
 import { HeaderComponent } from './components/header/header.component';
 import { NotConnectedComponent } from './components/not-connected/not-connected.component';
 import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
+import { CreateProfileDialogComponent } from './components/create-profile-dialog/create-profile-dialog.component';
+import { CreateEmptyProfileDialogComponent } from './components/create-profile-dialog/create-empty-profile-dialog/create-empty-profile-dialog.component';
+import { ImportProfileDialogComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +82,9 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     HeaderComponent,
     NotConnectedComponent,
     UnwantedSkillsComponent,
+    CreateProfileDialogComponent,
+    CreateEmptyProfileDialogComponent,
+    ImportProfileDialogComponent,
   ],
   imports: [
     BrowserModule,

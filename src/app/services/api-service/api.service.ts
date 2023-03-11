@@ -3,6 +3,8 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
   ADD_CONTRACT_URL,
+  CREATE_EMPTY_PROFILE,
+  FETACH_PROFILES,
   FETCH_CONTRACT_NAMES,
   FETCH_SHIFT_GROUP_NAMES,
   FETCH_SHIFT_NAMES,
@@ -16,6 +18,7 @@ import {
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { ContractInterface } from "src/app/models/Contract";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
+import { BaseProfile } from "src/app/models/Profile";
 import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
 
@@ -122,6 +125,31 @@ export class APIService {
         params: queryParams,
       });
     }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  createEmptyProfile(name: string):Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("profile", name);
+      return this.httpClient.post<HttpResponse<string>>(CREATE_EMPTY_PROFILE, null, {
+        params: queryParams,
+      });
+    } catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  getAllProfiles(): Observable<BaseProfile[]>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<BaseProfile[]>(FETACH_PROFILES, {
+        params: queryParams,
+      });
+    } catch(err) {
       throw new Exception("user not logged in");
     }
   }

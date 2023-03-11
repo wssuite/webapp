@@ -1,0 +1,13 @@
+<div class="profile-container">
+    <p>Welcome to Nurse Scheduler application!</p>
+    <p>To get started please create a profile</p>
+    <div class="create-empty-section">
+        <p>You can create an empty profile by specifying only the profile's name</p>
+        <button mat-raised-button color="primary" (click)="createEmptyProfile()">Create profile</button>
+    </div>
+    <div class="import-section">
+        <p>You can also import a profile</p>
+        <button mat-raised-button color="primary" (click)="importProfile()">Import profile</button>
+    </div>
+    <button mat-raised-button class="close-button" color="warn" [mat-dialog-close]="true">Close</button>
+</div>
