@@ -46,6 +46,7 @@ export class LoginComponent {
   }
 
   hasError():boolean{
+    console.log(this.passwordControlForm.hasError('required'))
     return this.passwordControlForm.hasError('required') || this.usernameControlForm.hasError('required');
   }
 }
