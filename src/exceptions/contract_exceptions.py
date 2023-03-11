@@ -5,6 +5,7 @@ from error_msg import (
     deletion_error,
     contract_not_exist,
     contract_group_already_exist,
+    contract_group_not_exist,
 )
 
 
@@ -39,3 +40,9 @@ class ContractGroupAlreadyExist(ProjectBaseException):
     def __init__(self, name):
         msg = contract_group_already_exist.format(name)
         super(ContractGroupAlreadyExist, self).__init__(msg)
+
+
+class ContractGroupNotExist(ProjectBaseException):
+    def __init__(self, groups):
+        msg = contract_group_not_exist.format(groups)
+        super(ContractGroupNotExist, self).__init__(msg)

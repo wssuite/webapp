@@ -15,6 +15,7 @@ from src.dao.shift_type_dao import ShiftTypeDao
 from src.dao.shift_group_dao import ShiftGroupDao
 from src.dao.skill_dao import SkillDao
 from src.dao.profile_dao import ProfileDao
+from src.dao.contract_group_dao import ContractGroupDao
 from src.exceptions.user_exceptions import ProfileAccessException
 
 
@@ -29,6 +30,7 @@ class BaseHandler:
         self.shift_group_dao = ShiftGroupDao(mongo)
         self.skill_dao = SkillDao(mongo)
         self.profile_dao = ProfileDao(mongo)
+        self.contract_group_dao = ContractGroupDao(mongo)
 
     def verify_token(self, token):
         if token == empty_token:

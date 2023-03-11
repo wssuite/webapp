@@ -55,3 +55,4 @@ skill_not_exist = "Cannot proceed the following skills do not exist {}"
 contract_group_already_exist = (
     "Cannot create contract group {}, because it already exists"
 )
+contract_group_not_exist = "The following contract groups don't exist {}"

@@ -122,7 +122,7 @@ contract_group_without_contradiction = {
 }
 contract_group_with_contradiction = {
     contract_group_name: "contract_group_with_contradiction",
-    contract_group_contracts_list: ["General", "FullTimeNotValid"],
+    contract_group_contracts_list: ["General", "FullTime_Not_Valid"],
     profile: profile1,
 }
 
