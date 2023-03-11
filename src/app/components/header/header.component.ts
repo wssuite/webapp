@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit{
   isAdmin!: boolean;
   profiles: BaseProfile[];
   profileSelectorFormCtrl: FormControl;
+  profile!: BaseProfile;
   
   constructor(private apiService: APIService, private router: Router,
     private dialog: MatDialog){
@@ -52,7 +53,8 @@ export class HeaderComponent implements OnInit{
           })
         }
         else{
-          this.profileSelectorFormCtrl.setValue(this.profiles[this.profiles.length - 1]);
+          //this.profileSelectorFormCtrl.setValue(this.profiles[this.profiles.length - 1]);
+          this.profile = this.profiles[this.profiles.length - 1]
         }
       },
       error: (error: HttpErrorResponse)=>{
@@ -89,4 +91,7 @@ export class HeaderComponent implements OnInit{
     this.router.navigate(["/"+ CREATE_ACCOUNT])
   }
 
+  handleSelectionChange(){
+    console.log(this.profile);
+  }
 }

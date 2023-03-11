@@ -1,14 +1,20 @@
 .end-buttons {
     margin-right: 5vw;
     float:right;
-    
+    right: 0%;
+    position: absolute;
     
 }
 .header-container{
     background-color:aliceblue;
     height: 5vh;
+    display: flex;
 }
 
 .add-user{
     height: 20px
+}
+
+.start-container {
+    margin-left: 2vw;
 }

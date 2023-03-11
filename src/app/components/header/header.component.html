@@ -1,4 +1,16 @@
 <div class="header-container">
+    <div class="start-container">
+        <label>Profile: </label>
+        <mat-form-field appearance="fill">
+            <mat-label>Profile</mat-label>
+            <mat-select [(value)]="profile" [formControl]="profileSelectorFormCtrl" (selectionChange)="handleSelectionChange()">
+                <mat-option *ngFor="let profile of profiles" [value]="profile">
+                    {{profile.profile}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+    </div>
     <div class="end-buttons">
         <button mat-icon-button>
             <mat-icon>notifications</mat-icon>
