@@ -6,4 +6,5 @@ export interface Credentials {
 export interface UserInfo {
     token: string;
     isAdmin: boolean;
+    username: string;
 }
