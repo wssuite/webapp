@@ -50,7 +50,8 @@ export class HeaderComponent implements OnInit{
         }
         else{
           this.profile = this.profiles[this.profiles.length - 1]
-          this.profileService.setProfile(this.profile.profile);
+          CacheUtils.setProfile(this.profile.profile);
+          this.profileService.emitProfileChange();
         }
       },
       error: (error: HttpErrorResponse)=>{
@@ -101,8 +102,8 @@ export class HeaderComponent implements OnInit{
   }
 
   handleSelectionChange(){
-    console.log(this.profile);
-    this.profileService.setProfile(this.profile.profile);
+    CacheUtils.setProfile(this.profile.profile);
+    this.profileService.emitProfileChange();
   }
 
   duplicate() {

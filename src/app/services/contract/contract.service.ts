@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Constraint } from 'src/app/models/Constraint';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
+import { ProfileService } from '../profile/profile.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ export class ContractService {
 
   contract: Contract;
 
-  constructor() {
+  constructor(private profileService: ProfileService) {
     this.contract = new Contract();
   }
 
@@ -27,6 +29,6 @@ export class ContractService {
   }
 
   getJson(): ContractInterface{
-    return this.contract.toJson()
+    return this.contract.toJson(CacheUtils.getProfile());
   }
 }

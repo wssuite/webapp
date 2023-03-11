@@ -47,6 +47,7 @@ export class CacheUtils {
         localStorage.removeItem(TOKEN_STRING);
         localStorage.removeItem(IS_ADMIN_STRING);
         localStorage.removeItem(USERNAME_STRING);
+        localStorage.removeItem("profile");
     }
 
     public static getUsername(): string{
@@ -55,5 +56,17 @@ export class CacheUtils {
             throw new Error("user not logged in");
         }
         return username;
+    }
+
+    public static setProfile(profileName: string): void{
+        localStorage.setItem("profile", profileName);
+    }
+
+    public static getProfile(): string {
+        const ret = localStorage.getItem("profile");
+        if(ret === null || ret === undefined){
+            throw new Error("");
+        }
+        return ret;
     }
 }

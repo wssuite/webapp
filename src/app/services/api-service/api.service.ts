@@ -28,6 +28,8 @@ import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
 import { ProfileService } from "../profile/profile.service";
 
+const PROFILE_STRING = "profile";
+
 @Injectable({
   providedIn: "root",
 })
@@ -115,6 +117,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<string[]>(FETCH_SHIFT_NAMES, {
         params: queryParams,
       });
@@ -127,6 +130,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<string[]>(FETCH_SHIFT_GROUP_NAMES, {
         params: queryParams,
       });
@@ -139,6 +143,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<string[]>(FETCH_SHIFT_TYPE_NAMES, {
         params: queryParams,
       });
@@ -151,6 +156,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<string[]>(FETCH_CONTRACT_NAMES, {
         params: queryParams,
       });
@@ -163,6 +169,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<string[]>(FETCH_SKILLS, {
         params: queryParams,
       });
@@ -175,7 +182,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append("profile", name);
+      queryParams = queryParams.append(PROFILE_STRING, name);
       return this.httpClient.post<HttpResponse<string>>(CREATE_EMPTY_PROFILE, null, {
         params: queryParams,
       });
@@ -200,7 +207,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append("profile", this.profileService.getProfile());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       queryParams = queryParams.append("other_profile_name", newProfileName);
       return this.httpClient.post<HttpResponse<string>>(DUPLICATE_PROFILE, null, {
         params: queryParams,
@@ -214,7 +221,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append("profile", this.profileService.getProfile());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.delete<HttpResponse<string>>(DELETE_PROFILE, {
         params: queryParams,
       })

@@ -17,7 +17,6 @@ export class CreateProfileDialogComponent {
   ){}
 
   createEmptyProfile(){
-    // open dialog to enter the name of the profile
     const dialog = this.dialog.open(CreateEmptyProfileDialogComponent, {
       data: {profiles: this.data.profiles},
       height: '65%',
@@ -30,7 +29,6 @@ export class CreateProfileDialogComponent {
   }
 
   importProfile(){
-    // open dialog to import a file and show the imported file content
     const dialog = this.dialog.open(ImportProfileDialogComponent, {
       data: {profiles: this.data.profiles},
       height: '65%',

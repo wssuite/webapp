@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
-  profile: string;
 
+  profileChanged: Subject<boolean>;
+  
   constructor() { 
-    this.profile = "";
+    this.profileChanged = new Subject();
   }
 
-  setProfile(newProfile: string){
-    this.profile = newProfile;
-  }
-
-  getProfile(): string {
-    return this.profile;
+  emitProfileChange(){
+    this.profileChanged.next(true);
   }
 }

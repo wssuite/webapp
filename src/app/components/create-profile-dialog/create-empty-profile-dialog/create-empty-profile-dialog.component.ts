@@ -33,7 +33,6 @@ export class CreateEmptyProfileDialogComponent {
   }
 
   create(){
-    //call the api method to create the profil
     this.api.createEmptyProfile(this.name).subscribe({
       error:(err:HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
