@@ -118,12 +118,12 @@ min_cons_contract = {
 contract_group_without_contradiction = {
     contract_group_name: "contract_group_without_contradiction",
     contract_group_contracts_list: ["minConsContract"],
-    profile: profile1
+    profile: profile1,
 }
 contract_group_with_contradiction = {
     contract_group_name: "contract_group_with_contradiction",
     contract_group_contracts_list: ["General", "FullTimeNotValid"],
-    profile: profile1
+    profile: profile1,
 }
 
 unwanted_skills_contract = {

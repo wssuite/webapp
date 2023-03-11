@@ -1,6 +1,6 @@
 from unittest import TestCase
 from test_constants import contract_group_without_contradiction
-from src.models.constract_group import ContractGroup
+from src.models.contract_group import ContractGroup
 
 
 class TestContractGroup(TestCase):

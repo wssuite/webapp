@@ -4,7 +4,7 @@ from src.models.jsonify import Jsonify
 from constants import (
     contract_group_name,
     contract_group_contracts_list,
-    profile
+    profile,
 )
 
 

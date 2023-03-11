@@ -52,3 +52,6 @@ not_enough_access = (
     "only {} have access to perform this action."
 )
 skill_not_exist = "Cannot proceed the following skills do not exist {}"
+contract_group_already_exist = (
+    "Cannot create contract group {}, because it already exists"
+)
