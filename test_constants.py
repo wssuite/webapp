@@ -34,6 +34,8 @@ from constants import (
     user_token,
     unwanted_skills,
     contract_skills,
+    contract_group_name,
+    contract_group_contracts_list,
 )
 
 profile1 = "profile1"
@@ -111,6 +113,17 @@ min_cons_contract = {
             min_constraint_weight: "5.0",
         }
     ],
+}
+
+contract_group_without_contradiction = {
+    contract_group_name: "contract_group_without_contradiction",
+    contract_group_contracts_list: ["minConsContract"],
+    profile: profile1
+}
+contract_group_with_contradiction = {
+    contract_group_name: "contract_group_with_contradiction",
+    contract_group_contracts_list: ["General", "FullTimeNotValid"],
+    profile: profile1
 }
 
 unwanted_skills_contract = {

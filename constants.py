@@ -106,3 +106,7 @@ rest_shift_group = {
 }
 
 duplicate_name = "other_profile_name"
+
+"""Contract group"""
+contract_group_name = "name"
+contract_group_contracts_list = "contracts"
