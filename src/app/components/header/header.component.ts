@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit{
   profiles: BaseProfile[];
   profileSelectorFormCtrl: FormControl;
   profile!: BaseProfile;
+  username!: string;
   
   constructor(private apiService: APIService, private router: Router,
     private dialog: MatDialog){
@@ -31,7 +32,8 @@ export class HeaderComponent implements OnInit{
   ngOnInit(): void {
     try{
       this.getProfiles();
-      this.isAdmin = CacheUtils.getIsAdmin() 
+      this.isAdmin = CacheUtils.getIsAdmin();
+      this.username = CacheUtils.getUsername();
     } catch(err){
       //Do nothing
     }
@@ -42,24 +44,27 @@ export class HeaderComponent implements OnInit{
       next:(profiles: BaseProfile[])=>{
         this.profiles = profiles;
         if(this.profiles.length === 0){
-          const dialog = this.dialog.open(CreateProfileDialogComponent,{
-            disableClose: true,  
-            height: '65%',
-            width: '55%', 
-            position: {top:'5vh',left: '25%', right: '25%'},
-          })
-          dialog.afterClosed().subscribe(()=>{
-            this.getProfiles();
-          })
+          this.openCreateProfileDialog();
         }
         else{
-          //this.profileSelectorFormCtrl.setValue(this.profiles[this.profiles.length - 1]);
           this.profile = this.profiles[this.profiles.length - 1]
         }
       },
       error: (error: HttpErrorResponse)=>{
         this.openErrorDialog(error.error);
       }
+    })
+  }
+
+  openCreateProfileDialog() {
+    const dialog = this.dialog.open(CreateProfileDialogComponent,{
+      disableClose: true,  
+      height: '65%',
+      width: '55%', 
+      position: {top:'5vh',left: '25%', right: '25%'},
+    })
+    dialog.afterClosed().subscribe(()=>{
+      this.getProfiles();
     })
   }
 
@@ -93,5 +98,13 @@ export class HeaderComponent implements OnInit{
 
   handleSelectionChange(){
     console.log(this.profile);
+  }
+
+  duplicate() {
+    //call api to duplicate the profile
+  }
+
+  deleteProfile(){
+    // call api to delete profile
   }
 }

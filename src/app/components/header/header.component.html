@@ -9,7 +9,8 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        
+        <button class="duplicate-button" mat-raised-button (click)="duplicate()">Duplicate</button>
+        <button class="delete-button" *ngIf="profile.creator === username" mat-raised-button (click)="deleteProfile()">Remove</button>
     </div>
     <div class="end-buttons">
         <button mat-icon-button>
@@ -26,6 +27,9 @@
             <button *ngIf="isAdmin" mat-menu-item (click)="goToCreateAccount()">
                 <img class="add-user" src="../../assets/add-user.png">
                 <span> Create new user</span>
+            </button>
+            <button mat-menu-item (click)="openCreateProfileDialog()">
+                <span> Create new profile</span>
             </button>
         </mat-menu>
         

@@ -46,5 +46,14 @@ export class CacheUtils {
     public static emptyCache() {
         localStorage.removeItem(TOKEN_STRING);
         localStorage.removeItem(IS_ADMIN_STRING);
+        localStorage.removeItem(USERNAME_STRING);
+    }
+
+    public static getUsername(): string{
+        const username = localStorage.getItem(USERNAME_STRING);
+        if(username === undefined || username === null){
+            throw new Error("user not logged in");
+        }
+        return username;
     }
 }

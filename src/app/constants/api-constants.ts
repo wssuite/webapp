@@ -23,3 +23,5 @@ export const FETCH_SKILLS = SHIFT_URL + FETCH_ALL;
 export const PROFILE_URL = BASE_URL + "/profile";
 export const CREATE_EMPTY_PROFILE = PROFILE_URL + "/createEmpty";
 export const FETACH_PROFILES = PROFILE_URL + FETCH_ALL;
+const DUPLICATE = "/duplicate";
+export const DUPLICATE_PROFILE= PROFILE_URL + DUPLICATE;

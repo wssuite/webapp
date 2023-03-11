@@ -18,3 +18,7 @@
 .start-container {
     margin-left: 2vw;
 }
+
+.duplicate-button, .delete-button{
+    margin-left: 5vw;
+}
