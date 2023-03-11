@@ -24,11 +24,13 @@ export class HeaderComponent implements OnInit{
   profileSelectorFormCtrl: FormControl;
   profile!: BaseProfile;
   username!: string;
+  validProfile: boolean;
   
   constructor(private apiService: APIService, private router: Router,
     private dialog: MatDialog, private profileService: ProfileService){
       this.profiles = [];
       this.profileSelectorFormCtrl = new FormControl();
+      this.validProfile = false;
     }
 
   ngOnInit(): void {
@@ -52,6 +54,7 @@ export class HeaderComponent implements OnInit{
           this.profile = this.profiles[this.profiles.length - 1]
           CacheUtils.setProfile(this.profile.profile);
           this.profileService.emitProfileChange();
+          this.validProfile = true;
         }
       },
       error: (error: HttpErrorResponse)=>{
