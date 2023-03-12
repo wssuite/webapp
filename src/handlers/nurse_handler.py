@@ -1,27 +1,13 @@
 from src.dao.contract_dao import Contract
 from src.utils.contracts_validator import ContractsValidator
 from src.dao.nurse_dao import Nurse
-from src.dao.nurse_group_dao import NurseGroupDao
 from src.handlers.base_handler import BaseHandler
 from src.exceptions.contract_exceptions import ContractNotExist
 from src.exceptions.nurse_exceptions import NurseNotFound, CannotDeleteNurse
 from constants import (
-    nurse_group_name,
-    nurse_group_contracts_list,
     nurse_username,
-    nurse_inherited_contracts,
     nurse_id,
 )
-
-
-def get_contracts_by_nurse_groups_including_nurse(
-    username, nurse_group_dao: NurseGroupDao, profile
-):
-    groups = nurse_group_dao.get_with_nurses([username], profile)
-    ret = {}
-    for group in groups:
-        ret[group[nurse_group_name]] = group[nurse_group_contracts_list]
-    return ret
 
 
 class NurseHandler(BaseHandler):
@@ -84,28 +70,11 @@ class NurseHandler(BaseHandler):
         if nurse_dict is None:
             raise NurseNotFound(nurse_to_be_found_username)
         nurse = Nurse().from_json(nurse_dict)
-        contract_by_nurse_group = (
-            get_contracts_by_nurse_groups_including_nurse(
-                nurse.username, self.nurse_group_dao, nurse.profile
-            )
-        )
-        for group in contract_by_nurse_group.keys():
-            nurse.inherited_contracts.extend(contract_by_nurse_group[group])
         return nurse.to_json()
 
     def get_all(self, token, profile):
         super().get_all(token, profile)
         all_nurses = self.nurse_dao.fetch_all(profile)
-        for nurse in all_nurses:
-            contract_by_nurse_group = (
-                get_contracts_by_nurse_groups_including_nurse(
-                    nurse[nurse_username], self.nurse_group_dao, profile
-                )
-            )
-            inherited_contracts = []
-            for group in contract_by_nurse_group.keys():
-                inherited_contracts.extend(contract_by_nurse_group[group])
-            nurse[nurse_inherited_contracts] = inherited_contracts
         return all_nurses
 
     def get_all_usernames(self, token, profile):
