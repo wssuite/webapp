@@ -6,6 +6,7 @@ from constants import (
     nurse_group_nurses_list,
     nurse_group_contracts_list,
     profile,
+    nurse_group_contract_groups,
 )
 
 
@@ -14,6 +15,9 @@ class NurseGroup(Jsonify, DBDocument):
     nurses = ListField(str, serialized_name=nurse_group_nurses_list)
     contracts = ListField(str, serialized_name=nurse_group_contracts_list)
     profile = StringField(serialized_name=profile, default_value="")
+    contract_groups = ListField(
+        str, serialized_name=nurse_group_contract_groups
+    )
 
     def db_json(self):
         return self.to_json()

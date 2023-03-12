@@ -10,9 +10,11 @@ from test_constants import (
     not_problematic_group,
     profile1,
     test_profile,
+    nurse_group_with_contract_groups,
 )
 from src.exceptions.contract_exceptions import (
     ContractNotExist,
+    ContractGroupNotExist,
 )
 from src.exceptions.nurse_exceptions import NurseNotFound, NurseGroupNotFound
 from unittest import TestCase
@@ -44,6 +46,12 @@ class TestNurseGroupHandler(TestCase):
         self.handler.nurse_dao.insert_one(patrick_nurse.copy())
         with self.assertRaises(ContractNotExist):
             self.handler.add(random_hex, problematic_nurse_group.copy())
+
+    def test_add_nurse_group_when_contract_groups_not_exist_raise_error(self):
+        with self.assertRaises(ContractGroupNotExist):
+            self.handler.add(
+                random_hex, nurse_group_with_contract_groups.copy()
+            )
 
     def test_add_nurse_group_with_no_contradiction_succeed(self):
         self.handler.nurse_dao.insert_one(patrick_nurse.copy())

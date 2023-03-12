@@ -10,6 +10,7 @@ nurse_contract_groups = "contract_groups"
 nurse_group_name = "name"
 nurse_group_nurses_list = "nurses"
 nurse_group_contracts_list = "contracts"
+nurse_group_contract_groups = nurse_contract_groups
 
 """assignment fields"""
 assignment_date = "date"

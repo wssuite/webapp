@@ -37,6 +37,7 @@ from constants import (
     contract_group_name,
     contract_group_contracts_list,
     nurse_contract_groups,
+    nurse_group_contract_groups,
 )
 
 profile1 = "profile1"
@@ -237,14 +238,6 @@ patrick_nurse = {
     nurse_contract_groups: [],
 }
 
-
-patrick_nurse_group = {
-    nurse_group_name: "patrick's group",
-    nurse_group_nurses_list: ["patrick"],
-    nurse_group_contracts_list: ["General"],
-    profile: profile1,
-}
-
 nurse_with_contract_group = {
     nurse_name: "Random nurse",
     nurse_contracts: [],
@@ -253,11 +246,20 @@ nurse_with_contract_group = {
     nurse_contract_groups: ["contract_group_without_contradiction"],
 }
 
+patrick_nurse_group = {
+    nurse_group_name: "patrick's group",
+    nurse_group_nurses_list: ["patrick"],
+    nurse_group_contracts_list: ["General"],
+    profile: profile1,
+    nurse_contract_groups: [],
+}
+
 problematic_nurse_group = {
     nurse_group_name: "problematic group",
     nurse_group_contracts_list: ["FullTime_Not_Valid"],
     nurse_group_nurses_list: ["patrick"],
     profile: profile1,
+    nurse_group_contract_groups: [],
 }
 
 not_problematic_group = {
@@ -265,7 +267,17 @@ not_problematic_group = {
     nurse_group_contracts_list: [],
     nurse_group_nurses_list: ["patrick"],
     profile: profile1,
+    nurse_group_contract_groups: [],
 }
+
+nurse_group_with_contract_groups = {
+    nurse_group_name: "random_group",
+    nurse_group_contracts_list: [],
+    nurse_group_nurses_list: [],
+    profile: profile1,
+    nurse_group_contract_groups: ["contract_group_without_contradiction"],
+}
+
 test_profile = {
     profile_name: profile1,
     profile_creator: admin,

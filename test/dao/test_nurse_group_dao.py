@@ -10,8 +10,9 @@ from constants import (
     nurse_group_contracts_list,
     nurse_group_nurses_list,
     profile,
+    nurse_group_contract_groups,
 )
-from test_constants import profile1, profile2
+from test_constants import profile1, profile2, nurse_group_with_contract_groups
 
 
 def create_nurse_group_dao():
@@ -26,12 +27,14 @@ class TestNurseDao(TestCase):
             nurse_group_contracts_list: ["FullTime"],
             nurse_group_nurses_list: ["Patrick"],
             profile: profile1,
+            nurse_group_contract_groups: [],
         }
         self.nurse_group_update = {
             nurse_group_name: "random",
             nurse_group_contracts_list: ["FullTime", "random contract"],
             nurse_group_nurses_list: ["Eve"],
             profile: profile1,
+            nurse_group_contract_groups: [],
         }
         self.dao = create_nurse_group_dao()
 
@@ -105,3 +108,16 @@ class TestNurseDao(TestCase):
         self.assertEqual(1, len(profile1_nurse_groups_before))
         self.assertEqual(1, len(profile2_nurse_groups))
         self.assertEqual(0, len(profile1_nurse_groups_after))
+
+    def test_get_nurse_group_with_contract_groups(self):
+        nurse_group = NurseGroup().from_json(
+            nurse_group_with_contract_groups.copy()
+        )
+        self.dao.insert_one_if_not_exist(nurse_group.db_json())
+        actual_nurse_groups = self.dao.get_with_contract_groups(
+            ["contract_group_without_contradiction"], profile1
+        )
+        self.assertEqual(1, len(actual_nurse_groups))
+        self.assertEqual(
+            nurse_group_with_contract_groups, actual_nurse_groups[0]
+        )

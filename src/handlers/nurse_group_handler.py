@@ -1,7 +1,10 @@
 from src.dao.contract_dao import Contract
 from src.handlers.base_handler import BaseHandler
 from src.models.nurse_group import NurseGroup
-from src.exceptions.contract_exceptions import ContractNotExist
+from src.exceptions.contract_exceptions import (
+    ContractNotExist,
+    ContractGroupNotExist,
+)
 from src.utils.contracts_validator import ContractsValidator
 from src.exceptions.nurse_exceptions import NurseNotFound, NurseGroupNotFound
 from constants import nurse_group_name
@@ -34,6 +37,14 @@ class NurseGroupHandler(BaseHandler):
             nurse_group_merged_contract.merge_contract_constraints(contract)
         return nurse_group, nurse_group_merged_contract
 
+    def verify_contract_groups(self, nurse_group: NurseGroup):
+        for contract_group in nurse_group.contract_groups:
+            exist = self.contract_group_dao.exist(
+                contract_group, nurse_group.profile
+            )
+            if exist is False:
+                raise ContractGroupNotExist(contract_group)
+
     def verify_group_combination_with_nurses(
         self, nurse_group, nurse_group_merged_contract: Contract
     ):
@@ -57,6 +68,7 @@ class NurseGroupHandler(BaseHandler):
         self.verify_group_combination_with_nurses(
             nurse_group, nurse_group_merged_contract
         )
+        self.verify_contract_groups(nurse_group)
         return nurse_group
 
     def add(self, token, json):

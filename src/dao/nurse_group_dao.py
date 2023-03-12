@@ -7,6 +7,7 @@ from constants import (
     nurse_group_nurses_list,
     nurse_group_contracts_list,
     profile,
+    nurse_group_contract_groups,
 )
 from pymongo.collection import Collection
 from src.models.nurse_group import NurseGroup
@@ -91,3 +92,13 @@ class NurseGroupDao(AbstractDao):
             nurse_group_object = NurseGroup().from_json(nurse_group)
             nurse_group_object.profile = profile2
             self.collection.insert_one(nurse_group_object.db_json())
+
+    def get_with_contract_groups(self, groups, profile_name):
+        cursor = self.collection.find(
+            {
+                nurse_group_contract_groups: {mongo_all_operation: groups},
+                profile: profile_name,
+            },
+            {mongo_id_field: 0},
+        )
+        return get_nurse_groups_from_cursor(cursor)
