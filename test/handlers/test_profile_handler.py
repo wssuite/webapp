@@ -10,6 +10,7 @@ from test_constants import (
     test_profile,
     profile_access,
     user1_name,
+    admin,
 )
 from constants import user_token
 from src.models.user import User
@@ -40,7 +41,7 @@ class TestProfileHandler(TestCase):
         self.handler.create_profile(random_hex, profile1)
         admin_profiles = self.handler.get_all_profiles(random_hex)
         user1_profiles_before = self.handler.get_all_profiles(random_hex2)
-        self.handler.share(random_hex, profile1, user1_name)
+        self.handler.share(random_hex, profile1, [user1_name])
         user1_profiles_after = self.handler.get_all_profiles(random_hex2)
         self.assertEqual(0, len(user1_profiles_before))
         self.assertEqual(1, len(admin_profiles))
@@ -48,7 +49,7 @@ class TestProfileHandler(TestCase):
 
     def test_revoke_access(self):
         self.handler.create_profile(random_hex, profile1)
-        self.handler.share(random_hex, profile1, user1_name)
+        self.handler.share(random_hex, profile1, [user1_name])
         self.handler.revoke_access(random_hex, profile1, user1_name)
         user1_profiles_after = self.handler.get_all_profiles(random_hex2)
         self.assertEqual(0, len(user1_profiles_after))
@@ -60,7 +61,7 @@ class TestProfileHandler(TestCase):
 
     def test_duplicate_profile_when_have_access_creates_duplicate(self):
         self.handler.create_profile(random_hex, profile1)
-        self.handler.share(random_hex, profile1, user1_name)
+        self.handler.share(random_hex, profile1, [user1_name])
         self.handler.duplicate(random_hex2, profile1, "profile2")
         all_profiles = self.handler.profile_dao.fetch_all()
         new_profile = self.handler.profile_dao.find_by_name("profile2")
@@ -69,7 +70,7 @@ class TestProfileHandler(TestCase):
 
     def test_delete_profile_when_not_creator_raise_error(self):
         self.handler.create_profile(random_hex, profile1)
-        self.handler.share(random_hex, profile1, user1_name)
+        self.handler.share(random_hex, profile1, [user1_name])
         with self.assertRaises(ProfileAccessException):
             self.handler.delete_profile(random_hex2, profile1)
         all_profiles = self.handler.profile_dao.fetch_all()
@@ -77,7 +78,13 @@ class TestProfileHandler(TestCase):
 
     def test_delete_profile_when_creator_succeed(self):
         self.handler.create_profile(random_hex, profile1)
-        self.handler.share(random_hex, profile1, user1_name)
+        self.handler.share(random_hex, profile1, [user1_name])
         self.handler.delete_profile(random_hex, profile1)
         all_profiles = self.handler.profile_dao.fetch_all()
         self.assertEqual(0, len(all_profiles))
+
+    def test_get_accessors_list(self):
+        self.handler.create_profile(random_hex, profile1)
+        actual = self.handler.get_accessors_list(random_hex, profile1)
+        expected = [admin]
+        self.assertEqual(expected, actual)

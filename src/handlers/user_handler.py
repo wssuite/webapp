@@ -17,6 +17,7 @@ from constants import (
     admin,
     user_username,
     is_admin,
+    profile_name,
 )
 
 
@@ -71,10 +72,15 @@ class AuthenticationHandler(BaseHandler):
         user_dict[user_token] = empty_token
         self.user_dao.update(user_dict)
 
-    def delete(self, username, token):
+    def delete_user(self, username, token):
         self.verify_user_is_admin(token)
         if username == admin:
             raise CannotDeleteAdmin()
+        profiles = self.profile_dao.fetch_all_with_user_access(username)
+        for profile in profiles:
+            self.profile_dao.remove_access_from_user(
+                profile[profile_name], username
+            )
         self.user_dao.remove(username)
 
     def get_all_usernames(self, token):

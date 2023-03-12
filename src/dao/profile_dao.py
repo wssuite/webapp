@@ -50,11 +50,13 @@ class ProfileDao(AbstractDao):
 
     """We can suppose that the profile exists"""
 
-    def add_access_to_user(self, name, username):
+    def add_access_to_user(self, name, usernames):
         profile_dict = self.find_by_name(name)
         access = profile_dict[profile_access]
-        if username not in access:
-            access.append(username)
+        for username in usernames:
+            if username not in access:
+                access.append(username)
+
         profile_dict[profile_access] = access
         self.collection.find_one_and_update(
             {profile_name: profile_dict[profile_name]},
@@ -74,3 +76,9 @@ class ProfileDao(AbstractDao):
 
     def remove(self, name):
         self.collection.find_one_and_delete({profile_name: name})
+
+    def get_accessors_list(self, name):
+        accessors_list = self.collection.find_one(
+            {profile_name: name}, {profile_access: 1}
+        )
+        return accessors_list[profile_access]
