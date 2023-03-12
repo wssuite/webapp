@@ -1,8 +1,8 @@
 <div (mouseleave)="emitElement()">
-    <label> Day name: </label>
+    <label> Days: </label>
     <mat-form-field appearance="fill">
         <mat-label> choose a day </mat-label>
-        <mat-select [(value)]="element.dayName" [formControl]="daySelectorFormControl">
+        <mat-select [(value)]="element.days" [formControl]="daySelectorFormControl" multiple>
             <mat-option *ngFor="let day of possibleDays" [value]="day">
                 {{day}}
             </mat-option>
@@ -11,7 +11,7 @@
     <label>Shift: </label>
     <mat-form-field appearance="fill">
         <mat-label> choose a shift </mat-label>
-        <mat-select [(value)]="element.shiftId" [formControl]="shiftSelectorFormControl">
+        <mat-select [(value)]="element.shifts" [formControl]="shiftSelectorFormControl" multiple>
             <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
                 {{shift}}
             </mat-option>
