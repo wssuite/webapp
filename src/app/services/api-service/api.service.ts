@@ -7,6 +7,8 @@ import {
   GET_USERNAMES,
   CREATE_EMPTY_PROFILE,
   FETACH_PROFILES,
+  DELETE_CONTRACT,
+  FETCH_CONTRACT_BY_NAME,
   FETCH_CONTRACT_NAMES,
   ADD_SHIFT_GROUP_URL,
   ADD_SHIFT_TYPE_URL,
@@ -34,6 +36,7 @@ import {
   FETCH_PROFILE_ACCESSORS,
   SHARE_PROFILE,
   REVOKE_PROFILE_ACCESS,
+  UPDATE_CONTRACT_URL,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { ContractInterface } from "src/app/models/Contract";
@@ -196,7 +199,15 @@ export class APIService {
   }
 
   updateShiftType(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>> {
-    return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_TYPE_URL, shiftType);
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_TYPE_URL, shiftType, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
   }
 
   addShiftGroup(shiftGroup: ShiftGroupInterface):Observable<HttpResponse<string>>{
@@ -227,7 +238,15 @@ export class APIService {
   }
 
   updateShiftGroup(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>> {
-    return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_GROUP_URL, shiftType);
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_GROUP_URL, shiftType, {
+        params: queryParams,
+      });
+    } catch(err){
+      throw new Exception("user not logged in");
+    }
   }
 
   getShiftNames():Observable<string[]> {
@@ -344,6 +363,45 @@ export class APIService {
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append(PROFILE_STRING, name);
       return this.httpClient.post<HttpResponse<string>>(CREATE_EMPTY_PROFILE, null, {
+        params: queryParams,
+      });
+    } catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+  getContractByName(name:string):Observable<ContractInterface> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append("name", name);
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
+      return this.httpClient.get<ContractInterface>(FETCH_CONTRACT_BY_NAME, {
+        params: queryParams,
+      })
+    }catch(err){
+      throw new Exception("user not logged in");
+    }    
+  }
+
+  updateContract(contract: ContractInterface):Observable<HttpResponse<string>> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.put<HttpResponse<string>>(UPDATE_CONTRACT_URL, contract, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  deleteContract(contract:string):Observable<HttpResponse<string>> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("name", contract);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
+      return this.httpClient.delete<HttpResponse<string>>(DELETE_CONTRACT,{
         params: queryParams,
       });
     } catch(err){

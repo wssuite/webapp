@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_ID, CONSTRAINTS, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID, UNWANTED_SKILLS_DISPLAY_NAME, UNWANTED_SKILLS_ID } from "src/app/constants/constraints";
 import { AlternativeShift } from "src/app/models/AlternativeShift";
@@ -15,7 +15,7 @@ import { UnwantedSkills } from "src/app/models/UnwantedSkills";
   templateUrl: "./contract-creation.component.html",
   styleUrls: ["./contract-creation.component.css"],
 })
-export class ContractCreationComponent {
+export class ContractCreationComponent implements OnInit{
 
   @Input() contract!: Contract;
   @Output() contractChange: EventEmitter<Contract>;
@@ -36,7 +36,9 @@ export class ContractCreationComponent {
   totalNumberWeekendsId: string;
   minMaxConsecutiveWorkingWeekendsId: string;
   minMaxNbAssignmentsId: string;
+  inputDisabled: boolean;
   unwantedSkillsId: string;
+  contractStartName!: string;
 
 
   constructor() {
@@ -56,6 +58,17 @@ export class ContractCreationComponent {
     this.minMaxConsecutiveWorkingWeekendsId = MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID;
     this.minMaxNbAssignmentsId = MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID;
     this.unwantedSkillsId = UNWANTED_SKILLS_ID;
+    this.inputDisabled = false;
+  }
+
+  ngOnInit(): void {
+    this.inputDisabled = this.contract.name === ""? false: true;
+    this.nameFormCtrl = new FormControl({value: this.contract.name, disabled: this.inputDisabled},
+      Validators.required);
+    this.contractStartName = this.contract.name;
+    for(let i = 0; i< this.contract.constraints.length; i++){
+      this.constraintsErrorState.push(true)
+    }
   }
   
   addConstraint(name: string) {
@@ -114,7 +127,8 @@ export class ContractCreationComponent {
   }
 
   removeConstraint(index: number) {
-    this.contract.constraints.splice(index);
+    this.contract.constraints.splice(index,1);
+    this.constraintsErrorState.splice(index,1);
     this.emitContract()
   }
 
@@ -124,8 +138,9 @@ export class ContractCreationComponent {
   }
 
   emitErrorState() {
+    console.log(this.constraintsErrorState);
     this.errorState.emit(this.nameFormCtrl.hasError('required') ||
-                this.constraintsErrorState.includes(true) || this.nameExist());
+                this.constraintsErrorState.includes(true) || (this.nameExist() && this.contractStartName === ''));
   }
 
   nameExist(): boolean {

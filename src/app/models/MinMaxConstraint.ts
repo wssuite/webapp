@@ -16,7 +16,7 @@ export class MinMaxConstraint extends Constraint {
         this.minWeight = BASE_VALUE;
         this.maxWeight = BASE_VALUE;
     }
-
+    
     validateConstraint(c:Constraint): void {
         const constraint = c as MinMaxConstraint;
         if(!constraint){
@@ -33,7 +33,7 @@ export class MinMaxConstraint extends Constraint {
             }
         throw new Exception(this.getContradictionErrorMessage());
     }
-
+        
     toJson(): MinMaxConstraintInterface {
         return {
             name: this.name,
@@ -43,8 +43,30 @@ export class MinMaxConstraint extends Constraint {
             maxWeight: this.maxWeight,
         }
     }
-}
+    
+    fromJson(c: MinMaxConstraintInterface): void {
+        this.minValue = c.minValue;
+        this.minWeight = c.minWeight;
+        this.maxValue = c.maxValue;
+        this.maxWeight = c.maxWeight;
+    }
+    
+    clone(): MinMaxConstraint {
+        const ret = new MinMaxConstraint(this.name, this.displayName);
+        ret.minValue = this.minValue;
+        ret.maxValue = this.maxValue;
+        ret.minWeight = this.minWeight;
+        ret.maxWeight = this.maxWeight;
+        return ret;
+    }
 
+    equals(c: MinMaxConstraint): boolean {
+        return this.name === c.name && this.minValue === c.minValue && this.maxValue === c.maxValue
+            && this.minWeight === c.minWeight && this.maxWeight === c.maxWeight;
+    }
+
+}
+    
 export interface MinMaxConstraintInterface extends ConstraintInterface {
     minValue: string;
     minWeight: string;

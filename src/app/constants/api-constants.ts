@@ -12,6 +12,15 @@ const UPDATE= "/update"
 
 export const ADD_CONTRACT_URL = CONTRACT_URL + ADD_STRING;
 
+//const FETCH_ALL = "/fetchAll";
+const FETCH_BY_NAME = "/fetchByName";
+const REMOVE = "/remove";
+//export const FETCH_SHIFT_NAMES = SHIFT_URL + FETCH_NAMES;
+//export const SHIFT_GROUP_URL = BASE_URL + "/shiftGroup";
+//export const FETCH_SHIFT_GROUP_NAMES = SHIFT_GROUP_URL + FETCH_NAMES;
+//export const SHIFT_TYPE_URL = BASE_URL + "/shiftType";
+//export const FETCH_SHIFT_TYPE_NAMES = SHIFT_TYPE_URL + FETCH_NAMES;
+//export const FETCH_CONTRACT_NAMES = CONTRACT_URL + FETCH_NAMES;
 export const USER_URL = BASE_URL + "/user";
 export const LOGIN_URL = USER_URL + "/login";
 export const ADD_ACCOUNT_URL = USER_URL + ADD_STRING;
@@ -61,3 +70,7 @@ const FETCH_ALL_ACCESSORS = "/fetchAllAccessors";
 export const FETCH_PROFILE_ACCESSORS = PROFILE_URL + FETCH_ALL_ACCESSORS;
 export const REVOKE_PROFILE_ACCESS = PROFILE_URL + "/revokeAccess";
 export const SHARE_PROFILE = PROFILE_URL + "/share";
+//const UPDATE= "/update"
+export const UPDATE_CONTRACT_URL = CONTRACT_URL + UPDATE;
+export const FETCH_CONTRACT_BY_NAME = CONTRACT_URL + FETCH_BY_NAME;
+export const DELETE_CONTRACT = CONTRACT_URL + REMOVE;

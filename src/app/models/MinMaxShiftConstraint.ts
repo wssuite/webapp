@@ -38,6 +38,25 @@ export class MinMaxShiftConstraint extends MinMaxConstraint{
             shiftId: this.shiftId,
         }
     }
+
+    override fromJson(c: MinMaxShiftConstraintInterface): void {
+        super.fromJson(c as MinMaxConstraintInterface);
+        this.shiftId = c.shiftId;
+    }
+
+    override clone(): MinMaxShiftConstraint {
+        const ret = new MinMaxShiftConstraint(this.name, this.displayName);
+        ret.minValue = this.minValue;
+        ret.maxValue = this.maxValue;
+        ret.minWeight = this.minWeight;
+        ret.maxWeight = this.maxWeight;
+        ret.shiftId = this.shiftId;
+        return ret;
+    }
+
+    override equals(c: MinMaxShiftConstraint): boolean {
+        return super.equals(c) && this.shiftId === c.shiftId;        
+    }
 }
 
 export interface MinMaxShiftConstraintInterface extends MinMaxConstraintInterface {

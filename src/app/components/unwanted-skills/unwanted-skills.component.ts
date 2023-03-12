@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { BASE_VALUE } from 'src/app/constants/constraints';
 import { UnwantedSkills } from 'src/app/models/UnwantedSkills';
 
 @Component({
@@ -32,6 +33,7 @@ export class UnwantedSkillsComponent implements OnInit{
       newFormControl.setValue(skill);
       this.skillsFormCtrl.push(newFormControl);
     }
+    this.weightError = this.constraint.weight === BASE_VALUE;
   }
 
   createFormControl(): FormControl {
