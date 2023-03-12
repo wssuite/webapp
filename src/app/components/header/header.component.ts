@@ -1,6 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
@@ -21,7 +20,6 @@ export class HeaderComponent implements OnInit{
   
   isAdmin!: boolean;
   profiles: BaseProfile[];
-  profileSelectorFormCtrl: FormControl;
   profile!: BaseProfile;
   username!: string;
   validProfile: boolean;
@@ -29,7 +27,6 @@ export class HeaderComponent implements OnInit{
   constructor(private apiService: APIService, private router: Router,
     private dialog: MatDialog, private profileService: ProfileService){
       this.profiles = [];
-      this.profileSelectorFormCtrl = new FormControl();
       this.validProfile = false;
     }
 
@@ -52,6 +49,7 @@ export class HeaderComponent implements OnInit{
         }
         else{
           this.profile = this.profiles[this.profiles.length - 1]
+          console.log(this.profile)
           CacheUtils.setProfile(this.profile.profile);
           this.profileService.emitProfileChange();
           this.validProfile = true;
@@ -105,6 +103,7 @@ export class HeaderComponent implements OnInit{
   }
 
   handleSelectionChange(){
+    console.log(this.profile);
     CacheUtils.setProfile(this.profile.profile);
     this.profileService.emitProfileChange();
   }

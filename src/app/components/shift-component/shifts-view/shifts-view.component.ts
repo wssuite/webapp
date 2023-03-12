@@ -1,8 +1,10 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShiftInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { ProfileService } from 'src/app/services/profile/profile.service';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ShiftCreationDialogComponent } from '../shift-creation-dialog/shift-creation-dialog.component';
@@ -12,13 +14,13 @@ import { ShiftCreationDialogComponent } from '../shift-creation-dialog/shift-cre
   templateUrl: './shifts-view.component.html',
   styleUrls: ['./shifts-view.component.css']
 })
-export class ShiftsViewComponent implements OnInit {
+export class ShiftsViewComponent implements OnInit, AfterViewInit {
   
   shifts: string[];
   connectedUser!:boolean;
   
 
-  constructor(public dialog: MatDialog, private apiService: APIService) {
+  constructor(public dialog: MatDialog, private apiService: APIService, private profileService: ProfileService) {
     this.shifts = [];
   }
 
@@ -29,6 +31,12 @@ export class ShiftsViewComponent implements OnInit {
     }catch(err){
       this.connectedUser = false;
     }
+  }
+
+  ngAfterViewInit(): void {
+      this.profileService.profileChanged.subscribe(()=>{
+        this.getShifts();
+      })
   }
 
   getShifts(){
@@ -63,7 +71,7 @@ export class ShiftsViewComponent implements OnInit {
   }
 
   createNewShift(){
-    const newShift = {name: '',startTime: '', endTime:''};
+    const newShift = {name: '',startTime: '', endTime:'', profile: CacheUtils.getProfile()};
     this.openShiftCreationDialog(newShift); 
   }
 

@@ -3,7 +3,7 @@
         <label>Profile: </label>
         <mat-form-field appearance="fill">
             <mat-label>Profile</mat-label>
-            <mat-select [(value)]="profile" [formControl]="profileSelectorFormCtrl" (selectionChange)="handleSelectionChange()">
+            <mat-select [(value)]="profile" (selectionChange)="handleSelectionChange()">
                 <mat-option *ngFor="let profile of profiles" [value]="profile">
                     {{profile.profile}}
                 </mat-option>

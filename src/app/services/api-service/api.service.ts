@@ -144,6 +144,7 @@ export class APIService {
       console.log("removeShift");
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       queryParams = queryParams.append("name", shift_name);
       return this.httpClient.delete<HttpResponse<string>>(REMOVE_SHIFT_URL, {
         params: queryParams,
@@ -182,6 +183,7 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shiftType_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.delete<HttpResponse<string>>(REMOVE_SHIFT_TYPE_URL, {
         params: queryParams,
       });
@@ -212,6 +214,7 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shiftGroup_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.delete<HttpResponse<string>>(REMOVE_SHIFT_GROUP_URL, {
         params: queryParams,
       });
@@ -242,6 +245,7 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shift_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<ShiftInterface>(FETCH_SHIFT_BY_NAMES, {
         params: queryParams,
       });
@@ -268,6 +272,7 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shiftGroup_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<ShiftGroupInterface[]>(FETCH_SHIFT_GROUP_BY_NAMES, {
         params: queryParams,
       });
@@ -294,6 +299,7 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shiftType_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<ShiftTypeInterface[]>(FETCH_SHIFT_TYPE_BY_NAMES, {
         params: queryParams,
       });

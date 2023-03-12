@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ShiftTypeCreationDialogComponent } from '../shift-type-creation-dialog/shift-type-creation-dialog.component';
@@ -56,7 +57,7 @@ export class ShiftsTypeViewComponent implements OnInit{
   }
 
   createNewShiftType(){
-    const newShiftType = {name: '', shifts: []};
+    const newShiftType = {name: '', shifts: [], profile: CacheUtils.getProfile()};
     this.openShiftTypeCreationDialog(newShiftType); 
   }
 
