@@ -14,6 +14,11 @@ export const ADD_CONTRACT_URL = CONTRACT_URL + ADD_STRING;
 
 export const USER_URL = BASE_URL + "/user";
 export const LOGIN_URL = USER_URL + "/login";
+export const ADD_ACCOUNT_URL = USER_URL + ADD_STRING;
+const DELETE_STRING = "/delete";
+export const DELETE_ACCOUNT_URL = USER_URL + DELETE_STRING;
+const FETCH_USERNAMES="/fetchAllUsernames";
+export const GET_USERNAMES = USER_URL + FETCH_USERNAMES;
 export const LOGOUT_URL = USER_URL + "/logout"
 
 
