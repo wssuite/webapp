@@ -51,4 +51,6 @@ class ContractGroupNotExist(ProjectBaseException):
 class ContractGroupDeletionError(ProjectBaseException):
     def __init__(self, group):
         contract_group = f"the contract group {group}"
-        super(ContractGroupDeletionError, self).__init__(deletion_error.format(contract_group))
+        super(ContractGroupDeletionError, self).__init__(
+            deletion_error.format(contract_group)
+        )

@@ -47,8 +47,12 @@ class ContractGroupHandler(BaseHandler):
     def delete(self, token, name, profile_name):
         super().delete(token, name, profile_name)
         usage = []
-        usage.extend(self.nurse_group_dao.get_with_contract_groups([name], profile_name))
-        usage.extend(self.nurse_dao.get_with_contract_groups([name], profile_name))
+        usage.extend(
+            self.nurse_group_dao.get_with_contract_groups([name], profile_name)
+        )
+        usage.extend(
+            self.nurse_dao.get_with_contract_groups([name], profile_name)
+        )
         if len(usage) > 0:
             raise ContractGroupDeletionError(name)
         self.contract_group_dao.remove(name, profile_name)

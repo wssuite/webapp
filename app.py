@@ -11,6 +11,7 @@ from src.controllers import (
     user_controller,
     skill_controller,
     profile_controller,
+    contract_group_controller,
 )
 import config
 from flask_cors import CORS
@@ -37,6 +38,7 @@ def create_app():
     flask_app.register_blueprint(shift_type_controller.mod)
     flask_app.register_blueprint(shift_group_controller.mod)
     flask_app.register_blueprint(contract_controller.mod)
+    flask_app.register_blueprint(contract_group_controller.mod)
     flask_app.register_blueprint(user_controller.mod)
     flask_app.register_blueprint(skill_controller.mod)
     flask_app.register_blueprint(profile_controller.mod)
