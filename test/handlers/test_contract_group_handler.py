@@ -4,6 +4,7 @@ from src.exceptions.contract_exceptions import (
     ContractGroupNotExist,
     ContractNotExist,
     ContractContradictionException,
+    ContractGroupDeletionError
 )
 from unittest import TestCase
 from test_constants import (
@@ -18,6 +19,9 @@ from test_constants import (
     min_cons_contract,
     profile1,
     contract_group_contracts_list,
+    nurse_group_with_contract_groups,
+    nurse_with_contract_group,
+    contract_group_name
 )
 
 
@@ -81,4 +85,15 @@ class TestContractGroupHandler(TestCase):
         with self.assertRaises(ContractGroupNotExist):
             self.handler.get_by_name(
                 random_hex, "contract_group_without_contradiction", profile1
+            )
+
+    def test_delete_contract_group_when_used_raise_error(self):
+        self.handler.nurse_dao.insert_one(nurse_with_contract_group.copy())
+        self.handler.nurse_group_dao.insert_one_if_not_exist(nurse_group_with_contract_groups.copy())
+        self.handler.contract_group_dao.insert_if_not_exist(contract_group_without_contradiction.copy())
+        with self.assertRaises(ContractGroupDeletionError):
+            self.handler.delete(
+                random_hex,
+                contract_group_without_contradiction[contract_group_name],
+                profile1
             )

@@ -3,6 +3,7 @@ from src.models.contract_group import ContractGroup
 from src.exceptions.contract_exceptions import (
     ContractNotExist,
     ContractGroupNotExist,
+    ContractGroupDeletionError,
 )
 from constants import contract_group_name
 from src.utils.contracts_validator import ContractsValidator
@@ -45,6 +46,11 @@ class ContractGroupHandler(BaseHandler):
 
     def delete(self, token, name, profile_name):
         super().delete(token, name, profile_name)
+        usage = []
+        usage.extend(self.nurse_group_dao.get_with_contract_groups([name], profile_name))
+        usage.extend(self.nurse_dao.get_with_contract_groups([name], profile_name))
+        if len(usage) > 0:
+            raise ContractGroupDeletionError(name)
         self.contract_group_dao.remove(name, profile_name)
 
     def get_all_names(self, token, profile_name):
