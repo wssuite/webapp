@@ -43,6 +43,7 @@ class ProfileHandler(BaseHandler):
         self.contract_dao.delete_all(name)
         self.nurse_dao.delete_all(name)
         self.nurse_group_dao.delete_all(name)
+        self.contract_group_dao.delete_all(name)
 
     def duplicate(self, token, name, other_name):
         self.verify_profile_accessors_access(token, name)
@@ -54,6 +55,7 @@ class ProfileHandler(BaseHandler):
         self.contract_dao.duplicate(name, other_name)
         self.nurse_dao.duplicate(name, other_name)
         self.nurse_group_dao.duplicate(name, other_name)
+        self.contract_group_dao.duplicate(name, other_name)
 
     def share(self, token, name, other_user):
         self.verify_profile_accessors_access(token, name)
