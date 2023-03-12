@@ -63,7 +63,7 @@ def share_profile():
     try:
         token = request.args[user_token]
         profile_name = request.args[profile]
-        user = request.args[user_username]
+        user = request.json
         profile_handler.share(token, profile_name, user)
         return Response(ok_message, 200)
     except ProjectBaseException as e:

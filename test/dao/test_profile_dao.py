@@ -32,13 +32,13 @@ class TestProfileDao(TestCase):
 
     def test_add_access_to_user_get_added(self):
         self.dao.insert_if_not_exist(test_profile.copy())
-        self.dao.add_access_to_user(test_profile[profile_name], "user2")
+        self.dao.add_access_to_user(test_profile[profile_name], ["user2"])
         actual = self.dao.find_by_name(test_profile[profile_name])
         self.assertEqual([admin, "user2"], actual[profile_access])
 
     def test_remove_access_to_user_gets_removed(self):
         self.dao.insert_if_not_exist(test_profile.copy())
-        self.dao.add_access_to_user(test_profile[profile_name], "user2")
+        self.dao.add_access_to_user(test_profile[profile_name], ["user2"])
         self.dao.remove_access_from_user(test_profile[profile_name], "user2")
         actual = self.dao.find_by_name(test_profile[profile_name])
         self.assertEqual([admin], actual[profile_access])
