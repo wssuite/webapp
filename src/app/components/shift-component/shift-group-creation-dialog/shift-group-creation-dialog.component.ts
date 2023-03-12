@@ -8,11 +8,11 @@ import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-me
 
 
 @Component({
-  selector: 'app-create-shift-group-dialog',
-  templateUrl: './create-shift-group-dialog.component.html',
-  styleUrls: ['./create-shift-group-dialog.component.css']
+  selector: 'app-shift-group-creation-dialog',
+  templateUrl: './shift-group-creation-dialog.component.html',
+  styleUrls: ['./shift-group-creation-dialog.component.css']
 })
-export class CreateShiftGroupDialogComponent implements OnInit {
+export class ShiftGroupCreationDialogComponent implements OnInit {
   selectedShift: string;
   selectedShiftType: string;
   shiftsType: string[];
@@ -23,7 +23,7 @@ export class CreateShiftGroupDialogComponent implements OnInit {
     name: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<CreateShiftGroupDialogComponent >, 
+  constructor(public dialogRef: MatDialogRef<ShiftGroupCreationDialogComponent >, 
     @Inject(MAT_DIALOG_DATA) public data: ShiftGroupInterface,
     private api: APIService,
     private dialog: MatDialog) {

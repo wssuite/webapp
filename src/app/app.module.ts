@@ -37,10 +37,10 @@ import { ErrorMessageDialogComponent } from "./components/error-message-dialog/e
 import { ShiftsViewComponent } from './components/shift-component/shifts-view/shifts-view.component';
 import { ShiftCreationDialogComponent } from './components/shift-component/shift-creation-dialog/shift-creation-dialog.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { CreateShiftGroupDialogComponent } from './components/shift-component/create-shift-group-dialog/create-shift-group-dialog.component';
+import { ShiftGroupCreationDialogComponent } from './components/shift-component/shift-group-creation-dialog/shift-group-creation-dialog.component';
 import { ShiftTypeCreationDialogComponent } from './components/shift-component/shift-type-creation-dialog/shift-type-creation-dialog.component';
 import { ShiftsTypeViewComponent } from './components/shift-component/shifts-type-view/shifts-type-view.component';
-import { ShiftGroupComponent } from './components/shift-component/shift-group/shift-group.component';
+import { ShiftGroupViewComponent } from './components/shift-component/shifts-group-view/shifts-group-view.component';
 import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatMenuModule} from '@angular/material/menu';
@@ -65,6 +65,7 @@ import { NotConnectedComponent } from './components/not-connected/not-connected.
 import { ShiftCreationComponent } from './components/shift-component/shift-creation/shift-creation.component';
 import { ShiftTypeCreationComponent } from './components/shift-component/shift-type-creation/shift-type-creation.component';
 import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
+import { ShiftGroupCreationComponent } from './components/shift-component/shift-group-creation/shift-group-creation.component';
 
 @NgModule({
   declarations: [
@@ -86,10 +87,10 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     ShiftConstraintComponent,
     MinMaxConsecutiveShiftComponent,
     UnwantedPatternsComponent,
-    CreateShiftGroupDialogComponent,
+    ShiftGroupCreationDialogComponent,
     ShiftTypeCreationDialogComponent,
     ShiftsTypeViewComponent,
-    ShiftGroupComponent,
+    ShiftGroupViewComponent,
     SidenavShiftComponent,
     BooleanConstraintComponent,
     LoginComponent,
@@ -108,6 +109,7 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     HeaderComponent,
     NotConnectedComponent,
     UnwantedSkillsComponent,
+    ShiftGroupCreationComponent,
   ],
   imports: [
     BrowserModule,

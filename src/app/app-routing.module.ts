@@ -6,7 +6,7 @@ import { ContractsViewComponent } from "./components/contracts-view/contracts-vi
 import { LoginComponent } from "./components/login/login.component";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
-import { ShiftGroupComponent } from "./components/shift-component/shift-group/shift-group.component";
+import { ShiftGroupViewComponent } from "./components/shift-component/shifts-group-view/shifts-group-view.component";
 import { ShiftsTypeViewComponent } from "./components/shift-component/shifts-type-view/shifts-type-view.component";
 import { ShiftsViewComponent } from "./components/shift-component/shifts-view/shifts-view.component";
 import { TestingComponent } from "./components/testing/testing.component";
@@ -32,7 +32,7 @@ const routes: Routes = [
   { path: TESTING, component: TestingComponent },
   { path: SHIFT, component: ShiftsViewComponent},
   { path: SHIFT_TYPE, component: ShiftsTypeViewComponent},
-  { path: SHIFT_GROUP, component: ShiftGroupComponent},
+  { path: SHIFT_GROUP, component: ShiftGroupViewComponent},
   { path: CONTRACTS, component: ContractsViewComponent},
   { path: CREATE_ACCOUNT, component: AccountCreationComponent },
 ];

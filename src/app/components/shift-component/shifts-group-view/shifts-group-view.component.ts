@@ -4,14 +4,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
-import { CreateShiftGroupDialogComponent } from '../create-shift-group-dialog/create-shift-group-dialog.component';
+import { ShiftGroupCreationDialogComponent } from '../shift-group-creation-dialog/shift-group-creation-dialog.component';
 
 @Component({
-  selector: 'app-shift-group',
-  templateUrl: './shift-group.component.html',
-  styleUrls: ['./shift-group.component.css']
+  selector: 'app-shifts-group-view',
+  templateUrl: './shifts-group-view.component.html',
+  styleUrls: ['./shift-group-view.component.css']
 })
-export class ShiftGroupComponent implements OnInit{
+export class ShiftGroupViewComponent implements OnInit{
   shiftsGroup: string[];
   panelOpenState: boolean
   connectedUser!: boolean;
@@ -46,7 +46,7 @@ export class ShiftGroupComponent implements OnInit{
     })
   }
   openShiftGroupDialog() {
-    const dialog = this.dialog.open(CreateShiftGroupDialogComponent,  
+    const dialog = this.dialog.open(ShiftGroupCreationDialogComponent,  
       { disableClose: true,  
         height: '80%',
         width: '50%', 
