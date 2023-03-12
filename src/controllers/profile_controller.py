@@ -80,3 +80,13 @@ def revoke_access():
         return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/fetchAllAccessors", methods=["GET"])
+def get_accessors():
+    try:
+        token = request.args[user_token]
+        profile_name = request.args[profile]
+        return profile_handler.get_accessors_list(token, profile_name)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)

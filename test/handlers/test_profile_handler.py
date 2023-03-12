@@ -10,6 +10,7 @@ from test_constants import (
     test_profile,
     profile_access,
     user1_name,
+    admin,
 )
 from constants import user_token
 from src.models.user import User
@@ -81,3 +82,9 @@ class TestProfileHandler(TestCase):
         self.handler.delete_profile(random_hex, profile1)
         all_profiles = self.handler.profile_dao.fetch_all()
         self.assertEqual(0, len(all_profiles))
+
+    def test_get_accessors_list(self):
+        self.handler.create_profile(random_hex, profile1)
+        actual = self.handler.get_accessors_list(random_hex, profile1)
+        expected = [admin]
+        self.assertEqual(expected, actual)

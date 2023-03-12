@@ -74,3 +74,9 @@ class ProfileDao(AbstractDao):
 
     def remove(self, name):
         self.collection.find_one_and_delete({profile_name: name})
+
+    def get_accessors_list(self, name):
+        accessors_list = self.collection.find_one(
+            {profile_name: name}, {profile_access: 1}
+        )
+        return accessors_list[profile_access]

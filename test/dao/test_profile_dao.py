@@ -50,3 +50,9 @@ class TestProfileDao(TestCase):
         after = self.dao.fetch_all()
         self.assertEqual(1, len(before))
         self.assertEqual(0, len(after))
+
+    def test_get_accessors_list(self):
+        self.dao.insert_if_not_exist(test_profile.copy())
+        actual = self.dao.get_accessors_list(test_profile[profile_name])
+        expected = [admin]
+        self.assertEqual(expected, actual)
