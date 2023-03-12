@@ -11,6 +11,7 @@
         </mat-form-field>
         <button class="duplicate-button" mat-raised-button (click)="duplicate()">Duplicate</button>
         <button class="delete-button" *ngIf="profile.creator === username" mat-raised-button (click)="deleteProfile()">Remove</button>
+        <button class="share-button" mat-raised-button (click)="share()">Share</button>
     </div>
     <div class="end-buttons">
         <button mat-icon-button>

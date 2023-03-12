@@ -20,7 +20,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -69,6 +69,7 @@ import { CreateProfileDialogComponent } from './components/create-profile-dialog
 import { CreateEmptyProfileDialogComponent } from './components/create-profile-dialog/create-empty-profile-dialog/create-empty-profile-dialog.component';
 import { ImportProfileDialogComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
 import { DuplicateProfileComponent } from './components/create-profile-dialog/duplicate-profile/duplicate-profile.component';
+import { ShareProfileComponent } from './components/create-profile-dialog/share-profile/share-profile.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { DuplicateProfileComponent } from './components/create-profile-dialog/du
     CreateEmptyProfileDialogComponent,
     ImportProfileDialogComponent,
     DuplicateProfileComponent,
+    ShareProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -146,6 +148,7 @@ import { DuplicateProfileComponent } from './components/create-profile-dialog/du
     MatCardModule,
     MatMenuModule,
     MatPaginatorModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

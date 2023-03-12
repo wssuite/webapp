@@ -57,3 +57,7 @@ export const FETACH_PROFILES = PROFILE_URL + FETCH_ALL;
 const DUPLICATE = "/duplicate";
 export const DUPLICATE_PROFILE= PROFILE_URL + DUPLICATE;
 export const DELETE_PROFILE = PROFILE_URL + DELETE_STRING;
+const FETCH_ALL_ACCESSORS = "/fetchAllAccessors";
+export const FETCH_PROFILE_ACCESSORS = PROFILE_URL + FETCH_ALL_ACCESSORS;
+export const REVOKE_PROFILE_ACCESS = PROFILE_URL + "/revokeAccess";
+export const SHARE_PROFILE = PROFILE_URL + "/share";

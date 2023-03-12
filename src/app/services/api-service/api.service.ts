@@ -31,6 +31,9 @@ import {
   UPDATE_SHIFT_URL,
   UPDATE_SHIFT_TYPE_URL,
   UPDATE_SHIFT_GROUP_URL,
+  FETCH_PROFILE_ACCESSORS,
+  SHARE_PROFILE,
+  REVOKE_PROFILE_ACCESS,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { ContractInterface } from "src/app/models/Contract";
@@ -384,6 +387,46 @@ export class APIService {
       })
     } catch(err){
       throw new Exception("user not logged in");
+    }
+  }
+
+  getProfileAccessors(): Observable<string[]>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<string[]>(FETCH_PROFILE_ACCESSORS, {
+        params: queryParams,
+      })
+    } catch(err){
+      throw new Error("user not logged in")
+    }
+  }
+
+  shareProfile(users: string[]):Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.put<HttpResponse<string>>(SHARE_PROFILE, users, {
+        params: queryParams
+      })
+    } catch(err){
+      throw new Error("user not logged in");
+    }
+  }
+
+  revokeAccess(user: string): Observable<HttpResponse<string>> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      queryParams = queryParams.append("username", user);
+      return this.httpClient.put<HttpResponse<string>>(REVOKE_PROFILE_ACCESS, null, {
+        params: queryParams
+      })
+    } catch(err){
+      throw new Error("user not logged in");
     }
   }
 }

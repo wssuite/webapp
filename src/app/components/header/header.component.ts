@@ -9,6 +9,7 @@ import { ProfileService } from 'src/app/services/profile/profile.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { CreateProfileDialogComponent } from '../create-profile-dialog/create-profile-dialog.component';
 import { DuplicateProfileComponent } from '../create-profile-dialog/duplicate-profile/duplicate-profile.component';
+import { ShareProfileComponent } from '../create-profile-dialog/share-profile/share-profile.component';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 
 @Component({
@@ -131,6 +132,15 @@ export class HeaderComponent implements OnInit{
           this.getProfiles();
         }
       }
+    })
+  }
+
+  share() {
+    this.dialog.open(ShareProfileComponent, {
+      data: {profileName: this.profile.profile},
+      height: '65%',
+      width: '55%', 
+      position: {top:'5vh',left: '25%', right: '25%'},
     })
   }
 }
