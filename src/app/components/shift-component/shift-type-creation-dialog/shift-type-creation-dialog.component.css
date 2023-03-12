@@ -9,7 +9,7 @@
 }
 
 
-.nameShiftContainer{
+.nameShiftTypeContainer{
     background-color: gray;
     padding: 2%;
     font-size: 25px;
@@ -35,6 +35,6 @@ button {
     float: right;
 }
 
-.shiftSection{
+.shiftTypeSection{
     padding: 2%;
 }
