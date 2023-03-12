@@ -1,1 +1,72 @@
-<p>shift-group-creation works!</p>
+<div class="shiftType-container" (mouseleave)="emitShiftGroup()"></div>
+<div class="content"  mat-dialog-content>
+    <div class="nameShiftContainer">
+    <label>Shift group name </label>
+    <mat-form-field class = "nameForm" >
+      <mat-label>Enter shift group name</mat-label>
+      <input matInput [(ngModel)]="shiftGroup.name" [formControl]="nameShiftGroupFormCtrl" (keyup)="emitShiftGroup()">
+    </mat-form-field>
+    </div>
+</div>
+<div class="shiftSection">
+  <H1 class="shiftSectionTitle">Shifts</H1>
+  <div *ngIf="possibleShifts.length > 0">
+    <mat-form-field appearance="fill">
+      <mat-label>Select a shift</mat-label>
+      <mat-select  [(ngModel)]="selectedShift">
+        <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
+          {{ shift }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button class="addShiftButton" (click)="addShift()">
+      add Shift
+    </button>
+  </div>
+  <table class="shiftTable">
+    <tr *ngFor="let shift of shiftGroup.shifts">
+      <td class="shiftName">
+        <mat-chip>{{ shift }}</mat-chip>
+      </td>
+      <button
+        mat-raised-button
+        class="removeShiftButton"
+        (click)="removeShift(shift)"
+        color="accent"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </tr>
+  </table>
+</div>
+<div class="shiftTypeSection">
+  <H1 class="shiftTypeSectionTitle">Shifts Type</H1>
+  <div *ngIf="possibleShiftsType.length > 0">
+    <mat-form-field appearance="fill">
+      <mat-label>Select a shift type</mat-label>
+      <mat-select [(ngModel)]="selectedShiftType">
+        <mat-option *ngFor="let shiftType of possibleShiftsType" [value]="shiftType">
+          {{ shiftType}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button class="addShiftTypeButton" (click)="addShiftType()">
+      add Shift Type
+    </button>
+  </div>
+  <table class="shiftTypeTable">
+    <tr *ngFor="let shiftType of shiftGroup.shifts">
+      <td class="shiftTypeName">
+        <mat-chip>{{ shiftType }}</mat-chip>
+      </td>
+      <button
+        mat-raised-button
+        class="removeShiftTypeButton"
+        (click)="removeShiftType(shiftType)"
+        color="accent"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </tr>
+  </table>
+</div>

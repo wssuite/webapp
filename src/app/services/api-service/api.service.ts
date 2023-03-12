@@ -170,7 +170,7 @@ export class APIService {
 
   removeShiftType(shiftType_name: string):Observable<HttpResponse<string>>{
     try{
-      console.log("removeShift");
+      console.log("removeShiftType");
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shiftType_name);
@@ -200,7 +200,7 @@ export class APIService {
 
   removeShiftGroup(shiftGroup_name: string):Observable<HttpResponse<string>>{
     try{
-      console.log("removeShift");
+      console.log("removeShiftGroup");
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shiftGroup_name);

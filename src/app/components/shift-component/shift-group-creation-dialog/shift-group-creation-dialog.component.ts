@@ -1,9 +1,9 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ShiftGroupInterface} from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
 
@@ -13,30 +13,24 @@ import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-me
   styleUrls: ['./shift-group-creation-dialog.component.css']
 })
 export class ShiftGroupCreationDialogComponent implements OnInit {
-  selectedShift: string;
-  selectedShiftType: string;
-  shiftsType: string[];
-  shifts: string[];
-  possibleShifts: string[];
-  possibleShiftsType: string[];
-  inputControlForm = new FormGroup({
-    name: new FormControl(null, Validators.required),
-  });
+  @Output() errorState: EventEmitter<boolean> | undefined;
+  shiftGroupErrorState: boolean;
+  initShiftGroupName: string;
+  possibleShifts!: string[];
+  possibleShiftsType!: string[];
 
   constructor(public dialogRef: MatDialogRef<ShiftGroupCreationDialogComponent >, 
-    @Inject(MAT_DIALOG_DATA) public data: ShiftGroupInterface,
+    @Inject(MAT_DIALOG_DATA) public data: {shiftGroup: ShiftGroupInterface, shiftsGroup: string[]},
     private api: APIService,
     private dialog: MatDialog) {
     
-    this.possibleShiftsType = [];
-    this.selectedShiftType = this.possibleShiftsType[0];
-    this.possibleShifts = [];
-    this.possibleShiftsType= [];
-    this.shiftsType = [];
-    this.shifts = [];
-    this.selectedShift = this.possibleShifts[0];
+    this.errorState = new EventEmitter();
+    this.shiftGroupErrorState = true;
+    this.initShiftGroupName = data.shiftGroup.name;
 }
   ngOnInit(): void {
+    this.possibleShifts = [];
+    this.possibleShiftsType = [];
     try{
       this.api.getShiftNames().subscribe({
         next: (shifts: string[])=>{
@@ -65,72 +59,40 @@ export class ShiftGroupCreationDialogComponent implements OnInit {
 
   }
 
-addShift() {
-  const index = this.possibleShifts.indexOf(this.selectedShift);
-  if (index > -1) {
-    this.possibleShifts.splice(index, 1);
-  }
-  this.shifts.push(this.selectedShift);
-  this.data.shifts.push(this.selectedShift);
-  if (this.possibleShifts.length > 0) {
-    this.selectedShift = this.possibleShifts[0];
-  }
-}
-
-removeShift(shift: string) {
-  const index = this.shifts.indexOf(shift);
-  if (index > -1) {
-    this.shifts.splice(index, 1);
-  }
-  if (shift !== undefined && shift !== null) {
-    this.possibleShifts.push(shift);
-  }
-}
-
-addShiftType() {
-  const index = this.possibleShiftsType.indexOf(this.selectedShiftType);
-  if (index > -1) {
-    this.possibleShiftsType.splice(index, 1);
-  }
-  this.shiftsType.push(this.selectedShiftType);
-  this.data.shifts.push(this.selectedShiftType);
-  if (this.possibleShiftsType.length > 0) {
-    this.selectedShiftType = this.possibleShiftsType[0];
-  }
-}
-
-removeShiftType(shiftType: string) {
-  const index = this.shiftsType.indexOf(shiftType);
-  if (index > -1) {
-    this.shiftsType.splice(index, 1);
-  }
-  if (shiftType !== undefined && shiftType !== null) {
-    this.possibleShiftsType.push(shiftType);
-  }
-}
-
-
-add() {
-  try
-  { 
-    //call api service to push the contract
-    console.log(this.data);
-    this.api.addShiftGroup(this.data).subscribe({
-      error: (err: HttpErrorResponse)=> {
-        if(err.status === HttpStatusCode.Ok) {
-          this.close();
+  add() {
+    try
+    { 
+      console.log(this.data.shiftGroup);
+      if(this.initShiftGroupName == ""){
+      this.api.addShiftGroup(this.data.shiftGroup).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }
+          else{
+            this.openErrorDialog(err.error)
+          }
+        } 
+      })
+    }
+    else {
+      this.api.updateShiftGroup(this.data.shiftGroup).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }
+          else{
+            this.openErrorDialog(err.error)
+          }
         }
-        else{
-          //this.openErrorDialog(err.error)
-        }
-      } 
-    })
+      })
+    } 
   }
   catch(e){
-    console.log("error")
-    //this.openErrorDialog((e as Exception).getMessage())
+    this.openErrorDialog((e as Exception).getMessage())
   }
-}
+  }
+
 
 openErrorDialog(message: string) {
   this.dialog.open(ErrorMessageDialogComponent, {
@@ -138,9 +100,14 @@ openErrorDialog(message: string) {
   })
 }
 
-
 close(){
   this.dialogRef.close();
+
+}
+
+updateShiftGroupErrorState(e: boolean) {
+  console.log("update")
+  this.shiftGroupErrorState = e;
 }
 
 }

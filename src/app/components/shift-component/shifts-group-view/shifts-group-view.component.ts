@@ -68,7 +68,7 @@ export class ShiftGroupViewComponent implements OnInit{
     try
     { 
       //call api service to push the contract
-      this.apiService.removeShiftType(shiftGroupName).subscribe({
+      this.apiService.removeShiftGroup(shiftGroupName).subscribe({
         error: (err: HttpErrorResponse)=> {
           if(err.status === HttpStatusCode.Ok) {
             const index = this.shiftsGroup.indexOf(shiftGroupName);

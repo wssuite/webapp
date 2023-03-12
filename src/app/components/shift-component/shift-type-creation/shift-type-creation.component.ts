@@ -17,9 +17,7 @@ export class ShiftTypeCreationComponent implements OnInit {
 
   nameShiftTypeFormCtrl: FormControl;
   shiftTypeSelectorError: boolean;
-  shifts: string[];
   inputDisabled: boolean;
-  shiftsError: boolean;
   shiftTypeStartName!: string;
 
 
@@ -29,11 +27,7 @@ export class ShiftTypeCreationComponent implements OnInit {
  
     this.nameShiftTypeFormCtrl = new FormControl(null, Validators.required);
     this.shiftTypeSelectorError = true;
-    this.inputDisabled = false;
-    this.shiftsError = true;
-    this.shifts = [];
-
-    
+    this.inputDisabled = false; 
   }
 
   ngOnInit(): void {
