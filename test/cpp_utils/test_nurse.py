@@ -3,7 +3,7 @@ from unittest import TestCase
 from constants import (
     nurse_name,
     nurse_username,
-    nurse_direct_contracts,
+    nurse_contracts,
     nurse_id,
     profile,
 )
@@ -31,6 +31,6 @@ class TestNurse(TestCase):
         nurse = Nurse().from_json(self.nurse_without_contract)
         actual_db_json = nurse.db_json()
         expected = self.nurse_without_contract.copy()
-        expected[nurse_direct_contracts] = []
+        expected[nurse_contracts] = []
         expected[nurse_id] = None
         self.assertEqual(expected, actual_db_json)

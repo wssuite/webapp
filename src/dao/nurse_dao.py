@@ -8,7 +8,7 @@ from constants import (
     mongo_set_operation,
     mongo_all_operation,
     nurse_username,
-    nurse_direct_contracts,
+    nurse_contracts,
     profile,
 )
 from src.exceptions.nurse_exceptions import NurseUsernameAlreadyExist
@@ -59,7 +59,7 @@ class NurseDao(AbstractDao):
     def get_with_contracts(self, contracts, profile_name):
         cursor = self.collection.find(
             {
-                nurse_direct_contracts: {mongo_all_operation: contracts},
+                nurse_contracts: {mongo_all_operation: contracts},
                 profile: profile_name,
             },
             {mongo_id_field: 0},
