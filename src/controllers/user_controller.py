@@ -23,7 +23,7 @@ def delete_user():
     try:
         token = request.args[user_token]
         username = request.args[user_username]
-        handler.delete(username, token)
+        handler.delete_user(username, token)
         return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)

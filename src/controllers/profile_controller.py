@@ -63,7 +63,7 @@ def share_profile():
     try:
         token = request.args[user_token]
         profile_name = request.args[profile]
-        user = request.args[user_username]
+        user = request.json
         profile_handler.share(token, profile_name, user)
         return Response(ok_message, 200)
     except ProjectBaseException as e:
@@ -78,5 +78,15 @@ def revoke_access():
         user = request.args[user_username]
         profile_handler.revoke_access(token, profile_name, user)
         return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+
+
+@mod.route("/fetchAllAccessors", methods=["GET"])
+def get_accessors():
+    try:
+        token = request.args[user_token]
+        profile_name = request.args[profile]
+        return profile_handler.get_accessors_list(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)

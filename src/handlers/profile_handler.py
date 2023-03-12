@@ -62,3 +62,7 @@ class ProfileHandler(BaseHandler):
     def revoke_access(self, token, name, user):
         self.verify_profile_accessors_access(token, name)
         self.profile_dao.remove_access_from_user(name, user)
+
+    def get_accessors_list(self, token, name):
+        self.verify_profile_accessors_access(token, name)
+        return self.profile_dao.get_accessors_list(name)
