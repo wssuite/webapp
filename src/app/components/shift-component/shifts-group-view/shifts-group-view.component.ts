@@ -1,6 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ShiftGroupInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
@@ -9,16 +10,14 @@ import { ShiftGroupCreationDialogComponent } from '../shift-group-creation-dialo
 @Component({
   selector: 'app-shifts-group-view',
   templateUrl: './shifts-group-view.component.html',
-  styleUrls: ['./shift-group-view.component.css']
+  styleUrls: ['./shifts-group-view.component.css']
 })
 export class ShiftGroupViewComponent implements OnInit{
   shiftsGroup: string[];
-  panelOpenState: boolean
   connectedUser!: boolean;
   
   constructor(public dialog: MatDialog, private apiService: APIService) {
     this.shiftsGroup = [];
-    this.panelOpenState = false;
   }
   ngOnInit(): void {
     try{
@@ -45,13 +44,14 @@ export class ShiftGroupViewComponent implements OnInit{
       data: {message: message},
     })
   }
-  openShiftGroupDialog() {
+
+  openShiftGroupCreationDialog(shiftGroup: ShiftGroupInterface) {
     const dialog = this.dialog.open(ShiftGroupCreationDialogComponent,  
       { disableClose: true,  
-        height: '80%',
-        width: '50%', 
+        height: '85%',
+        width: '55%', 
         position: {top:'5vh',left: '25%', right: '25%'},
-        data: {name: '', shifts: [], shiftsType: ''}
+        data: {shiftGroup:shiftGroup, shiftsGroup:this.shiftsGroup}
       });
 
     dialog.afterClosed().subscribe(()=>{
@@ -59,53 +59,51 @@ export class ShiftGroupViewComponent implements OnInit{
       })
   }
 
-  deleteShiftGroup(shiftGroup_name: string){
-    const index = this.shiftsGroup.indexOf(shiftGroup_name);
-    if (index > -1) {
-      this.shiftsGroup.splice(index, 1);
-    }
+   createNewShiftGroup(){
+    const newShiftType = {name: '', shifts: []};
+    this.openShiftGroupCreationDialog(newShiftType); 
+  }
 
+  deleteShiftGroup(shiftGroupName: string){
     try
     { 
       //call api service to push the contract
-      console.log(shiftGroup_name);
-      this.apiService.removeShiftGroup(shiftGroup_name).subscribe({
+      this.apiService.removeShiftType(shiftGroupName).subscribe({
         error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            const index = this.shiftsGroup.indexOf(shiftGroupName);
+            if (index > -1) {
+              this.shiftsGroup.splice(index, 1);
+            }
+          }
+          else{
             this.openErrorDialog(err.error)
           }
-        })
-      }
-      catch(e){
+        } 
+      })
+    }
+    catch(e){
       console.log("error")
       this.openErrorDialog((e as Exception).getMessage())
+    }
+  }
+
+  modifyShiftGroup(shiftGroupName: string){
+    this.apiService.getShiftGroupByName(shiftGroupName).subscribe({
+      next:(shiftGroup: ShiftGroupInterface) =>{
+        this.openShiftGroupCreationDialog(shiftGroup);
+      },
+      error: (error: HttpErrorResponse)=>{
+        this.openErrorDialog(error.error);
       }
+    })
   }
 
 
- /* modifyShiftGroup(shiftGroup: string){
-    let shiftGroup;
-    this.apiService.getShiftGroup(shiftGroup).subscribe({
-      next: (shiftsGroup: string)=> {
-        shiftsGroup = shiftsGroup;
-      },
-      error: (error: HttpErrorResponse)=> {
-        //this.openErrorDialog(error.error);
-      }
-    })
 
-    const dialog = this.dialog.open(CreateShiftGroupDialogComponent,  
-      { disableClose: true,  
-        height: '80%',
-        width: '50%', 
-        position: {top:'5vh',left: '25%', right: '25%'},
-        data: {name: 'shiftGroup.name', shifts: [], shiftsType: ''}
-      });
 
-    dialog.afterClosed().subscribe(()=>{
-        this.apiService.mod
-      })
 
-  }*/
+
 }
 
 

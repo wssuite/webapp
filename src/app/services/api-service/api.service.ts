@@ -212,8 +212,8 @@ export class APIService {
     }
   }
 
-  updateShiftGroup(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>> {
-    return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_GROUP_URL, shiftType);
+  updateShiftGroup(shiftGroup: ShiftGroupInterface):Observable<HttpResponse<string>> {
+    return this.httpClient.put<HttpResponse<string>>(UPDATE_SHIFT_GROUP_URL, shiftGroup);
   }
 
   getShiftNames():Observable<string[]> {
@@ -253,12 +253,12 @@ export class APIService {
     }
   }
 
-  getShiftGroupByName(shiftGroup_name: string):Observable<ShiftGroupInterface[]> {
+  getShiftGroupByName(shiftGroup_name: string):Observable<ShiftGroupInterface> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shiftGroup_name);
-      return this.httpClient.get<ShiftGroupInterface[]>(FETCH_SHIFT_GROUP_BY_NAMES, {
+      return this.httpClient.get<ShiftGroupInterface>(FETCH_SHIFT_GROUP_BY_NAMES, {
         params: queryParams,
       });
     }catch(err){
