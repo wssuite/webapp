@@ -4,6 +4,7 @@ nurse_contracts = "contracts"
 nurse_id = "nurse_id"
 nurse_username = "username"
 nurse_inherited_contracts = "inherited_contracts"
+nurse_contract_groups = "contract_groups"
 
 """Nurse group fields"""
 nurse_group_name = "name"

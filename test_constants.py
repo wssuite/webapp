@@ -35,7 +35,7 @@ from constants import (
     unwanted_skills,
     contract_skills,
     contract_group_name,
-    contract_group_contracts_list,
+    contract_group_contracts_list, nurse_contract_groups
 )
 
 profile1 = "profile1"
@@ -233,6 +233,7 @@ patrick_nurse = {
     nurse_contracts: ["FullTime_Valid"],
     nurse_username: "patrick",
     profile: profile1,
+    nurse_contract_groups: []
 }
 
 patrick_nurse_group = {
