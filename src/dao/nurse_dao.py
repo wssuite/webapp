@@ -10,6 +10,7 @@ from constants import (
     nurse_username,
     nurse_contracts,
     profile,
+    nurse_contract_groups,
 )
 from src.exceptions.nurse_exceptions import NurseUsernameAlreadyExist
 
@@ -89,3 +90,13 @@ class NurseDao(AbstractDao):
             nurse_object = Nurse().from_json(nurse)
             nurse_object.profile = profile2
             self.collection.insert_one(nurse_object.db_json())
+
+    def get_with_contract_groups(self, groups, profile_name):
+        cursor = self.collection.find(
+            {
+                nurse_contract_groups: {mongo_all_operation: groups},
+                profile: profile_name,
+            },
+            {mongo_id_field: 0},
+        )
+        return get_nurses_from_cursor(cursor)

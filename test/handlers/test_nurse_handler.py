@@ -4,6 +4,7 @@ from src.handlers.nurse_handler import (
     NurseHandler,
     NurseNotFound,
     CannotDeleteNurse,
+    ContractGroupNotExist,
 )
 from test_constants import (
     default_user,
@@ -17,6 +18,7 @@ from test_constants import (
     full_time_not_valid_contract_with_general,
     profile1,
     test_profile,
+    nurse_with_contract_group,
 )
 from constants import user_token
 from src.exceptions.contract_exceptions import (
@@ -55,6 +57,10 @@ class TestNurseHandler(TestCase):
     def test_add_nurse_with_nonexistent_contract_raise_error(self):
         with self.assertRaises(ContractNotExist):
             self.handler.add(random_hex, nurse1)
+
+    def test_add_nurse_with_nonexistent_contract_groups_raise_error(self):
+        with self.assertRaises(ContractGroupNotExist):
+            self.handler.add(random_hex, nurse_with_contract_group.copy())
 
     def test_add_nurse_when_contract_exist_with_contract_contradiction_succeed(
         self,

@@ -2,7 +2,10 @@ from src.dao.contract_dao import Contract
 from src.utils.contracts_validator import ContractsValidator
 from src.dao.nurse_dao import Nurse
 from src.handlers.base_handler import BaseHandler
-from src.exceptions.contract_exceptions import ContractNotExist
+from src.exceptions.contract_exceptions import (
+    ContractNotExist,
+    ContractGroupNotExist,
+)
 from src.exceptions.nurse_exceptions import NurseNotFound, CannotDeleteNurse
 from constants import (
     nurse_username,
@@ -25,6 +28,14 @@ class NurseHandler(BaseHandler):
                 raise ContractNotExist(contract_string)
             contract = Contract().from_json(contract_dict)
             contract_validator.add_contract_constraints(contract)
+
+        for contract_group in nurse.contract_groups:
+            exist = self.contract_group_dao.exist(
+                contract_group, nurse.profile
+            )
+            if exist is False:
+                raise ContractGroupNotExist(contract_group)
+
         return nurse, contract_validator
 
     """

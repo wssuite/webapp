@@ -6,7 +6,8 @@ from constants import (
     nurse_contracts,
     nurse_username,
     admin,
-    profile, nurse_contract_groups
+    profile,
+    nurse_contract_groups,
 )
 
 from src.models.db_document import DBDocument

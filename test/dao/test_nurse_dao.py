@@ -6,10 +6,11 @@ from constants import (
     nurse_contracts,
     nurse_id,
     nurse_username,
-    profile, nurse_contract_groups
+    profile,
+    nurse_contract_groups,
 )
 from src.exceptions.nurse_exceptions import NurseUsernameAlreadyExist
-from test_constants import profile1, profile2
+from test_constants import profile1, profile2, nurse_with_contract_group
 
 
 def create_nurse_dao():
@@ -24,21 +25,21 @@ class TestNurseDao(TestCase):
             nurse_contracts: ["FullTime"],
             nurse_username: "random",
             profile: profile1,
-            nurse_contract_groups: []
+            nurse_contract_groups: [],
         }
         self.nurse_invalid = {
             nurse_name: "ransom",
             nurse_username: "random",
             nurse_contracts: ["FullTime"],
             profile: profile1,
-            nurse_contract_groups: []
+            nurse_contract_groups: [],
         }
         self.nurse_update = {
             nurse_name: "random",
             nurse_contracts: ["FullTime", "random contract"],
             nurse_username: "random",
             profile: profile1,
-            nurse_contract_groups: []
+            nurse_contract_groups: [],
         }
         self.dao = create_nurse_dao()
 
@@ -105,3 +106,14 @@ class TestNurseDao(TestCase):
         self.assertEqual(1, len(profile1_before))
         self.assertEqual(1, len(profile2_nurses))
         self.assertEqual(0, len(profile1_after))
+
+    def test_get_nurses_with_contract_groups(self):
+        nurse = Nurse().from_json(nurse_with_contract_group.copy())
+        inserted_id = self.dao.insert_one(nurse.db_json())
+        actual_nurse_with_contract_group = self.dao.get_with_contract_groups(
+            ["contract_group_without_contradiction"], profile1
+        )
+        expected = nurse_with_contract_group.copy()
+        expected[nurse_id] = str(inserted_id.inserted_id)
+        self.assertEqual(1, len(actual_nurse_with_contract_group))
+        self.assertEqual(expected, actual_nurse_with_contract_group[0])
