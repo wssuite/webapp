@@ -23,6 +23,7 @@ from src.exceptions.user_exceptions import (
     CannotDeleteAdmin,
     LoginRequired,
 )
+from test_constants import test_profile, profile1
 
 
 def uuid_side_effect():
@@ -39,6 +40,7 @@ class TestAuthenticationHandler(TestCase):
         db_user = user.db_json()
         db_user[user_password] = password_hash
         self.handler.user_dao.insert_one(db_user)
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def tearDown(self) -> None:
         pass
@@ -126,11 +128,29 @@ class TestAuthenticationHandler(TestCase):
     @patch("uuid.uuid4")
     def test_delete_user_as_admin_succeeds(self, mock_uuid):
         user1_dict = self.create_additional_user_as_admin(mock_uuid)
-        self.handler.delete(user1_dict[user_username], random_hex)
+        self.handler.delete_user(user1_dict[user_username], random_hex)
         self.assertEqual(
             None,
             self.handler.user_dao.find_by_username(user1_dict[user_username]),
         )
+
+    @patch("uuid.uuid4")
+    def test_delete_user_with_profile_access_removes_access_from_user(
+        self, mock_uuid
+    ):
+        user1_dict = self.create_additional_user_as_admin(mock_uuid)
+        self.handler.profile_dao.add_access_to_user(
+            profile1, [user1_dict[user_username]]
+        )
+        profiles_before = self.handler.profile_dao.fetch_all_with_user_access(
+            user1_dict[user_username]
+        )
+        self.handler.delete_user(user1_dict[user_username], random_hex)
+        profiles_after = self.handler.profile_dao.fetch_all_with_user_access(
+            user1_dict[user_username]
+        )
+        self.assertEqual(1, len(profiles_before))
+        self.assertEqual(0, len(profiles_after))
 
     @patch("uuid.uuid4")
     def test_delete_user_as_not_admin_raise_error(self, mock_uuid):
@@ -141,14 +161,14 @@ class TestAuthenticationHandler(TestCase):
         self.handler.logout(random_hex)
         self.handler.login(user1_dict)
         with self.assertRaises(AdminOnlyAction):
-            self.handler.delete(user2.username, random_hex)
+            self.handler.delete_user(user2.username, random_hex)
 
     @patch("uuid.uuid4")
     def test_delete_admin_raise_error(self, mock_uuid):
         mock_uuid.side_effect = uuid_side_effect
         self.handler.login(default_user)
         with self.assertRaises(CannotDeleteAdmin):
-            self.handler.delete(default_user[user_username], random_hex)
+            self.handler.delete_user(default_user[user_username], random_hex)
 
     @patch("uuid.uuid4")
     def test_get_all_usernames(self, mock_uuid):
