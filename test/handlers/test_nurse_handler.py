@@ -22,8 +22,7 @@ from src.exceptions.contract_exceptions import (
     ContractNotExist,
 )
 from constants import (
-    nurse_direct_contracts,
-    nurse_inherited_contracts,
+    nurse_contracts,
     nurse_id,
 )
 
@@ -66,18 +65,16 @@ class TestNurseHandler(TestCase):
 
     def test_update_nurse_without_contract_contradiction_succeed(self):
         update = patrick_nurse.copy()
-        update[nurse_direct_contracts] = []
+        update[nurse_contracts] = []
         self.handler.update(random_hex, update.copy())
         actual = self.handler.get_by_username(random_hex, "patrick", profile1)
         expected = update.copy()
-        expected[nurse_inherited_contracts] = ["General"]
         expected[nurse_id] = str(self.patrick_id.inserted_id)
         self.assertEqual(expected, actual)
 
     def test_get_all_nurses(self):
         actual = self.handler.get_all(random_hex, profile1)
         nurse_copy = patrick_nurse.copy()
-        nurse_copy[nurse_inherited_contracts] = ["General"]
         nurse_copy[nurse_id] = str(self.patrick_id.inserted_id)
         expected = [nurse_copy]
         self.assertEqual(expected, actual)

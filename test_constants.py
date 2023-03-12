@@ -12,7 +12,7 @@ from constants import (
     shift_start_time,
     shift_end_time,
     nurse_name,
-    nurse_direct_contracts,
+    nurse_contracts,
     nurse_group_name,
     nurse_group_contracts_list,
     nurse_group_nurses_list,
@@ -27,7 +27,7 @@ from constants import (
     shift_type_shifts_lists,
     shift_group_name,
     shift_group_shifts_list,
-    profile, contract_skills
+    profile,
 )
 
 profile1 = "profile1"
@@ -155,7 +155,7 @@ test_work_shift_group[shift_group_shifts_list] = ["Day"]
 
 nurse1 = {
     nurse_name: "nurse1",
-    nurse_direct_contracts: ["FullTime_Valid", "minConsContract"],
+    nurse_contracts: ["FullTime_Valid", "minConsContract"],
     nurse_username: "nurse1",
     profile: profile1,
 }
@@ -193,7 +193,7 @@ skill_array = ["Nurse", "HeadNurse", "Sociologist", "Nurse"]
 
 patrick_nurse = {
     nurse_name: "Patrick",
-    nurse_direct_contracts: ["FullTime_Valid"],
+    nurse_contracts: ["FullTime_Valid"],
     nurse_username: "patrick",
     profile: profile1,
 }
