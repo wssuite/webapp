@@ -2,7 +2,7 @@ from src.handlers.base_handler import BaseHandler
 from src.dao.contract_dao import Contract
 from src.exceptions.shift_exceptions import ShiftNotExist
 from constants import (
-    nurse_direct_contracts,
+    nurse_contracts,
     nurse_group_contracts_list,
     nurse_name,
     contract_name,
@@ -84,7 +84,7 @@ class ContractHandler(BaseHandler):
             [contract.name], contract.profile
         )
         self.contract_validation_with_other_contracts(
-            nurses_with_contract, nurse_direct_contracts, contract
+            nurses_with_contract, nurse_contracts, contract
         )
         self.contract_validation_with_other_contracts(
             nurse_groups, nurse_group_contracts_list, contract
