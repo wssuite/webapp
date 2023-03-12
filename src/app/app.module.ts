@@ -16,10 +16,13 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {MatMenuModule} from '@angular/material/menu';
+
+
+
 import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -31,6 +34,16 @@ import { ScheduleGenerationComponent } from "./components/schedule-generation/sc
 import { NurseComponent } from "./components/nurse/nurse.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
+import { ShiftsViewComponent } from './components/shift-component/shifts-view/shifts-view.component';
+import { ShiftCreationDialogComponent } from './components/shift-component/shift-creation-dialog/shift-creation-dialog.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { CreateShiftGroupDialogComponent } from './components/shift-component/create-shift-group-dialog/create-shift-group-dialog.component';
+import { ShiftTypeCreationDialogComponent } from './components/shift-component/shift-type-creation-dialog/shift-type-creation-dialog.component';
+import { ShiftsTypeViewComponent } from './components/shift-component/shifts-type-view/shifts-type-view.component';
+import { ShiftGroupComponent } from './components/shift-component/shift-group/shift-group.component';
+import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatMenuModule} from '@angular/material/menu';
 import { WeightComponent } from './components/weight/weight.component';
 import { AlternativeShiftComponent } from './components/alternative-shift/alternative-shift.component';
 import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
@@ -49,6 +62,8 @@ import { AccountCreationComponent } from './components/account-creation/account-
 import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NotConnectedComponent } from './components/not-connected/not-connected.component';
+import { ShiftCreationComponent } from './components/shift-component/shift-creation/shift-creation.component';
+import { ShiftTypeCreationComponent } from './components/shift-component/shift-type-creation/shift-type-creation.component';
 import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
 
 @NgModule({
@@ -64,12 +79,26 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     NumericInputComponent,
     TestingComponent,
     WeightComponent,
+    ShiftsViewComponent,
+    ShiftCreationDialogComponent,
     IntegerConstraintComponent,
     AlternativeShiftComponent,
     ShiftConstraintComponent,
     MinMaxConsecutiveShiftComponent,
     UnwantedPatternsComponent,
+    CreateShiftGroupDialogComponent,
+    ShiftTypeCreationDialogComponent,
+    ShiftsTypeViewComponent,
+    ShiftGroupComponent,
+    SidenavShiftComponent,
     BooleanConstraintComponent,
+    LoginComponent,
+    AccountCreationComponent,
+    AccountCreationDialogComponent,
+    HeaderComponent,
+    NotConnectedComponent,
+    ShiftCreationComponent,
+    ShiftTypeCreationComponent,
     ContractCreationDialogComponent,
     MinMaxConstraintComponent,
     ContractsViewComponent,
@@ -99,6 +128,11 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     MatDialogModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
+    NgxMaterialTimepickerModule,
+    MatExpansionModule,
+    MatTooltipModule,
+    MatSidenavModule,
+    MatButtonToggleModule,
     MatExpansionModule,
     MatTooltipModule,
     MatCardModule,
