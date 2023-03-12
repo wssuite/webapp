@@ -278,12 +278,12 @@ export class APIService {
     }
   }
 
-  getShiftTypeByName(shiftType_name: string):Observable<ShiftTypeInterface[]> {
+  getShiftTypeByName(shiftType_name: string):Observable<ShiftTypeInterface> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", shiftType_name);
-      return this.httpClient.get<ShiftTypeInterface[]>(FETCH_SHIFT_TYPE_BY_NAMES, {
+      return this.httpClient.get<ShiftTypeInterface>(FETCH_SHIFT_TYPE_BY_NAMES, {
         params: queryParams,
       });
     }catch(err){
