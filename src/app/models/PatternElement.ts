@@ -1,45 +1,57 @@
 import { Exception } from "../utils/Exception";
 
 export class PatternElement {
-    dayName: string;
-    shiftId: string;
+    days: string[];
+    shifts: string[];
 
     constructor(){
-        this.dayName = '';
-        this.shiftId = '';
+        this.days = [];
+        this.shifts = [];
     }
 
     validatePattern(p: PatternElement): void{
-        if(p.dayName === this.dayName && p.shiftId === this.shiftId){
+        let sameDays= true;
+        let sameShifts =true;
+        p.days.forEach((day: string)=>{
+            if(!this.days.includes(day)){
+                sameDays = false;
+            }
+        })
+        p.shifts.forEach((shift: string)=>{
+            if(!this.shifts.includes(shift)){
+                sameShifts = false;
+            }
+        })
+        if(sameDays && sameShifts){
             throw new Exception("Repetitive day shift pattern");
         }
     }
 
     toJson(): PatternElementInterface{
         return {
-            shiftId: this.shiftId,
-            dayName: this.dayName,
+            shifts: this.shifts,
+            days: this.days,
         }
     }
 
     fromJson(p: PatternElementInterface):void {
-        this.dayName = p.dayName;
-        this.shiftId = p.shiftId;
+        this.days = p.days;
+        this.shifts = p.shifts;
     }
 
     clone(): PatternElement {
         const ret = new PatternElement();
-        ret.dayName = this.dayName;
-        ret.shiftId = this.shiftId;
+        ret.days = this.days;
+        ret.shifts = this.shifts;
         return ret;
     }
 
     equals(p:PatternElement): boolean {
-        return this.dayName === p.dayName && this.shiftId === p.shiftId;
+        return this.days === p.days && this.shifts === p.shifts;
     }
 }
 
 export interface PatternElementInterface{
-    shiftId: string;
-    dayName: string;
+    shifts: string[];
+    days: string[];
 }

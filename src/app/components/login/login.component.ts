@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -27,6 +27,13 @@ export class LoginComponent {
     this.passwordControlForm = new FormControl(null, Validators.required);
   }
 
+  @HostListener('window:keyup',['$event'])
+  handleKeyEvent(event: KeyboardEvent){
+    if(event.key === 'Enter'){
+      this.login();
+    }
+  }
+  
   login() {
     const credentials: Credentials = {
       username: this.username,

@@ -31,6 +31,8 @@
 </mat-expansion-panel>
 <p>The constraint has {{unwantedPatternsConstraint.patternElements.length}} elements
     The constraint has an error: {{unwantedPatternsErrorState}}
+</p>
+<p *ngFor="let pattern of unwantedPatternsConstraint.patternElements">The chosen days are: {{pattern.days}}</p>
 <mat-expansion-panel>
     <mat-expansion-panel-header>
         <mat-panel-title>{{booleanConstraint.displayName}}</mat-panel-title>

@@ -31,8 +31,8 @@ export class PatternElementComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.daySelectorFormControl.setValue(this.element.dayName);
-    this.shiftSelectorFormControl.setValue(this.element.shiftId);  
+    this.daySelectorFormControl.setValue(this.element.days);
+    this.shiftSelectorFormControl.setValue(this.element.shifts);  
   }
 
   emitElement(){

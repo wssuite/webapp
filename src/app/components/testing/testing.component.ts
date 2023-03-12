@@ -10,7 +10,7 @@ import {
     TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID,
     MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME,
     UNWANTED_SKILLS_DISPLAY_NAME, UNWANTED_SKILLS_ID, } from 'src/app/constants/constraints';
-import { shiftsExample } from 'src/app/constants/shifts';
+import { shiftExample } from 'src/app/constants/shifts';
 import { AlternativeShift } from 'src/app/models/AlternativeShift';
 import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
 import { ShiftConstraint } from 'src/app/models/ShiftConstraint';
@@ -52,7 +52,7 @@ export class TestingComponent {
   SKILLS = ["Nurse", "headNurse", "Physiatre"];
 
   constructor() {
-    this.possibleShifts = shiftsExample;
+    this.possibleShifts = shiftExample;
     this.alternativeConstraint = new AlternativeShift(ALTERNATIVE_SHIFT_ID,ALTERNATIVE_SHIFT_DISPLAY_NAME);
     this.alternativeShiftConstraintErrorState = true;
     this.shiftTypeConstraint = new ShiftConstraint(FREE_DAYS_AFTER_SHIFT_ID, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME);
