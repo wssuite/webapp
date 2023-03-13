@@ -1,5 +1,4 @@
 <div *ngIf="connectedUser; else elseBlock">
-    <app-header></app-header>
     <button class="create-button" mat-raised-button color="primary"  (click)="createNewContract()">Create new contract</button>
     <div class="contracts-container">
         <div class ="contract-cards-container" >
@@ -29,7 +28,7 @@
             </mat-card>
         </div>
     </div>
-    <mat-paginator class="paginator" [length]="contracts.length" [pageSize]="pageSize" 
+    <mat-paginator [length]="contracts.length" [pageSize]="pageSize" 
         (page)="handlePageEvent($event)" showFirstLastButtons="true" ></mat-paginator>
 </div>
 <ng-template #elseBlock>

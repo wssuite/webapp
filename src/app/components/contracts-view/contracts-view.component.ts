@@ -17,7 +17,7 @@ export class ContractsViewComponent implements OnInit{
   contracts: string[];
   connectedUser!:boolean;
   displayedContracts: string[];
-  pageSize = 6;
+  pageSize = 5;
 
   constructor(private dialog: MatDialog, private apiService: APIService) {
     this.contracts = [];
