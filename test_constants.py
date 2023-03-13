@@ -38,6 +38,7 @@ from constants import (
     contract_group_contracts_list,
     nurse_contract_groups,
     nurse_group_contract_groups,
+    shift_group_shift_types,
 )
 
 profile1 = "profile1"
@@ -167,22 +168,26 @@ work_shift_group = {
     shift_group_name: "Work",
     shift_group_shifts_list: [],
     profile: profile1,
+    shift_group_shift_types: [],
 }
 rest_shift_group = {
     shift_group_name: "Rest",
     shift_group_shifts_list: [],
     profile: profile1,
+    shift_group_shift_types: [],
 }
 
 day_shift_group = {
     shift_group_name: "Day",
     shift_group_shifts_list: ["Early"],
     profile: profile1,
+    shift_group_shift_types: [],
 }
 night_shift_group = {
     shift_group_name: "Night",
     shift_group_shifts_list: [],
     profile: profile1,
+    shift_group_shift_types: [],
 }
 test_work_shift_group = work_shift_group.copy()
 test_work_shift_group[shift_group_shifts_list] = ["Day"]
