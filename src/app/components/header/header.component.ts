@@ -51,11 +51,21 @@ export class HeaderComponent implements OnInit{
           this.openCreateProfileDialog(false);
         }
         else{
-          this.profile = this.profiles[this.profiles.length - 1]
-          console.log(this.profile)
-          CacheUtils.setProfile(this.profile.profile);
-          this.profileService.emitProfileChange();
-          this.validProfile = true;
+          try{
+            const profileName = CacheUtils.getProfile();
+            this.profiles.forEach((profile: BaseProfile)=>{
+              if(profile.profile === profileName){
+                this.profile = profile;
+              }
+            })
+          } catch(err){
+            this.profile = this.profiles[this.profiles.length - 1]
+            console.log(this.profile)
+            CacheUtils.setProfile(this.profile.profile);
+          } finally{
+            this.validProfile = true;
+            this.profileService.emitProfileChange();
+          }
         }
       },
       error: (error: HttpErrorResponse)=>{
