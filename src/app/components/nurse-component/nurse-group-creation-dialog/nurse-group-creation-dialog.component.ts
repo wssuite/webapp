@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { contractsExample } from 'src/app/constants/contracts';
 import { nurses_example, nurses_name_example } from 'src/app/constants/nurses';
-import { NurseGroup, NurseInterface } from 'src/app/models/Nurse';
+import { NurseGroupInterface, NurseInterface } from 'src/app/models/Nurse';
 
 @Component({
   selector: 'app-nurse-group-creation-dialog',
@@ -23,7 +23,7 @@ export class NurseGroupCreationDialogComponent {
   });
 
 
-  constructor(public dialogRef: MatDialogRef<NurseGroupCreationDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: NurseGroup){
+  constructor(public dialogRef: MatDialogRef<NurseGroupCreationDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: NurseGroupInterface){
     this.availableContracts = contractsExample
     this.selectedContract = this.availableContracts[0]
     this.contracts = []

@@ -1,4 +1,4 @@
-import {  NurseGroup, NurseInterface} from "../models/Nurse";
+import {  NurseGroupInterface, NurseInterface} from "../models/Nurse";
 
 export const nurses_name_example:string[] = ["Caroline", "Zoe", "Mal", "Kyro", "Mark"]
 
@@ -45,7 +45,7 @@ export const nurses_example: NurseInterface[] = [
   },
 ];
 
-export const nursesGroup_example: NurseGroup[] = [
+export const nursesGroup_example: NurseGroupInterface[] = [
   {
     name: "HeadNurse contract",
     contracts: [

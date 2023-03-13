@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { nursesGroup_example } from 'src/app/constants/nurses';
-import { NurseGroup } from 'src/app/models/Nurse';
+import { NurseGroupInterface } from 'src/app/models/Nurse';
 import { NurseGroupCreationDialogComponent } from '../nurse-group-creation-dialog/nurse-group-creation-dialog.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { NurseGroupCreationDialogComponent } from '../nurse-group-creation-dialo
   styleUrls: ['./nurse-group-view.component.css']
 })
 export class NurseGroupViewComponent {
-  nursesGroup: NurseGroup[]
+  nursesGroup: NurseGroupInterface[]
 
    constructor(public dialog: MatDialog) {
     this.nursesGroup = nursesGroup_example
@@ -26,7 +26,7 @@ export class NurseGroupViewComponent {
       });
   }
 
-  deleteNurseGroup(nurse: NurseGroup){
+  deleteNurseGroup(nurse: NurseGroupInterface){
     //Manque la vérification si le shift est dans un shift type ou group
     const index = this.nursesGroup.indexOf(nurse);
     if (index > -1) {
