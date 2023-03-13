@@ -1,0 +1,30 @@
+<div (mouseleave)="emitConstraint()" class="min-max-constraint-container">
+  <div class="value-container">
+    <div class="input">
+      <label>Min value: </label>
+      <app-numeric-input
+        [(value)]="constraint.minValue"
+        (errorState)="updateMinValueErrorState($event)"
+      ></app-numeric-input>
+    </div>
+    <app-weight
+      [(weight)]="constraint.minWeight"
+      (errorState)="updateMinWeightErrorState($event)"
+      [label]="minWeightLabel"
+    ></app-weight>
+  </div>
+  <div class="value-container">
+    <div class="input">
+      <label>Max value: </label>
+      <app-numeric-input
+        [(value)]="constraint.maxValue"
+        (errorState)="updateMaxValueErrorState($event)"
+      ></app-numeric-input>
+    </div>
+    <app-weight
+      [(weight)]="constraint.maxWeight"
+      (errorState)="updateMaxWeightErrorState($event)"
+      [label]="maxWeightLabel"
+    ></app-weight>
+  </div>
+</div>
