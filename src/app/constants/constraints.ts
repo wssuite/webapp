@@ -1,6 +1,13 @@
 export const BASE_VALUE = "0";
-export const UNWANTED_PATTERNS_ID= "unwantedPatterns";
-export const UNWANTED_PATTERNS_DISPLAY_NAME = "Unwanted patterns"
+export const WEIGHT_INITIAL_VALUE = "";
+export const WEIGHT_MIN_VALUE = -100;
+export const WEIGHT_MAX_VALUE = 100;
+export const UNWANTED_PATTERNS_ID = "unwantedPatterns";
+export const UNWANTED_PATTERNS_DISPLAY_NAME = "unwanted patterns";
+export const TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_ID =
+  "totalNumberOfWeekendsInFourWeeks";
+export const TOTAL_NUMBER_OF_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME =
+  "Total Number of weekends in four weeks.";
 export const TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID = "TotalWeekendsInFourWeeks";
 export const TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME =
   "Minimum and Maximum Number of Weekends in Four Weeks";

@@ -1,5 +1,5 @@
 <div class="weight-container">
-  <label> {{ label }} (soft): </label>
+  <label> {{ label }} : </label>
   <mat-form-field appearance="fill">
     <mat-label>Enter the weight</mat-label>
     <input
@@ -17,8 +17,7 @@
         inputCtrl.hasError('min')
       "
     >
-      Please enter a valid postive number lower than 10 and up to two digits
-      after the floatting point!
+      Please enter a non-zero integer between -100 and 100.
     </mat-error>
   </mat-form-field>
   <br />
