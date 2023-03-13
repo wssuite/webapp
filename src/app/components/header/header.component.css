@@ -1,14 +1,25 @@
 .end-buttons {
-    margin-right: 5vw;
+    margin-right: 1vw;
     float:right;
-    
-    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 10vh;
 }
+
 .header-container{
-    background-color:aliceblue;
-    height: 5vh;
+    background-color:white;
+    height: 10vh;
 }
 
 .add-user{
     height: 20px
+}
+
+.icon{
+    transform: scale(3);
+}
+
+.icon-box{
+    margin: 3vh;
 }
