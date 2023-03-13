@@ -124,3 +124,19 @@ demand_min_value = "minValue"
 demand_max_value = "maxValue"
 demand_min_weight = "minWeight"
 demand_max_weight = "maxWeight"
+
+
+"""Nurse preference element"""
+preference_date = "date"
+preference_username = "username"
+preference_pref = "preference"
+preference_shift = "shift"
+preference_weight = "weight"
+
+
+"""Schedule demand"""
+schedule_start_date = "startDate"
+schedule_end_date = "endDate"
+schedule_hospital_demand = "hospitalDemand"
+schedule_pref = "preferences"
+schedule_nurses = "nurses"
