@@ -39,8 +39,8 @@ min_constraint_value = "minValue"
 min_constraint_weight = "minWeight"
 max_constraint_value = "maxValue"
 max_constraint_weight = "maxWeight"
-pattern_element_shift = shift_constraint
-pattern_element_day = "dayName"
+pattern_element_shift = "shifts"
+pattern_element_day = "days"
 unwanted_pattern_elements = "patternElements"
 
 number_of_free_days_after_shift = "NumberOfFreeDaysAfterShift"
