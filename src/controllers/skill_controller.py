@@ -42,7 +42,7 @@ def delete_skill():
         return Response(e.args, 500)
 
 
-@mod.route("fetchAllNames", methods=["GET"])
+@mod.route("/fetchAllNames", methods=["GET"])
 def get_all_skill_names():
     try:
         token = request.args[user_token]
