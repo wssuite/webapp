@@ -3,6 +3,7 @@ header{
     background-color: #255792;
     display: block;
 }
+
 span {
     margin-left: 1vw;
     text-anchor: middle;
@@ -10,12 +11,11 @@ span {
     font-size: larger;
 }
 
-
 h1{
     margin-left: 1vw;
 }
 
 .page-container{
     background-color: #F6F6F6;
-    height: 90%
+    height: 92%
 }

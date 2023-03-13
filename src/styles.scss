@@ -15,7 +15,7 @@ body {
 @include mat-core();
 
 $nurseScheduling-warn: mat-palette($mat-red);
-$nurseScheduling-primary: mat-palette($mat-light-blue);
+$nurseScheduling-primary: mat-palette($mat-indigo);
 $nurseScheduling-accent: mat-palette($mat-pink, A200, A100,A400);
 $nurseScheduling-header: mat-palette($mat-blue);
 $nurseScheduling-theme: mat-light-theme($nurseScheduling-primary, $nurseScheduling-accent, $nurseScheduling-warn);
