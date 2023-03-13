@@ -27,6 +27,7 @@ mat-expansion-panel {
 
 label {
     margin-right: 1vw;
+    font-size: 20px;
 }
 
 .name-input, .constraint-select{
@@ -38,7 +39,7 @@ label {
 }
 
 mat-expansion-panel {
-    width: 75vw;;
+    width: 70vw;
 }
 
 .skills-section-header {
@@ -56,12 +57,22 @@ mat-expansion-panel {
 .delete-skill-button {
     margin-left: 1vw;
 }
+
+mat-icon{
+    transform: scale(1.5);
+}
 .constraint-button{
     margin-right: 1vw;
     margin-top: 1vh;
+    font-size: 2vh;
 
 }
 
 .constraints{
     display: inline-flex;
 }
+
+.constraints-section{
+    width: 70vw;
+}
+

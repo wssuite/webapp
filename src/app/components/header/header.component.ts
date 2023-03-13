@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit{
   profile!: BaseProfile;
   username!: string;
   validProfile: boolean;
+  connectedUser!: boolean
   
   constructor(private apiService: APIService, private router: Router,
     private dialog: MatDialog, private profileService: ProfileService){
@@ -36,8 +37,9 @@ export class HeaderComponent implements OnInit{
       this.getProfiles();
       this.isAdmin = CacheUtils.getIsAdmin();
       this.username = CacheUtils.getUsername();
+      this.connectedUser= true; 
     } catch(err){
-      //Do nothing
+      this.connectedUser = false;
     }
   }
   

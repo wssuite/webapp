@@ -19,7 +19,10 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
   contracts: string[];
   connectedUser!:boolean;
   displayedContracts: string[];
-  pageSize = 6;
+  /*pageSize = 6;
+  page!: PageEvent;
+  indexBefore: number;*/
+  pageSize = 5;
   page!: PageEvent;
   indexBefore: number;
 

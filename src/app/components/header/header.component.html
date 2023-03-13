@@ -14,25 +14,29 @@
         <button class="share-button" mat-raised-button (click)="share()">Share</button>
     </div>
     <div class="end-buttons">
-        <button mat-icon-button>
-            <mat-icon>notifications</mat-icon>
-        </button>
-        <button class="user-icon" mat-icon-button [matMenuTriggerFor]="menu">
-            <img src="../../../assets/user.png">
-        </button>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="logout()">
-                <mat-icon>logout</mat-icon>
-                <span>logout</span>
+        <div class="icon-box">
+            <button mat-icon-button>
+                <mat-icon>notifications</mat-icon>
             </button>
-            <button *ngIf="isAdmin" mat-menu-item (click)="goToCreateAccount()">
-                <img class="add-user" src="../../assets/add-user.png">
-                <span> Create new user</span>
+        </div>
+        <div class="icon-box">
+            <button class="user-icon" mat-icon-button [matMenuTriggerFor]="menu">
+                <img src="../../../assets/user.png">
             </button>
-            <button mat-menu-item (click)="openCreateProfileDialog(true)">
-                <span> Create new profile</span>
-            </button>
-        </mat-menu>
-        
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>logout</span>
+                </button>
+                <button *ngIf="isAdmin" mat-menu-item (click)="goToCreateAccount()">
+                    <img class="add-user" src="../../assets/add-user.png">
+                    <span> Create new user</span>
+                </button>
+                <button mat-menu-item (click)="openCreateProfileDialog(true)">
+                    <span> Create new profile</span>
+                </button>
+            </mat-menu>
+        </div>    
     </div>
+    <!--<ng-template #elseBlock></ng-template>-->
 </div>

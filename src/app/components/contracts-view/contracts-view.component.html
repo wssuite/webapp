@@ -25,7 +25,7 @@
             </mat-card>
         </div>
     </div>
-    <mat-paginator class="paginator" [length]="contracts.length" [pageSize]="pageSize" 
+    <mat-paginator [length]="contracts.length" [pageSize]="pageSize" 
         (page)="handlePageEvent($event)" showFirstLastButtons="true" ></mat-paginator>
 </div>
 <ng-template #elseBlock>
