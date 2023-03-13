@@ -94,6 +94,17 @@ class TestShiftGroupDao(TestCase):
         non_existent_shift_group = self.dao.find_by_name("Work", "profile2")
         self.assertEqual(None, non_existent_shift_group)
 
+    def test_add_shift_type_to_existing_shift_group_succeed(self):
+        self.dao.insert_one_if_not_exist(self.shift_group.copy())
+        shift_group_before = self.dao.find_by_name("Work", profile1)
+        self.dao.add_shift_type_to_shift_group_list("Work", "Night", profile1)
+        shift_group_after = self.dao.find_by_name("Work", profile1)
+        self.assertEqual(["Day"], shift_group_before[shift_group_shift_types])
+        self.assertEqual(
+            ["Day", "Night"],
+            shift_group_after[shift_group_shift_types],
+        )
+
     def test_remove_shift_to_nonexistent_group_raise_error(self):
         with self.assertRaises(ShiftNotExist):
             self.dao.delete_shift_from_shift_group_list(

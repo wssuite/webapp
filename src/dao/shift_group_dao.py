@@ -88,10 +88,16 @@ class ShiftGroupDao(AbstractDao):
         )
 
     def add_shift_to_shift_group_list(self, name, shift_name, profile_name):
+        self.__add_to_list(name, shift_name, profile_name, shift_group_shifts_list)
+
+    def add_shift_type_to_shift_group_list(self, name, shift_name, profile_name):
+        self.__add_to_list(name, shift_name, profile_name, shift_group_shift_types)
+
+    def __add_to_list(self, name, shift_name, profile_name, tag):
         shift_group = self.find_by_name(name, profile_name)
         if shift_group is None:
             raise ShiftNotExist(name)
-        shift_group[shift_group_shifts_list].append(shift_name)
+        shift_group[tag].append(shift_name)
         self.update(dict(shift_group))
 
     def delete_shift_from_shift_group_list(

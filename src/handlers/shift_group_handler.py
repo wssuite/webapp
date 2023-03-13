@@ -25,13 +25,19 @@ class ShiftGroupHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         shift_group = ShiftGroup().from_json(json)
-        self.verify_shifts_exist(shift_group.shifts, shift_group.profile)
+        shifts = []
+        shifts.extend(shift_group.shifts)
+        shifts.extend(shift_group.shift_types)
+        self.verify_shifts_exist(shifts, shift_group.profile)
         self.shift_group_dao.insert_one_if_not_exist(shift_group.db_json())
 
     def update(self, token, json):
         super().update(token, json)
         shift_group = ShiftGroup().from_json(json)
-        self.verify_shifts_exist(shift_group.shifts, shift_group.profile)
+        shifts = []
+        shifts.extend(shift_group.shifts)
+        shifts.extend(shift_group.shift_types)
+        self.verify_shifts_exist(shifts, shift_group.profile)
         self.shift_group_dao.update(shift_group.db_json())
 
     def delete(self, token, name, profile):
