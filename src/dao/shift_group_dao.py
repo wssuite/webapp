@@ -7,7 +7,7 @@ from constants import (
     mongo_set_operation,
     mongo_all_operation,
     profile,
-    shift_group_shift_types
+    shift_group_shift_types,
 )
 from src.exceptions.shift_exceptions import (
     ShiftGroupAlreadyExistException,
@@ -88,10 +88,16 @@ class ShiftGroupDao(AbstractDao):
         )
 
     def add_shift_to_shift_group_list(self, name, shift_name, profile_name):
-        self.__add_to_list(name, shift_name, profile_name, shift_group_shifts_list)
+        self.__add_to_list(
+            name, shift_name, profile_name, shift_group_shifts_list
+        )
 
-    def add_shift_type_to_shift_group_list(self, name, shift_name, profile_name):
-        self.__add_to_list(name, shift_name, profile_name, shift_group_shift_types)
+    def add_shift_type_to_shift_group_list(
+        self, name, shift_name, profile_name
+    ):
+        self.__add_to_list(
+            name, shift_name, profile_name, shift_group_shift_types
+        )
 
     def __add_to_list(self, name, shift_name, profile_name, tag):
         shift_group = self.find_by_name(name, profile_name)
@@ -103,12 +109,16 @@ class ShiftGroupDao(AbstractDao):
     def delete_shift_from_shift_group_list(
         self, name, shift_name, profile_name
     ):
-        self.__delete_from_list(name, shift_name, profile_name, shift_group_shifts_list)
+        self.__delete_from_list(
+            name, shift_name, profile_name, shift_group_shifts_list
+        )
 
     def delete_shift_type_from_shift_group_list(
-            self, name, shift_type_name, profile_name
+        self, name, shift_type_name, profile_name
     ):
-        self.__delete_from_list(name, shift_type_name, profile_name, shift_group_shift_types)
+        self.__delete_from_list(
+            name, shift_type_name, profile_name, shift_group_shift_types
+        )
 
     def __delete_from_list(self, name, shift_name, profile_name, tag):
         shift_group = self.find_by_name(name, profile_name)
