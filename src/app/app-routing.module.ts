@@ -9,6 +9,7 @@ import { ScheduleGenerationComponent } from "./components/schedule-generation/sc
 import { ShiftGroupViewComponent } from "./components/shift-component/shifts-group-view/shifts-group-view.component";
 import { ShiftsTypeViewComponent } from "./components/shift-component/shifts-type-view/shifts-type-view.component";
 import { ShiftsViewComponent } from "./components/shift-component/shifts-view/shifts-view.component";
+import { SkillViewComponent } from "./components/skill-view/skill-view.component";
 import { TestingComponent } from "./components/testing/testing.component";
 import {
   CREATE_ACCOUNT,
@@ -21,6 +22,7 @@ import {
   SHIFT_TYPE,
   TESTING,
   LOGIN,
+  SKILL,
 } from "./constants/app-routes";
 
 const routes: Routes = [
@@ -35,6 +37,7 @@ const routes: Routes = [
   { path: SHIFT_GROUP, component: ShiftGroupViewComponent},
   { path: CONTRACTS, component: ContractsViewComponent},
   { path: CREATE_ACCOUNT, component: AccountCreationComponent },
+  { path: SKILL, component: SkillViewComponent},
 ];
 
 @NgModule({

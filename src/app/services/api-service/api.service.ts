@@ -27,11 +27,14 @@ import {
   UPDATE_SHIFT_TYPE_URL,
   UPDATE_SHIFT_GROUP_URL,
   FETCH_CONTRACT_NAMES,
+  DELETE_SKILL_URL,
+  ADD_SKILL_URL,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { ContractInterface } from "src/app/models/Contract";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
 import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "src/app/models/Shift";
+import { SkillInterface } from "src/app/models/skill";
 import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
 
@@ -309,6 +312,34 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       return this.httpClient.get<string[]>(FETCH_SKILLS, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+
+
+  deleteSkill(skill_name: string):Observable<HttpResponse<string>>{
+    try{
+      console.log("removeShiftGroup");
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("name", skill_name);
+      return this.httpClient.delete<HttpResponse<string>>(DELETE_SKILL_URL, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  addSkill(skill: SkillInterface):Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.post<HttpResponse<string>>(ADD_SKILL_URL, skill, {
         params: queryParams,
       });
     }catch(err){

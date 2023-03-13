@@ -66,8 +66,9 @@ import { ShiftCreationComponent } from './components/shift-component/shift-creat
 import { ShiftTypeCreationComponent } from './components/shift-component/shift-type-creation/shift-type-creation.component';
 import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
 import { ShiftGroupCreationComponent } from './components/shift-component/shift-group-creation/shift-group-creation.component';
-import { SkillComponent } from './components/skill/skill.component';
-import { SkillDialogComponent } from './components/skill-dialog/skill-dialog.component';
+import { SkillViewComponent } from './components/skill-view/skill-view.component';
+import { SkillCreationDialogComponent } from './components/skill-creation-dialog/skill-creation-dialog.component';
+import { SkillCreationComponent } from './components/skill-creation/skill-creation.component';
 
 @NgModule({
   declarations: [
@@ -112,8 +113,9 @@ import { SkillDialogComponent } from './components/skill-dialog/skill-dialog.com
     NotConnectedComponent,
     UnwantedSkillsComponent,
     ShiftGroupCreationComponent,
-    SkillComponent,
-    SkillDialogComponent,
+    SkillViewComponent,
+    SkillCreationDialogComponent,
+    SkillCreationComponent,
   ],
   imports: [
     BrowserModule,

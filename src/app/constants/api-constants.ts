@@ -50,4 +50,6 @@ const FETCH_ALL = "/fetchAll"
 export const FETCH_CONTRACT_NAMES = CONTRACT_URL + FETCH_NAMES;
 
 export const SKILLS_URL = BASE_URL + "/skill";
-export const FETCH_SKILLS = SHIFT_URL + FETCH_ALL;
+export const FETCH_SKILLS = SKILLS_URL + FETCH_ALL;
+export const DELETE_SKILL_URL = SKILLS_URL + DELETE_STRING;
+export const ADD_SKILL_URL = SKILLS_URL + ADD_STRING
