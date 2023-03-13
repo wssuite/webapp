@@ -1,3 +1,5 @@
+<div *ngIf="connectedUser; else elseBlock">
+  <app-header></app-header>
 <div class="shiftGroup">
     <div class ="shiftGroupCard">
       <mat-card *ngFor="let shiftGroup of shiftsGroup">
@@ -23,3 +25,9 @@
     </div>
 <app-sidenav-shift></app-sidenav-shift>
 <button mat-raised-button class="buttonCreate" color="primary"  (click)="createNewShiftGroup()">Create new shift group</button>
+</div>
+</div>
+<ng-template #elseBlock>
+  <app-not-connected></app-not-connected>
+</ng-template>
+
