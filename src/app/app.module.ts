@@ -37,10 +37,10 @@ import { ErrorMessageDialogComponent } from "./components/error-message-dialog/e
 import { ShiftsViewComponent } from './components/shift-component/shifts-view/shifts-view.component';
 import { ShiftCreationDialogComponent } from './components/shift-component/shift-creation-dialog/shift-creation-dialog.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { CreateShiftGroupDialogComponent } from './components/shift-component/create-shift-group-dialog/create-shift-group-dialog.component';
+import { ShiftGroupCreationDialogComponent } from './components/shift-component/shift-group-creation-dialog/shift-group-creation-dialog.component';
 import { ShiftTypeCreationDialogComponent } from './components/shift-component/shift-type-creation-dialog/shift-type-creation-dialog.component';
 import { ShiftsTypeViewComponent } from './components/shift-component/shifts-type-view/shifts-type-view.component';
-import { ShiftGroupComponent } from './components/shift-component/shift-group/shift-group.component';
+import { ShiftGroupViewComponent } from './components/shift-component/shifts-group-view/shifts-group-view.component';
 import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatMenuModule} from '@angular/material/menu';
@@ -70,6 +70,10 @@ import { CreateEmptyProfileDialogComponent } from './components/create-profile-d
 import { ImportProfileDialogComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
 import { DuplicateProfileComponent } from './components/create-profile-dialog/duplicate-profile/duplicate-profile.component';
 import { ShareProfileComponent } from './components/create-profile-dialog/share-profile/share-profile.component';
+import { ShiftGroupCreationComponent } from './components/shift-component/shift-group-creation/shift-group-creation.component';
+import { SkillViewComponent } from './components/skill-view/skill-view.component';
+import { SkillCreationDialogComponent } from './components/skill-creation-dialog/skill-creation-dialog.component';
+import { SkillCreationComponent } from './components/skill-creation/skill-creation.component';
 
 @NgModule({
   declarations: [
@@ -91,10 +95,10 @@ import { ShareProfileComponent } from './components/create-profile-dialog/share-
     ShiftConstraintComponent,
     MinMaxConsecutiveShiftComponent,
     UnwantedPatternsComponent,
-    CreateShiftGroupDialogComponent,
+    ShiftGroupCreationDialogComponent,
     ShiftTypeCreationDialogComponent,
     ShiftsTypeViewComponent,
-    ShiftGroupComponent,
+    ShiftGroupViewComponent,
     SidenavShiftComponent,
     BooleanConstraintComponent,
     LoginComponent,
@@ -118,6 +122,10 @@ import { ShareProfileComponent } from './components/create-profile-dialog/share-
     ImportProfileDialogComponent,
     DuplicateProfileComponent,
     ShareProfileComponent,
+    ShiftGroupCreationComponent,
+    SkillViewComponent,
+    SkillCreationDialogComponent,
+    SkillCreationComponent,
   ],
   imports: [
     BrowserModule,

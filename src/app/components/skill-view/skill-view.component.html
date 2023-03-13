@@ -1,0 +1,28 @@
+<div *ngIf="connectedUser; else elseBlock">
+    <app-header></app-header>
+    <div class="skill">
+      <div class ="skillCard" >
+        <mat-card *ngFor="let skill of skills">
+        <mat-card-header>
+          <mat-card-title> {{ skill}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-actions align="end">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="deleteSkill(skill)">
+                <mat-icon>delete</mat-icon>
+                <span>Detele skill</span>
+              </button>
+            </mat-menu>
+        </mat-card-actions>
+      </mat-card>
+      </div>
+    <app-sidenav-shift></app-sidenav-shift>
+    <button class="buttonCreate" mat-raised-button color="primary"  (click)="addNewSkill()">Add new skill</button>
+    </div>
+  </div>
+  <ng-template #elseBlock>
+    <app-not-connected></app-not-connected>
+  </ng-template>

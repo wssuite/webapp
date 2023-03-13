@@ -59,7 +59,7 @@ const FETCH_ALL = "/fetchAll"
 export const FETCH_CONTRACT_NAMES = CONTRACT_URL + FETCH_NAMES;
 
 export const SKILLS_URL = BASE_URL + "/skill";
-export const FETCH_SKILLS = SHIFT_URL + FETCH_ALL;
+//export const FETCH_SKILLS = SHIFT_URL + FETCH_ALL;
 export const PROFILE_URL = BASE_URL + "/profile";
 export const CREATE_EMPTY_PROFILE = PROFILE_URL + "/createEmpty";
 export const FETACH_PROFILES = PROFILE_URL + FETCH_ALL;
@@ -74,3 +74,6 @@ export const SHARE_PROFILE = PROFILE_URL + "/share";
 export const UPDATE_CONTRACT_URL = CONTRACT_URL + UPDATE;
 export const FETCH_CONTRACT_BY_NAME = CONTRACT_URL + FETCH_BY_NAME;
 export const DELETE_CONTRACT = CONTRACT_URL + REMOVE;
+export const FETCH_SKILLS = SKILLS_URL + FETCH_NAMES;
+export const DELETE_SKILL_URL = SKILLS_URL + DELETE_STRING;
+export const ADD_SKILL_URL = SKILLS_URL + ADD_STRING
