@@ -1,4 +1,4 @@
-import { ShiftInterface, ShiftGroupInterface, ShiftTypeInterface } from "../models/Shift";
+import { ShiftInterface,  ShiftTypeInterface } from "../models/Shift";
 
 export const shiftsExample: ShiftInterface[] = [
     {
