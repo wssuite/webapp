@@ -3,9 +3,11 @@
     justify-items: flex-start;
     display: flex;
 }
+
 img{
-    height: 80vh;
-    margin-left: 5vw;
+    height: 60vh;
+    margin-left: 20vw;
+    margin-top: 5vh;
 }
 
 .loginFormContainer{
@@ -13,6 +15,7 @@ img{
     margin: auto;
     float: inline-end;
 }
+
 label{
     margin-right: 1vw;
     font-size: large;
