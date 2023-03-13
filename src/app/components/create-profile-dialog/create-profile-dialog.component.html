@@ -9,5 +9,5 @@
         <p>You can also import a profile</p>
         <button mat-raised-button color="primary" (click)="importProfile()">Import profile</button>
     </div>
-    <button mat-raised-button class="close-button" color="warn" [mat-dialog-close]="true">Close</button>
+    <button mat-raised-button *ngIf="data.closeDisplayed" class="close-button" color="warn" [mat-dialog-close]="true">Close</button>
 </div>

@@ -13,7 +13,7 @@ export class CreateProfileDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<CreateProfileDialogComponent>,
-    private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data:{profiles: BaseProfile[]}
+    private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data:{profiles: BaseProfile[], closeDisplayed: boolean}
   ){}
 
   createEmptyProfile(){

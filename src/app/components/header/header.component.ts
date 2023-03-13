@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit{
       next:(profiles: BaseProfile[])=>{
         this.profiles = profiles;
         if(this.profiles.length === 0){
-          this.openCreateProfileDialog();
+          this.openCreateProfileDialog(false);
         }
         else{
           this.profile = this.profiles[this.profiles.length - 1]
@@ -62,9 +62,9 @@ export class HeaderComponent implements OnInit{
     })
   }
 
-  openCreateProfileDialog() {
+  openCreateProfileDialog(closeDisplayed: boolean) {
     const dialog = this.dialog.open(CreateProfileDialogComponent,{
-      data: {profiles: this.profiles},
+      data: {profiles: this.profiles, closeDisplayed: closeDisplayed},
       disableClose: true,  
       height: '65%',
       width: '55%', 
