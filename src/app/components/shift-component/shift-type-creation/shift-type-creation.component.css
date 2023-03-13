@@ -1,0 +1,30 @@
+
+.nameShiftTypeContainer{
+    background-color: gray;
+    padding: 2%;
+    font-size: 25px;
+    border-radius: 30px;
+    margin-top: 2%;
+}
+
+.nameForm{
+    padding-top: 2%;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 1%;
+    width: 46vw;
+}
+
+.label{
+    text-align: center;
+    padding: 2%;
+}
+
+button {
+    margin-right: 1vw;
+    float: right;
+}
+
+.shifts-Section{
+    padding: 2%;
+}
