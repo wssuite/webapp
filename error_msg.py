@@ -44,3 +44,15 @@ default_shift_group_deletion_error = (
 )
 nurse_not_found = "The nurse {} doesn't exist"
 nurse_group_not_found = "The nurse group {} doesn't exist"
+skill_already_exist = "The skill {} already exists"
+
+profile_already_exist = "The profile {} already exists. Try another name"
+not_enough_access = (
+    "The user {} don't have access to perform this action,"
+    "only {} have access to perform this action."
+)
+skill_not_exist = "Cannot proceed the following skills do not exist {}"
+contract_group_already_exist = (
+    "Cannot create contract group {}, because it already exists"
+)
+contract_group_not_exist = "The following contract groups don't exist {}"

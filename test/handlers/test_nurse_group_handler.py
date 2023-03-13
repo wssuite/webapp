@@ -8,9 +8,13 @@ from test_constants import (
     random_hex,
     full_time_contract_with_day_shift_type,
     not_problematic_group,
+    profile1,
+    test_profile,
+    nurse_group_with_contract_groups,
 )
 from src.exceptions.contract_exceptions import (
     ContractNotExist,
+    ContractGroupNotExist,
 )
 from src.exceptions.nurse_exceptions import NurseNotFound, NurseGroupNotFound
 from unittest import TestCase
@@ -29,6 +33,7 @@ class TestNurseGroupHandler(TestCase):
         self.handler.contract_dao.insert_one(
             full_time_contract_with_day_shift_type.copy()
         )
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def tearDown(self) -> None:
         pass
@@ -42,11 +47,17 @@ class TestNurseGroupHandler(TestCase):
         with self.assertRaises(ContractNotExist):
             self.handler.add(random_hex, problematic_nurse_group.copy())
 
+    def test_add_nurse_group_when_contract_groups_not_exist_raise_error(self):
+        with self.assertRaises(ContractGroupNotExist):
+            self.handler.add(
+                random_hex, nurse_group_with_contract_groups.copy()
+            )
+
     def test_add_nurse_group_with_no_contradiction_succeed(self):
         self.handler.nurse_dao.insert_one(patrick_nurse.copy())
         self.handler.add(random_hex, patrick_nurse_group.copy())
         self.handler.add(random_hex, not_problematic_group.copy())
-        actual = self.handler.get_all_names(random_hex)
+        actual = self.handler.get_all_names(random_hex, profile1)
         expected = ["patrick's group", "not problematic_group"]
         self.assertEqual(expected, actual)
 
@@ -57,14 +68,18 @@ class TestNurseGroupHandler(TestCase):
         update = patrick_nurse_group.copy()
         update[nurse_group_contracts_list] = []
         self.handler.update(random_hex, update)
-        actual = self.handler.get_by_name(random_hex, "patrick's group")
+        actual = self.handler.get_by_name(
+            random_hex, "patrick's group", profile1
+        )
         self.assertEqual(update, actual)
 
     def test_delete_nurse_group_succeed(self):
         self.handler.nurse_dao.insert_one(patrick_nurse.copy())
         self.handler.add(random_hex, patrick_nurse_group.copy())
-        before = self.handler.get_by_name(random_hex, "patrick's group")
-        self.handler.delete(random_hex, "patrick's group")
+        before = self.handler.get_by_name(
+            random_hex, "patrick's group", profile1
+        )
+        self.handler.delete(random_hex, "patrick's group", profile1)
         self.assertEqual(patrick_nurse_group, before)
         with self.assertRaises(NurseGroupNotFound):
-            self.handler.get_by_name(random_hex, "patrick's group")
+            self.handler.get_by_name(random_hex, "patrick's group", profile1)

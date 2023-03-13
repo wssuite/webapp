@@ -6,6 +6,7 @@ from constants import (
     mongo_id_field,
     mongo_set_operation,
     mongo_all_operation,
+    profile,
 )
 from src.exceptions.shift_exceptions import (
     ShiftGroupAlreadyExistException,
@@ -28,53 +29,76 @@ class ShiftGroupDao(AbstractDao):
         self.collection: Collection = self.db.shift_groups
 
     def insert_one_if_not_exist(self, shift_group: dict):
-        exist = self.exist(shift_group[shift_group_name])
+        exist = self.exist(shift_group[shift_group_name], shift_group[profile])
         if exist is True:
             raise ShiftGroupAlreadyExistException(
                 shift_group[shift_group_name]
             )
         self.collection.insert_one(shift_group)
 
-    def find_by_name(self, name):
+    def find_by_name(self, name, profile_name):
         return self.collection.find_one(
-            {shift_group_name: name}, {mongo_id_field: 0}
+            {shift_group_name: name, profile: profile_name},
+            {mongo_id_field: 0},
         )
 
-    def exist(self, name):
-        shift_group = self.find_by_name(name)
+    def exist(self, name, profile_name):
+        shift_group = self.find_by_name(name, profile_name)
         return shift_group is not None
 
-    def get_including_shifts(self, shifts):
+    def get_including_shifts(self, shifts, profile_name):
         cursor = self.collection.find(
-            {shift_group_shifts_list: {mongo_all_operation: shifts}},
+            {
+                shift_group_shifts_list: {mongo_all_operation: shifts},
+                profile: profile_name,
+            },
             {mongo_id_field: 0},
         )
         return get_shift_groups_from_cursor(cursor)
 
-    def fetch_all(self):
-        cursor = self.collection.find({}, {mongo_id_field: 0})
+    def fetch_all(self, profile_name):
+        cursor = self.collection.find(
+            {profile: profile_name}, {mongo_id_field: 0}
+        )
         return get_shift_groups_from_cursor(cursor)
 
     def update(self, shift_group: dict):
         self.collection.find_one_and_update(
-            {shift_group_name: shift_group[shift_group_name]},
+            {
+                shift_group_name: shift_group[shift_group_name],
+                profile: shift_group[profile],
+            },
             {mongo_set_operation: shift_group},
         )
 
-    def remove(self, name):
-        self.collection.find_one_and_delete({shift_group_name: name})
+    def remove(self, name, profile_name):
+        self.collection.find_one_and_delete(
+            {shift_group_name: name, profile: profile_name}
+        )
 
-    def add_shift_to_shift_group_list(self, name, shift_name):
-        shift_group = self.find_by_name(name)
+    def add_shift_to_shift_group_list(self, name, shift_name, profile_name):
+        shift_group = self.find_by_name(name, profile_name)
         if shift_group is None:
             raise ShiftNotExist(name)
         shift_group[shift_group_shifts_list].append(shift_name)
         self.update(dict(shift_group))
 
-    def delete_shift_from_shift_group_list(self, name, shift_name):
-        shift_group = self.find_by_name(name)
+    def delete_shift_from_shift_group_list(
+        self, name, shift_name, profile_name
+    ):
+        shift_group = self.find_by_name(name, profile_name)
         if shift_group is None:
             raise ShiftNotExist(name)
         if shift_name in shift_group[shift_group_shifts_list]:
             shift_group[shift_group_shifts_list].remove(shift_name)
             self.update(dict(shift_group))
+
+    def delete_all(self, profile_name):
+        self.collection.delete_many({profile: profile_name})
+
+    def duplicate(self, profile1, profile2):
+        shift_groups = self.fetch_all(profile1)
+        for shift_group in shift_groups:
+            shift_object = ShiftGroup().from_json(shift_group)
+            shift_object.profile = profile2
+            self.collection.insert_one(shift_object.db_json())
