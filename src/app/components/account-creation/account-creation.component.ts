@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountCreationDialogComponent } from './account-creation-dialog/account-creation-dialog.component';
 import { APIService } from 'src/app/services/api-service/api.service';
@@ -10,7 +10,7 @@ import { ErrorMessageDialogComponent } from '../error-message-dialog/error-messa
   templateUrl: './account-creation.component.html',
   styleUrls: ['./account-creation.component.css']
 })
-export class AccountCreationComponent {
+export class AccountCreationComponent implements OnInit{
   accounts: string[]
   connectedUser!:boolean;
   

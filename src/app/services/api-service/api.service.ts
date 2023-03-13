@@ -84,6 +84,19 @@ export class APIService {
     });
   }
 
+  addShift(shift: ShiftInterface):Observable<HttpResponse<string>>{
+    try{
+      console.log("addShift");
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.post<HttpResponse<string>>(ADD_SHIFT_URL, shift, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+  
   getAccountsUsername(): Observable<string[]> {
     try {
       let queryParams = new HttpParams();
@@ -120,19 +133,6 @@ export class APIService {
     }
   }
 
-  addShift(shift: ShiftInterface):Observable<HttpResponse<string>>{
-    try{
-      console.log("addShift");
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<HttpResponse<string>>(ADD_SHIFT_URL, shift, {
-        params: queryParams,
-      });
-    }catch(err){
-      throw new Exception("user not logged in");
-    }
-  }
-  
   addContract(contract: ContractInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();

@@ -7,11 +7,6 @@ export const CONTRACT_URL= BASE_URL + "/contract";
 const ADD_STRING = "/add";
 const REMOVE_STRING = "/remove"
 const FETCH_NAMES="/fetchAllNames";
-const FETCH_BY_NAMES = "/fetchByName";
-const UPDATE= "/update"
-
-export const ADD_CONTRACT_URL = CONTRACT_URL + ADD_STRING;
-
 //const FETCH_ALL = "/fetchAll";
 const FETCH_BY_NAME = "/fetchByName";
 const REMOVE = "/remove";
@@ -21,6 +16,11 @@ const REMOVE = "/remove";
 //export const SHIFT_TYPE_URL = BASE_URL + "/shiftType";
 //export const FETCH_SHIFT_TYPE_NAMES = SHIFT_TYPE_URL + FETCH_NAMES;
 //export const FETCH_CONTRACT_NAMES = CONTRACT_URL + FETCH_NAMES;
+const FETCH_BY_NAMES = "/fetchByName";
+const UPDATE= "/update"
+
+export const ADD_CONTRACT_URL = CONTRACT_URL + ADD_STRING;
+
 export const USER_URL = BASE_URL + "/user";
 export const LOGIN_URL = USER_URL + "/login";
 export const ADD_ACCOUNT_URL = USER_URL + ADD_STRING;

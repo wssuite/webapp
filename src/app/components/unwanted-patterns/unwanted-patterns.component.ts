@@ -29,7 +29,7 @@ export class UnwantedPatternsComponent implements OnInit {
 
   ngOnInit(): void {
     for(let i=0; i < this.constraint.patternElements.length; i++) {
-      if(this.constraint.patternElements[i].dayName === ""){
+      if(this.constraint.patternElements[i].days.length === 0){
         this.patternErrors.push(true);
       }
       else{
