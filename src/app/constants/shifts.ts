@@ -37,11 +37,7 @@ export const shiftsTypeExample: ShiftTypeInterface[] = [
     }
 ]
 
-export const shiftGroupExample: ShiftGroupInterface[] = [    
-    {
-    name:"Work",
-    shifts:[ "Early","Late","Permanent shift","Early"],
-}];
+
 
 export const shiftExample: string[] = [ "Early","Late","Permanent shift","Early"]
 

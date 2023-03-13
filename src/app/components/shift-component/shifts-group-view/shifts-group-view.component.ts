@@ -60,8 +60,8 @@ export class ShiftGroupViewComponent implements OnInit{
   }
 
    createNewShiftGroup(){
-    const newShiftType = {name: '', shifts: []};
-    this.openShiftGroupCreationDialog(newShiftType); 
+    const newShiftGroup = {name: '', shifts: [], shiftTypes: []};
+    this.openShiftGroupCreationDialog(newShiftGroup); 
   }
 
   deleteShiftGroup(shiftGroupName: string){
