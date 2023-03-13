@@ -39,6 +39,14 @@ from constants import (
     nurse_contract_groups,
     nurse_group_contract_groups,
     shift_group_shift_types,
+    demand_day,
+    demand_date,
+    demand_shift,
+    demand_max_value,
+    demand_max_weight,
+    demand_min_weight,
+    demand_min_value,
+    demand_skill,
 )
 
 profile1 = "profile1"
@@ -287,4 +295,15 @@ test_profile = {
     profile_name: profile1,
     profile_creator: admin,
     profile_access: [admin],
+}
+
+hospital_demand_element = {
+    demand_date: "2010-06-01",
+    demand_day: "Monday",
+    demand_skill: "Nurse",
+    demand_shift: "Early",
+    demand_min_value: "1.0",
+    demand_max_value: "5.0",
+    demand_min_weight: "6.0",
+    demand_max_weight: "hard",
 }
