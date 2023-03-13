@@ -1,4 +1,5 @@
 <div *ngIf="connectedUser; else elseBlock">
+    <app-header></app-header>
     <div class="account-creation-container">
             <button mat-raised-button color = "primary" class="create-button" (click)="openCreateAccountDialog()">
                 Create New Account

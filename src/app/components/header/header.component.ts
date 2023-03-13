@@ -15,15 +15,19 @@ import { ErrorMessageDialogComponent } from '../error-message-dialog/error-messa
 export class HeaderComponent implements OnInit{
   
   isAdmin!: boolean;
+  connectedUser!: boolean
   
   constructor(private apiService: APIService, private router: Router,
-    private dialog: MatDialog){}
+    private dialog: MatDialog){
+      this.connectedUser= false;
+    }
 
   ngOnInit(): void {
     try{
-      this.isAdmin = CacheUtils.getIsAdmin() 
+      this.isAdmin = CacheUtils.getIsAdmin()
+      this.connectedUser= true; 
     } catch(err){
-      //Do nothing
+      this.connectedUser = false;
     }
   }
   
