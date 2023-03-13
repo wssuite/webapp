@@ -1,92 +1,14 @@
-<div class="title" mat-dialog-title>New Nurse Group</div>
-<div class="content"  mat-dialog-content>
-   <div class="nameNurseGroupContainer">
-    <label>Name</label>
-    <mat-form-field class = "nameForm" [formGroup]="inputControlForm">
-      <mat-label>Enter nurse name</mat-label>
-      <input id="input"
-        matInput
-        placeholder="Name"
-        formControlName="name"
-        [(ngModel)]="data.name"
-      />
-    </mat-form-field>
+<div class="title" mat-dialog-title>Nurse Group</div>
+<div class="dialog-container">
+    <div class="nurseGroup-container">
+        <app-nurse-group-creation [(nurseGroup)]="data.nurseGroup" [nurseGroups]="data.nurseGroups" [possibleNurses]="possibleNurses" [selectedNurse]="possibleNurses[0]" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateNurseGroupErrorState($event)"></app-nurse-group-creation>
+    </div>
+    <div mat-dialog-action class="buttons-container">
+        <button [disabled]="nurseGroupErrorState"  mat-raised-button color="primary" (click)="add()">
+            Submit
+        </button>
+        <button  mat-raised-button color="warn" [mat-dialog-close]="true">
+            Cancel
+        </button>
     </div>
 </div>
-<div class="nurseSection">
-    <H1 class="nurseSectionTitle">Nurses</H1>
-    <div *ngIf="availableNurses.length > 0">
-      <mat-form-field appearance="fill">
-        <mat-label>Select a nurse</mat-label>
-        <mat-select [(value)]="selectedNurse">
-          <mat-option *ngFor="let nurse of availableNurses" [value]="nurse">
-            {{ nurse }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-raised-button class="addNurseButton" (click)="addNurse()">
-        add nurse
-      </button>
-    </div>
-    <table class="nurseTable">
-      <tr *ngFor="let nurse of nurses">
-        <td class="nurseName">
-          <mat-chip>
-          {{ nurse }}
-        </mat-chip>
-        </td>
-        <button
-          mat-raised-button
-          class="removeNurseButton"
-          (click)="removeNurse(nurse)"
-          color="accent"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </tr>
-    </table>
-  
-  </div>
-  <div class="contractSection">
-    <H1 class="contractSectionTitle">Contracts</H1>
-    <div *ngIf="availableContracts.length > 0">
-      <mat-form-field appearance="fill">
-        <mat-label>Select a contract</mat-label>
-        <mat-select [(value)]="selectedContract">
-          <mat-option *ngFor="let contract of availableContracts" [value]="contract">
-            {{ contract }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-raised-button class="addContractButton" (click)="addContract()">
-        add contract
-      </button>
-    </div>
-    <table class="contractTable">
-      <tr *ngFor="let contract of contracts">
-        <td class="contractName">
-          <mat-chip>
-          {{ contract }}
-        </mat-chip>
-        </td>
-        <button
-          mat-raised-button
-          class="removeContractButton"
-          (click)="removeContract(contract)"
-          color="accent"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </tr>
-    </table>
-  </div>
-
-<div mat-dialog-action class="buttons-container">
-    <button  mat-raised-button color="primary" (click)="add()">
-        Add
-    </button>
-    <button mat-raised-button color="warn" [mat-dialog-close]="true">
-        Cancel
-    </button>
-
-

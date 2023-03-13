@@ -1,88 +1,117 @@
-import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { contractsExample } from 'src/app/constants/contracts';
-import { nurses_example, nurses_name_example } from 'src/app/constants/nurses';
-import { NurseGroupInterface, NurseInterface } from 'src/app/models/Nurse';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NurseGroupInterface} from 'src/app/models/Nurse';
+import { APIService } from 'src/app/services/api-service/api.service';
+import { Exception } from 'src/app/utils/Exception';
+import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
 @Component({
   selector: 'app-nurse-group-creation-dialog',
   templateUrl: './nurse-group-creation-dialog.component.html',
   styleUrls: ['./nurse-group-creation-dialog.component.css']
 })
-export class NurseGroupCreationDialogComponent {
-  availableContracts: string[];
-  selectedContract: string;
-  contracts: string[]
-  availableNurses: string[]
-  selectedNurse: string;
-  nurses: string[]
+export class NurseGroupCreationDialogComponent implements OnInit {
+  @Output() errorState: EventEmitter<boolean>;
+  nurseGroupErrorState: boolean;
+  initNurseGroupName: string;
+  possibleContracts!: string[];
+  possibleNurses!: string[];
+  
 
-  inputControlForm = new FormGroup({
-    name: new FormControl(null, Validators.required),
-  });
+  constructor(public dialogRef: MatDialogRef<NurseGroupCreationDialogComponent >,
+    @Inject(MAT_DIALOG_DATA) public data:  {nurseGroup: NurseGroupInterface, nurseGroups: string[]},
+    private api: APIService,
+    private dialog: MatDialog,  
+) {
+  this.errorState = new EventEmitter();
+  this.nurseGroupErrorState = true;
+  this.initNurseGroupName = data.nurseGroup.name;
+      
+}
+  ngOnInit(): void {
+    this.possibleContracts = [];
+    this.possibleNurses = [];
+    try{
+      this.api.getContractNames().subscribe({
+        next: (contracts: string[])=>{
+          contracts.forEach((contract: string)=>{
+            this.possibleContracts.push(contract);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+    }catch(err){
+      //Do nothing
+    }
 
+    try{
+      this.api.getAllNurseUsername().subscribe({
+        next: (nurses: string[])=>{
+          nurses.forEach((nurse: string)=>{
+            this.possibleNurses.push(nurse);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+    }catch(err){
+      //Do nothing
+    }
 
-  constructor(public dialogRef: MatDialogRef<NurseGroupCreationDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: NurseGroupInterface){
-    this.availableContracts = contractsExample
-    this.selectedContract = this.availableContracts[0]
-    this.contracts = []
-    this.availableNurses = nurses_name_example
-    this.selectedNurse = this.availableNurses[0]
-    this.nurses = []
-  }
-
-  addContract(){
-    const index = this.availableContracts.indexOf(this.selectedContract);
-    if (index > -1) {
-      this.availableContracts.splice(index, 1);
-    }
-    this.contracts.push(this.selectedContract);
-    if (this.availableContracts.length > 0) {
-      this.selectedContract = this.availableContracts[0];
-    }
-  }
-
-  removeContract(contract: string) {
-    const index = this.contracts.indexOf(contract);
-    if (index > -1) {
-      this.contracts.splice(index, 1);
-    }
-    if (contract !== undefined && contract !== null) {
-      this.availableContracts.push(contract);
-    }
-  }
-
-  addNurse(){
-    const index = this.availableNurses.indexOf(this.selectedNurse);
-    if (index > -1) {
-      this.availableNurses.splice(index, 1);
-    }
-    this.nurses.push(this.selectedNurse);
-    if (this.availableNurses.length > 0) {
-      this.selectedNurse = this.availableNurses[0];
-    }
-  }
-
-  removeNurse(nurse: string) {
-    const index = this.nurses.indexOf(nurse);
-    if (index > -1) {
-      this.nurses.splice(index, 1);
-    }
-    if (nurse !== undefined && nurse !== null) {
-      this.availableNurses.push(nurse);
-    }
   }
 
   add() {
-    //valide form
-    //call api service to push the shift type
-    this.close();
+    try
+    { 
+      console.log(this.data.nurseGroup);
+      if(this.initNurseGroupName == ""){
+      this.api.addNurseGroup(this.data.nurseGroup).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }
+          else{
+            this.openErrorDialog(err.error)
+          }
+        } 
+      })
+    }
+    else {
+      this.api.updateNurseGroup(this.data.nurseGroup).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }          
+          else{
+            this.openErrorDialog(err.error)
+          }
+        }
+      })
+    } 
   }
-  
-  close(){
-    this.dialogRef.close();
-  
+  catch(e){
+    this.openErrorDialog((e as Exception).getMessage())
+  }
   }
 
+
+openErrorDialog(message: string) {
+  this.dialog.open(ErrorMessageDialogComponent, {
+    data: {message: message},
+  })
+}
+
+close(){
+  this.dialogRef.close();
+
+}
+
+updateNurseGroupErrorState(e: boolean) {
+  console.log("update")
+  this.nurseGroupErrorState = e;
+}
 }
