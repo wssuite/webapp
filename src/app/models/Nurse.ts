@@ -18,7 +18,7 @@ export interface NurseInterface {
   username: string;
 }
 
-export interface NurseGroup {
+export interface NurseGroupInterface {
   name: string;
   contracts: string[];
   nurses: NurseInterface[];
