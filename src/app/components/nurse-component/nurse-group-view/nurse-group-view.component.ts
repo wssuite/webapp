@@ -63,7 +63,7 @@ export class NurseGroupViewComponent implements OnInit {
   }
 
 
-  createNewNurse(){
+  createNewNurseGroup(){
     const newNurseGroup = {name: '',contracts:[], nurses:[]};
     this.openNurseGroupCreationDialog(newNurseGroup); 
   }

@@ -21,5 +21,5 @@ export interface NurseInterface {
 export interface NurseGroupInterface {
   name: string;
   contracts: string[];
-  nurses: NurseInterface[];
+  nurses: string[];
 }
