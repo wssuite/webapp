@@ -26,6 +26,7 @@ from constants import (
     contract_name,
     contract_constraints,
     contract_shifts,
+    profile,
     unwanted_skills,
     contract_skills,
 )
@@ -60,12 +61,15 @@ class Contract(Jsonify, DBDocument):
         self.name = ""
         self.constraints: List[ContractConstraint] = []
         self.shifts = []
+        self.profile = ""
         self.skills = []
 
     def from_json(self, data: dict):
         contract = Contract()
 
         contract.name = data.setdefault(contract_name, "")
+        contract.profile = data.setdefault(profile, "")
+
         constraint_creator = ContractConstraintCreator()
         constraints = data.setdefault(contract_constraints, [])
         for constraint in constraints:
@@ -88,6 +92,7 @@ class Contract(Jsonify, DBDocument):
         return {
             contract_name: self.name,
             contract_constraints: array_constraints,
+            profile: self.profile,
         }
 
     def db_json(self):

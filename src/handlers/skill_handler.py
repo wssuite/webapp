@@ -1,13 +1,30 @@
-from src.handlers.user_handler import verify_token
-from src.dao.user_dao import UserDao
-from src.dao.skill_dao import SkillDao
+from src.dao.skill_dao import skill_name
+from src.handlers.base_handler import BaseHandler
+from src.exceptions.skill_exceptions import CannotDeleteSkill
+from src.models.skill import Skill
 
 
-class SkillHandler:
+class SkillHandler(BaseHandler):
     def __init__(self, mongo):
-        self.user_dao = UserDao(mongo)
-        self.skill_dao = SkillDao(mongo)
+        super().__init__(mongo)
 
-    def get_all(self, token):
-        verify_token(token, self.user_dao)
-        return self.skill_dao.get_all()
+    def add(self, token, json):
+        super().add(token, json)
+        skill = Skill().from_json(json)
+        self.skill_dao.insert_one_if_not_exist(skill.db_json())
+
+    def delete(self, token, name, profile_name):
+        super().delete(token, name, profile_name)
+        usage = self.contract_dao.get_including_skills([name], profile_name)
+        if len(usage) > 0:
+            raise CannotDeleteSkill(name)
+        self.skill_dao.remove(name, profile_name)
+
+    def get_all_names(self, token, profile_name):
+        return [
+            skill[skill_name] for skill in self.get_all(token, profile_name)
+        ]
+
+    def get_all(self, token, profile):
+        super().get_all(token, profile)
+        return self.skill_dao.get_all(profile)

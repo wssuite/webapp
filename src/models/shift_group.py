@@ -1,7 +1,7 @@
 from src.models.jsonify import Jsonify
 from src.models.db_document import DBDocument
 from pykson import ListField, StringField
-from constants import shift_group_name, shift_group_shifts_list
+from constants import shift_group_name, shift_group_shifts_list, profile
 
 """
 The conceptual difference between a shift type and a shift
@@ -14,6 +14,7 @@ in its array
 class ShiftGroup(Jsonify, DBDocument):
     name = StringField(serialized_name=shift_group_name)
     shifts = ListField(str, serialized_name=shift_group_shifts_list)
+    profile = StringField(serialized_name=profile, default_value="")
 
     def db_json(self):
         return self.to_json()

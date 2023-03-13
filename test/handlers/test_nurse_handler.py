@@ -4,6 +4,7 @@ from src.handlers.nurse_handler import (
     NurseHandler,
     NurseNotFound,
     CannotDeleteNurse,
+    ContractGroupNotExist,
 )
 from test_constants import (
     default_user,
@@ -15,6 +16,9 @@ from test_constants import (
     full_time_contract_with_day_shift_type,
     patrick_nurse_group,
     full_time_not_valid_contract_with_general,
+    profile1,
+    test_profile,
+    nurse_with_contract_group,
 )
 from constants import user_token
 from src.exceptions.contract_exceptions import (
@@ -45,6 +49,7 @@ class TestNurseHandler(TestCase):
         self.handler.contract_dao.insert_one(
             full_time_not_valid_contract_with_general.copy()
         )
+        self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def tearDown(self) -> None:
         pass
@@ -53,12 +58,16 @@ class TestNurseHandler(TestCase):
         with self.assertRaises(ContractNotExist):
             self.handler.add(random_hex, nurse1)
 
+    def test_add_nurse_with_nonexistent_contract_groups_raise_error(self):
+        with self.assertRaises(ContractGroupNotExist):
+            self.handler.add(random_hex, nurse_with_contract_group.copy())
+
     def test_add_nurse_when_contract_exist_with_contract_contradiction_succeed(
         self,
     ):
         self.handler.contract_dao.insert_one(min_cons_contract)
         self.handler.add(random_hex, nurse1)
-        actual = self.handler.get_all_usernames(random_hex)
+        actual = self.handler.get_all_usernames(random_hex, profile1)
         expected = ["patrick", "nurse1"]
         self.assertEqual(expected, actual)
 
@@ -66,13 +75,13 @@ class TestNurseHandler(TestCase):
         update = patrick_nurse.copy()
         update[nurse_contracts] = []
         self.handler.update(random_hex, update.copy())
-        actual = self.handler.get_by_username(random_hex, "patrick")
+        actual = self.handler.get_by_username(random_hex, "patrick", profile1)
         expected = update.copy()
         expected[nurse_id] = str(self.patrick_id.inserted_id)
         self.assertEqual(expected, actual)
 
     def test_get_all_nurses(self):
-        actual = self.handler.get_all(random_hex)
+        actual = self.handler.get_all(random_hex, profile1)
         nurse_copy = patrick_nurse.copy()
         nurse_copy[nurse_id] = str(self.patrick_id.inserted_id)
         expected = [nurse_copy]
@@ -80,18 +89,18 @@ class TestNurseHandler(TestCase):
 
     def test_get_nonexistent_nurse_raise_error(self):
         with self.assertRaises(NurseNotFound):
-            self.handler.get_by_username(random_hex, "Monique")
+            self.handler.get_by_username(random_hex, "Monique", profile1)
 
     def test_delete_nurse_exist_in_nurse_group_raise_error(self):
         with self.assertRaises(CannotDeleteNurse):
-            self.handler.delete(random_hex, "patrick")
+            self.handler.delete(random_hex, "patrick", profile1)
 
     def test_delete_nurse_with_no_nurse_groups_raise_error(self):
         self.handler.nurse_dao.insert_one(nurse1)
-        actual_before = self.handler.get_all_usernames(random_hex)
+        actual_before = self.handler.get_all_usernames(random_hex, profile1)
         expected_before = ["patrick", "nurse1"]
-        self.handler.delete(random_hex, "nurse1")
-        actual_after = self.handler.get_all_usernames(random_hex)
+        self.handler.delete(random_hex, "nurse1", profile1)
+        actual_after = self.handler.get_all_usernames(random_hex, profile1)
         expected_after = ["patrick"]
         self.assertEqual(expected_before, actual_before)
         self.assertEqual(expected_after, actual_after)
