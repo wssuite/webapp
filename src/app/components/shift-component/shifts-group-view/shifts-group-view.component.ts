@@ -55,7 +55,7 @@ export class ShiftGroupViewComponent implements OnInit{
       });
 
     dialog.afterClosed().subscribe(()=>{
-        this.getShiftsGroup;
+        this.getShiftsGroup();
       })
   }
 
