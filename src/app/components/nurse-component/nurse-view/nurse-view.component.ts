@@ -106,11 +106,4 @@ export class NurseViewComponent implements OnInit{
     })
   }
 
-
-
-
-
-
-
-
 }
