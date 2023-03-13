@@ -1,13 +1,9 @@
 from src.dao.shift_type_dao import ShiftType
-from constants import shift_type_name
+from constants import shift_type_name, work
 from src.handlers.base_handler import BaseHandler
 from src.exceptions.shift_exceptions import (
     CannotDeleteShiftType,
     ShiftNotExist,
-)
-from src.handlers.shift_handler import (
-    add_shift_in_work_shift_group,
-    remove_shift_from_work_shift_group,
 )
 
 
@@ -24,13 +20,18 @@ class ShiftTypeHandler(BaseHandler):
         if len(not_exist_shifts) > 0:
             raise ShiftNotExist(not_exist_shifts)
 
+    def __add_shift_type_to_work_shift_group(self, name, profile):
+        self.shift_group_dao.add_shift_type_to_shift_group_list(
+            work, name, profile
+        )
+
     def add(self, token, json):
         super().add(token, json)
         shift_type = ShiftType().from_json(json)
         self.verify_shifts_exist(shift_type.shifts, shift_type.profile)
         self.shift_type_dao.insert_one_if_not_exist(shift_type.db_json())
-        add_shift_in_work_shift_group(
-            shift_type.name, self.shift_group_dao, shift_type.profile
+        self.__add_shift_type_to_work_shift_group(
+            shift_type.name, shift_type.profile
         )
 
     def update(self, token, json):
@@ -39,17 +40,22 @@ class ShiftTypeHandler(BaseHandler):
         self.verify_shifts_exist(shift_type.shifts, shift_type.profile)
         self.shift_type_dao.update(shift_type.db_json())
 
+    def __remove_shift_type_from_work_shift_group(self, name, profile_name):
+        self.shift_group_dao.delete_shift_type_from_shift_group_list(
+            work, name, profile_name
+        )
+
     def delete(self, token, name, profile):
         super().delete(token, name, profile)
         usage = []
         usage.extend(self.contract_dao.get_including_shifts([name], profile))
         usage.extend(
-            self.shift_group_dao.get_including_shifts([name], profile)
+            self.shift_group_dao.get_including_shift_types([name], profile)
         )
         if len(usage) > 1:
             raise CannotDeleteShiftType(name)
         self.shift_type_dao.remove(name, profile)
-        remove_shift_from_work_shift_group(name, self.shift_group_dao, profile)
+        self.__remove_shift_type_from_work_shift_group(name, profile)
 
     def get_by_name(self, token, name, profile):
         super().get_by_name(token, name, profile)

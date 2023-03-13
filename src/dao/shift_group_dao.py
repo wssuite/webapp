@@ -7,6 +7,7 @@ from constants import (
     mongo_set_operation,
     mongo_all_operation,
     profile,
+    shift_group_shift_types,
 )
 from src.exceptions.shift_exceptions import (
     ShiftGroupAlreadyExistException,
@@ -56,6 +57,16 @@ class ShiftGroupDao(AbstractDao):
         )
         return get_shift_groups_from_cursor(cursor)
 
+    def get_including_shift_types(self, shift_types, profile_name):
+        cursor = self.collection.find(
+            {
+                shift_group_shift_types: {mongo_all_operation: shift_types},
+                profile: profile_name,
+            },
+            {mongo_id_field: 0},
+        )
+        return get_shift_groups_from_cursor(cursor)
+
     def fetch_all(self, profile_name):
         cursor = self.collection.find(
             {profile: profile_name}, {mongo_id_field: 0}
@@ -77,20 +88,44 @@ class ShiftGroupDao(AbstractDao):
         )
 
     def add_shift_to_shift_group_list(self, name, shift_name, profile_name):
+        self.__add_to_list(
+            name, shift_name, profile_name, shift_group_shifts_list
+        )
+
+    def add_shift_type_to_shift_group_list(
+        self, name, shift_name, profile_name
+    ):
+        self.__add_to_list(
+            name, shift_name, profile_name, shift_group_shift_types
+        )
+
+    def __add_to_list(self, name, shift_name, profile_name, tag):
         shift_group = self.find_by_name(name, profile_name)
         if shift_group is None:
             raise ShiftNotExist(name)
-        shift_group[shift_group_shifts_list].append(shift_name)
+        shift_group[tag].append(shift_name)
         self.update(dict(shift_group))
 
     def delete_shift_from_shift_group_list(
         self, name, shift_name, profile_name
     ):
+        self.__delete_from_list(
+            name, shift_name, profile_name, shift_group_shifts_list
+        )
+
+    def delete_shift_type_from_shift_group_list(
+        self, name, shift_type_name, profile_name
+    ):
+        self.__delete_from_list(
+            name, shift_type_name, profile_name, shift_group_shift_types
+        )
+
+    def __delete_from_list(self, name, shift_name, profile_name, tag):
         shift_group = self.find_by_name(name, profile_name)
         if shift_group is None:
             raise ShiftNotExist(name)
-        if shift_name in shift_group[shift_group_shifts_list]:
-            shift_group[shift_group_shifts_list].remove(shift_name)
+        if shift_name in shift_group[tag]:
+            shift_group[tag].remove(shift_name)
             self.update(dict(shift_group))
 
     def delete_all(self, profile_name):

@@ -69,6 +69,7 @@ shift_end_time = "endTime"
 """Shift group"""
 shift_group_name = "name"
 shift_group_shifts_list = "shifts"
+shift_group_shift_types = "shiftTypes"
 
 """Shift Type"""
 shift_type_name = "name"
