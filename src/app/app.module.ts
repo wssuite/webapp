@@ -30,7 +30,7 @@ import { MainMenuComponent } from "./components/main-menu/main-menu.component";
 import { ConsultScheduleComponent } from "./components/consult-schedule/consult-schedule.component";
 import { ContractCreationComponent } from "./components/contract-creation/contract-creation.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
-import { NurseComponent } from "./components/nurse-component/nurse/nurse.component";
+import { NurseViewComponent } from "./components/nurse-component/nurse-view/nurse-view.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
 import { ShiftsViewComponent } from './components/shift-component/shifts-view/shifts-view.component';
@@ -53,9 +53,9 @@ import { ShiftConstraintComponent } from './components/shift-constraint/shift-co
 import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
 import { SidenavNurseComponent } from './components/nurse-component/sidenav-nurse/sidenav-nurse.component';
-import { CreateNurseDialogComponent } from './components/nurse-component/create-nurse-dialog/create-nurse-dialog.component';
-import { CreateNurseGroupDialogComponent } from './components/nurse-component/create-nurse-group-dialog/create-nurse-group-dialog.component';
-import { NurseGroupComponent } from './components/nurse-component/nurse-group/nurse-group.component';
+import { NurseCreationDialogComponent } from './components/nurse-component/nurse-creation-dialog/nurse-creation-dialog.component';
+import { NurseGroupCreationDialogComponent } from './components/nurse-component/nurse-group-creation-dialog/nurse-group-creation-dialog.component';
+import { NurseGroupViewComponent } from './components/nurse-component/nurse-group-view/nurse-group-view.component';
 import { MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 
@@ -70,6 +70,8 @@ import { NotConnectedComponent } from './components/not-connected/not-connected.
 import { ShiftCreationComponent } from './components/shift-component/shift-creation/shift-creation.component';
 import { ShiftTypeCreationComponent } from './components/shift-component/shift-type-creation/shift-type-creation.component';
 import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
+import { NurseCreationComponent } from './components/nurse-component/nurse-creation/nurse-creation.component';
+import { NurseGroupCreationComponent } from './components/nurse-component/nurse-group-creation/nurse-group-creation.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +80,7 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     ConsultScheduleComponent,
     ContractCreationComponent,
     ScheduleGenerationComponent,
-    NurseComponent,
+    NurseViewComponent,
     ErrorMessageDialogComponent,
     PatternElementComponent,
     NumericInputComponent,
@@ -98,9 +100,9 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     SidenavShiftComponent,
     BooleanConstraintComponent,
     SidenavNurseComponent,
-    CreateNurseDialogComponent,
-    CreateNurseGroupDialogComponent,
-    NurseGroupComponent,
+    NurseCreationDialogComponent,
+    NurseGroupCreationDialogComponent,
+    NurseGroupViewComponent,
     LoginComponent,
     AccountCreationComponent,
     AccountCreationDialogComponent,
@@ -117,6 +119,8 @@ import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-s
     HeaderComponent,
     NotConnectedComponent,
     UnwantedSkillsComponent,
+    NurseCreationComponent,
+    NurseGroupCreationComponent,
   ],
   imports: [
     BrowserModule,

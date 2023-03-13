@@ -5,11 +5,11 @@ import { contractsExample } from 'src/app/constants/contracts';
 import { NurseInterface } from 'src/app/models/Nurse';
 
 @Component({
-  selector: 'app-create-nurse-dialog',
-  templateUrl: './create-nurse-dialog.component.html',
-  styleUrls: ['./create-nurse-dialog.component.css']
+  selector: 'app-nurse-creation-dialog',
+  templateUrl: './nurse-creation-dialog.component.html',
+  styleUrls: ['./nurse-creation-dialog.component.css']
 })
-export class CreateNurseDialogComponent {
+export class NurseCreationDialogComponent {
   availableContracts: string[];
   selectedContract: string;
   contracts: string[]
@@ -18,7 +18,7 @@ export class CreateNurseDialogComponent {
     name: new FormControl(null, Validators.required),
   });
 
-  constructor(public dialogRef: MatDialogRef<CreateNurseDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: NurseInterface){
+  constructor(public dialogRef: MatDialogRef<NurseCreationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: NurseInterface){
     this.availableContracts = contractsExample
     this.selectedContract = this.availableContracts[0]
     this.contracts = []

@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { nursesGroup_example } from 'src/app/constants/nurses';
 import { NurseGroup } from 'src/app/models/Nurse';
-import { CreateNurseGroupDialogComponent } from '../create-nurse-group-dialog/create-nurse-group-dialog.component';
+import { NurseGroupCreationDialogComponent } from '../nurse-group-creation-dialog/nurse-group-creation-dialog.component';
 
 @Component({
-  selector: 'app-nurse-group',
-  templateUrl: './nurse-group.component.html',
-  styleUrls: ['./nurse-group.component.css']
+  selector: 'app-nurse-group0view',
+  templateUrl: './nurse-group-view.component.html',
+  styleUrls: ['./nurse-group-view.component.css']
 })
-export class NurseGroupComponent {
+export class NurseGroupViewComponent {
   nursesGroup: NurseGroup[]
 
    constructor(public dialog: MatDialog) {
@@ -17,7 +17,7 @@ export class NurseGroupComponent {
   }
 
   openNurseGroupDialog() {
-    this.dialog.open(CreateNurseGroupDialogComponent,  
+    this.dialog.open(NurseGroupCreationDialogComponent,  
       { disableClose: true,  
         height: '60%',
         width: '50%', 

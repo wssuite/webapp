@@ -6,11 +6,11 @@ import { nurses_example, nurses_name_example } from 'src/app/constants/nurses';
 import { NurseGroup, NurseInterface } from 'src/app/models/Nurse';
 
 @Component({
-  selector: 'app-create-nurse-group-dialog',
-  templateUrl: './create-nurse-group-dialog.component.html',
-  styleUrls: ['./create-nurse-group-dialog.component.css']
+  selector: 'app-nurse-group-creation-dialog',
+  templateUrl: './nurse-group-creation-dialog.component.html',
+  styleUrls: ['./nurse-group-creation-dialog.component.css']
 })
-export class CreateNurseGroupDialogComponent {
+export class NurseGroupCreationDialogComponent {
   availableContracts: string[];
   selectedContract: string;
   contracts: string[]
@@ -23,7 +23,7 @@ export class CreateNurseGroupDialogComponent {
   });
 
 
-  constructor(public dialogRef: MatDialogRef<CreateNurseGroupDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: NurseGroup){
+  constructor(public dialogRef: MatDialogRef<NurseGroupCreationDialogComponent >, @Inject(MAT_DIALOG_DATA) public data: NurseGroup){
     this.availableContracts = contractsExample
     this.selectedContract = this.availableContracts[0]
     this.contracts = []
