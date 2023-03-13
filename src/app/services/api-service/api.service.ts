@@ -27,10 +27,17 @@ import {
   UPDATE_SHIFT_TYPE_URL,
   UPDATE_SHIFT_GROUP_URL,
   FETCH_CONTRACT_NAMES,
+  ADD_NURSE_URL,
+  FETCH_ALL_NURSE_USERNAME,
+  REMOVE_NURSE_URL,
+  UPDATE_NURSE_URL,
+  FETCH_NURSE_BY_USERNAME,
+  FETCH_NURSE_URL,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { ContractInterface } from "src/app/models/Contract";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
+import { NurseInterface } from "src/app/models/Nurse";
 import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "src/app/models/Shift";
 import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
@@ -309,6 +316,73 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       return this.httpClient.get<string[]>(FETCH_SKILLS, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  addNurse(nurse: NurseInterface):Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.post<HttpResponse<string>>(ADD_NURSE_URL, nurse, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  removeNurse(nurse_username: string):Observable<HttpResponse<string>>{
+    try{
+      console.log("removeShift");
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("username", nurse_username);
+      return this.httpClient.delete<HttpResponse<string>>(REMOVE_NURSE_URL, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  getAllNurseUsername(): Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_ALL_NURSE_USERNAME, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  updateNurse(nurse: NurseInterface):Observable<HttpResponse<string>> {
+    return this.httpClient.put<HttpResponse<string>>(UPDATE_NURSE_URL, nurse);
+  }
+
+  getNurseByUserName(nurse_username: string):Observable<NurseInterface[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("username", nurse_username);
+      return this.httpClient.get<NurseInterface[]>(FETCH_NURSE_BY_USERNAME, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in")
+    }
+  }
+
+  getAllNurse(): Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.get<string[]>(FETCH_NURSE_URL, {
         params: queryParams,
       });
     }catch(err){
