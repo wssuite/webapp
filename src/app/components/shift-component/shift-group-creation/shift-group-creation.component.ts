@@ -72,7 +72,7 @@ export class ShiftGroupCreationComponent implements OnInit{
     if (index > -1) {
       this.possibleShiftsType.splice(index, 1);
     }
-    this.shiftGroup.shifts.push(this.selectedShiftType);
+    this.shiftGroup.shiftTypes.push(this.selectedShiftType);
     if (this.possibleShiftsType.length > 0) {
         this.selectedShiftType= this.possibleShiftsType[0];
     }
@@ -81,14 +81,14 @@ export class ShiftGroupCreationComponent implements OnInit{
   }
   
   removeShiftType(shiftType: string) {
-    const indexShiftGroup = this.shiftGroup.shifts.indexOf(shiftType);
+    const indexShiftGroup = this.shiftGroup.shiftTypes.indexOf(shiftType);
     if (indexShiftGroup > -1) {
-      this.shiftGroup.shifts.splice(indexShiftGroup, 1);
+      this.shiftGroup.shiftTypes.splice(indexShiftGroup, 1);
     }
     if (shiftType !== undefined && shiftType !== null) {
       this.possibleShiftsType.push(shiftType);
     }
-    if(this.shiftGroup.shifts.length === 0){
+    if(this.shiftGroup.shiftTypes.length === 0){
       this.shiftGroupSelectorError = true;
     } 
     this.emitShiftGroup()

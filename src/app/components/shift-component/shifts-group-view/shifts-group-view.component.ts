@@ -64,13 +64,13 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
       });
 
     dialog.afterClosed().subscribe(()=>{
-        this.getShiftsGroup;
+        this.getShiftsGroup();
       })
   }
 
    createNewShiftGroup(){
-    const newShiftType = {name: '', shifts: [], profile: CacheUtils.getProfile()};
-    this.openShiftGroupCreationDialog(newShiftType); 
+    const newShiftGroup = {name: '', shifts: [], shiftTypes: [], profile: CacheUtils.getProfile()};
+    this.openShiftGroupCreationDialog(newShiftGroup); 
   }
 
   deleteShiftGroup(shiftGroupName: string){
