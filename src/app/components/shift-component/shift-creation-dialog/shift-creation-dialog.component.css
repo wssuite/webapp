@@ -1,0 +1,29 @@
+
+.title {
+    color: black;
+    background-color: lightgray;
+    text-align: left;
+    font-size: 50px;
+    height: 10%;
+    padding: 3%;
+}
+
+
+.buttons-container{
+    padding: 1%;
+    height: 3%;
+}
+
+.shift-container{
+    padding: 1%;
+}
+
+
+button {
+    margin-right: 1vw;
+    float: right;
+}
+
+
+
+

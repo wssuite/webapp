@@ -79,6 +79,7 @@ export class ScheduleGenerationComponent {
       this.availableNurses.push(n);
     }
   }
+  
   removeContract(nurse: NurseInterface, contract: string) {
     const index = this.nurses.indexOf(nurse);
     if (index > -1) {

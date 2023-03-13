@@ -1,0 +1,87 @@
+<div class="shift-container" (mouseleave)="emitShift()"></div>
+    <div class="name-section" >
+    <label>Shift Name</label>
+    <div><mat-form-field class = "nameForm" appearance="fill">
+      <mat-label>Enter shift name</mat-label>
+      <input matInput [(ngModel)]="shift.name" [formControl]="nameShiftFormCtrl" (keyup)="emitShift()">
+    </mat-form-field>
+    </div>
+    </div>
+    <div class = "duration-section">
+    <label>Duration</label>
+    <div class="startTime-section" (mouseleave)="emitShift()" (mouseleave)="setEndTime()">
+        <div class="label" mat-label>Start Time</div>
+            <mat-form-field appearance="outline">
+                <mat-label>Start Time</mat-label>
+                <input (mouseleave)="setEndTime()"
+                  type="text"
+                  matInput
+                  [ngxTimepicker]="timepickerStart"
+                  [format]="24"
+                  readonly
+                  [formControl]="startTimeFormCtrl"
+                  [value]="shift.startTime"
+                  [(ngModel)]="shift.startTime"
+                />
+              
+                <mat-icon
+                  matPrefix
+                  *ngIf="startTimeFormCtrl.value && !startTimeFormCtrl.disabled"
+                  (click)="onClearStartTime()"
+                >
+                  close
+                </mat-icon>
+              
+                <mat-icon
+                  matSuffix
+                  *ngIf="!startTimeFormCtrl.disabled"
+                  (click)="openFromIconStartTime(timepickerStart)"
+                  >schedule</mat-icon
+                >
+              </mat-form-field>
+              
+              <ngx-material-timepicker 
+                #timepickerStart
+                [disable]="true"
+                (timeChanged)="setEndTime()"
+              ></ngx-material-timepicker>
+
+    </div>
+    <div class="endTime-section"  (mouseleave)="emitShift()">
+        <div class="label" mat-label>End Time</div>
+            <mat-form-field appearance="outline">
+                <mat-label>End Time</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [ngxTimepicker]="timepickerEnd"
+                  [format]="24"
+                  readonly
+                  [formControl]="endTimeFormCtrl"
+                  [value]="shift.endTime"
+                  [(ngModel)]="shift.endTime"
+                />
+              
+                <mat-icon
+                  matPrefix
+                  *ngIf="endTimeFormCtrl.value && !endTimeFormCtrl.disabled"
+                  (click)="onClearEndTime()"
+                >
+                  close
+                </mat-icon>
+              
+                <mat-icon
+                  matSuffix
+                  *ngIf="!endTimeFormCtrl.disabled"
+                  (click)="openFromIconEndTime(timepickerEnd)"
+                  >schedule</mat-icon
+                >
+              </mat-form-field>
+              
+              <ngx-material-timepicker
+                #timepickerEnd
+                [disable]="true"
+              ></ngx-material-timepicker>
+    </div>
+ 
+</div>
