@@ -1,0 +1,23 @@
+.buttons-container{
+    margin-top: 20vh;
+    margin-left: 38vw;
+    display: flex;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 2vh;
+    background-color: #EFF2F7;
+    height: 5vh;
+}
+
+button {
+    margin: 1vh;
+    padding: 1vw;
+}
+
+.dialog-content{
+    margin-top: 5vh;
+    margin-left: 5vh;
+}
