@@ -1,59 +1,15 @@
-<div class="title" mat-dialog-title>New Nurse</div>
-<div class="content"  mat-dialog-content>
-   <div class="nameNurseContainer">
-    <label>Name</label>
-    <mat-form-field class = "nameForm" [formGroup]="inputControlForm">
-      <mat-label>Enter nurse name</mat-label>
-      <input id="input"
-        matInput
-        placeholder="Name"
-        formControlName="name"
-        [(ngModel)]="data.name"
-      />
-    </mat-form-field>
+
+    <div class="title" mat-dialog-title>Nurse</div>
+    <div class="dialog-container">
+        <div class="nurse-container">
+            <app-nurse-creation [(nurse)]="data.nurse" [nurses]="data.nurses" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateNurseErrorState($event)"></app-nurse-creation>
+        </div>
+        <div mat-dialog-action class="buttons-container">
+            <button [disabled]="nurseErrorState"  mat-raised-button color="primary" (click)="add()">
+                Submit
+            </button>
+            <button  mat-raised-button color="warn" [mat-dialog-close]="true">
+                Cancel
+            </button>
+        </div>
     </div>
-</div>
-<div class="contractSection">
-  <H1 class="contractSectionTitle">Contracts</H1>
-  <div *ngIf="availableContracts.length > 0">
-    <mat-form-field appearance="fill">
-      <mat-label>Select a contract</mat-label>
-      <mat-select [(value)]="selectedContract">
-        <mat-option *ngFor="let contract of availableContracts" [value]="contract">
-          {{ contract }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button class="addContractButton" (click)="addContract()">
-      add contract
-    </button>
-  </div>
-  <table class="contractTable">
-    <tr *ngFor="let contract of contracts">
-      <td class="contractName">
-        <mat-chip>
-        {{ contract }}
-      </mat-chip>
-      </td>
-      <button
-        mat-raised-button
-        class="removeContractButton"
-        (click)="removeContract(contract)"
-        color="accent"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    </tr>
-  </table>
-
-
-</div>
-
-<div mat-dialog-action class="buttons-container">
-    <button  mat-raised-button color="primary" (click)="add()">
-        Add
-    </button>
-    <button mat-raised-button color="warn" [mat-dialog-close]="true">
-        Cancel
-    </button>
-

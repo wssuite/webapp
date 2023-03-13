@@ -371,12 +371,12 @@ export class APIService {
     return this.httpClient.put<HttpResponse<string>>(UPDATE_NURSE_URL, nurse);
   }
 
-  getNurseByUserName(nurse_username: string):Observable<NurseInterface[]> {
+  getNurseByUserName(nurse_username: string):Observable<NurseInterface> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("username", nurse_username);
-      return this.httpClient.get<NurseInterface[]>(FETCH_NURSE_BY_USERNAME, {
+      return this.httpClient.get<NurseInterface>(FETCH_NURSE_BY_USERNAME, {
         params: queryParams,
       });
     }catch(err){
@@ -384,11 +384,11 @@ export class APIService {
     }
   }
 
-  getAllNurse(): Observable<string[]> {
+  getAllNurse(): Observable<NurseInterface[]> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.get<string[]>(FETCH_NURSE_URL, {
+      return this.httpClient.get<NurseInterface[]>(FETCH_NURSE_URL, {
         params: queryParams,
       });
     }catch(err){
@@ -427,12 +427,12 @@ export class APIService {
     return this.httpClient.put<HttpResponse<string>>(UPDATE_NURSE_GROUP_URL, nurseGroup);
   }
 
-  getNurseGroupByName(nurseGroup_name: string):Observable<NurseInterface[]> {
+  getNurseGroupByName(nurseGroup_name: string):Observable<NurseGroupInterface> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", nurseGroup_name);
-      return this.httpClient.get<NurseInterface[]>(FETCH_NURSE_GROUP_BY_NAME, {
+      return this.httpClient.get<NurseGroupInterface>(FETCH_NURSE_GROUP_BY_NAME, {
         params: queryParams,
       });
     }catch(err){

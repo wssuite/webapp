@@ -1,29 +1,32 @@
+<div *ngIf="connectedUser; else elseBlock">
+  <app-header></app-header>
 <div class="nurse">
     <div class ="nurseCard" >
-      <mat-card *ngFor="let nurse of nurses">
+      <mat-card *ngFor="let nurseUsername of nurses_username">
       <mat-card-header>
-        <mat-card-title> {{ nurse.name }}</mat-card-title>
+        <mat-card-title> {{ nurseUsername }}</mat-card-title>
       </mat-card-header>
       <mat-card-actions align="end">
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
           <mat-icon>more_horiz</mat-icon>
         </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="modifyNurse(nurseUsername)">
               <mat-icon>edit</mat-icon>
               <span>Modify nurse</span>
             </button>
-            <button mat-menu-item (click)="deleteNurse(nurse)">
+            <button mat-menu-item (click)="deleteNurse(nurseUsername)">
               <mat-icon>delete</mat-icon>
               <span>Detele nurse</span>
-            </button>
-            <button mat-menu-item>
-              <mat-icon>cloud_upload</mat-icon>
-              <span>Export nurse</span>
             </button>
           </mat-menu>
       </mat-card-actions>
     </mat-card>
     </div>
+</div>
+</div>
 <app-sidenav-nurse></app-sidenav-nurse>
-<button mat-raised-button class="buttonCreate" color="primary"  (click)="openNurseDialog()">Create new Nurse</button>
+<button mat-raised-button class="buttonCreate" color="primary"  (click)="createNewNurse()">Create new Nurse</button>
+<ng-template #elseBlock>
+  <app-not-connected></app-not-connected>
+</ng-template>
