@@ -1,7 +1,7 @@
 from src.dao.abstract_dao import DBConnection
 from src.handlers.shift_group_handler import ShiftGroupHandler
 from flask import Blueprint, request, Response
-from constants import shift_group_name, user_token, ok_message
+from constants import shift_group_name, user_token, ok_message, profile
 from src.exceptions.project_base_exception import ProjectBaseException
 
 mod = Blueprint("shift_group_controller", __name__, url_prefix="/shiftGroup")
@@ -24,7 +24,8 @@ def add_shift_group():
 def get_all_shift_groups():
     try:
         token = request.args[user_token]
-        return shift_group_handler.get_all(token)
+        profile_name = request.args[profile]
+        return shift_group_handler.get_all(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -34,7 +35,8 @@ def get_shift_group_by_name():
     try:
         token = request.args[user_token]
         name = request.args[shift_group_name]
-        return shift_group_handler.get_by_name(token, name)
+        profile_name = request.args[profile]
+        return shift_group_handler.get_by_name(token, name, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -44,7 +46,8 @@ def remove_shift_group():
     try:
         token = request.args[user_token]
         name = request.args[shift_group_name]
-        shift_group_handler.delete(token, name)
+        profile_name = request.args[profile]
+        shift_group_handler.delete(token, name, profile_name)
         return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)
@@ -54,7 +57,8 @@ def remove_shift_group():
 def get_shift_groups_names():
     try:
         token = request.args[user_token]
-        return shift_group_handler.get_all_names(token)
+        profile_name = request.args[profile]
+        return shift_group_handler.get_all_names(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 

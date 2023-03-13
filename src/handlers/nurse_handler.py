@@ -1,10 +1,11 @@
-from src.dao.contract_dao import ContractDao, Contract
+from src.dao.contract_dao import Contract
 from src.utils.contracts_validator import ContractsValidator
-from src.dao.nurse_dao import NurseDao, Nurse
-from src.dao.nurse_group_dao import NurseGroupDao
-from src.handlers.user_handler import verify_token
-from src.dao.user_dao import UserDao
-from src.exceptions.contract_exceptions import ContractNotExist
+from src.dao.nurse_dao import Nurse
+from src.handlers.base_handler import BaseHandler
+from src.exceptions.contract_exceptions import (
+    ContractNotExist,
+    ContractGroupNotExist,
+)
 from src.exceptions.nurse_exceptions import NurseNotFound, CannotDeleteNurse
 from constants import (
     nurse_username,
@@ -12,23 +13,29 @@ from constants import (
 )
 
 
-class NurseHandler:
+class NurseHandler(BaseHandler):
     def __init__(self, mongo):
-        self.nurse_dao = NurseDao(mongo)
-        self.contract_dao = ContractDao(mongo)
-        self.nurse_group_dao = NurseGroupDao(mongo)
-        self.user_dao = UserDao(mongo)
+        super().__init__(mongo)
 
-    def insertion_validations(self, token, json):
-        verify_token(token, self.user_dao)
+    def insertion_validations(self, json):
         nurse = Nurse().from_json(json)
         contract_validator = ContractsValidator()
         for contract_string in nurse.direct_contracts:
-            contract_dict = self.contract_dao.find_by_name(contract_string)
+            contract_dict = self.contract_dao.find_by_name(
+                contract_string, nurse.profile
+            )
             if contract_dict is None:
                 raise ContractNotExist(contract_string)
             contract = Contract().from_json(contract_dict)
             contract_validator.add_contract_constraints(contract)
+
+        for contract_group in nurse.contract_groups:
+            exist = self.contract_group_dao.exist(
+                contract_group, nurse.profile
+            )
+            if exist is False:
+                raise ContractGroupNotExist(contract_group)
+
         return nurse, contract_validator
 
     """
@@ -38,7 +45,8 @@ class NurseHandler:
     """
 
     def add(self, token, json):
-        nurse, contract_validator = self.insertion_validations(token, json)
+        super().add(token, json)
+        nurse, contract_validator = self.insertion_validations(json)
         inserted_id = self.nurse_dao.insert_one(nurse.db_json())
         return str(inserted_id.inserted_id)
 
@@ -51,8 +59,11 @@ class NurseHandler:
     """
 
     def update(self, token, json):
-        nurse, contract_validator = self.insertion_validations(token, json)
-        before_update = self.get_by_username(token, nurse.username)
+        super().update(token, json)
+        nurse, contract_validator = self.insertion_validations(json)
+        before_update = self.get_by_username(
+            token, nurse.username, nurse.profile
+        )
         nurse.id = before_update[nurse_id]
         self.nurse_dao.update(nurse.db_json())
 
@@ -62,29 +73,29 @@ class NurseHandler:
     to the list of inherited contracts
     """
 
-    def get_by_username(self, token, nurse_to_be_found_username):
-        verify_token(token, self.user_dao)
+    def get_by_username(self, token, nurse_to_be_found_username, profile):
+        self.verify_token(token)
         nurse_dict = self.nurse_dao.find_by_username(
-            nurse_to_be_found_username
+            nurse_to_be_found_username, profile
         )
         if nurse_dict is None:
             raise NurseNotFound(nurse_to_be_found_username)
         nurse = Nurse().from_json(nurse_dict)
         return nurse.to_json()
 
-    def get_all(self, token):
-        verify_token(token, self.user_dao)
-        all_nurses = self.nurse_dao.fetch_all()
+    def get_all(self, token, profile):
+        super().get_all(token, profile)
+        all_nurses = self.nurse_dao.fetch_all(profile)
         return all_nurses
 
-    def get_all_usernames(self, token):
-        verify_token(token, self.user_dao)
-        all_nurses = self.nurse_dao.fetch_all()
+    def get_all_usernames(self, token, profile):
+        self.verify_token(token)
+        all_nurses = self.nurse_dao.fetch_all(profile)
         return [nurse[nurse_username] for nurse in all_nurses]
 
-    def delete(self, token, name):
-        verify_token(token, self.user_dao)
-        usage = self.nurse_group_dao.get_with_nurses([name])
+    def delete(self, token, name, profile):
+        super().delete(token, name, profile)
+        usage = self.nurse_group_dao.get_with_nurses([name], profile)
         if len(usage) > 0:
             raise CannotDeleteNurse(name)
-        self.nurse_dao.remove(name)
+        self.nurse_dao.remove(name, profile)

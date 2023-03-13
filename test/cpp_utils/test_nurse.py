@@ -5,7 +5,10 @@ from constants import (
     nurse_username,
     nurse_contracts,
     nurse_id,
+    profile,
+    nurse_contract_groups,
 )
+from test_constants import profile1
 
 
 class TestNurse(TestCase):
@@ -13,6 +16,8 @@ class TestNurse(TestCase):
         self.nurse_without_contract = {
             nurse_name: "nurse",
             nurse_username: "nurse",
+            profile: profile1,
+            nurse_contract_groups: [],
         }
 
     def tearDown(self) -> None:
