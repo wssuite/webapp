@@ -6,7 +6,7 @@
     <input matInput [(ngModel)]="nurseGroup.name" [formControl]="nameNurseGroupFormCtrl" (keyup)="emitNurseGroup()">
     </mat-form-field>
  </div>
- <div class="NurseSection">
+ <div class="nurseSection">
    <H1 class="NurseSectionTitle">Nurses</H1>
    <div *ngIf="possibleNurses.length > 0">
      <mat-form-field appearance="fill">
@@ -21,7 +21,7 @@
        add nurse
      </button>
    </div>
-   <table class="contractTable">
+   <table class="nurseTable">
      <tr *ngFor="let nurse of nurseGroup.nurses">
        <td class="nurseName">
          <mat-chip>
