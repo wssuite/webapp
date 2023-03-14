@@ -32,6 +32,7 @@ from constants import (
 )
 
 from src.models.db_document import DBDocument
+from src.models.stringify import Stringify
 
 
 class ContractConstraintCreator:
@@ -55,7 +56,7 @@ class ContractConstraintCreator:
         ]().from_json(data)
 
 
-class Contract(Jsonify, DBDocument):
+class Contract(Jsonify, DBDocument, Stringify):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = ""
@@ -106,3 +107,11 @@ class Contract(Jsonify, DBDocument):
 
     def copy(self):
         return Contract().from_json(self.to_json())
+
+    def to_string(self):
+        constraints_string = ""
+        for constraint in self.constraints:
+            constraints_string += constraint.to_string()
+        return "{{\ncontractName,{0}\nconstraints\n{1}}}\n".format(
+            self.name, constraints_string
+        )
