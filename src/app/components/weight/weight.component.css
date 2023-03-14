@@ -1,3 +1,16 @@
 label{
     margin-right: 1vw;
+    font-weight: 700;
+}
+mat-checkbox {
+    margin-left: 2vw;
+}
+
+.weight-container{
+    display: flex;
+    margin: 1vh;
+    background-color: #EFF2F7;
+    border-radius: 12px;
+    padding: 2vh;
+    padding-bottom: 4vh 
 }

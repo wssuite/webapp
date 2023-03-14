@@ -1,22 +1,41 @@
-import { Component } from "@angular/core";
+import { CONTRACTS, CREATE_ACCOUNT, SCHEDULE_GENERATION } from "src/app/constants/app-routes";
+import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { SHIFT } from "src/app/constants/app-routes";
 import { Router } from "@angular/router";
-import { SCHEDULE_GENERATION } from "src/app/constants/app-routes";
 import { MAIN_MENU_BUTTONS } from "src/app/constants/mainMenuButton";
 import { MainMenuButton } from "src/app/models/MainMenuButton";
+import { CacheUtils } from "src/app/utils/CacheUtils";
 
 @Component({
   selector: "app-main-menu",
   templateUrl: "./main-menu.component.html",
   styleUrls: ["./main-menu.component.css"],
 })
-export class MainMenuComponent {
+export class MainMenuComponent implements OnInit{
   buttons: MainMenuButton[];
+  isAdminUser!: boolean;
+  connectedUser!: boolean;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private dialog: MatDialog) {
     this.buttons = MAIN_MENU_BUTTONS;
   }
 
-  getAlignmentDirection(index: number): string {
+  ngOnInit(): void {
+    try{
+      this.isAdminUser = CacheUtils.getIsAdmin();
+      this.connectedUser = true;
+    }
+    catch(err){
+      this.connectedUser = false;
+    }
+  }
+
+
+  getAlignmentDirection(button:MainMenuButton ,index: number): string {
+    if(button.title === "User"){
+      return "center";
+    }
     return index % 2 === 0 ? "start" : "end";
   }
 
@@ -25,8 +44,24 @@ export class MainMenuComponent {
       case "Schedule":
         this.router.navigate(["/" + SCHEDULE_GENERATION]);
         break;
+      case "Shift":
+        this.router.navigate(["/" + SHIFT]);
+        break;
+      case "Contracts":
+        this.router.navigate(["/" + CONTRACTS]);
+        break;
+      case "User":
+        this.router.navigate(["/" + CREATE_ACCOUNT]);
+        break;
       default:
         break;
     }
+  }
+
+  show(button: MainMenuButton): boolean{
+    if(button.title === "User" && !this.isAdminUser){
+      return false;
+    }
+    return true;
   }
 }
