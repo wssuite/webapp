@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
-import { APIService } from 'src/app/services/api-service/api.service';
+import { ShiftTypeService } from 'src/app/services/shift/shift-type.service';
 import { ShiftService } from 'src/app/services/shift/shift.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
@@ -21,7 +21,7 @@ export class ShiftTypeCreationDialogComponent implements OnInit{
 
   constructor(public dialogRef: MatDialogRef<ShiftTypeCreationDialogComponent >,
     @Inject(MAT_DIALOG_DATA) public data:  {shiftType: ShiftTypeInterface, shiftsType: string[]},
-    private api: APIService, private shiftService: ShiftService,
+    private api: ShiftTypeService, private shiftService: ShiftService,
     private dialog: MatDialog,  
 ) {
   this.errorState = new EventEmitter();

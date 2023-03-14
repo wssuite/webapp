@@ -8,26 +8,26 @@ import {
   //CREATE_EMPTY_PROFILE,
   //FETACH_PROFILES,
   ADD_SHIFT_GROUP_URL,
-  ADD_SHIFT_TYPE_URL,
+  //ADD_SHIFT_TYPE_URL,
   //ADD_SHIFT_URL,
   //FETCH_SHIFT_BY_NAMES,
   FETCH_SHIFT_GROUP_BY_NAMES,
   FETCH_SHIFT_GROUP_NAMES,
   //FETCH_SHIFT_NAMES,
-  FETCH_SHIFT_TYPE_BY_NAMES,
-  FETCH_SHIFT_TYPE_NAMES,
+  //FETCH_SHIFT_TYPE_BY_NAMES,
+  //FETCH_SHIFT_TYPE_NAMES,
   FETCH_SKILLS,
   //LOGIN_URL,
   //LOGOUT_URL,
   PROTOTYPE_SCHEDULE_URL,
   REMOVE_SHIFT_GROUP_URL,
-  REMOVE_SHIFT_TYPE_URL,
+  //REMOVE_SHIFT_TYPE_URL,
   //REMOVE_SHIFT_URL,
   TEST_URL,
   //DUPLICATE_PROFILE,
   //DELETE_PROFILE,
   //UPDATE_SHIFT_URL,
-  UPDATE_SHIFT_TYPE_URL,
+  //UPDATE_SHIFT_TYPE_URL,
   UPDATE_SHIFT_GROUP_URL,
   //FETCH_PROFILE_ACCESSORS,
   //SHARE_PROFILE,
@@ -187,7 +187,7 @@ export class APIService {
   //-------------------------------------------------------------------------------------------------
   // shift type section
 
-  addShiftType(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>>{
+  /*addShiftType(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
@@ -250,7 +250,7 @@ export class APIService {
     }catch(err){
       throw new Exception("user not logged in")
     }
-  }
+  }*/
   //--------------------------------------------------------------------------------------------
   //shift group section
 

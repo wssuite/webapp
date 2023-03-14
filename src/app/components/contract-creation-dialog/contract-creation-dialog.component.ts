@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Contract } from 'src/app/models/Contract';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
+import { ShiftTypeService } from 'src/app/services/shift/shift-type.service';
 import { ShiftService } from 'src/app/services/shift/shift.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
@@ -25,7 +26,8 @@ export class ContractCreationDialogComponent implements OnInit{
     public dialogRef: MatDialogRef<ContractCreationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data : {contract: Contract, contractList: string[]},
     private service: ContractService, private api: APIService,
-    private dialog: MatDialog, private shiftService: ShiftService
+    private dialog: MatDialog, private shiftService: ShiftService,
+    private shiftTypeService: ShiftTypeService
   ){
     this.contractErrorState = true;
     this.service.setContract(data.contract);
@@ -46,7 +48,7 @@ export class ContractCreationDialogComponent implements OnInit{
         }
       })
 
-      this.api.getShiftTypeNames().subscribe({
+      this.shiftTypeService.getShiftTypeNames().subscribe({
         next: (shifts: string[])=>{
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
