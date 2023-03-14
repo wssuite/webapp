@@ -32,14 +32,10 @@ class NurseDao(AbstractDao):
         exist = self.exist(nurse[nurse_username], nurse[profile])
         if exist is True:
             raise NurseUsernameAlreadyExist(nurse[nurse_username])
-
-        mongo_id: InsertOneResult = self.collection.insert_one(nurse)
-        self.collection.update_one(
-            {mongo_id_field: mongo_id.inserted_id, profile: nurse[profile]},
-            {mongo_set_operation: {nurse_id: str(mongo_id.inserted_id)}},
-            upsert=False,
-        )
-        return mongo_id
+        id_chosen = len(self.fetch_all(nurse[profile]))
+        nurse[nurse_id] = str(id_chosen)
+        self.collection.insert_one(nurse)
+        return str(id_chosen)
 
     def fetch_all(self, profile_name):
         list_nurse = self.collection.find(
