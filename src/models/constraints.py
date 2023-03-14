@@ -98,8 +98,10 @@ class ContractMinMaxConstraint(ContractConstraint):
         return self.name
 
     def to_string(self):
-        return f"{self.name},{self.minValue}," \
-               f"{self.minWeight},{self.maxValue},{self.maxWeight}\n"
+        return (
+            f"{self.name},{self.minValue},"
+            f"{self.minWeight},{self.maxValue},{self.maxWeight}\n"
+        )
 
 
 class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
@@ -115,8 +117,10 @@ class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
         return [self.shift]
 
     def to_string(self):
-        return f"{self.name},{self.minValue},{self.minWeight}," \
-               f"{self.maxValue},{self.maxWeight},{self.shift}\n"
+        return (
+            f"{self.name},{self.minValue},{self.minWeight},"
+            f"{self.maxValue},{self.maxWeight},{self.shift}\n"
+        )
 
 
 class ContractBooleanConstraint(ContractConstraint):
@@ -204,5 +208,7 @@ class ContractUnwantedSkills(ContractConstraint):
         for skill in self.unwanted_skills:
             skill_string += f",{skill}"
 
-        return f"{self.name},{self.weight}," \
-               f"{len(self.unwanted_skills)}{skill_string}\n"
+        return (
+            f"{self.name},{self.weight},"
+            f"{len(self.unwanted_skills)}{skill_string}\n"
+        )
