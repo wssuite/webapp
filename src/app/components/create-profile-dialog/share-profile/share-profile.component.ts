@@ -8,6 +8,7 @@ import { APIService } from 'src/app/services/api-service/api.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 
 @Component({
   selector: 'app-share-profile',
@@ -28,8 +29,8 @@ export class ShareProfileComponent implements OnInit {
   readonly inputNameSeparators: number[] = [ENTER, COMMA];
 
   constructor(public dialogRef: MatDialogRef<ShareProfileComponent>,
-     @Inject(MAT_DIALOG_DATA) public data: {profileName: string}, private api: APIService,
-     private dialog: MatDialog){
+     @Inject(MAT_DIALOG_DATA) public data: {profileName: string}, private api: ProfileService,
+     private apiService: APIService, private dialog: MatDialog){
       this.accessors = [];
       this.users = [];
       this.displayedUsers = []
@@ -44,7 +45,7 @@ export class ShareProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = CacheUtils.getUsername()
-    this.api.getAccountsUsername().subscribe({
+    this.apiService.getAccountsUsername().subscribe({
       next:(users:string[])=>{
         this.users = users;
     },

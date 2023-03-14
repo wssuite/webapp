@@ -5,8 +5,8 @@ import {
   ADD_ACCOUNT_URL,
   DELETE_ACCOUNT_URL,
   GET_USERNAMES,
-  CREATE_EMPTY_PROFILE,
-  FETACH_PROFILES,
+  //CREATE_EMPTY_PROFILE,
+  //FETACH_PROFILES,
   ADD_SHIFT_GROUP_URL,
   ADD_SHIFT_TYPE_URL,
   ADD_SHIFT_URL,
@@ -24,14 +24,14 @@ import {
   REMOVE_SHIFT_TYPE_URL,
   REMOVE_SHIFT_URL,
   TEST_URL,
-  DUPLICATE_PROFILE,
-  DELETE_PROFILE,
+  //DUPLICATE_PROFILE,
+  //DELETE_PROFILE,
   UPDATE_SHIFT_URL,
   UPDATE_SHIFT_TYPE_URL,
   UPDATE_SHIFT_GROUP_URL,
-  FETCH_PROFILE_ACCESSORS,
-  SHARE_PROFILE,
-  REVOKE_PROFILE_ACCESS,
+  //FETCH_PROFILE_ACCESSORS,
+  //SHARE_PROFILE,
+  //REVOKE_PROFILE_ACCESS,
   DELETE_SKILL_URL,
   ADD_SKILL_URL,
   ADD_NURSE_URL,
@@ -49,7 +49,7 @@ import {
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
-import { BaseProfile } from "src/app/models/Profile";
+//import { BaseProfile } from "src/app/models/Profile";
 import { NurseGroupInterface, NurseInterface } from "src/app/models/Nurse";
 import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "src/app/models/Shift";
 import { SkillInterface } from "src/app/models/skill";
@@ -595,7 +595,7 @@ export class APIService {
   //-----------------------------------------------------------------------------------------------------------
   
   // profile section 
-  createEmptyProfile(name: string):Observable<HttpResponse<string>>{
+  /*createEmptyProfile(name: string):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
@@ -685,7 +685,7 @@ export class APIService {
     } catch(err){
       throw new Error("user not logged in");
     }
-  }
+  }*/
   
   // prototypoe section
   test(): Observable<string> {

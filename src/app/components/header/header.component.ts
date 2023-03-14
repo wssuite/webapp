@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit{
   }
   
   getProfiles(useLatProfile: boolean){
-    this.apiService.getAllProfiles().subscribe({
+    this.profileService.getAllProfiles().subscribe({
       next:(profiles: BaseProfile[])=>{
         this.profiles = profiles;
         if(this.profiles.length === 0){
@@ -143,7 +143,7 @@ export class HeaderComponent implements OnInit{
   }
 
   deleteProfile(){
-    this.apiService.deleteProfile().subscribe({
+    this.profileService.deleteProfile().subscribe({
       error: (err: HttpErrorResponse)=>{
         if(err.status !== HttpStatusCode.Ok){
           this.openErrorDialog(err.error);
