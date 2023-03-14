@@ -1,0 +1,75 @@
+<div class="nurseGroup-container" (mouseleave)="emitNurseGroup()"></div>
+ <div class="nameNurseGroupContainer">
+    <label>Name</label>
+    <mat-form-field class = "nameForm" appearance="fill">
+    <mat-label>Enter Group nurse Name</mat-label>
+    <input matInput [(ngModel)]="nurseGroup.name" [formControl]="nameNurseGroupFormCtrl" (keyup)="emitNurseGroup()">
+    </mat-form-field>
+ </div>
+ <div class="nurseSection">
+   <H1 class="NurseSectionTitle">Nurses</H1>
+   <div *ngIf="possibleNurses.length > 0">
+     <mat-form-field appearance="fill">
+       <mat-label>Select a nurse</mat-label>
+       <mat-select [(value)]="selectedNurse">
+         <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
+           {{ nurse }}
+         </mat-option>
+       </mat-select>
+     </mat-form-field>
+     <button mat-raised-button class="addNurseButton" (click)="addNurse()">
+       add nurse
+     </button>
+   </div>
+   <table class="nurseTable">
+     <tr *ngFor="let nurse of nurseGroup.nurses">
+       <td class="nurseName">
+         <mat-chip>
+         {{ nurse }}
+       </mat-chip>
+       </td>
+       <button
+         mat-raised-button
+         class="removeContractButton"
+         (click)="removeNurse(nurse)"
+         color="accent"
+       >
+         <mat-icon>delete</mat-icon>
+       </button>
+     </tr>
+   </table>
+ </div>
+ 
+  <div class="contractSection">
+   <H1 class="contractSectionTitle">Contracts</H1>
+   <div *ngIf="possibleContracts.length > 0">
+     <mat-form-field appearance="fill">
+       <mat-label>Select a contract</mat-label>
+       <mat-select [(value)]="selectedContract">
+         <mat-option *ngFor="let contract of possibleContracts" [value]="contract">
+           {{ contract }}
+         </mat-option>
+       </mat-select>
+     </mat-form-field>
+     <button mat-raised-button class="addContractButton" (click)="addContract()">
+       add contract
+     </button>
+   </div>
+   <table class="contractTable">
+     <tr *ngFor="let contract of nurseGroup.contracts">
+       <td class="contractName">
+         <mat-chip>
+         {{ contract }}
+       </mat-chip>
+       </td>
+       <button
+         mat-raised-button
+         class="removeContractButton"
+         (click)="removeContract(contract)"
+         color="accent"
+       >
+         <mat-icon>delete</mat-icon>
+       </button>
+     </tr>
+   </table>
+ </div>

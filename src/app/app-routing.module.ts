@@ -5,6 +5,8 @@ import { ConsultScheduleComponent } from "./components/consult-schedule/consult-
 import { ContractsViewComponent } from "./components/contracts-view/contracts-view.component";
 import { LoginComponent } from "./components/login/login.component";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
+import { NurseGroupViewComponent } from "./components/nurse-component/nurse-group-view/nurse-group-view.component";
+import { NurseViewComponent } from "./components/nurse-component/nurse-view/nurse-view.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
 import { ShiftGroupViewComponent } from "./components/shift-component/shifts-group-view/shifts-group-view.component";
 import { ShiftsTypeViewComponent } from "./components/shift-component/shifts-type-view/shifts-type-view.component";
@@ -16,6 +18,8 @@ import {
   CONSULT_SCHEDULE,
   CONTRACTS,
   MAIN_MENU,
+  NURSE,
+  NURSE_GROUP,
   SCHEDULE_GENERATION,
   SHIFT,
   SHIFT_GROUP,
@@ -31,6 +35,8 @@ const routes: Routes = [
   { path: MAIN_MENU, component: MainMenuComponent },
   { path: CONSULT_SCHEDULE, component: ConsultScheduleComponent },
   { path: SCHEDULE_GENERATION, component: ScheduleGenerationComponent },
+  { path: NURSE, component: NurseViewComponent},
+  { path: NURSE_GROUP, component: NurseGroupViewComponent},
   { path: TESTING, component: TestingComponent },
   { path: SHIFT, component: ShiftsViewComponent},
   { path: SHIFT_TYPE, component: ShiftsTypeViewComponent},

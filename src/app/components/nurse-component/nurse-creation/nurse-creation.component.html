@@ -1,0 +1,48 @@
+<div class="nurse-container" (mouseleave)="emitNurse()"></div>
+<div class="UsernameNurseContainer">
+    <label>Username</label>
+    <mat-form-field class = "nameForm" appearance="fill">
+    <mat-label>Enter nurse username</mat-label>
+    <input matInput [(ngModel)]="nurse.username" [formControl]="usernameNurseFormCtrl" (keyup)="emitNurse()">
+    </mat-form-field>
+ </div>
+ <div class="nameNurseContainer">
+    <label>Name</label>
+    <mat-form-field class = "nameForm" appearance="fill">
+    <mat-label>Enter nurse Name</mat-label>
+    <input matInput [(ngModel)]="nurse.name" [formControl]="nameNurseFormCtrl" (keyup)="emitNurse()">
+    </mat-form-field>
+ </div>
+ <div class="contractSection">
+   <H1 class="contractSectionTitle">Contracts</H1>
+   <div *ngIf="possibleContracts.length > 0">
+     <mat-form-field appearance="fill">
+       <mat-label>Select a contract</mat-label>
+       <mat-select [(value)]="selectedContract">
+         <mat-option *ngFor="let contract of possibleContracts" [value]="contract">
+           {{ contract }}
+         </mat-option>
+       </mat-select>
+     </mat-form-field>
+     <button mat-raised-button class="addContractButton" (click)="addContract()">
+       add contract
+     </button>
+   </div>
+   <table class="contractTable">
+     <tr *ngFor="let contract of nurse.contracts">
+       <td class="contractName">
+         <mat-chip>
+         {{ contract }}
+       </mat-chip>
+       </td>
+       <button
+         mat-raised-button
+         class="removeContractButton"
+         (click)="removeContract(contract)"
+         color="accent"
+       >
+         <mat-icon>delete</mat-icon>
+       </button>
+     </tr>
+   </table>
+ </div>

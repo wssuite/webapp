@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import {MatCardModule} from '@angular/material/card';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -31,7 +30,7 @@ import { MainMenuComponent } from "./components/main-menu/main-menu.component";
 import { ConsultScheduleComponent } from "./components/consult-schedule/consult-schedule.component";
 import { ContractCreationComponent } from "./components/contract-creation/contract-creation.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
-import { NurseComponent } from "./components/nurse/nurse.component";
+import { NurseViewComponent } from "./components/nurse-component/nurse-view/nurse-view.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ErrorMessageDialogComponent } from "./components/error-message-dialog/error-message-dialog.component";
 import { ShiftsViewComponent } from './components/shift-component/shifts-view/shifts-view.component';
@@ -43,7 +42,6 @@ import { ShiftsTypeViewComponent } from './components/shift-component/shifts-typ
 import { ShiftGroupViewComponent } from './components/shift-component/shifts-group-view/shifts-group-view.component';
 import { SidenavShiftComponent } from './components/shift-component/sidenav-shift/sidenav-shift.component'
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatMenuModule} from '@angular/material/menu';
 import { WeightComponent } from './components/weight/weight.component';
 import { AlternativeShiftComponent } from './components/alternative-shift/alternative-shift.component';
 import { PatternElementComponent } from './components/pattern-element/pattern-element.component';
@@ -54,6 +52,13 @@ import { IntegerConstraintComponent } from "./components/integer-constraint/inte
 import { ShiftConstraintComponent } from './components/shift-constraint/shift-constraint.component';
 import { MinMaxConsecutiveShiftComponent } from './components/min-max-consecutive-shift/min-max-consecutive-shift.component';
 import { BooleanConstraintComponent } from "./components/boolean-constraint/boolean-constraint.component";
+import { SidenavNurseComponent } from './components/nurse-component/sidenav-nurse/sidenav-nurse.component';
+import { NurseCreationDialogComponent } from './components/nurse-component/nurse-creation-dialog/nurse-creation-dialog.component';
+import { NurseGroupCreationDialogComponent } from './components/nurse-component/nurse-group-creation-dialog/nurse-group-creation-dialog.component';
+import { NurseGroupViewComponent } from './components/nurse-component/nurse-group-view/nurse-group-view.component';
+import { MatMenuModule} from '@angular/material/menu';
+import {MatCardModule} from '@angular/material/card';
+
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
 import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
 import { ContractsViewComponent } from './components/contracts-view/contracts-view.component';
@@ -74,6 +79,8 @@ import { ShiftGroupCreationComponent } from './components/shift-component/shift-
 import { SkillViewComponent } from './components/skill-view/skill-view.component';
 import { SkillCreationDialogComponent } from './components/skill-creation-dialog/skill-creation-dialog.component';
 import { SkillCreationComponent } from './components/skill-creation/skill-creation.component';
+import { NurseCreationComponent } from './components/nurse-component/nurse-creation/nurse-creation.component';
+import { NurseGroupCreationComponent } from './components/nurse-component/nurse-group-creation/nurse-group-creation.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +89,7 @@ import { SkillCreationComponent } from './components/skill-creation/skill-creati
     ConsultScheduleComponent,
     ContractCreationComponent,
     ScheduleGenerationComponent,
-    NurseComponent,
+    NurseViewComponent,
     ErrorMessageDialogComponent,
     PatternElementComponent,
     NumericInputComponent,
@@ -101,6 +108,10 @@ import { SkillCreationComponent } from './components/skill-creation/skill-creati
     ShiftGroupViewComponent,
     SidenavShiftComponent,
     BooleanConstraintComponent,
+    SidenavNurseComponent,
+    NurseCreationDialogComponent,
+    NurseGroupCreationDialogComponent,
+    NurseGroupViewComponent,
     LoginComponent,
     AccountCreationComponent,
     AccountCreationDialogComponent,
@@ -126,6 +137,8 @@ import { SkillCreationComponent } from './components/skill-creation/skill-creati
     SkillViewComponent,
     SkillCreationDialogComponent,
     SkillCreationComponent,
+    NurseCreationComponent,
+    NurseGroupCreationComponent,
   ],
   imports: [
     BrowserModule,
@@ -149,6 +162,10 @@ import { SkillCreationComponent } from './components/skill-creation/skill-creati
     NgxMaterialTimepickerModule,
     MatExpansionModule,
     MatTooltipModule,
+    MatMenuModule,
+    MatCardModule,
+    MatInputModule,
+    MatFormFieldModule,
     MatSidenavModule,
     MatButtonToggleModule,
     MatExpansionModule,
