@@ -14,7 +14,6 @@ from src.exceptions.shift_exceptions import (
     ShiftNotExist,
 )
 from src.models.shift_group import ShiftGroup
-from constants import work, rest
 
 
 def get_shift_groups_from_cursor(cursor):
@@ -134,10 +133,6 @@ class ShiftGroupDao(AbstractDao):
 
     def duplicate(self, profile1, profile2):
         shift_groups = self.fetch_all(profile1)
-        rest_shift_group = self.find_by_name(rest, profile1)
-        work_shift_group = self.find_by_name(work, profile1)
-        shift_groups.remove(rest_shift_group)
-        shift_groups.remove(work_shift_group)
         for shift_group in shift_groups:
             shift_object = ShiftGroup().from_json(shift_group)
             shift_object.profile = profile2

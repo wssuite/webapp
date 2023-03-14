@@ -147,11 +147,6 @@ class TestShiftGroupDao(TestCase):
         )
         self.assertEqual([], shift_group_after[shift_group_shift_types])
 
-    """
-    This test verifies that there is only one element duplicated
-    the other two shift groups will be created by the profile creation
-    """
-
     def test_delete_all_shift_groups_from_profile_deletes_items_for_profile(
         self,
     ):
@@ -164,5 +159,5 @@ class TestShiftGroupDao(TestCase):
         profile1_shift_groups_after = self.dao.fetch_all(profile1)
         profile2_shift_groups = self.dao.fetch_all(profile2)
         self.assertEqual(3, len(profile1_shift_groups_before))
-        self.assertEqual(1, len(profile2_shift_groups))
+        self.assertEqual(3, len(profile2_shift_groups))
         self.assertEqual(0, len(profile1_shift_groups_after))
