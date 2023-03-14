@@ -9,11 +9,11 @@ import {
   //FETACH_PROFILES,
   ADD_SHIFT_GROUP_URL,
   ADD_SHIFT_TYPE_URL,
-  ADD_SHIFT_URL,
-  FETCH_SHIFT_BY_NAMES,
+  //ADD_SHIFT_URL,
+  //FETCH_SHIFT_BY_NAMES,
   FETCH_SHIFT_GROUP_BY_NAMES,
   FETCH_SHIFT_GROUP_NAMES,
-  FETCH_SHIFT_NAMES,
+  //FETCH_SHIFT_NAMES,
   FETCH_SHIFT_TYPE_BY_NAMES,
   FETCH_SHIFT_TYPE_NAMES,
   FETCH_SKILLS,
@@ -22,11 +22,11 @@ import {
   PROTOTYPE_SCHEDULE_URL,
   REMOVE_SHIFT_GROUP_URL,
   REMOVE_SHIFT_TYPE_URL,
-  REMOVE_SHIFT_URL,
+  //REMOVE_SHIFT_URL,
   TEST_URL,
   //DUPLICATE_PROFILE,
   //DELETE_PROFILE,
-  UPDATE_SHIFT_URL,
+  //UPDATE_SHIFT_URL,
   UPDATE_SHIFT_TYPE_URL,
   UPDATE_SHIFT_GROUP_URL,
   //FETCH_PROFILE_ACCESSORS,
@@ -51,7 +51,7 @@ import { EmployeeSchedule } from "src/app/models/Assignment";
 //import { Credentials, UserInfo } from "src/app/models/Credentials";
 //import { BaseProfile } from "src/app/models/Profile";
 import { NurseGroupInterface, NurseInterface } from "src/app/models/Nurse";
-import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "src/app/models/Shift";
+import { ShiftGroupInterface, /*ShiftInterface,*/ ShiftTypeInterface } from "src/app/models/Shift";
 import { SkillInterface } from "src/app/models/skill";
 import { CacheUtils, TOKEN_STRING, PROFILE_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
@@ -120,7 +120,7 @@ export class APIService {
   //-------------------------------------------------------------------------------------------------------------------------------
   // shift section
   
-  addShift(shift: ShiftInterface):Observable<HttpResponse<string>>{
+  /*addShift(shift: ShiftInterface):Observable<HttpResponse<string>>{
     try{
       console.log("addShift");
       let queryParams = new HttpParams();
@@ -183,7 +183,7 @@ export class APIService {
     }catch(err){
       throw new Exception("user not logged in")
     }
-  }
+  }*/
   //-------------------------------------------------------------------------------------------------
   // shift type section
 
