@@ -1,5 +1,5 @@
-<div mat-dialog-title>Create New Account</div>
-<div  mat-dialog-content>
+<div mat-dialog-title class="title">Create New Account</div>
+<div  mat-dialog-content class="dialog-content">
     <div class="userInputContainer">
         <label>Username: </label>
         <mat-form-field
@@ -30,7 +30,7 @@
         </mat-form-field>
     </div>
     <div class="passwordConfirmationInputContainer">
-        <label>Confirme Password: </label>
+        <label>Confirm Password: </label>
         <mat-form-field
             class="passwordConfirmationInputField"
         >
@@ -47,10 +47,10 @@
     </div>
 </div>
 <div mat-dialog-action class="buttons-container">
-    <button  mat-raised-button [disabled]="hasError()" color="primary"  (click)="createAccount()">
-        Create
-    </button>
     <button mat-raised-button color="warn" [mat-dialog-close]="true">
         Cancel
+    </button>
+    <button  mat-raised-button [disabled]="hasError()" color="primary"  (click)="createAccount()">
+        Create
     </button>
 </div>

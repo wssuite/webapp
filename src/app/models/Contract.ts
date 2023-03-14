@@ -11,7 +11,7 @@ export class Contract {
         this.constraints = [];
     }
 
-    toJson(): ContractInterface {
+    toJson(profileName: string): ContractInterface {
         const cs = [];
         for(const constraint of this.constraints){
             cs.push((constraint as Constraint).toJson());
@@ -19,6 +19,7 @@ export class Contract {
         return {
             name: this.name,
             constraints: cs,
+            profile: profileName,
         }
     }
 }
@@ -27,4 +28,5 @@ export interface ContractInterface {
     name: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constraints:any[];
+    profile: string;
 }

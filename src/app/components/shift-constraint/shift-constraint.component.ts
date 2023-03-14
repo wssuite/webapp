@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { BASE_VALUE } from 'src/app/constants/constraints';
 import { ShiftConstraint } from 'src/app/models/ShiftConstraint';
 
 @Component({
@@ -7,7 +8,7 @@ import { ShiftConstraint } from 'src/app/models/ShiftConstraint';
   templateUrl: './shift-constraint.component.html',
   styleUrls: ['./shift-constraint.component.css']
 })
-export class ShiftConstraintComponent {
+export class ShiftConstraintComponent implements OnInit{
 
   @Input() constraint!: ShiftConstraint;
   @Output() constraintChange: EventEmitter<ShiftConstraint>;
@@ -25,6 +26,12 @@ export class ShiftConstraintComponent {
     this.selectFormCtrl = new FormControl(null, Validators.required);
     this.weightLabel = "weight";
     this.valueErrorState = true;
+  }
+
+  ngOnInit(): void {
+      this.weightErrorState = this.constraint.weight === BASE_VALUE;
+      this.valueErrorState = this.constraint.value === '';
+      this.selectFormCtrl.setValue(this.constraint.shiftId);
   }
 
   emitErrorState() {

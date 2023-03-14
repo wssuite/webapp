@@ -1,15 +1,13 @@
-
 .title {
     color: black;
     background-color: lightgray;
     text-align: left;
     font-size: 50px;
     height: 10%;
-    padding: 2%;
+    padding: 1%;
 }
 
-
-.nameShiftContainer{
+.nameNurseGroupContainer{
     background-color: gray;
     padding: 2%;
     font-size: 25px;
@@ -35,10 +33,10 @@ button {
     float: right;
 }
 
-.shiftSection{
+.nurseSection{
     padding: 2%;
 }
 
-.shiftTypeSection{
+.contractSection{
     padding: 2%;
 }

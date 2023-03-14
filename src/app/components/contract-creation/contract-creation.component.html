@@ -6,13 +6,13 @@
             <input matInput [(ngModel)]="contract.name"
             [formControl]="nameFormCtrl"/>
         </mat-form-field>
-        <mat-error *ngIf="this.nameExist()">
+        <mat-error *ngIf="nameExist() && contractStartName ===''">
             Name is already used
         </mat-error>
     </div>
     <div class="constraints-section">
         <h1>Constraints</h1>
-        <div class="constraints-container">
+        <div class="constraints-container" (mouseleave)="emitContract()">
             <div *ngFor="let constraint of contract.constraints; let i= index" class="constraint-container">
                 <mat-expansion-panel [expanded]="i === contract.constraints.length -1">
                     <mat-expansion-panel-header>
@@ -39,7 +39,7 @@
 
         </div>
         
-        <h2>choose a constraint to be added </h2>
+        <h2>Choose a constraint to be added </h2>
         <br>
         <div class="constraints" *ngFor="let constraint of possibleConstraints; let i= index">
             <button class="constraint-button" mat-raised-button (click)="addConstraint(constraint)">

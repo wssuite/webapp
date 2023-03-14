@@ -1,0 +1,14 @@
+<div class="title" mat-dialog-title>Shift Group</div>
+<div class="dialog-container">
+    <div class="shiftGroup-container">
+        <app-shift-group-creation [(shiftGroup)]="data.shiftGroup" [shiftsGroup]="data.shiftsGroup" [possibleShiftsType]="possibleShiftsType" [selectedShiftType]="possibleShiftsType[0]" [possibleShifts]="possibleShifts" [selectedShift]="possibleShifts[0]"  (errorState)="updateShiftGroupErrorState($event)"></app-shift-group-creation>
+    </div>
+    <div mat-dialog-action class="buttons-container">
+        <button [disabled]="shiftGroupErrorState"  mat-raised-button color="primary" (click)="add()">
+            Submit
+        </button>
+        <button  mat-raised-button color="warn" [mat-dialog-close]="true">
+            Cancel
+        </button>
+    </div>
+</div>

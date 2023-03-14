@@ -1,0 +1,20 @@
+<div class="empty-profile-container">
+    <div class="name-input">
+        <label>Profile name: </label>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter a name</mat-label>
+            <input
+            matInput
+            [(ngModel)]="name"
+            [formControl]="nameCtrl"
+            />
+        </mat-form-field>
+        <mat-error *ngIf="nameExist()">
+            The profile name is already used
+        </mat-error>
+    </div>
+    <div class="buttons-container">
+        <button mat-raised-button color="primary" (click)="create()" [disabled]="hasError()">Submit</button>
+        <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancel</button>
+    </div>
+</div>

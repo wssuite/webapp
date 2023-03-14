@@ -18,6 +18,7 @@ export class ContractCreationDialogComponent implements OnInit{
   possibleShifts!: string[];
 
   possibleSkills = ["Nurse", "HeadNurse", "Physiatre"];
+  initName: string;
 
   constructor(
     public dialogRef: MatDialogRef<ContractCreationDialogComponent>,
@@ -27,6 +28,8 @@ export class ContractCreationDialogComponent implements OnInit{
   ){
     this.contractErrorState = true;
     this.service.setContract(data.contract);
+    //this.contractCopy = data.contract;
+    this.initName = data.contract.name;
   }
   ngOnInit(): void {
     this.possibleShifts = [];
@@ -88,16 +91,30 @@ export class ContractCreationDialogComponent implements OnInit{
       //call api service to push the contract
       const contractJson = this.service.getJson();
       console.log(contractJson);
-      this.api.addContract(contractJson).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
+      if(this.initName == ""){
+        this.api.addContract(contractJson).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          } 
+        })
+      }
+      else {
+        this.api.updateContract(contractJson).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
           }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
-      })
+        })
+      } 
     }
     catch(e){
       this.openErrorDialog((e as Exception).getMessage())

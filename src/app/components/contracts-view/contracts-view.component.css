@@ -1,14 +1,28 @@
 .contracts-container {
-    margin-top: 7vh;
+    margin-top: 2vh;
     margin-left: 2vw;
     margin-right: 2vw;
 }
 
 .create-button{
-    float: right;
-    position: relative;
+    margin-left: 90vw;
+    margin-top: 2vh;
+    height: 5vh;
+    width: auto;
+    font-size: large;
 }
 
 mat-card {
     margin-bottom: 1vh;
+}
+
+mat-card-actions {
+    margin-bottom: 3vh;
+}
+
+
+mat-paginator{
+    position: absolute;
+    left: 80vw;
+    top: 93vh;
 }

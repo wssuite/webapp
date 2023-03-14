@@ -10,7 +10,7 @@ export class AlternativeShift extends Constraint {
         this.weight= BASE_VALUE;
         this.shiftId = '';
     }
-
+    
     validateConstraint(c: Constraint): void {
         const constraint = c as AlternativeShift;
         if(constraint) {
@@ -23,13 +23,29 @@ export class AlternativeShift extends Constraint {
             throw new Exception(this.getContradictionErrorMessage());
         }
     }
-
+    
     toJson(): AlternativeShiftInterface {
         return {
             name: this.name,
             shiftId: this.shiftId,
             weight: this.weight,    
         }
+    }
+
+    clone(): AlternativeShift {
+        const newConstraint: AlternativeShift = new AlternativeShift(this.name, this.displayName);
+        newConstraint.shiftId = this.shiftId;
+        newConstraint.weight = this.weight;
+        return newConstraint;
+    }
+    equals(c: AlternativeShift): boolean {
+        return this.name === c.name && this.shiftId === c.shiftId && this.weight === c.weight;
+    }
+
+
+    fromJson(c: AlternativeShiftInterface): void {
+        this.shiftId = c.shiftId;
+        this.weight = c.weight;
     }
 }
 

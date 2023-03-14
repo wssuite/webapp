@@ -1,8 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { ProfileService } from 'src/app/services/profile/profile.service';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ShiftTypeCreationDialogComponent } from '../shift-type-creation-dialog/shift-type-creation-dialog.component';
@@ -13,39 +15,53 @@ import { ShiftTypeCreationDialogComponent } from '../shift-type-creation-dialog/
   templateUrl: './shifts-type-view.component.html',
   styleUrls: ['./shifts-type-view.component.css']
 })
-export class ShiftsTypeViewComponent implements OnInit{
+export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
   
   shiftsType: string[];
+  connectedUser!:boolean;
 
 
-  constructor(private dialog: MatDialog, private apiService: APIService) {
+  constructor(private dialog: MatDialog, private apiService: APIService, private profileService: ProfileService) {
     this.shiftsType = [];
 
   }
   ngOnInit(): void {
-    this.getShiftsType();
+    try{
+      this.getShiftsType();
+      this.connectedUser = true;
+    }catch(err){
+      this.connectedUser = false;
+    }
+  }
+
+  ngAfterViewInit(): void {
+      this.profileService.profileChanged.subscribe(()=>{
+        this.getShiftsType();
+      })
   }
 
   getShiftsType(){
     this.apiService.getShiftTypeNames().subscribe({
-      next: (shiftsType: string[])=> this.shiftsType = shiftsType,
+      next: (shiftsType: string[])=> {
+      this.shiftsType = shiftsType;
+      },
       error: (error: HttpErrorResponse)=> {
         this.openErrorDialog(error.error);
       }
     })
   }
 
-  openShiftTypeCreationDialog(shift_type: ShiftTypeInterface) {
+  openShiftTypeCreationDialog(shiftType: ShiftTypeInterface) {
     const dialog = this.dialog.open(ShiftTypeCreationDialogComponent,  
       { disableClose: true,  
-        height: '60%',
-        width: '50%', 
+        height: '85%',
+        width: '55%', 
         position: {top:'5vh',left: '25%', right: '25%'},
-        data: {shift_type}
+        data: {shiftType:shiftType, shiftsType:this.shiftsType}
       });
 
       dialog.afterClosed().subscribe(()=>{
-        this. getShiftsType;
+        this. getShiftsType();
       })
   }
 
@@ -56,25 +72,26 @@ export class ShiftsTypeViewComponent implements OnInit{
   }
 
   createNewShiftType(){
-    const newShiftType = {name: '', shifts: []};
+    const newShiftType = {name: '', shifts: [], profile: CacheUtils.getProfile()};
     this.openShiftTypeCreationDialog(newShiftType); 
   }
 
-
-  deleteShiftType(shiftType_name: string){
-    //Manque la vérification si le shift est dans un shift type ou group
-    const index = this.shiftsType.indexOf(shiftType_name);
-    if (index > -1) {
-      this.shiftsType.splice(index, 1);
-    }
+  deleteShiftType(shiftTypeName: string){
     try
     { 
       //call api service to push the contract
-      console.log(shiftType_name);
-      this.apiService.removeShiftType(shiftType_name).subscribe({
+      this.apiService.removeShiftType(shiftTypeName).subscribe({
         error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            const index = this.shiftsType.indexOf(shiftTypeName);
+            if (index > -1) {
+              this.shiftsType.splice(index, 1);
+            }
+          }
+          else{
             this.openErrorDialog(err.error)
           }
+        } 
       })
     }
     catch(e){
@@ -82,6 +99,18 @@ export class ShiftsTypeViewComponent implements OnInit{
       this.openErrorDialog((e as Exception).getMessage())
     }
   }
+
+  modifyShiftType(shiftTypeName: string){
+    this.apiService.getShiftTypeByName(shiftTypeName).subscribe({
+      next:(shiftType: ShiftTypeInterface) =>{
+        this.openShiftTypeCreationDialog(shiftType);
+      },
+      error: (error: HttpErrorResponse)=>{
+        this.openErrorDialog(error.error);
+      }
+    })
+  }
+
 
       
 

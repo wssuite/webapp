@@ -1,4 +1,4 @@
-export class Nurse {
+/*export class Nurse {
   name: string;
   contracts: string[];
   username: string;
@@ -10,10 +10,18 @@ export class Nurse {
     this.username = "";
     this.nurse_id = "0";
   }
-}
+}*/
 
 export interface NurseInterface {
   name: string;
-  contracts: string[];
   username: string;
+  contracts: string[];
+  profile: string;
+}
+
+export interface NurseGroupInterface {
+  name: string;
+  contracts: string[];
+  nurses: string[];
+  profile: string;
 }

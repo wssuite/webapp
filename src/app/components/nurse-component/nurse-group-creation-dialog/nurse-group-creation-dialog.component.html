@@ -1,0 +1,14 @@
+<div class="title" mat-dialog-title>Nurse Group</div>
+<div class="dialog-container">
+    <div class="nurseGroup-container">
+        <app-nurse-group-creation [(nurseGroup)]="data.nurseGroup" [nurseGroups]="data.nurseGroups" [possibleNurses]="possibleNurses" [selectedNurse]="possibleNurses[0]" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateNurseGroupErrorState($event)"></app-nurse-group-creation>
+    </div>
+    <div mat-dialog-action class="buttons-container">
+        <button [disabled]="nurseGroupErrorState"  mat-raised-button color="primary" (click)="add()">
+            Submit
+        </button>
+        <button  mat-raised-button color="warn" [mat-dialog-close]="true">
+            Cancel
+        </button>
+    </div>
+</div>

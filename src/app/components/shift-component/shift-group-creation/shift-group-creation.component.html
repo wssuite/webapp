@@ -1,15 +1,10 @@
-<div class="title" mat-dialog-title>Shift Group</div>
+<div class="shiftType-container" (mouseleave)="emitShiftGroup()"></div>
 <div class="content"  mat-dialog-content>
     <div class="nameShiftContainer">
     <label>Shift group name </label>
-    <mat-form-field class = "nameForm" [formGroup]="inputControlForm">
+    <mat-form-field class = "nameForm" >
       <mat-label>Enter shift group name</mat-label>
-      <input id="input"
-        matInput
-        placeholder="Name"
-        formControlName="name"
-        [(ngModel)]="data.name"
-      />
+      <input matInput [(ngModel)]="shiftGroup.name" [formControl]="nameShiftGroupFormCtrl" (keyup)="emitShiftGroup()">
     </mat-form-field>
     </div>
 </div>
@@ -18,7 +13,7 @@
   <div *ngIf="possibleShifts.length > 0">
     <mat-form-field appearance="fill">
       <mat-label>Select a shift</mat-label>
-      <mat-select [(value)]="selectedShift">
+      <mat-select  [(ngModel)]="selectedShift">
         <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
           {{ shift }}
         </mat-option>
@@ -29,7 +24,7 @@
     </button>
   </div>
   <table class="shiftTable">
-    <tr *ngFor="let shift of shifts">
+    <tr *ngFor="let shift of shiftGroup.shifts">
       <td class="shiftName">
         <mat-chip>{{ shift }}</mat-chip>
       </td>
@@ -49,7 +44,7 @@
   <div *ngIf="possibleShiftsType.length > 0">
     <mat-form-field appearance="fill">
       <mat-label>Select a shift type</mat-label>
-      <mat-select [(value)]="selectedShiftType">
+      <mat-select [(ngModel)]="selectedShiftType">
         <mat-option *ngFor="let shiftType of possibleShiftsType" [value]="shiftType">
           {{ shiftType}}
         </mat-option>
@@ -60,7 +55,7 @@
     </button>
   </div>
   <table class="shiftTypeTable">
-    <tr *ngFor="let shiftType of shiftsType">
+    <tr *ngFor="let shiftType of shiftGroup.shiftTypes">
       <td class="shiftTypeName">
         <mat-chip>{{ shiftType }}</mat-chip>
       </td>
@@ -75,12 +70,3 @@
     </tr>
   </table>
 </div>
-
-<div mat-dialog-action class="buttons-container">
-    <button  mat-raised-button color="primary" (click)="add()">
-        Add
-    </button>
-    <button mat-raised-button color="warn" [mat-dialog-close]="true">
-        Cancel
-    </button>
-

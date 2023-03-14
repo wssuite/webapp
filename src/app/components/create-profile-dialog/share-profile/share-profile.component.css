@@ -1,0 +1,24 @@
+.share-container{
+    margin-top: 5vh;
+    margin-left: 2vw;
+}
+
+label{
+    margin-right: 1vw;
+}
+
+mat-form-field{
+    width: 40vw;
+}
+
+.share-button{
+    margin-left: 1vw;
+}
+
+.buttons-section{
+    position: absolute;
+    bottom: 0%;
+    margin-bottom: 2vh;
+    right:0%;
+    margin-right: 2vw;
+}
