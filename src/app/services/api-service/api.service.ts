@@ -34,12 +34,12 @@ import {
   //REVOKE_PROFILE_ACCESS,
   //DELETE_SKILL_URL,
   //ADD_SKILL_URL,
-  ADD_NURSE_URL,
-  FETCH_ALL_NURSE_USERNAME,
-  REMOVE_NURSE_URL,
-  UPDATE_NURSE_URL,
-  FETCH_NURSE_BY_USERNAME,
-  FETCH_NURSE_URL,
+  //ADD_NURSE_URL,
+  //FETCH_ALL_NURSE_USERNAME,
+  //REMOVE_NURSE_URL,
+  //UPDATE_NURSE_URL,
+  //FETCH_NURSE_BY_USERNAME,
+  //FETCH_NURSE_URL,
   ADD_NURSE_GROUP_URL,
   REMOVE_NURSE_GROUP_URL,
   UPDATE_NURSE_GROUP_URL,
@@ -50,7 +50,7 @@ import {
 import { EmployeeSchedule } from "src/app/models/Assignment";
 //import { Credentials, UserInfo } from "src/app/models/Credentials";
 //import { BaseProfile } from "src/app/models/Profile";
-import { NurseGroupInterface, NurseInterface } from "src/app/models/Nurse";
+import { NurseGroupInterface, /*NurseInterface*/ } from "src/app/models/Nurse";
 //import { ShiftGroupInterface, /*ShiftInterface,*/ ShiftTypeInterface } from "src/app/models/Shift";
 //import { SkillInterface } from "src/app/models/skill";
 import { CacheUtils, TOKEN_STRING, PROFILE_STRING } from "src/app/utils/CacheUtils";
@@ -430,7 +430,7 @@ export class APIService {
   //-------------------------------------------------------------------------------------------------------------
   // Nurse section
   
-  addNurse(nurse: NurseInterface):Observable<HttpResponse<string>>{
+  /*addNurse(nurse: NurseInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
@@ -507,7 +507,7 @@ export class APIService {
     }catch(err){
       throw new Exception("user not logged in");
     }
-  }
+  }*/
   //----------------------------------------------------------------------------------------------------------------
 
   // Nurse group section
