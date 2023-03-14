@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
 import { BaseProfile } from 'src/app/models/Profile';
-import { APIService } from 'src/app/services/api-service/api.service';
+import { AccountService } from 'src/app/services/account/account.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { CreateProfileDialogComponent } from '../create-profile-dialog/create-profile-dialog.component';
@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit{
   validProfile: boolean;
   connectedUser!: boolean
   
-  constructor(private apiService: APIService, private router: Router,
+  constructor(private accountService: AccountService, private router: Router,
     private dialog: MatDialog, private profileService: ProfileService){
       this.profiles = [];
       this.validProfile = false;
@@ -97,7 +97,7 @@ export class HeaderComponent implements OnInit{
 
   logout() {
     try{
-      this.apiService.logout().subscribe({
+      this.accountService.logout().subscribe({
         error: (err: HttpErrorResponse)=>{
           if(err.status === HttpStatusCode.Ok){
             this.router.navigate(["/" + LOGIN]);

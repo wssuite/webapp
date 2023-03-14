@@ -2,9 +2,9 @@ import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
-  ADD_ACCOUNT_URL,
-  DELETE_ACCOUNT_URL,
-  GET_USERNAMES,
+  //ADD_ACCOUNT_URL,
+  //DELETE_ACCOUNT_URL,
+  //GET_USERNAMES,
   //CREATE_EMPTY_PROFILE,
   //FETACH_PROFILES,
   ADD_SHIFT_GROUP_URL,
@@ -17,8 +17,8 @@ import {
   FETCH_SHIFT_TYPE_BY_NAMES,
   FETCH_SHIFT_TYPE_NAMES,
   FETCH_SKILLS,
-  LOGIN_URL,
-  LOGOUT_URL,
+  //LOGIN_URL,
+  //LOGOUT_URL,
   PROTOTYPE_SCHEDULE_URL,
   REMOVE_SHIFT_GROUP_URL,
   REMOVE_SHIFT_TYPE_URL,
@@ -48,7 +48,7 @@ import {
   FETCH_ALL_NURSE_GROUP_NAME,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
-import { Credentials, UserInfo } from "src/app/models/Credentials";
+//import { Credentials, UserInfo } from "src/app/models/Credentials";
 //import { BaseProfile } from "src/app/models/Profile";
 import { NurseGroupInterface, NurseInterface } from "src/app/models/Nurse";
 import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "src/app/models/Shift";
@@ -66,7 +66,7 @@ export class APIService {
   constructor(private httpClient: HttpClient) {}
 
   //user requests section section
-  login(credentials:Credentials): Observable<UserInfo> {
+  /*login(credentials:Credentials): Observable<UserInfo> {
     return this.httpClient.post<UserInfo>(LOGIN_URL, credentials);
   }
 
@@ -116,7 +116,7 @@ export class APIService {
     }catch(err){
       throw new Error("user not logged in")
     }
-  }
+  }*/
   //-------------------------------------------------------------------------------------------------------------------------------
   // shift section
   

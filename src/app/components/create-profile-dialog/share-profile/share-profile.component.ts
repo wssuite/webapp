@@ -4,11 +4,11 @@ import { FormControl } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable, startWith, map } from 'rxjs';
-import { APIService } from 'src/app/services/api-service/api.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { AccountService } from 'src/app/services/account/account.service';
 
 @Component({
   selector: 'app-share-profile',
@@ -30,7 +30,7 @@ export class ShareProfileComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ShareProfileComponent>,
      @Inject(MAT_DIALOG_DATA) public data: {profileName: string}, private api: ProfileService,
-     private apiService: APIService, private dialog: MatDialog){
+     private accountService: AccountService, private dialog: MatDialog){
       this.accessors = [];
       this.users = [];
       this.displayedUsers = []
@@ -45,7 +45,7 @@ export class ShareProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = CacheUtils.getUsername()
-    this.apiService.getAccountsUsername().subscribe({
+    this.accountService.getAccountsUsername().subscribe({
       next:(users:string[])=>{
         this.users = users;
     },
