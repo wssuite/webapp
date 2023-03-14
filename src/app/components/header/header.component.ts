@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit{
 
   ngOnInit(): void {
     try{
-      this.getProfiles();
+      this.getProfiles(false);
       this.isAdmin = CacheUtils.getIsAdmin();
       this.username = CacheUtils.getUsername();
       this.connectedUser= true; 
@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit{
     }
   }
   
-  getProfiles(){
+  getProfiles(useLatProfile: boolean){
     this.apiService.getAllProfiles().subscribe({
       next:(profiles: BaseProfile[])=>{
         this.profiles = profiles;
@@ -51,20 +51,28 @@ export class HeaderComponent implements OnInit{
           this.openCreateProfileDialog(false);
         }
         else{
-          try{
-            const profileName = CacheUtils.getProfile();
-            this.profiles.forEach((profile: BaseProfile)=>{
-              if(profile.profile === profileName){
-                this.profile = profile;
-              }
-            })
-          } catch(err){
+          if(useLatProfile){
             this.profile = this.profiles[this.profiles.length - 1]
-            console.log(this.profile)
             CacheUtils.setProfile(this.profile.profile);
-          } finally{
             this.validProfile = true;
             this.profileService.emitProfileChange();
+          }
+          else{
+            try{
+              const profileName = CacheUtils.getProfile();
+              this.profiles.forEach((profile: BaseProfile)=>{
+                if(profile.profile === profileName){
+                  this.profile = profile;
+                }
+              })
+            } catch(err){
+              this.profile = this.profiles[this.profiles.length - 1]
+              console.log(this.profile)
+              CacheUtils.setProfile(this.profile.profile);
+            } finally{
+              this.validProfile = true;
+              this.profileService.emitProfileChange();
+            }
           }
         }
       },
@@ -83,7 +91,7 @@ export class HeaderComponent implements OnInit{
       position: {top:'5vh',left: '25%', right: '25%'},
     })
     dialog.afterClosed().subscribe(()=>{
-      this.getProfiles();
+      this.getProfiles(true);
     })
   }
 
@@ -130,7 +138,7 @@ export class HeaderComponent implements OnInit{
       position: {top:'5vh',left: '25%', right: '25%'},
     })
     dialog.afterClosed().subscribe(()=>{
-      this.getProfiles();
+      this.getProfiles(true);
     })
   }
 
@@ -141,7 +149,7 @@ export class HeaderComponent implements OnInit{
           this.openErrorDialog(err.error);
         }
         else{
-          this.getProfiles();
+          this.getProfiles(true);
         }
       }
     })
