@@ -2,8 +2,8 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NurseGroupInterface} from 'src/app/models/Nurse';
-import { APIService } from 'src/app/services/api-service/api.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
+import { NurseGroupService } from 'src/app/services/nurse/nurse-group.service';
 import { NurseService } from 'src/app/services/nurse/nurse.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
@@ -23,7 +23,7 @@ export class NurseGroupCreationDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<NurseGroupCreationDialogComponent >,
     @Inject(MAT_DIALOG_DATA) public data:  {nurseGroup: NurseGroupInterface, nurseGroups: string[]},
-    private api: APIService, private nurseService: NurseService,
+    private api: NurseGroupService, private nurseService: NurseService,
     private contractService: ContractService,
     private dialog: MatDialog,  
 ) {
