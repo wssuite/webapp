@@ -34,7 +34,10 @@ from src.models.nurse_group import NurseGroup
 from src.models.nurse import Nurse
 from src.models.contract import Contract
 from src.models.contract_group import ContractGroup
-from src.models.stringify import Stringify
+from src.models.stringify import (
+    Stringify,
+    extract_string_from_complex_object_array,
+)
 
 
 class ScheduleDemand(Jsonify):
@@ -106,14 +109,14 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
         return (
             f"{info_sec}{header_sec}{shift_sec}{shift_group_sec}"
             f"{shift_type_sec}{contract_sec}{contract_group_sec}"
-            f"{nurse_sec}{nurse_group_sec}{hospital_demand_sec}{preferences_sec}"
+            f"{nurse_sec}{nurse_group_sec}{hospital_demand_sec}"
+            f"{preferences_sec}"
         )
 
     @staticmethod
     def __develop_section(array, identifier):
         ret_string = f"{identifier}\n"
-        for nurse_group in array:
-            ret_string += nurse_group.to_string()
+        ret_string += extract_string_from_complex_object_array(array)
         ret_string += f"{end_section}\n"
         return ret_string
 

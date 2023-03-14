@@ -6,7 +6,10 @@ from constants import (
     contract_group_contracts_list,
     profile,
 )
-from src.models.stringify import Stringify
+from src.models.stringify import (
+    Stringify,
+    extract_string_from_simple_object_array,
+)
 
 
 class ContractGroup(DBDocument, Jsonify, Stringify):
@@ -18,7 +21,7 @@ class ContractGroup(DBDocument, Jsonify, Stringify):
         return self.to_json()
 
     def to_string(self):
-        contracts_string = ""
-        for contract in self.contracts:
-            contracts_string += f",{contract}"
-        return f"{self.name},{len(self.contracts)}{contracts_string}"
+        contracts_string = extract_string_from_simple_object_array(
+            self.contracts
+        )
+        return f"{self.name},{len(self.contracts)}{contracts_string}\n"

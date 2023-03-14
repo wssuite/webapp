@@ -1,4 +1,7 @@
-from src.models.stringify import Stringify
+from src.models.stringify import (
+    Stringify,
+    extract_string_from_simple_object_array,
+)
 from pykson import StringField, ObjectListField, ListField
 from constants import (
     constraint_name,
@@ -204,9 +207,9 @@ class ContractUnwantedSkills(ContractConstraint):
         return self.unwanted_skills
 
     def to_string(self):
-        skill_string = ""
-        for skill in self.unwanted_skills:
-            skill_string += f",{skill}"
+        skill_string = extract_string_from_simple_object_array(
+            self.unwanted_skills
+        )
 
         return (
             f"{self.name},{self.weight},"
