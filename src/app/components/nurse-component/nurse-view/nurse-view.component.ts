@@ -1,8 +1,10 @@
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { NurseInterface } from "src/app/models/Nurse";
 import { APIService } from "src/app/services/api-service/api.service";
+import { ProfileService } from "src/app/services/profile/profile.service";
+import { CacheUtils } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
 import { ErrorMessageDialogComponent } from "../../error-message-dialog/error-message-dialog.component";
 import { NurseCreationDialogComponent } from "../nurse-creation-dialog/nurse-creation-dialog.component";
@@ -12,12 +14,12 @@ import { NurseCreationDialogComponent } from "../nurse-creation-dialog/nurse-cre
   templateUrl: "./nurse-view.component.html",
   styleUrls: ["./nurse-view.component.css"],
 })
-export class NurseViewComponent implements OnInit{
+export class NurseViewComponent implements OnInit, AfterViewInit{
   
   nurses_username: string[];
   connectedUser!:boolean;
 
-  constructor(public dialog: MatDialog, private apiService: APIService) {
+  constructor(public dialog: MatDialog, private apiService: APIService, private profileService: ProfileService) {
     this.nurses_username = [];
 
 
@@ -30,6 +32,12 @@ export class NurseViewComponent implements OnInit{
     }catch(err){
       this.connectedUser = false;
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.profileService.profileChanged.subscribe(()=>{
+      this.getNursesUsername();
+    })    
   }
 
   getNursesUsername(){
@@ -66,7 +74,7 @@ export class NurseViewComponent implements OnInit{
 
 
   createNewNurse(){
-    const newNnurse = {name: '',username: '', contracts:[]};
+    const newNnurse = {name: '',username: '', contracts:[], profile: CacheUtils.getProfile()};
     this.openNurseCreationDialog(newNnurse); 
   }
 

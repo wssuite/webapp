@@ -1,8 +1,10 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NurseGroupInterface } from 'src/app/models/Nurse';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { ProfileService } from 'src/app/services/profile/profile.service';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { NurseGroupCreationDialogComponent } from '../nurse-group-creation-dialog/nurse-group-creation-dialog.component';
@@ -12,12 +14,12 @@ import { NurseGroupCreationDialogComponent } from '../nurse-group-creation-dialo
   templateUrl: './nurse-group-view.component.html',
   styleUrls: ['./nurse-group-view.component.css']
 })
-export class NurseGroupViewComponent implements OnInit {
+export class NurseGroupViewComponent implements OnInit, AfterViewInit {
   
   nurseGroups: string[];
   connectedUser!:boolean;
 
-  constructor(public dialog: MatDialog, private apiService: APIService) {
+  constructor(public dialog: MatDialog, private apiService: APIService, private profileService: ProfileService) {
     this.nurseGroups = [];
   }
 
@@ -28,6 +30,12 @@ export class NurseGroupViewComponent implements OnInit {
     }catch(err){
       this.connectedUser = false;
     }
+  }
+
+  ngAfterViewInit(): void {
+      this.profileService.profileChanged.subscribe(()=>{
+        this.getNurseGroups();
+      })
   }
 
   getNurseGroups(){
@@ -64,7 +72,7 @@ export class NurseGroupViewComponent implements OnInit {
 
 
   createNewNurseGroup(){
-    const newNurseGroup = {name: '',contracts:[], nurses:[]};
+    const newNurseGroup = {name: '',contracts:[], nurses:[], profile: CacheUtils.getProfile()};
     this.openNurseGroupCreationDialog(newNurseGroup); 
   }
 

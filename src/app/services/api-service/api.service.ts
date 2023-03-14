@@ -50,7 +50,7 @@ import {
   REMOVE_NURSE_GROUP_URL,
   UPDATE_NURSE_GROUP_URL,
   FETCH_NURSE_GROUP_BY_NAME,
-  FETCH_NURSE_GROUP_URL,
+  //FETCH_NURSE_GROUP_URL,
   FETCH_ALL_NURSE_GROUP_NAME,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
@@ -73,6 +73,7 @@ export class APIService {
 
   constructor(private httpClient: HttpClient, private profileService: ProfileService) {}
 
+  //user requests section section
   login(credentials:Credentials): Observable<UserInfo> {
     return this.httpClient.post<UserInfo>(LOGIN_URL, credentials);
   }
@@ -89,31 +90,6 @@ export class APIService {
     }
   }
 
-  test(): Observable<string> {
-    return this.httpClient.get<string>(TEST_URL);
-  }
-
-  getPrototypeSchedule(): Observable<EmployeeSchedule> {
-    let queryParams = new HttpParams();
-    queryParams = queryParams.append("version", 1);
-    return this.httpClient.get<EmployeeSchedule>(PROTOTYPE_SCHEDULE_URL, {
-      params: queryParams,
-    });
-  }
-
-  addShift(shift: ShiftInterface):Observable<HttpResponse<string>>{
-    try{
-      console.log("addShift");
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<HttpResponse<string>>(ADD_SHIFT_URL, shift, {
-        params: queryParams,
-      });
-    }catch(err){
-      throw new Exception("user not logged in");
-    }
-  }
-  
   getAccountsUsername(): Observable<string[]> {
     try {
       let queryParams = new HttpParams();
@@ -149,19 +125,22 @@ export class APIService {
       throw new Error("user not logged in")
     }
   }
-
-  addContract(contract: ContractInterface):Observable<HttpResponse<string>>{
+  //-------------------------------------------------------------------------------------------------------------------------------
+  // shift section
+  
+  addShift(shift: ShiftInterface):Observable<HttpResponse<string>>{
     try{
+      console.log("addShift");
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<HttpResponse<string>>(ADD_CONTRACT_URL, contract, {
+      return this.httpClient.post<HttpResponse<string>>(ADD_SHIFT_URL, shift, {
         params: queryParams,
       });
     }catch(err){
       throw new Exception("user not logged in");
     }
   }
-
+  
   removeShift(shift_name: string):Observable<HttpResponse<string>>{
     try{
       console.log("removeShift");
@@ -187,6 +166,34 @@ export class APIService {
     }
     
   }
+  getShiftNames():Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<string[]>(FETCH_SHIFT_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in")
+    }
+  }
+
+  getShiftByName(shift_name: string):Observable<ShiftInterface> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("name", shift_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<ShiftInterface>(FETCH_SHIFT_BY_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in")
+    }
+  }
+  //-------------------------------------------------------------------------------------------------
+  // shift type section
 
   addShiftType(shiftType: ShiftTypeInterface):Observable<HttpResponse<string>>{
     try{
@@ -226,6 +233,34 @@ export class APIService {
       throw new Exception("user not logged in");
     }
   }
+  getShiftTypeNames():Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<string[]>(FETCH_SHIFT_TYPE_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  getShiftTypeByName(shiftType_name: string):Observable<ShiftTypeInterface> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("name", shiftType_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<ShiftTypeInterface>(FETCH_SHIFT_TYPE_BY_NAMES, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in")
+    }
+  }
+  //--------------------------------------------------------------------------------------------
+  //shift group section
 
   addShiftGroup(shiftGroup: ShiftGroupInterface):Observable<HttpResponse<string>>{
     try{
@@ -265,34 +300,6 @@ export class APIService {
       throw new Exception("user not logged in");
     }
   }
-
-  getShiftNames():Observable<string[]> {
-    try{
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<string[]>(FETCH_SHIFT_NAMES, {
-        params: queryParams,
-      });
-    }catch(err){
-      throw new Exception("user not logged in")
-    }
-  }
-
-  getShiftByName(shift_name: string):Observable<ShiftInterface> {
-    try{
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append("name", shift_name);
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<ShiftInterface>(FETCH_SHIFT_BY_NAMES, {
-        params: queryParams,
-      });
-    }catch(err){
-      throw new Exception("user not logged in")
-    }
-  }
-
   getShiftGroupNames():Observable<string[]> {
     try{
       let queryParams = new HttpParams();
@@ -319,31 +326,18 @@ export class APIService {
       throw new Exception("user not logged in")
     }
   }
+  //----------------------------------------------------------------------------------------------------------------------
 
-  getShiftTypeNames():Observable<string[]> {
+  // contract section
+  addContract(contract: ContractInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<string[]>(FETCH_SHIFT_TYPE_NAMES, {
+      return this.httpClient.post<HttpResponse<string>>(ADD_CONTRACT_URL, contract, {
         params: queryParams,
       });
     }catch(err){
       throw new Exception("user not logged in");
-    }
-  }
-
-  getShiftTypeByName(shiftType_name: string):Observable<ShiftTypeInterface> {
-    try{
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append("name", shiftType_name);
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<ShiftTypeInterface>(FETCH_SHIFT_TYPE_BY_NAMES, {
-        params: queryParams,
-      });
-    }catch(err){
-      throw new Exception("user not logged in")
     }
   }
 
@@ -361,31 +355,6 @@ export class APIService {
     }
   }
 
-  getAllSkills(): Observable<string[]> {
-    try{
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<string[]>(FETCH_SKILLS, {
-        params: queryParams,
-      });
-    }catch(err){
-      throw new Exception("user not logged in");
-    }
-  }
-
-  createEmptyProfile(name: string):Observable<HttpResponse<string>>{
-    try{
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append(PROFILE_STRING, name);
-      return this.httpClient.post<HttpResponse<string>>(CREATE_EMPTY_PROFILE, null, {
-        params: queryParams,
-      });
-    } catch(err){
-      throw new Exception("user not logged in");
-    }
-  }
   getContractByName(name:string):Observable<ContractInterface> {
     try{
       let queryParams = new HttpParams();
@@ -411,6 +380,63 @@ export class APIService {
       throw new Exception("user not logged in");
     }
   }
+
+  deleteContract(contract:string):Observable<HttpResponse<string>> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("name", contract);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
+      return this.httpClient.delete<HttpResponse<string>>(DELETE_CONTRACT,{
+        params: queryParams,
+      });
+    } catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+  //---------------------------------------------------------------------------------------------------------------
+  // skill section
+  getAllSkills(): Observable<string[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<string[]>(FETCH_SKILLS, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  deleteSkill(skill_name: string):Observable<HttpResponse<string>>{
+    try{
+      console.log("removeShiftGroup");
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append("name", skill_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.delete<HttpResponse<string>>(DELETE_SKILL_URL, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  addSkill(skill: SkillInterface):Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.post<HttpResponse<string>>(ADD_SKILL_URL, skill, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+  //-------------------------------------------------------------------------------------------------------------
+  // Nurse section
   
   addNurse(nurse: NurseInterface):Observable<HttpResponse<string>>{
     try{
@@ -430,6 +456,7 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("username", nurse_username);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.delete<HttpResponse<string>>(REMOVE_NURSE_URL, {
         params: queryParams,
       });
@@ -442,6 +469,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<string[]>(FETCH_ALL_NURSE_USERNAME, {
         params: queryParams,
       });
@@ -451,7 +479,15 @@ export class APIService {
   }
 
   updateNurse(nurse: NurseInterface):Observable<HttpResponse<string>> {
-    return this.httpClient.put<HttpResponse<string>>(UPDATE_NURSE_URL, nurse);
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      return this.httpClient.put<HttpResponse<string>>(UPDATE_NURSE_URL, nurse, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Error("user not logged in");
+    }
   }
 
   getNurseByUserName(nurse_username: string):Observable<NurseInterface> {
@@ -459,6 +495,7 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("username", nurse_username);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<NurseInterface>(FETCH_NURSE_BY_USERNAME, {
         params: queryParams,
       });
@@ -471,6 +508,7 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<NurseInterface[]>(FETCH_NURSE_URL, {
         params: queryParams,
       });
@@ -478,6 +516,9 @@ export class APIService {
       throw new Exception("user not logged in");
     }
   }
+  //----------------------------------------------------------------------------------------------------------------
+
+  // Nurse group section
 
     addNurseGroup(nurseGroup: NurseGroupInterface):Observable<HttpResponse<string>>{
     try{
@@ -497,6 +538,7 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", nurseGroup_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.delete<HttpResponse<string>>(REMOVE_NURSE_GROUP_URL, {
         params: queryParams,
       });
@@ -506,21 +548,17 @@ export class APIService {
   }
 
 
-  deleteSkill(skill_name: string):Observable<HttpResponse<string>>{
+  
+  updateNurseGroup(nurseGroup: NurseGroupInterface):Observable<HttpResponse<string>> {
     try{
-      console.log("removeShiftGroup");
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append("name", skill_name);
-      return this.httpClient.delete<HttpResponse<string>>(DELETE_SKILL_URL, {
+      return this.httpClient.put<HttpResponse<string>>(UPDATE_NURSE_GROUP_URL, nurseGroup, {
         params: queryParams,
       });
-    }catch(err){
-      throw new Exception("user not logged in");
+    } catch(err){
+      throw new Error("user not logged in");
     }
-  }
-  updateNurseGroup(nurseGroup: NurseGroupInterface):Observable<HttpResponse<string>> {
-    return this.httpClient.put<HttpResponse<string>>(UPDATE_NURSE_GROUP_URL, nurseGroup);
   }
 
   getNurseGroupByName(nurseGroup_name: string):Observable<NurseGroupInterface> {
@@ -528,6 +566,7 @@ export class APIService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", nurseGroup_name);
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
       return this.httpClient.get<NurseGroupInterface>(FETCH_NURSE_GROUP_BY_NAME, {
         params: queryParams,
       });
@@ -540,7 +579,8 @@ export class APIService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.get<string[]>(FETCH_NURSE_GROUP_URL, {
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<string[]>(FETCH_ALL_NURSE_GROUP_NAME, {
         params: queryParams,
       });
     }catch(err){
@@ -548,13 +588,27 @@ export class APIService {
     }
   }
 
-  deleteContract(contract:string):Observable<HttpResponse<string>> {
+  getAllNurseGroupName(): Observable<string[]> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append("name", contract);
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
-      return this.httpClient.delete<HttpResponse<string>>(DELETE_CONTRACT,{
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<string[]>(FETCH_ALL_NURSE_GROUP_NAME, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+  //-----------------------------------------------------------------------------------------------------------
+  
+  // profile section 
+  createEmptyProfile(name: string):Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, name);
+      return this.httpClient.post<HttpResponse<string>>(CREATE_EMPTY_PROFILE, null, {
         params: queryParams,
       });
     } catch(err){
@@ -640,26 +694,17 @@ export class APIService {
       throw new Error("user not logged in");
     }
   }
-  addSkill(skill: SkillInterface):Observable<HttpResponse<string>>{
-    try{
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<HttpResponse<string>>(ADD_SKILL_URL, skill, {
-        params: queryParams,
-      });
-    }catch(err){
-      throw new Exception("user not logged in");
-    }
+  
+  // prototypoe section
+  test(): Observable<string> {
+    return this.httpClient.get<string>(TEST_URL);
   }
-  getAllNurseGroupName(): Observable<string[]> {
-    try{
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.get<string[]>(FETCH_ALL_NURSE_GROUP_NAME, {
-        params: queryParams,
-      });
-    }catch(err){
-      throw new Exception("user not logged in");
-    }
+
+  getPrototypeSchedule(): Observable<EmployeeSchedule> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("version", 1);
+    return this.httpClient.get<EmployeeSchedule>(PROTOTYPE_SCHEDULE_URL, {
+      params: queryParams,
+    });
   }
 }
