@@ -7,12 +7,12 @@ import {
   //GET_USERNAMES,
   //CREATE_EMPTY_PROFILE,
   //FETACH_PROFILES,
-  ADD_SHIFT_GROUP_URL,
+  //ADD_SHIFT_GROUP_URL,
   //ADD_SHIFT_TYPE_URL,
   //ADD_SHIFT_URL,
   //FETCH_SHIFT_BY_NAMES,
-  FETCH_SHIFT_GROUP_BY_NAMES,
-  FETCH_SHIFT_GROUP_NAMES,
+  //FETCH_SHIFT_GROUP_BY_NAMES,
+  //FETCH_SHIFT_GROUP_NAMES,
   //FETCH_SHIFT_NAMES,
   //FETCH_SHIFT_TYPE_BY_NAMES,
   //FETCH_SHIFT_TYPE_NAMES,
@@ -20,7 +20,7 @@ import {
   //LOGIN_URL,
   //LOGOUT_URL,
   PROTOTYPE_SCHEDULE_URL,
-  REMOVE_SHIFT_GROUP_URL,
+  //REMOVE_SHIFT_GROUP_URL,
   //REMOVE_SHIFT_TYPE_URL,
   //REMOVE_SHIFT_URL,
   TEST_URL,
@@ -28,7 +28,7 @@ import {
   //DELETE_PROFILE,
   //UPDATE_SHIFT_URL,
   //UPDATE_SHIFT_TYPE_URL,
-  UPDATE_SHIFT_GROUP_URL,
+  //UPDATE_SHIFT_GROUP_URL,
   //FETCH_PROFILE_ACCESSORS,
   //SHARE_PROFILE,
   //REVOKE_PROFILE_ACCESS,
@@ -51,7 +51,7 @@ import { EmployeeSchedule } from "src/app/models/Assignment";
 //import { Credentials, UserInfo } from "src/app/models/Credentials";
 //import { BaseProfile } from "src/app/models/Profile";
 import { NurseGroupInterface, NurseInterface } from "src/app/models/Nurse";
-import { ShiftGroupInterface, /*ShiftInterface,*/ ShiftTypeInterface } from "src/app/models/Shift";
+//import { ShiftGroupInterface, /*ShiftInterface,*/ ShiftTypeInterface } from "src/app/models/Shift";
 import { SkillInterface } from "src/app/models/skill";
 import { CacheUtils, TOKEN_STRING, PROFILE_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
@@ -254,7 +254,7 @@ export class APIService {
   //--------------------------------------------------------------------------------------------
   //shift group section
 
-  addShiftGroup(shiftGroup: ShiftGroupInterface):Observable<HttpResponse<string>>{
+  /*addShiftGroup(shiftGroup: ShiftGroupInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
@@ -317,7 +317,7 @@ export class APIService {
     }catch(err){
       throw new Exception("user not logged in")
     }
-  }
+  }*/
   //----------------------------------------------------------------------------------------------------------------------
 
   // contract section

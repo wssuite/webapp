@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ShiftGroupInterface} from 'src/app/models/Shift';
-import { APIService } from 'src/app/services/api-service/api.service';
+import { ShiftGroupService } from 'src/app/services/shift/shift-group.service';
 import { ShiftTypeService } from 'src/app/services/shift/shift-type.service';
 import { ShiftService } from 'src/app/services/shift/shift.service';
 import { Exception } from 'src/app/utils/Exception';
@@ -23,7 +23,7 @@ export class ShiftGroupCreationDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ShiftGroupCreationDialogComponent >, 
     @Inject(MAT_DIALOG_DATA) public data: {shiftGroup: ShiftGroupInterface, shiftsGroup: string[]},
-    private api: APIService, private shiftService: ShiftService,
+    private api: ShiftGroupService, private shiftService: ShiftService,
     private dialog: MatDialog, private shiftTypeService: ShiftTypeService) {
     
     this.errorState = new EventEmitter();

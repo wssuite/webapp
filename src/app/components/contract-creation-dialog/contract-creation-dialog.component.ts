@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Contract } from 'src/app/models/Contract';
 import { APIService } from 'src/app/services/api-service/api.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
+import { ShiftGroupService } from 'src/app/services/shift/shift-group.service';
 import { ShiftTypeService } from 'src/app/services/shift/shift-type.service';
 import { ShiftService } from 'src/app/services/shift/shift.service';
 import { Exception } from 'src/app/utils/Exception';
@@ -25,9 +26,9 @@ export class ContractCreationDialogComponent implements OnInit{
   constructor(
     public dialogRef: MatDialogRef<ContractCreationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data : {contract: Contract, contractList: string[]},
-    private service: ContractService, private api: APIService,
+    private service: ContractService, private shiftGroupService: ShiftGroupService,
     private dialog: MatDialog, private shiftService: ShiftService,
-    private shiftTypeService: ShiftTypeService
+    private shiftTypeService: ShiftTypeService, private apiService: APIService
   ){
     this.contractErrorState = true;
     this.service.setContract(data.contract);
@@ -59,7 +60,7 @@ export class ContractCreationDialogComponent implements OnInit{
         }
       })
 
-      this.api.getShiftGroupNames().subscribe({
+      this.shiftGroupService.getShiftGroupNames().subscribe({
         next: (shifts: string[])=>{
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
@@ -70,7 +71,7 @@ export class ContractCreationDialogComponent implements OnInit{
         }
       })
 
-      this.api.getAllSkills().subscribe({
+      this.apiService.getAllSkills().subscribe({
         next:(skills: string[])=>{
           skills.forEach((skill: string)=>{
             this.possibleSkills.push(skill);
