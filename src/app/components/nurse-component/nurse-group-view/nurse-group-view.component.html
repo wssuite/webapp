@@ -11,7 +11,7 @@
             <mat-icon>more_horiz</mat-icon>
           </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item>
+              <button mat-menu-item (click)="modifyNurseGroup(nurseGroup)">
                 <mat-icon>edit</mat-icon>
                 <span>Modify nurse group</span>
               </button>

@@ -7,9 +7,6 @@ import {
   GET_USERNAMES,
   CREATE_EMPTY_PROFILE,
   FETACH_PROFILES,
-  DELETE_CONTRACT,
-  FETCH_CONTRACT_BY_NAME,
-  FETCH_CONTRACT_NAMES,
   ADD_SHIFT_GROUP_URL,
   ADD_SHIFT_TYPE_URL,
   ADD_SHIFT_URL,
@@ -18,7 +15,6 @@ import {
   FETCH_SHIFT_GROUP_NAMES,
   FETCH_SHIFT_NAMES,
   FETCH_SHIFT_TYPE_BY_NAMES,
-  ADD_CONTRACT_URL,
   FETCH_SHIFT_TYPE_NAMES,
   FETCH_SKILLS,
   LOGIN_URL,
@@ -36,10 +32,8 @@ import {
   FETCH_PROFILE_ACCESSORS,
   SHARE_PROFILE,
   REVOKE_PROFILE_ACCESS,
-  UPDATE_CONTRACT_URL,
   DELETE_SKILL_URL,
   ADD_SKILL_URL,
-  //FETCH_CONTRACT_NAMES,
   ADD_NURSE_URL,
   FETCH_ALL_NURSE_USERNAME,
   REMOVE_NURSE_URL,
@@ -54,24 +48,22 @@ import {
   FETCH_ALL_NURSE_GROUP_NAME,
 } from "src/app/constants/api-constants";
 import { EmployeeSchedule } from "src/app/models/Assignment";
-import { ContractInterface } from "src/app/models/Contract";
 import { Credentials, UserInfo } from "src/app/models/Credentials";
 import { BaseProfile } from "src/app/models/Profile";
 import { NurseGroupInterface, NurseInterface } from "src/app/models/Nurse";
 import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "src/app/models/Shift";
 import { SkillInterface } from "src/app/models/skill";
-import { CacheUtils, TOKEN_STRING } from "src/app/utils/CacheUtils";
+import { CacheUtils, TOKEN_STRING, PROFILE_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
-import { ProfileService } from "../profile/profile.service";
 
-const PROFILE_STRING = "profile";
+
 
 @Injectable({
   providedIn: "root",
 })
 export class APIService {
 
-  constructor(private httpClient: HttpClient, private profileService: ProfileService) {}
+  constructor(private httpClient: HttpClient) {}
 
   //user requests section section
   login(credentials:Credentials): Observable<UserInfo> {
@@ -329,7 +321,7 @@ export class APIService {
   //----------------------------------------------------------------------------------------------------------------------
 
   // contract section
-  addContract(contract: ContractInterface):Observable<HttpResponse<string>>{
+  /*addContract(contract: ContractInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
@@ -393,7 +385,7 @@ export class APIService {
     } catch(err){
       throw new Exception("user not logged in");
     }
-  }
+  }*/
   //---------------------------------------------------------------------------------------------------------------
   // skill section
   getAllSkills(): Observable<string[]> {

@@ -3,6 +3,7 @@ import { UserInfo } from "../models/Credentials";
 export const TOKEN_STRING = "token";
 const IS_ADMIN_STRING = "isAdmin";
 export const USERNAME_STRING = "username";
+export const PROFILE_STRING = "profile";
 
 export class CacheUtils {
 
@@ -47,7 +48,7 @@ export class CacheUtils {
         localStorage.removeItem(TOKEN_STRING);
         localStorage.removeItem(IS_ADMIN_STRING);
         localStorage.removeItem(USERNAME_STRING);
-        localStorage.removeItem("profile");
+        localStorage.removeItem(PROFILE_STRING);
     }
 
     public static getUsername(): string{
@@ -59,11 +60,11 @@ export class CacheUtils {
     }
 
     public static setProfile(profileName: string): void{
-        localStorage.setItem("profile", profileName);
+        localStorage.setItem(PROFILE_STRING, profileName);
     }
 
     public static getProfile(): string {
-        const ret = localStorage.getItem("profile");
+        const ret = localStorage.getItem(PROFILE_STRING);
         if(ret === null || ret === undefined){
             throw new Error("");
         }

@@ -3,6 +3,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NurseInterface } from 'src/app/models/Nurse';
 import { APIService } from 'src/app/services/api-service/api.service';
+import { ContractService } from 'src/app/services/contract/contract.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
@@ -21,6 +22,7 @@ export class NurseCreationDialogComponent  implements OnInit{
   constructor(public dialogRef: MatDialogRef<NurseCreationDialogComponent >,
     @Inject(MAT_DIALOG_DATA) public data:  {nurse: NurseInterface, nurses: string[]},
     private api: APIService,
+    private contractService: ContractService,
     private dialog: MatDialog,  
 ) {
   this.errorState = new EventEmitter();
@@ -31,7 +33,7 @@ export class NurseCreationDialogComponent  implements OnInit{
   ngOnInit(): void {
     this.possibleContracts = [];
     try{
-      this.api.getContractNames().subscribe({
+      this.contractService.getContractNames().subscribe({
         next: (contracts: string[])=>{
           contracts.forEach((contract: string)=>{
             this.possibleContracts.push(contract);

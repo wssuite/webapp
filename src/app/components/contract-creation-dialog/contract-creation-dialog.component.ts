@@ -92,7 +92,7 @@ export class ContractCreationDialogComponent implements OnInit{
       const contractJson = this.service.getJson();
       console.log(contractJson);
       if(this.initName == ""){
-        this.api.addContract(contractJson).subscribe({
+        this.service.addContract(contractJson).subscribe({
           error: (err: HttpErrorResponse)=> {
             if(err.status === HttpStatusCode.Ok) {
               this.close();
@@ -104,7 +104,7 @@ export class ContractCreationDialogComponent implements OnInit{
         })
       }
       else {
-        this.api.updateContract(contractJson).subscribe({
+        this.service.updateContract(contractJson).subscribe({
           error: (err: HttpErrorResponse)=> {
             if(err.status === HttpStatusCode.Ok) {
               this.close();
