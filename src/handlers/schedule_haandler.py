@@ -24,15 +24,18 @@ class ScheduleHandler(BaseHandler):
         detailed_demand = ScheduleDemandDetailed()
         """TODO: Get the id from the file system based on versioning"""
         detailed_demand.id = str(random.random())
+        counter = 0
         """Get the nurses objects included in the demand"""
         for nurse in demand.nurses:
             nurse_dict = self.nurse_dao.find_by_username(nurse, demand.profile)
             if nurse is not None:
                 nurse_object = Nurse().from_json(nurse_dict)
+                nurse_object.id = str(counter)
                 detailed_demand.nurses.append(nurse_object)
                 for preference in demand.preferences:
                     if preference.username == nurse_object.username:
                         preference.id = nurse_object.id
+            counter += 1
 
         detailed_demand.set_from_schedule_demand(demand)
         contracts = self.contract_dao.fetch_all(demand.profile)
@@ -42,6 +45,7 @@ class ScheduleHandler(BaseHandler):
         shifts = self.shift_dao.fetch_all(demand.profile)
         shift_types = self.shift_type_dao.fetch_all(demand.profile)
         shift_groups = self.shift_group_dao.fetch_all(demand.profile)
+
         ScheduleHandler.add_object_to_demand_list(
             contracts, Contract, detailed_demand.contracts
         )
