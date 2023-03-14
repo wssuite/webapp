@@ -5,6 +5,8 @@ from constants import (
     work_shift_group,
     profile,
     rest_shift_group,
+    work,
+    rest,
 )
 from src.models.shift_group import ShiftGroup
 
@@ -45,9 +47,17 @@ class ProfileHandler(BaseHandler):
         self.nurse_group_dao.delete_all(name)
         self.contract_group_dao.delete_all(name)
 
+    """
+    When duplicating a profile, we want to duplicate the work
+    and rest groups as is. Therefore, we must delete the default
+    shift groups created when the new profile is created
+    """
+
     def duplicate(self, token, name, other_name):
         self.verify_profile_accessors_access(token, name)
         self.create_profile(token, other_name)
+        self.shift_group_dao.remove(work, other_name)
+        self.shift_group_dao.remove(rest, other_name)
         self.shift_dao.duplicate(name, other_name)
         self.skill_dao.duplicate(name, other_name)
         self.shift_type_dao.duplicate(name, other_name)

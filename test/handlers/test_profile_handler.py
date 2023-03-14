@@ -63,9 +63,17 @@ class TestProfileHandler(TestCase):
         self.handler.create_profile(random_hex, profile1)
         self.handler.share(random_hex, profile1, [user1_name])
         self.handler.duplicate(random_hex2, profile1, "profile2")
+        shift_groups_after_duplication = (
+            self.handler.shift_group_dao.fetch_all(profile1)
+        )
+        shift_groups_duplicated = self.handler.shift_group_dao.fetch_all(
+            "profile2"
+        )
         all_profiles = self.handler.profile_dao.fetch_all()
         new_profile = self.handler.profile_dao.find_by_name("profile2")
         self.assertEqual(2, len(all_profiles))
+        self.assertEqual(2, len(shift_groups_after_duplication))
+        self.assertEqual(2, len(shift_groups_duplicated))
         self.assertNotEqual(None, new_profile)
 
     def test_delete_profile_when_not_creator_raise_error(self):

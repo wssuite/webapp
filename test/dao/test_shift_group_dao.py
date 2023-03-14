@@ -6,7 +6,13 @@ from src.exceptions.shift_exceptions import (
 from constants import shift_group_name, shift_group_shifts_list, profile
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.shift_group_dao import ShiftGroupDao
-from test_constants import profile1, profile2, shift_group_shift_types
+from test_constants import (
+    profile1,
+    profile2,
+    shift_group_shift_types,
+    rest_shift_group,
+    day_shift_group,
+)
 
 
 class TestShiftGroupDao(TestCase):
@@ -70,10 +76,12 @@ class TestShiftGroupDao(TestCase):
         night_shift_group = self.dao.get_including_shift_types(
             ["Night"], profile1
         )
-        day_shift_group = self.dao.get_including_shift_types(["Day"], profile1)
+        actual_day_shift_group = self.dao.get_including_shift_types(
+            ["Day"], profile1
+        )
         self.assertEqual(0, len(night_shift_group))
-        self.assertEqual(1, len(day_shift_group))
-        self.assertEqual(self.shift_group, day_shift_group[0])
+        self.assertEqual(1, len(actual_day_shift_group))
+        self.assertEqual(self.shift_group, actual_day_shift_group[0])
 
     def test_add_shift_to_nonexistent_shift_group_raise_error(self):
         with self.assertRaises(ShiftNotExist):
@@ -143,11 +151,13 @@ class TestShiftGroupDao(TestCase):
         self,
     ):
         self.dao.insert_one_if_not_exist(self.shift_group.copy())
+        self.dao.insert_one_if_not_exist(rest_shift_group.copy())
+        self.dao.insert_one_if_not_exist(day_shift_group.copy())
         profile1_shift_groups_before = self.dao.fetch_all(profile1)
         self.dao.duplicate(profile1, profile2)
         self.dao.delete_all(profile1)
         profile1_shift_groups_after = self.dao.fetch_all(profile1)
         profile2_shift_groups = self.dao.fetch_all(profile2)
-        self.assertEqual(1, len(profile1_shift_groups_before))
-        self.assertEqual(1, len(profile2_shift_groups))
+        self.assertEqual(3, len(profile1_shift_groups_before))
+        self.assertEqual(3, len(profile2_shift_groups))
         self.assertEqual(0, len(profile1_shift_groups_after))
