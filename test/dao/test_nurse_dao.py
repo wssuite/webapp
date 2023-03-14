@@ -109,7 +109,7 @@ class TestNurseDao(TestCase):
 
     def test_get_nurses_with_contract_groups(self):
         nurse = Nurse().from_json(nurse_with_contract_group.copy())
-        inserted_id = self.dao.insert_one(nurse.db_json())
+        self.dao.insert_one(nurse.db_json())
         actual_nurse_with_contract_group = self.dao.get_with_contract_groups(
             ["contract_group_without_contradiction"], profile1
         )

@@ -1,6 +1,5 @@
 from src.dao.abstract_dao import AbstractDao
 from src.models.nurse import Nurse
-from pymongo.results import InsertOneResult
 from pymongo.collection import Collection
 from constants import (
     nurse_id,
