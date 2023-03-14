@@ -15,6 +15,7 @@ from constants import (
     schedule_shift_groups,
     schedule_nurse_groups,
     schedule_contract_groups,
+    schedule_skills,
     contract_section,
     contract_group_section,
     nurse_section,
@@ -26,6 +27,7 @@ from constants import (
     hospital_demand_section,
     preferences_section,
     header_section,
+    skill_section,
 )
 from src.models.shift_group import ShiftGroup
 from src.models.shift import Shift
@@ -34,6 +36,7 @@ from src.models.nurse_group import NurseGroup
 from src.models.nurse import Nurse
 from src.models.contract import Contract
 from src.models.contract_group import ContractGroup
+from src.models.skill import Skill
 from src.models.stringify import (
     Stringify,
     extract_string_from_complex_object_array,
@@ -68,6 +71,7 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
     shift_groups = ObjectListField(
         ShiftGroup, serialized_name=schedule_shift_groups
     )
+    skills = ObjectListField(Skill, serialized_name=schedule_skills)
     contract_groups = ObjectListField(
         ContractGroup, serialized_name=schedule_contract_groups
     )
@@ -76,11 +80,27 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
         NurseGroup, serialized_name=schedule_nurse_groups
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.hospital_demand = []
+        self.preferences = []
+        self.nurses = []
+        self.contracts = []
+        self.contract_groups = []
+        self.shift_types = []
+        self.nurse_groups = []
+        self.skills = []
+        self.shifts = []
+        self.shift_groups = []
+
     def to_string(self):
         header_sec = self.__develop_header_section()
         info_sec = self.__develop_info_section()
         contract_sec = ScheduleDemandDetailed.__develop_section(
             self.contracts, contract_section
+        )
+        skill_sec = ScheduleDemandDetailed.__develop_section(
+            self.skills, skill_section
         )
         nurse_sec = ScheduleDemandDetailed.__develop_section(
             self.nurses, nurse_section
@@ -107,7 +127,7 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
             self.preferences, preferences_section
         )
         return (
-            f"{info_sec}{header_sec}{shift_sec}{shift_group_sec}"
+            f"{header_sec}{info_sec}{skill_sec}{shift_sec}{shift_group_sec}"
             f"{shift_type_sec}{contract_sec}{contract_group_sec}"
             f"{nurse_sec}{nurse_group_sec}{hospital_demand_sec}"
             f"{preferences_sec}"
@@ -133,3 +153,10 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
             f"{header}\n{self.profile},{self.id},"
             f"{self.start_date},{self.end_date}\n{end_section}\n"
         )
+
+    def set_from_schedule_demand(self, schedule_demand: ScheduleDemand):
+        self.hospital_demand = schedule_demand.hospital_demand
+        self.preferences = schedule_demand.preferences
+        self.profile = schedule_demand.profile
+        self.start_date = schedule_demand.start_date
+        self.end_date = schedule_demand.end_date
