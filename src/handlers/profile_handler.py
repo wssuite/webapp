@@ -1,3 +1,5 @@
+from werkzeug.datastructures import FileStorage
+
 from src.handlers.base_handler import BaseHandler
 from src.models.profile import Profile
 from constants import (
@@ -78,3 +80,8 @@ class ProfileHandler(BaseHandler):
     def get_accessors_list(self, token, name):
         self.verify_profile_accessors_access(token, name)
         return self.profile_dao.get_accessors_list(name)
+
+    def import_file(self, token, file: FileStorage):
+        self.verify_token(token)
+        file.save(file.filename)
+        
