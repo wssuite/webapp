@@ -16,7 +16,7 @@ import {
   //FETCH_SHIFT_NAMES,
   //FETCH_SHIFT_TYPE_BY_NAMES,
   //FETCH_SHIFT_TYPE_NAMES,
-  FETCH_SKILLS,
+  //FETCH_SKILLS,
   //LOGIN_URL,
   //LOGOUT_URL,
   PROTOTYPE_SCHEDULE_URL,
@@ -32,8 +32,8 @@ import {
   //FETCH_PROFILE_ACCESSORS,
   //SHARE_PROFILE,
   //REVOKE_PROFILE_ACCESS,
-  DELETE_SKILL_URL,
-  ADD_SKILL_URL,
+  //DELETE_SKILL_URL,
+  //ADD_SKILL_URL,
   ADD_NURSE_URL,
   FETCH_ALL_NURSE_USERNAME,
   REMOVE_NURSE_URL,
@@ -52,7 +52,7 @@ import { EmployeeSchedule } from "src/app/models/Assignment";
 //import { BaseProfile } from "src/app/models/Profile";
 import { NurseGroupInterface, NurseInterface } from "src/app/models/Nurse";
 //import { ShiftGroupInterface, /*ShiftInterface,*/ ShiftTypeInterface } from "src/app/models/Shift";
-import { SkillInterface } from "src/app/models/skill";
+//import { SkillInterface } from "src/app/models/skill";
 import { CacheUtils, TOKEN_STRING, PROFILE_STRING } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
 
@@ -388,7 +388,7 @@ export class APIService {
   }*/
   //---------------------------------------------------------------------------------------------------------------
   // skill section
-  getAllSkills(): Observable<string[]> {
+  /*getAllSkills(): Observable<string[]> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
@@ -426,7 +426,7 @@ export class APIService {
     }catch(err){
       throw new Exception("user not logged in");
     }
-  }
+  }*/
   //-------------------------------------------------------------------------------------------------------------
   // Nurse section
   

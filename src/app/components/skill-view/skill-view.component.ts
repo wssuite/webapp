@@ -2,8 +2,8 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SkillInterface } from 'src/app/models/skill';
-import { APIService } from 'src/app/services/api-service/api.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { SkillService } from 'src/app/services/shift/skill.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
@@ -18,7 +18,7 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
   skills: string[];
   connectedUser!:boolean;
 
-  constructor(public dialog: MatDialog, private apiService: APIService, private profileService: ProfileService) {
+  constructor(public dialog: MatDialog, private skillService: SkillService, private profileService: ProfileService) {
   this.skills = [];
   }
 
@@ -38,7 +38,7 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
   }
 
   getSkills(){
-  this.apiService.getAllSkills().subscribe({
+  this.skillService.getAllSkills().subscribe({
     next: (skill: string[])=> {
       this.skills = skill;
     },
@@ -77,7 +77,7 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
   try
   { 
     //call api service to push the contract
-    this.apiService.deleteSkill(skillName).subscribe({
+    this.skillService.deleteSkill(skillName).subscribe({
       error: (err: HttpErrorResponse)=> {
         if(err.status === HttpStatusCode.Ok) {
           const index = this.skills.indexOf(skillName);

@@ -2,11 +2,11 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Contract } from 'src/app/models/Contract';
-import { APIService } from 'src/app/services/api-service/api.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { ShiftGroupService } from 'src/app/services/shift/shift-group.service';
 import { ShiftTypeService } from 'src/app/services/shift/shift-type.service';
 import { ShiftService } from 'src/app/services/shift/shift.service';
+import { SkillService } from 'src/app/services/shift/skill.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 
@@ -28,7 +28,7 @@ export class ContractCreationDialogComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data : {contract: Contract, contractList: string[]},
     private service: ContractService, private shiftGroupService: ShiftGroupService,
     private dialog: MatDialog, private shiftService: ShiftService,
-    private shiftTypeService: ShiftTypeService, private apiService: APIService
+    private shiftTypeService: ShiftTypeService, private skillService: SkillService
   ){
     this.contractErrorState = true;
     this.service.setContract(data.contract);
@@ -71,7 +71,7 @@ export class ContractCreationDialogComponent implements OnInit{
         }
       })
 
-      this.apiService.getAllSkills().subscribe({
+      this.skillService.getAllSkills().subscribe({
         next:(skills: string[])=>{
           skills.forEach((skill: string)=>{
             this.possibleSkills.push(skill);
