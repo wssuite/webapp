@@ -50,7 +50,7 @@ class ProfileHandler(BaseHandler):
     """
     When duplicating a profile, we want to duplicate the work
     and rest groups as is. Therefore, we must delete the default
-    shift groups created when the new profile is created 
+    shift groups created when the new profile is created
     """
 
     def duplicate(self, token, name, other_name):
