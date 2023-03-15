@@ -81,6 +81,7 @@ import { SkillCreationDialogComponent } from './components/skill-creation-dialog
 import { SkillCreationComponent } from './components/skill-creation/skill-creation.component';
 import { NurseCreationComponent } from './components/nurse-component/nurse-creation/nurse-creation.component';
 import { NurseGroupCreationComponent } from './components/nurse-component/nurse-group-creation/nurse-group-creation.component';
+import { NursePreferenceComponent } from './components/nurse-preference/nurse-preference.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,7 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
     SkillCreationComponent,
     NurseCreationComponent,
     NurseGroupCreationComponent,
+    NursePreferenceComponent,
   ],
   imports: [
     BrowserModule,
