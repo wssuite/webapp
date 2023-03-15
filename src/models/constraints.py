@@ -15,6 +15,7 @@ from constants import (
 )
 from src.models.pattern_element import PatternElement
 from src.models.jsonify import Jsonify
+from src.utils.import_util import sanitize_array
 
 """
 Note: The following constraints are conceptually
@@ -33,10 +34,6 @@ a third level which makes it impossible to exploit. This is the
 reason the attribute name for example doesn't exist in BaseConstraint
 nor in the BaseConstraint class
 """
-
-
-def sanitize_array(tokens):
-    return [t for t in tokens if t != '']
 
 
 class BaseConstraint(Jsonify, Stringify):
