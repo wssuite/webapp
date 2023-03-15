@@ -36,3 +36,17 @@ class TestNurse(TestCase):
         expected[nurse_contracts] = []
         expected[nurse_id] = None
         self.assertEqual(expected, actual_db_json)
+
+    def test_nurse_creation_from_string_parse_nurse(self):
+        profile_name = profile1
+        nurse_string = "suz,Suzane,contract 2,,,,,,,"
+        expected_nurse = {
+            nurse_contract_groups: [],
+            nurse_username: "suz",
+            nurse_name: "Suzane",
+            profile: profile1,
+            nurse_id: None,
+            nurse_contracts: ["contract 2"]
+        }
+        nurse = Nurse().read_nurse(nurse_string, profile_name)
+        self.assertEqual(expected_nurse, nurse)
