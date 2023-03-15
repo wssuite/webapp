@@ -2,9 +2,10 @@ from src.models.db_document import DBDocument
 from src.models.jsonify import Jsonify
 from pykson import StringField
 from constants import shift_name, shift_start_time, shift_end_time, profile
+from src.models.string_reader import StringReader
 
 
-class Shift(Jsonify, DBDocument):
+class Shift(Jsonify, DBDocument, StringReader):
     name = StringField(serialized_name=shift_name)
     start_time = StringField(serialized_name=shift_start_time)
     end_time = StringField(serialized_name=shift_end_time)
@@ -12,3 +13,15 @@ class Shift(Jsonify, DBDocument):
 
     def db_json(self):
         return self.to_json()
+
+    def read_shift(self, line, profile_name):
+        self.profile = profile_name
+        return self.read_line(line)
+
+    def read_line(self, line):
+        tokens = line.split(',')
+        self.name = tokens[0]
+        self.start_time = tokens[1]
+        self.end_time = tokens[2]
+        return self.to_json()
+
