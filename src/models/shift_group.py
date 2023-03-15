@@ -7,6 +7,7 @@ from constants import (
     profile,
     shift_group_shift_types,
 )
+from src.models.string_reader import StringReader
 
 """
 The conceptual difference between a shift type and a shift
@@ -16,7 +17,7 @@ in its array
 """
 
 
-class ShiftGroup(Jsonify, DBDocument):
+class ShiftGroup(Jsonify, DBDocument, StringReader):
     name = StringField(serialized_name=shift_group_name)
     shifts = ListField(str, serialized_name=shift_group_shifts_list)
     profile = StringField(serialized_name=profile, default_value="")
@@ -24,3 +25,24 @@ class ShiftGroup(Jsonify, DBDocument):
 
     def db_json(self):
         return self.to_json()
+
+    def read_shift_group(self, line, profile_name, shift_types):
+        self.profile = profile_name
+        self.read_line(line)
+        for shift in self.shifts:
+            if shift in shift_types:
+                self.shift_types.append(shift)
+
+        temp = self.shifts
+        self.shifts = []
+        self.shifts = [s for s in temp if s not in self.shift_types]
+        return self.to_json()
+
+    def read_line(self, line):
+        tokens = line.split(',')
+        self.name = tokens[0]
+        self.shifts = []
+        self.shift_types = []
+        # temporary placing the given shifts inside the shifts array
+        for i in range(1, len(tokens)):
+            self.shifts.append(tokens[i])
