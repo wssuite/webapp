@@ -2,14 +2,20 @@
     margin-top: 2vh;
     margin-left: 2vw;
     margin-right: 2vw;
+    height: 90%;    
 }
 
 .create-button{
-    margin-left: 90vw;
-    margin-top: 2vh;
-    height: 5vh;
-    width: auto;
+    margin-right: 2vw;
+    margin-top: 1vh;
+    height: 50px;
+    width: 240px;
     font-size: large;
+}
+
+#button-container{
+    display: flex;
+    justify-content: flex-end;
 }
 
 mat-card {
