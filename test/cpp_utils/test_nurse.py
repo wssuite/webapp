@@ -48,5 +48,5 @@ class TestNurse(TestCase):
             nurse_id: None,
             nurse_contracts: ["contract 2"]
         }
-        nurse = Nurse().read_nurse(nurse_string, profile_name)
+        nurse = Nurse().read_nurse(nurse_string, profile_name, [])
         self.assertEqual(expected_nurse, nurse)

@@ -8,9 +8,10 @@ from constants import (
     profile,
     nurse_group_contract_groups,
 )
+from src.models.string_reader import StringReader
 
 
-class NurseGroup(Jsonify, DBDocument):
+class NurseGroup(Jsonify, DBDocument, StringReader):
     name = StringField(serialized_name=nurse_group_name)
     nurses = ListField(str, serialized_name=nurse_group_nurses_list)
     contracts = ListField(str, serialized_name=nurse_group_contracts_list)
@@ -21,3 +22,24 @@ class NurseGroup(Jsonify, DBDocument):
 
     def db_json(self):
         return self.to_json()
+
+    def read_nurse_group(self, line, profile_name, contracts, contract_groups):
+        self.profile = profile_name
+        self.read_line(line)
+
+        for n in self.nurses:
+            if n in contracts:
+                self.contracts.append(n)
+            elif n in contract_groups:
+                self.contract_groups.append(n)
+
+        self.nurses = [n for n in self.nurses if n not in contracts and n not in contract_groups]
+
+        return self.to_json()
+
+    def read_line(self, line):
+        tokens = line.split(',')
+        self.name = tokens[0]
+        for i in range(1, len(tokens)):
+            if tokens[i] != '':
+                self.nurses.append(tokens[i])

@@ -25,9 +25,15 @@ class Nurse(Jsonify, DBDocument, StringReader):
     def db_json(self):
         return self.to_json()
 
-    def read_nurse(self, line, profile_name):
+    def read_nurse(self, line, profile_name, contract_groups):
         self.profile = profile_name
-        return self.read_line(line)
+        self.read_line(line)
+        for c in self.direct_contracts:
+            if c in contract_groups:
+                self.contract_groups.append(c)
+
+        self.direct_contracts = [c for c in self.direct_contracts if c not in contract_groups]
+        return self.to_json()
 
     def read_line(self, line):
         tokens = line.split(',')

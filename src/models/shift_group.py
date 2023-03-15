@@ -45,4 +45,5 @@ class ShiftGroup(Jsonify, DBDocument, StringReader):
         self.shift_types = []
         # temporary placing the given shifts inside the shifts array
         for i in range(1, len(tokens)):
-            self.shifts.append(tokens[i])
+            if tokens[i] != '':
+                self.shifts.append(tokens[i])
