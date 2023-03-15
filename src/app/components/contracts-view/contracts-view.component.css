@@ -22,7 +22,6 @@ mat-card-actions {
 
 
 mat-paginator{
-    position: absolute;
     left: 80vw;
     top: 93vh;
 }
