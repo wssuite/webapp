@@ -1,3 +1,4 @@
+from src.models.string_reader import StringReader
 from src.models.stringify import Stringify
 from pykson import StringField, ObjectListField, ListField
 from constants import (
@@ -34,12 +35,16 @@ nor in the BaseConstraint class
 """
 
 
+def sanitize_array(tokens):
+    return [t for t in tokens if t != '']
+
+
 class BaseConstraint(Jsonify, Stringify):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
-class ContractConstraint(BaseConstraint):
+class ContractConstraint(BaseConstraint, StringReader):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -51,6 +56,9 @@ class ContractConstraint(BaseConstraint):
 
     def get_skills(self):
         return []
+
+    def read_line(self, line):
+        pass
 
 
 class ContractIntegerConstraint(ContractConstraint):
@@ -64,6 +72,14 @@ class ContractIntegerConstraint(ContractConstraint):
     def repr(self):
         return self.name
 
+    def read_line(self, line):
+        tokens = line.split(',')
+        tokens = sanitize_array(tokens)
+        self.name = tokens[0]
+        self.value = tokens[1]
+        self.weight = tokens[2]
+        return self.to_json()
+
 
 class ContractIntegerShiftConstraint(ContractIntegerConstraint):
     shift = StringField(serialized_name=shift_constraint)
@@ -76,6 +92,15 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
 
     def get_shift(self):
         return [self.shift]
+
+    def read_line(self, line):
+        tokens = line.split(',')
+        tokens = sanitize_array(tokens)
+        self.name = tokens[0]
+        self.shift = tokens[1]
+        self.value = tokens[2]
+        self.weight = tokens[3]
+        return self.to_json()
 
 
 class ContractMinMaxConstraint(ContractConstraint):
@@ -91,6 +116,16 @@ class ContractMinMaxConstraint(ContractConstraint):
     def repr(self):
         return self.name
 
+    def read_line(self, line):
+        tokens = line.split(',')
+        tokens = sanitize_array(tokens)
+        self.name = tokens[0]
+        self.minValue = tokens[1]
+        self.minWeight = tokens[2]
+        self.maxValue = tokens[3]
+        self.maxWeight = tokens[4]
+        return self.to_json()
+
 
 class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
     shift = StringField(serialized_name=shift_constraint)
@@ -104,6 +139,17 @@ class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
     def get_shift(self):
         return [self.shift]
 
+    def read_line(self, line):
+        tokens = line.split(',')
+        tokens = sanitize_array(tokens)
+        self.name = tokens[0]
+        self.shift = tokens[1]
+        self.minValue = tokens[2]
+        self.minWeight = tokens[3]
+        self.maxValue = tokens[4]
+        self.maxWeight = tokens[5]
+        return self.to_json()
+
 
 class ContractBooleanConstraint(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -114,6 +160,13 @@ class ContractBooleanConstraint(ContractConstraint):
 
     def repr(self):
         return self.name
+
+    def read_line(self, line):
+        tokens = line.split(',')
+        tokens = sanitize_array(tokens)
+        self.name = tokens[0]
+        self.weight = tokens[1]
+        return self.to_json()
 
 
 class ContractUnwantedPatterns(ContractConstraint):
@@ -132,6 +185,25 @@ class ContractUnwantedPatterns(ContractConstraint):
             constraint_name: self.name,
             constraint_weight: self.weight,
             unwanted_pattern_elements: array,
+        }
+
+    def read_line(self, line):
+        tokens = line.split(',')
+        tokens = sanitize_array(tokens)
+        self.name = tokens[0]
+        self.pattern_elements = []
+        i = 1
+
+        while i < len(tokens) - 1:
+            new_line = tokens[i] + "," + tokens[i + 1]
+            self.pattern_elements.append(PatternElement().read_line(new_line))
+            i += 2
+
+        self.weight = tokens[len(tokens) - 1]
+        return {
+            constraint_name: self.name,
+            constraint_weight: self.weight,
+            unwanted_pattern_elements: self.pattern_elements
         }
 
     def get_shift(self):
@@ -158,6 +230,14 @@ class ContractAlternativeShift(ContractConstraint):
     def get_shift(self):
         return [self.shift]
 
+    def read_line(self, line):
+        tokens = line.split(',')
+        tokens = sanitize_array(tokens)
+        self.name = tokens[0]
+        self.shift = tokens[1]
+        self.weight = tokens[2]
+        return self.to_json()
+
 
 class ContractUnwantedSkills(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -172,3 +252,13 @@ class ContractUnwantedSkills(ContractConstraint):
 
     def get_skills(self):
         return self.unwanted_skills
+
+    def read_line(self, line):
+        tokens = line.split(',')
+        tokens = sanitize_array(tokens)
+        self.name = tokens[0]
+        for i in range(1, len(tokens) - 1):
+            self.unwanted_skills.append(tokens[i])
+
+        self.weight = tokens[len(tokens) - 1]
+        return self.to_json()
