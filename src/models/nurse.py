@@ -12,6 +12,7 @@ from constants import (
 
 from src.models.db_document import DBDocument
 from src.models.string_reader import StringReader
+from src.utils.import_util import sanitize_array
 
 
 class Nurse(Jsonify, DBDocument, StringReader):
@@ -37,11 +38,11 @@ class Nurse(Jsonify, DBDocument, StringReader):
 
     def read_line(self, line):
         tokens = line.split(',')
+        tokens = sanitize_array(tokens)
         self.username = tokens[0]
         self.name = tokens[1]
         self.direct_contracts = []
         for i in range(2, len(tokens)):
-            if tokens[i] != '':
-                self.direct_contracts.append(tokens[i])
+            self.direct_contracts.append(tokens[i])
 
         return self.to_json()

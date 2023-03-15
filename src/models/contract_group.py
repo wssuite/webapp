@@ -7,6 +7,7 @@ from constants import (
     profile,
 )
 from src.models.string_reader import StringReader
+from src.utils.import_util import sanitize_array
 
 
 class ContractGroup(DBDocument, Jsonify, StringReader):
@@ -23,9 +24,9 @@ class ContractGroup(DBDocument, Jsonify, StringReader):
 
     def read_line(self, line):
         tokens = line.split(',')
+        tokens = sanitize_array(tokens)
         self.name = tokens[0]
         for i in range(1, len(tokens)):
-            if tokens[i] != '':
-                self.contracts.append(tokens[i])
+            self.contracts.append(tokens[i])
 
         return self.to_json()

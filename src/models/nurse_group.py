@@ -9,6 +9,7 @@ from constants import (
     nurse_group_contract_groups,
 )
 from src.models.string_reader import StringReader
+from src.utils.import_util import sanitize_array
 
 
 class NurseGroup(Jsonify, DBDocument, StringReader):
@@ -39,7 +40,7 @@ class NurseGroup(Jsonify, DBDocument, StringReader):
 
     def read_line(self, line):
         tokens = line.split(',')
+        tokens = sanitize_array(tokens)
         self.name = tokens[0]
         for i in range(1, len(tokens)):
-            if tokens[i] != '':
-                self.nurses.append(tokens[i])
+            self.nurses.append(tokens[i])

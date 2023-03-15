@@ -3,6 +3,7 @@ from src.models.db_document import DBDocument
 from constants import shift_type_name, shift_type_shifts_lists, profile
 from pykson import StringField, ListField
 from src.models.string_reader import StringReader
+from src.utils.import_util import sanitize_array
 
 
 class ShiftType(Jsonify, DBDocument, StringReader):
@@ -20,6 +21,7 @@ class ShiftType(Jsonify, DBDocument, StringReader):
     def read_line(self, line):
         self.shifts = []
         tokens = line.split(',')
+        tokens = sanitize_array(tokens)
         self.name = tokens[0]
         for i in range(1, len(tokens)):
             if tokens[i] != '':

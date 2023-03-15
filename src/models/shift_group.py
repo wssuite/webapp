@@ -8,6 +8,7 @@ from constants import (
     shift_group_shift_types,
 )
 from src.models.string_reader import StringReader
+from src.utils.import_util import sanitize_array
 
 """
 The conceptual difference between a shift type and a shift
@@ -40,10 +41,10 @@ class ShiftGroup(Jsonify, DBDocument, StringReader):
 
     def read_line(self, line):
         tokens = line.split(',')
+        tokens = sanitize_array(tokens)
         self.name = tokens[0]
         self.shifts = []
         self.shift_types = []
         # temporary placing the given shifts inside the shifts array
         for i in range(1, len(tokens)):
-            if tokens[i] != '':
-                self.shifts.append(tokens[i])
+            self.shifts.append(tokens[i])
