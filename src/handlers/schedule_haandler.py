@@ -38,8 +38,12 @@ class ScheduleHandler(BaseHandler):
                 for nurse_group in nurse_groups:
                     nurse_group_object = NurseGroup().from_json(nurse_group)
                     if nurse in nurse_group_object.nurses:
-                        nurse_object.direct_contracts.extend(nurse_group_object.contracts)
-                        nurse_object.contract_groups.extend(nurse_group_object.contract_groups)
+                        nurse_object.direct_contracts.extend(
+                            nurse_group_object.contracts
+                        )
+                        nurse_object.contract_groups.extend(
+                            nurse_group_object.contract_groups
+                        )
 
                 detailed_demand.nurses.append(nurse_object)
 
