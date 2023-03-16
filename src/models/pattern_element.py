@@ -15,4 +15,4 @@ class PatternElement(Jsonify, StringReader):
         tokens = line.split(',')
         self.days = tokens[0].split('|')
         self.shifts = tokens[1].split('|')
-        return self.to_json()
+        return self

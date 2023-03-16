@@ -33,7 +33,7 @@ from constants import (
 
 from src.models.db_document import DBDocument
 from src.models.string_reader import StringReader
-from src.utils.import_util import sanitize_array
+from src.utils.import_util import sanitize_array, skip_line
 
 
 class ContractConstraintCreator:
@@ -59,7 +59,8 @@ class ContractConstraintCreator:
     def create_contract_constraint_from_string(self, line):
         tokens = line.split(',')
         tokens = sanitize_array(tokens)
-        return self.dict_contract_constraints[bind_map[tokens[0].lower()]].read_line(line)
+        name = bind_map[tokens[0].lower()]
+        return self.dict_contract_constraints[name]().read_line(line)
 
 
 class Contract(Jsonify, DBDocument, StringReader):
@@ -70,6 +71,7 @@ class Contract(Jsonify, DBDocument, StringReader):
         self.shifts = []
         self.profile = ""
         self.skills = []
+        self.constraint_creator = ContractConstraintCreator()
 
     def from_json(self, data: dict):
         contract = Contract()
@@ -77,10 +79,9 @@ class Contract(Jsonify, DBDocument, StringReader):
         contract.name = data.setdefault(contract_name, "")
         contract.profile = data.setdefault(profile, "")
 
-        constraint_creator = ContractConstraintCreator()
         constraints = data.setdefault(contract_constraints, [])
         for constraint in constraints:
-            new_constraint = constraint_creator.create_contact_constraint(
+            new_constraint = self.constraint_creator.create_contact_constraint(
                 constraint
             )
             contract.constraints.append(new_constraint)
@@ -120,14 +121,12 @@ class Contract(Jsonify, DBDocument, StringReader):
         self.name = lines[0].split(',')[1]
         self.constraints = []
         for i in range(1, len(lines)):
-            constraint = self.read_line(lines[i])
-            self.constraints.append(constraint)
+            if not skip_line(lines[i]):
+                constraint = self.read_line(lines[i])
+                self.constraints.append(constraint)
 
-        return {
-            contract_name: self.name,
-            profile: self.profile,
-            contract_constraints: self.constraints
-        }
+        return self
 
     def read_line(self, line):
-        return ContractConstraintCreator.create_contract_constraint_from_string(line)
+        return self.constraint_creator.\
+            create_contract_constraint_from_string(line)

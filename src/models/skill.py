@@ -18,4 +18,4 @@ class Skill(Jsonify, DBDocument, StringReader):
 
     def read_line(self, line):
         self.name = line
-        return self.to_json()
+        return self

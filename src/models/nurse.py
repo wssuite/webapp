@@ -33,8 +33,9 @@ class Nurse(Jsonify, DBDocument, StringReader):
             if c in contract_groups:
                 self.contract_groups.append(c)
 
-        self.direct_contracts = [c for c in self.direct_contracts if c not in contract_groups]
-        return self.to_json()
+        self.direct_contracts = [c for c in self.direct_contracts
+                                 if c not in contract_groups]
+        return self
 
     def read_line(self, line):
         tokens = line.split(',')
@@ -44,5 +45,3 @@ class Nurse(Jsonify, DBDocument, StringReader):
         self.direct_contracts = []
         for i in range(2, len(tokens)):
             self.direct_contracts.append(tokens[i])
-
-        return self.to_json()

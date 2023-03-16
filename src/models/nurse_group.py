@@ -34,9 +34,10 @@ class NurseGroup(Jsonify, DBDocument, StringReader):
             elif n in contract_groups:
                 self.contract_groups.append(n)
 
-        self.nurses = [n for n in self.nurses if n not in contracts and n not in contract_groups]
+        self.nurses = [n for n in self.nurses if n not in contracts
+                       and n not in contract_groups]
 
-        return self.to_json()
+        return self
 
     def read_line(self, line):
         tokens = line.split(',')

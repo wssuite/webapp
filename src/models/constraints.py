@@ -75,7 +75,7 @@ class ContractIntegerConstraint(ContractConstraint):
         self.name = bind_map[tokens[0].lower()]
         self.value = tokens[1]
         self.weight = tokens[2]
-        return self.to_json()
+        return self
 
 
 class ContractIntegerShiftConstraint(ContractIntegerConstraint):
@@ -97,7 +97,7 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
         self.shift = tokens[1]
         self.value = tokens[2]
         self.weight = tokens[3]
-        return self.to_json()
+        return self
 
 
 class ContractMinMaxConstraint(ContractConstraint):
@@ -121,7 +121,7 @@ class ContractMinMaxConstraint(ContractConstraint):
         self.minWeight = tokens[2]
         self.maxValue = tokens[3]
         self.maxWeight = tokens[4]
-        return self.to_json()
+        return self
 
 
 class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
@@ -145,7 +145,7 @@ class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
         self.minWeight = tokens[3]
         self.maxValue = tokens[4]
         self.maxWeight = tokens[5]
-        return self.to_json()
+        return self
 
 
 class ContractBooleanConstraint(ContractConstraint):
@@ -163,7 +163,7 @@ class ContractBooleanConstraint(ContractConstraint):
         tokens = sanitize_array(tokens)
         self.name = bind_map[tokens[0].lower()]
         self.weight = tokens[1]
-        return self.to_json()
+        return self
 
 
 class ContractUnwantedPatterns(ContractConstraint):
@@ -197,11 +197,7 @@ class ContractUnwantedPatterns(ContractConstraint):
             i += 2
 
         self.weight = tokens[len(tokens) - 1]
-        return {
-            constraint_name: self.name,
-            constraint_weight: self.weight,
-            unwanted_pattern_elements: self.pattern_elements
-        }
+        return self
 
     def get_shift(self):
         shifts = []
@@ -233,7 +229,7 @@ class ContractAlternativeShift(ContractConstraint):
         self.name = bind_map[tokens[0].lower()]
         self.shift = tokens[1]
         self.weight = tokens[2]
-        return self.to_json()
+        return self
 
 
 class ContractUnwantedSkills(ContractConstraint):
@@ -258,4 +254,4 @@ class ContractUnwantedSkills(ContractConstraint):
             self.unwanted_skills.append(tokens[i])
 
         self.weight = tokens[len(tokens) - 1]
-        return self.to_json()
+        return self

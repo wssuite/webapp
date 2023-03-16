@@ -37,7 +37,7 @@ class ShiftGroup(Jsonify, DBDocument, StringReader):
         temp = self.shifts
         self.shifts = []
         self.shifts = [s for s in temp if s not in self.shift_types]
-        return self.to_json()
+        return self
 
     def read_line(self, line):
         tokens = line.split(',')

@@ -25,5 +25,4 @@ class Shift(Jsonify, DBDocument, StringReader):
         self.name = tokens[0]
         self.start_time = tokens[1]
         self.end_time = tokens[2]
-        return self.to_json()
-
+        return self

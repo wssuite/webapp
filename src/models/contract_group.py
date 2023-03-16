@@ -29,4 +29,4 @@ class ContractGroup(DBDocument, Jsonify, StringReader):
         for i in range(1, len(tokens)):
             self.contracts.append(tokens[i])
 
-        return self.to_json()
+        return self

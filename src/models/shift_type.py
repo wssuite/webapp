@@ -27,4 +27,4 @@ class ShiftType(Jsonify, DBDocument, StringReader):
             if tokens[i] != '':
                 self.shifts.append(tokens[i])
 
-        return self.to_json()
+        return self
