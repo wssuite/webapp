@@ -10,7 +10,8 @@ from constants import (
     pattern_element_day,
     pattern_element_shift,
     unwanted_pattern, min_constraint_value, max_constraint_value, min_constraint_weight, max_constraint_weight,
-    contract_skills,
+    contract_skills, min_max_num_assignments_in_four_weeks, min_max_consecutive_shift_type,
+    identical_shift_during_weekend, alternative_shift, unwanted_skills,
 )
 
 from src.models.constraints import (
@@ -98,7 +99,7 @@ class TestConstraints(TestCase):
     def test_create_integer_constraint_from_string_create_structure(self):
         string = "total number of working weekends in four weeks,2,1.5,,,,,,,"
         expected_constraint = {
-            constraint_name: "total number of working weekends in four weeks",
+            constraint_name: total_weekends_in_four_weeks,
             integer_constraint_value: "2",
             constraint_weight: "1.5"
         }
@@ -108,7 +109,7 @@ class TestConstraints(TestCase):
     def test_create_shift_integer_constraint_from_string_create_structure(self):
         string = "number of free days after shift,late,2,10,,,,,,"
         expected_constraint = {
-            constraint_name: "number of free days after shift",
+            constraint_name: number_of_free_days_after_shift,
             shift_constraint: "late",
             integer_constraint_value: "2",
             constraint_weight: "10"
@@ -119,7 +120,7 @@ class TestConstraints(TestCase):
     def test_create_min_max_constraint_from_string_create_structure(self):
         string = "minimum and maximum number of assignments in four weeks,20,6,35,10,,,,,"
         expected_constraint = {
-            constraint_name: "minimum and maximum number of assignments in four weeks",
+            constraint_name: min_max_num_assignments_in_four_weeks,
             min_constraint_value: "20",
             max_constraint_value: '35',
             min_constraint_weight: '6',
@@ -131,7 +132,7 @@ class TestConstraints(TestCase):
     def test_create_min_max_shift_constraint_from_string_create_structure(self):
         string = "minimum and maximum of consecutive shift type,late,2,hard,5,2,,,,"
         expected_constraint = {
-            constraint_name: "minimum and maximum of consecutive shift type",
+            constraint_name: min_max_consecutive_shift_type,
             shift_constraint: "late",
             min_constraint_value: "2",
             max_constraint_value: '5',
@@ -144,7 +145,7 @@ class TestConstraints(TestCase):
     def test_create_boolean_constraint_create_structure(self):
         string = "identical shift types during weekend,5,,,,,,,,"
         expected_constraint = {
-            constraint_name: "identical shift types during weekend",
+            constraint_name: identical_shift_during_weekend,
             constraint_weight: "5"
         }
         constraint = ContractBooleanConstraint().read_line(string)
@@ -153,7 +154,7 @@ class TestConstraints(TestCase):
     def test_create_alternative_constraint_create_structure(self):
         string = "unwanted shift,Late,-5,,,,,,,"
         expected_constraint = {
-            constraint_name: 'unwanted shift',
+            constraint_name: alternative_shift,
             shift_constraint: "Late",
             constraint_weight: "-5"
         }
@@ -163,7 +164,7 @@ class TestConstraints(TestCase):
     def test_create_unwanted_skills_from_string_create_structure(self):
         string = "unwanted skills,HeadNurse,Nurse,0.8,,,,,,"
         expected_constraint = {
-            constraint_name: "unwanted skills",
+            constraint_name: unwanted_skills,
             contract_skills: [
                 "HeadNurse",
                 "Nurse",
@@ -176,7 +177,7 @@ class TestConstraints(TestCase):
     def test_create_unwanted_shifts_from_string_create_structure(self):
         string = "Unwanted patterns,Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday,Early,hard,,"
         expected_constraint = {
-            constraint_name: "Unwanted patterns",
+            constraint_name: unwanted_pattern,
             unwanted_pattern_elements: [
                 {
                     pattern_element_day: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -191,7 +192,7 @@ class TestConstraints(TestCase):
     def test_create_unwanted_shifts_from_string_with_two_patterns_create_structure(self):
         string = "Unwanted patterns,Monday|Tuesday,Early,Thursday|Friday,Late,hard,,"
         expected_constraint = {
-            constraint_name: "Unwanted patterns",
+            constraint_name: unwanted_pattern,
             unwanted_pattern_elements: [
                 {
                     pattern_element_day: ["Monday", "Tuesday"],

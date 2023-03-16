@@ -28,10 +28,12 @@ from constants import (
     contract_shifts,
     profile,
     unwanted_skills,
-    contract_skills,
+    contract_skills, bind_map,
 )
 
 from src.models.db_document import DBDocument
+from src.models.string_reader import StringReader
+from src.utils.import_util import sanitize_array
 
 
 class ContractConstraintCreator:
@@ -54,8 +56,13 @@ class ContractConstraintCreator:
             data[constraint_name]
         ]().from_json(data)
 
+    def create_contract_constraint_from_string(self, line):
+        tokens = line.split(',')
+        tokens = sanitize_array(tokens)
+        return self.dict_contract_constraints[bind_map[tokens[0].lower()]].read_line(line)
 
-class Contract(Jsonify, DBDocument):
+
+class Contract(Jsonify, DBDocument, StringReader):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = ""
@@ -106,3 +113,21 @@ class Contract(Jsonify, DBDocument):
 
     def copy(self):
         return Contract().from_json(self.to_json())
+
+    def read_contract(self, profile_name, contract_string):
+        self.profile = profile_name
+        lines = contract_string.split('\n')
+        self.name = lines[0].split(',')[1]
+        self.constraints = []
+        for i in range(1, len(lines)):
+            constraint = self.read_line(lines[i])
+            self.constraints.append(constraint)
+
+        return {
+            contract_name: self.name,
+            profile: self.profile,
+            contract_constraints: self.constraints
+        }
+
+    def read_line(self, line):
+        return ContractConstraintCreator.create_contract_constraint_from_string(line)
