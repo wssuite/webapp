@@ -12,10 +12,15 @@ class TestPatternElement(unittest.TestCase):
         pass
 
     def test_create_pattern_element_from_string_create_structure(self):
-        string = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday,Early"
+        string = "Monday|Tuesday|Wednesday" \
+                 "|Thursday|Friday|Saturday|Sunday," \
+                 "Early"
         expected_element = {
             pattern_element_shift: ["Early"],
-            pattern_element_day: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            pattern_element_day: ["Monday", "Tuesday",
+                                  "Wednesday", "Thursday",
+                                  "Friday", "Saturday",
+                                  "Sunday"]
         }
         element = PatternElement().read_line(string)
-        self.assertEqual(expected_element, element)
+        self.assertEqual(expected_element, element.to_json())

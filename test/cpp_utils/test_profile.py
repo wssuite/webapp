@@ -1,4 +1,4 @@
-from constants import profile_name, profile_creator, profile_access
+from constants import profile_name, profile_creator
 from src.models.profile import Profile
 from test_constants import test_profile, profile1
 from unittest import TestCase
@@ -17,7 +17,6 @@ class TestProfile(TestCase):
         expected_profile = {
             profile_name: profile1,
             profile_creator: None,
-            #profile_access: []
         }
         profile = Profile().read_line(string)
         self.assertEqual(expected_profile, profile)

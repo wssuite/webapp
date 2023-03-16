@@ -25,8 +25,9 @@ from constants import (
     pattern_element_shift,
     pattern_element_day,
     unwanted_skills,
-    contract_skills,
+    contract_skills, profile,
 )
+from test_constants import profile1
 
 
 class TestContract(TestCase):
@@ -106,6 +107,7 @@ class TestContract(TestCase):
                     constraint_weight: "hard",
                 },
             ],
+            profile: profile1
         }
 
     def tearDown(self) -> None:
@@ -151,3 +153,41 @@ class TestContract(TestCase):
         copy_contract = contract.copy()
         self.assertNotEqual(copy_contract, contract)
         self.assertEqual(copy_contract.db_json(), contract.db_json())
+
+    def test_contract_creation_from_string(self):
+        string = "name,FullTime,,,,,,,," + "\n" + \
+                "#constraint name ,,,,,,,,," + "\n" + \
+                 "#,shift,value,weight,,,,,," + "\n" + \
+                 "number of free days after shift,Early,1.0,hard" \
+                 ",,,,,," + "\n" + \
+                 "#,skills,weight,,,,,,," + "\n" + \
+                 "unwanted skills,Nurse,hard,,,,,,," + "\n" + \
+                 "#,value,weight,,,,,,," + "\n" + \
+                 "total number of working weekends in four weeks," \
+                 "1.0,5.0,5.0,hard,,,,,,," + "\n" + \
+                 "#,min value,min weight,max value,max weight" \
+                 ",,,,," + "\n" + \
+                 "minimum and maximum number of assignments in four weeks," \
+                 "1.0,5.0,5.0,hard,,,,," + "\n" + \
+                 "#,min value,min weight,max value,max weight,,,,," + "\n" + \
+                 "minimum and maximum of consecutive working weekends," \
+                 "1.0,5.0,5.0,hard,,,,," + "\n" + \
+                 "#,shift,min value,min weight," \
+                 "max value,max weight,,,," + "\n" + \
+                 "minimum and maximum of consecutive shift type," \
+                 "Early,1.0,5.0,5.0,hard,,,," + "\n" + \
+                 "#,weight,,,,,,,," + "\n" + \
+                 "identical shift types during weekend,hard,,,,,,,," \
+                 "" + "\n" + \
+                 "#,weight,,,,,,,," + "\n" + \
+                 "complete weekends,hard,,,,,,,," + "\n" + \
+                 "`#,days,,,,,,,shift,weight" + "\n" + \
+                "Unwanted patterns," \
+                "Monday|Wednesday|Friday,Late|Early|MidDay," \
+                "Tuesday,Early,hard,," + "\n" + \
+                "#,shift,weight,,,,,,," + "\n" + \
+                "unwanted shift,Early,hard,,,,,,,"\
+                 + "\n" + \
+                ",,,,,,,,,"
+        contract = Contract().read_contract(profile1, string)
+        self.assertEqual(self.contract_dict, contract.to_json())

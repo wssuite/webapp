@@ -22,5 +22,6 @@ class TestShiftType(TestCase):
     def test_shift_type_creation_from_a_string_parse_shift_type(self):
         shift_type_string = "Day,Early,MidDay,,,,,,,"
         profile_name = profile1
-        shift_type = ShiftType().red_shift_type(shift_type_string, profile_name)
-        self.assertEqual(self.shift_type_dict, shift_type)
+        shift_type = ShiftType().\
+            red_shift_type(shift_type_string, profile_name)
+        self.assertEqual(self.shift_type_dict, shift_type.to_json())

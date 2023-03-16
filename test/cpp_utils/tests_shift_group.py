@@ -29,5 +29,6 @@ class TestShiftGroups(TestCase):
         shift_types = ["Day"]
         profile_name = profile1
         shift_group_string = "Work,Early,Midnight,Day"
-        shift_group = ShiftGroup().read_shift_group(shift_group_string, profile_name, shift_types)
-        self.assertEqual(self.shift_group_dict, shift_group)
+        shift_group = ShiftGroup().\
+            read_shift_group(shift_group_string, profile_name, shift_types)
+        self.assertEqual(self.shift_group_dict, shift_group.to_json())

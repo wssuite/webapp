@@ -18,4 +18,4 @@ class TestShift(TestCase):
         shift_string = "Early,08:00:00,16:00:00,,,,,,,"
         profile_name = profile1
         shift = Shift().read_shift(shift_string, profile_name)
-        self.assertEqual(self.shift_dict, shift)
+        self.assertEqual(self.shift_dict, shift.to_json())

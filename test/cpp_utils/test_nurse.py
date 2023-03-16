@@ -49,4 +49,4 @@ class TestNurse(TestCase):
             nurse_contracts: ["contract 2"]
         }
         nurse = Nurse().read_nurse(nurse_string, profile_name, [])
-        self.assertEqual(expected_nurse, nurse)
+        self.assertEqual(expected_nurse, nurse.to_json())

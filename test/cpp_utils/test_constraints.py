@@ -9,15 +9,20 @@ from constants import (
     total_weekends_in_four_weeks,
     pattern_element_day,
     pattern_element_shift,
-    unwanted_pattern, min_constraint_value, max_constraint_value, min_constraint_weight, max_constraint_weight,
-    contract_skills, min_max_num_assignments_in_four_weeks, min_max_consecutive_shift_type,
-    identical_shift_during_weekend, alternative_shift, unwanted_skills,
+    unwanted_pattern, min_constraint_value, max_constraint_value,
+    min_constraint_weight, max_constraint_weight,
+    contract_skills,
+    min_max_num_assignments_in_four_weeks,
+    min_max_consecutive_shift_type,
+    identical_shift_during_weekend,
+    alternative_shift, unwanted_skills,
 )
 
 from src.models.constraints import (
     ContractIntegerConstraint,
     ContractIntegerShiftConstraint,
-    ContractUnwantedPatterns, ContractMinMaxConstraint, ContractMinMaxShiftConstraint, ContractBooleanConstraint,
+    ContractUnwantedPatterns, ContractMinMaxConstraint,
+    ContractMinMaxShiftConstraint, ContractBooleanConstraint,
     ContractAlternativeShift, ContractUnwantedSkills,
 )
 
@@ -104,9 +109,9 @@ class TestConstraints(TestCase):
             constraint_weight: "1.5"
         }
         constraint = ContractIntegerConstraint().read_line(string)
-        self.assertEqual(expected_constraint, constraint)
+        self.assertEqual(expected_constraint, constraint.to_json())
 
-    def test_create_shift_integer_constraint_from_string_create_structure(self):
+    def test_create_shift_integer_constraint_from_string_create_model(self):
         string = "number of free days after shift,late,2,10,,,,,,"
         expected_constraint = {
             constraint_name: number_of_free_days_after_shift,
@@ -115,10 +120,11 @@ class TestConstraints(TestCase):
             constraint_weight: "10"
         }
         constraint = ContractIntegerShiftConstraint().read_line(string)
-        self.assertEqual(expected_constraint, constraint)
+        self.assertEqual(expected_constraint, constraint.to_json())
 
-    def test_create_min_max_constraint_from_string_create_structure(self):
-        string = "minimum and maximum number of assignments in four weeks,20,6,35,10,,,,,"
+    def test_create_min_max_constraint_from_string_create_model(self):
+        string = "minimum and maximum number of assignments in four weeks," \
+                 "20,6,35,10,,,,,"
         expected_constraint = {
             constraint_name: min_max_num_assignments_in_four_weeks,
             min_constraint_value: "20",
@@ -127,10 +133,11 @@ class TestConstraints(TestCase):
             max_constraint_weight: '10'
         }
         constraint = ContractMinMaxConstraint().read_line(string)
-        self.assertEqual(expected_constraint, constraint)
+        self.assertEqual(expected_constraint, constraint.to_json())
 
-    def test_create_min_max_shift_constraint_from_string_create_structure(self):
-        string = "minimum and maximum of consecutive shift type,late,2,hard,5,2,,,,"
+    def test_create_min_max_shift_constraint_from_string_create_model(self):
+        string = "minimum and maximum of consecutive shift type," \
+                 "late,2,hard,5,2,,,,"
         expected_constraint = {
             constraint_name: min_max_consecutive_shift_type,
             shift_constraint: "late",
@@ -140,7 +147,7 @@ class TestConstraints(TestCase):
             max_constraint_weight: '2'
         }
         constraint = ContractMinMaxShiftConstraint().read_line(string)
-        self.assertEqual(expected_constraint, constraint)
+        self.assertEqual(expected_constraint, constraint.to_json())
 
     def test_create_boolean_constraint_create_structure(self):
         string = "identical shift types during weekend,5,,,,,,,,"
@@ -149,7 +156,7 @@ class TestConstraints(TestCase):
             constraint_weight: "5"
         }
         constraint = ContractBooleanConstraint().read_line(string)
-        self.assertEqual(expected_constraint, constraint)
+        self.assertEqual(expected_constraint, constraint.to_json())
 
     def test_create_alternative_constraint_create_structure(self):
         string = "unwanted shift,Late,-5,,,,,,,"
@@ -159,7 +166,7 @@ class TestConstraints(TestCase):
             constraint_weight: "-5"
         }
         constraint = ContractAlternativeShift().read_line(string)
-        self.assertEqual(expected_constraint, constraint)
+        self.assertEqual(expected_constraint, constraint.to_json())
 
     def test_create_unwanted_skills_from_string_create_structure(self):
         string = "unwanted skills,HeadNurse,Nurse,0.8,,,,,,"
@@ -172,25 +179,30 @@ class TestConstraints(TestCase):
             constraint_weight: "0.8"
         }
         constraint = ContractUnwantedSkills().read_line(string)
-        self.assertEqual(expected_constraint, constraint)
+        self.assertEqual(expected_constraint, constraint.to_json())
 
     def test_create_unwanted_shifts_from_string_create_structure(self):
-        string = "Unwanted patterns,Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday,Early,hard,,"
+        string = "Unwanted patterns," \
+                 "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday," \
+                 "Early,hard,,"
         expected_constraint = {
             constraint_name: unwanted_pattern,
             unwanted_pattern_elements: [
                 {
-                    pattern_element_day: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                    pattern_element_day: ["Monday", "Tuesday", "Wednesday",
+                                          "Thursday", "Friday",
+                                          "Saturday", "Sunday"],
                     pattern_element_shift: ["Early"],
                 }
             ],
             constraint_weight: 'hard'
         }
         constraint = ContractUnwantedPatterns().read_line(string)
-        self.assertEqual(expected_constraint, constraint)
+        self.assertEqual(expected_constraint, constraint.to_json())
 
-    def test_create_unwanted_shifts_from_string_with_two_patterns_create_structure(self):
-        string = "Unwanted patterns,Monday|Tuesday,Early,Thursday|Friday,Late,hard,,"
+    def test_create_unwanted_shifts_from_string_patterns_create_model(self):
+        string = "Unwanted patterns,Monday|Tuesday,Early,Thursday|Friday," \
+                 "Late,hard,,"
         expected_constraint = {
             constraint_name: unwanted_pattern,
             unwanted_pattern_elements: [
@@ -206,4 +218,4 @@ class TestConstraints(TestCase):
             constraint_weight: 'hard'
         }
         constraint = ContractUnwantedPatterns().read_line(string)
-        self.assertEqual(expected_constraint, constraint)
+        self.assertEqual(expected_constraint, constraint.to_json())

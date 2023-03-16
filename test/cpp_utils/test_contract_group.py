@@ -18,4 +18,4 @@ class TestContractGroup(TestCase):
         string = "contract_group_without_contradiction,minConsContract,,,,,,,,"
         profile_name = profile1
         group = ContractGroup().read_contract_group(string, profile_name)
-        self.assertEqual(self.dict, group)
+        self.assertEqual(self.dict, group.to_json())
