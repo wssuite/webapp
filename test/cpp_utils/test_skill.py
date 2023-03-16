@@ -18,4 +18,4 @@ class TestSkill(TestCase):
         profile_name = profile1
         skill_string = "Nurse"
         skill = Skill().read_skill(skill_string, profile_name)
-        self.assertEqual(skill, self.skill_dict)
+        self.assertEqual(skill.to_json(), self.skill_dict)
