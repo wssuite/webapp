@@ -40,9 +40,13 @@ from constants import (
     number_of_free_days_after_shift,
     integer_constraint_value,
     identical_shift_during_weekend,
-    total_weekends_in_four_weeks, min_max_consecutive_shift_type, complete_weekends,
+    total_weekends_in_four_weeks,
+    min_max_consecutive_shift_type,
+    complete_weekends,
     unwanted_pattern_elements,
-    unwanted_pattern, pattern_element_day, pattern_element_shift
+    unwanted_pattern,
+    pattern_element_day,
+    pattern_element_shift,
 )
 from src.models.nurse_group import NurseGroup
 from test_constants import default_user, random_hex, profile1
@@ -52,7 +56,8 @@ from src.models.hospital_demand import (
     ContractGroup,
     Skill,
     Shift,
-    ShiftGroup,ShiftType,
+    ShiftGroup,
+    ShiftType,
 )
 from src.handlers.base_handler import BaseHandler
 
@@ -60,58 +65,52 @@ late_shift_dict = {
     shift_name: "Late",
     shift_start_time: "16:00:00",
     shift_end_time: "24:00:00",
-    profile: "profile1"
+    profile: "profile1",
 }
 
 mid_day_shift_dict = {
     shift_name: "MidDay",
     shift_start_time: "12:00:00",
     shift_end_time: "16:00:00",
-    profile: "profile1"
+    profile: "profile1",
 }
 
 early_shift_dict = {
     shift_name: "Early",
     shift_start_time: "08:00:00",
     shift_end_time: "16:00:00",
-    profile: "profile1"
+    profile: "profile1",
 }
 
 night_shift_type_dict = {
     shift_type_name: "Night",
     shift_type_shifts_lists: ["Late"],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 day_shift_type_dict = {
     shift_type_name: "Day",
     shift_type_shifts_lists: ["Early", "MidDay"],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 work_shift_group_dict = {
     shift_group_name: "Work",
     shift_group_shifts_list: ["Early", "MidDay", "Late"],
     shift_group_shift_types: ["Day", "Night"],
-    profile: profile1
+    profile: profile1,
 }
 
 rest_shift_group_dict = {
     shift_group_name: "Rest",
     shift_group_shifts_list: [],
     shift_group_shift_types: [],
-    profile: profile1
+    profile: profile1,
 }
 
-head_nurse_skill_dict = {
-    skill_name: "HeadNurse",
-    profile: "profile1"
-}
+head_nurse_skill_dict = {skill_name: "HeadNurse", profile: "profile1"}
 
-nurse_skill_dict = {
-    skill_name: "Nurse",
-    profile: "profile1"
-}
+nurse_skill_dict = {skill_name: "Nurse", profile: "profile1"}
 
 general_contract_dict = {
     contract_name: "General",
@@ -120,17 +119,17 @@ general_contract_dict = {
             constraint_name: number_of_free_days_after_shift,
             integer_constraint_value: "1.0",
             constraint_weight: "hard",
-            shift_constraint: "Late"
+            shift_constraint: "Late",
         },
         {
             constraint_name: min_max_consecutive_weekends,
             min_constraint_value: "1.0",
             min_constraint_weight: "5.0",
             max_constraint_value: "3.0",
-            max_constraint_weight: "hard"
-        }
+            max_constraint_weight: "hard",
+        },
     ],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 nurse_contract_dict = {
@@ -139,21 +138,21 @@ nurse_contract_dict = {
         {
             constraint_name: unwanted_skills,
             contract_skills: ["HeadNurse"],
-            constraint_weight: "hard"
+            constraint_weight: "hard",
         },
         {
             constraint_name: total_weekends_in_four_weeks,
             min_constraint_value: "1.0",
             min_constraint_weight: "5.0",
             max_constraint_value: "5.0",
-            max_constraint_weight: "hard"
+            max_constraint_weight: "hard",
         },
         {
             constraint_name: identical_shift_during_weekend,
-            constraint_weight: "hard"
-        }
+            constraint_weight: "hard",
+        },
     ],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 head_nurse_contract_dict = {
@@ -162,21 +161,21 @@ head_nurse_contract_dict = {
         {
             constraint_name: unwanted_skills,
             contract_skills: ["Nurse"],
-            constraint_weight: "hard"
+            constraint_weight: "hard",
         },
         {
             constraint_name: total_weekends_in_four_weeks,
             min_constraint_value: "1.0",
             min_constraint_weight: "5.0",
             max_constraint_value: "3.0",
-            max_constraint_weight: "hard"
+            max_constraint_weight: "hard",
         },
         {
             constraint_name: identical_shift_during_weekend,
-            constraint_weight: "hard"
-        }
+            constraint_weight: "hard",
+        },
     ],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 patrick_contract_dict = {
@@ -188,33 +187,30 @@ patrick_contract_dict = {
             max_constraint_value: "3.0",
             min_constraint_weight: "hard",
             max_constraint_weight: "hard",
-            shift_constraint: "Late"
+            shift_constraint: "Late",
         },
-        {
-            constraint_name: complete_weekends,
-            constraint_weight: "5.0"
-        },
+        {constraint_name: complete_weekends, constraint_weight: "5.0"},
         {
             constraint_name: alternative_shift,
             shift_constraint: "MidDay",
-            constraint_weight: "hard"
+            constraint_weight: "hard",
         },
         {
             constraint_name: unwanted_pattern,
             unwanted_pattern_elements: [
-              {
-                  pattern_element_day: ["Monday", "Friday"],
-                  pattern_element_shift: ["Late"]
-              },
-              {
-                  pattern_element_day: ["Tuesday", "Saturday"],
-                  pattern_element_shift: ["Early", "MidDay"]
-              }
+                {
+                    pattern_element_day: ["Monday", "Friday"],
+                    pattern_element_shift: ["Late"],
+                },
+                {
+                    pattern_element_day: ["Tuesday", "Saturday"],
+                    pattern_element_shift: ["Early", "MidDay"],
+                },
             ],
-            constraint_weight: "hard"
-        }
+            constraint_weight: "hard",
+        },
     ],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 eve_contract_dict = {
@@ -226,33 +222,30 @@ eve_contract_dict = {
             max_constraint_value: "3.0",
             min_constraint_weight: "hard",
             max_constraint_weight: "hard",
-            shift_constraint: "Late"
+            shift_constraint: "Late",
         },
-        {
-            constraint_name: complete_weekends,
-            constraint_weight: "5.0"
-        },
+        {constraint_name: complete_weekends, constraint_weight: "5.0"},
         {
             constraint_name: alternative_shift,
             shift_constraint: "Late",
-            constraint_weight: "hard"
+            constraint_weight: "hard",
         },
         {
             constraint_name: unwanted_pattern,
             unwanted_pattern_elements: [
-              {
-                  pattern_element_day: ["Monday", "Friday"],
-                  pattern_element_shift: ["Late"]
-              },
-              {
-                  pattern_element_day: ["Tuesday", "Saturday"],
-                  pattern_element_shift: ["Early", "MidDay"]
-              }
+                {
+                    pattern_element_day: ["Monday", "Friday"],
+                    pattern_element_shift: ["Late"],
+                },
+                {
+                    pattern_element_day: ["Tuesday", "Saturday"],
+                    pattern_element_shift: ["Early", "MidDay"],
+                },
             ],
-            constraint_weight: "hard"
-        }
+            constraint_weight: "hard",
+        },
     ],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 patrick_nurse_dict = {
@@ -260,7 +253,7 @@ patrick_nurse_dict = {
     nurse_contracts: ["patricks contract"],
     profile: "profile1",
     nurse_contract_groups: [],
-    nurse_username: "patrick"
+    nurse_username: "patrick",
 }
 
 eve_nurse_dict = {
@@ -268,7 +261,7 @@ eve_nurse_dict = {
     nurse_contracts: ["eves contract"],
     profile: "profile1",
     nurse_contract_groups: [],
-    nurse_username: "eve"
+    nurse_username: "eve",
 }
 
 nurse2_dict = patrick_nurse_dict.copy()
@@ -284,13 +277,13 @@ head_nurse3_dict[nurse_username] = "head nurse 3"
 head_nurse_contract_group_dict = {
     contract_group_name: "head nurse contract group",
     contract_group_contracts_list: ["Head nurses contracts"],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 nurse_contract_group_dict = {
     contract_group_name: "nurse contract group",
     contract_group_contracts_list: ["Nurses contracts"],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 nurse_group_nurse_dict = {
@@ -298,7 +291,7 @@ nurse_group_nurse_dict = {
     nurse_group_contracts_list: ["General"],
     nurse_group_nurses_list: ["patrick", "nurse2", "nurse3"],
     nurse_group_contract_groups: ["nurse contract group"],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 nurse_group_head_nurse_dict = {
@@ -306,13 +299,13 @@ nurse_group_head_nurse_dict = {
     nurse_group_contracts_list: ["General"],
     nurse_group_nurses_list: ["eve", "head nurse 2", "head nurse 3"],
     nurse_group_contract_groups: ["head nurse contract group"],
-    profile: "profile1"
+    profile: "profile1",
 }
 
 profile_dict = {
     profile_name: profile1,
     profile_creator: admin,
-    profile_access: [admin]
+    profile_access: [admin],
 }
 
 
@@ -360,10 +353,16 @@ def build_db(handler: BaseHandler):
     handler.contract_dao.insert_one(eve_contract.db_json())
 
     """Insert contract groups"""
-    head_nurse_contract_group = ContractGroup().from_json(head_nurse_contract_group_dict)
+    head_nurse_contract_group = ContractGroup().from_json(
+        head_nurse_contract_group_dict
+    )
     nurse_contract_group = ContractGroup().from_json(nurse_contract_group_dict)
-    handler.contract_group_dao.insert_if_not_exist(head_nurse_contract_group.db_json())
-    handler.contract_group_dao.insert_if_not_exist(nurse_contract_group.db_json())
+    handler.contract_group_dao.insert_if_not_exist(
+        head_nurse_contract_group.db_json()
+    )
+    handler.contract_group_dao.insert_if_not_exist(
+        nurse_contract_group.db_json()
+    )
 
     """Insert nurse"""
     patrick_nurse = Nurse().from_json(patrick_nurse_dict)
@@ -381,6 +380,12 @@ def build_db(handler: BaseHandler):
 
     """Insert nurse groups"""
     nurse_group_nurse = NurseGroup().from_json(nurse_group_nurse_dict)
-    nurse_group_head_nurse = NurseGroup().from_json(nurse_group_head_nurse_dict)
-    handler.nurse_group_dao.insert_one_if_not_exist(nurse_group_nurse.db_json())
-    handler.nurse_group_dao.insert_one_if_not_exist(nurse_group_head_nurse.db_json())
+    nurse_group_head_nurse = NurseGroup().from_json(
+        nurse_group_head_nurse_dict
+    )
+    handler.nurse_group_dao.insert_one_if_not_exist(
+        nurse_group_nurse.db_json()
+    )
+    handler.nurse_group_dao.insert_one_if_not_exist(
+        nurse_group_head_nurse.db_json()
+    )

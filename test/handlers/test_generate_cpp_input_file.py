@@ -5,7 +5,8 @@ from constants import (
     start_date,
     end_date,
     schedule_hospital_demand,
-    profile, schedule_pref,
+    profile,
+    schedule_pref,
     demand_date,
     demand_shift,
     demand_max_value,
@@ -18,7 +19,7 @@ from constants import (
     preference_shift,
     preference_username,
     preference_pref,
-    schedule_nurses
+    schedule_nurses,
 )
 from test.db_test_constants import build_db, random_hex
 
@@ -28,13 +29,13 @@ hospital_demand_dict = {
     profile: "profile1",
     schedule_hospital_demand: [
         {
-           demand_date: "2023-06-01",
-           demand_shift: "Late",
-           demand_skill: "Nurse",
-           demand_min_value: "1.0",
-           demand_min_weight: "hard",
-           demand_max_value: "10.0",
-           demand_max_weight: "5.0"
+            demand_date: "2023-06-01",
+            demand_shift: "Late",
+            demand_skill: "Nurse",
+            demand_min_value: "1.0",
+            demand_min_weight: "hard",
+            demand_max_value: "10.0",
+            demand_max_weight: "5.0",
         }
     ],
     schedule_pref: [
@@ -43,12 +44,17 @@ hospital_demand_dict = {
             preference_username: "eve",
             preference_pref: "ON",
             preference_shift: "Early",
-            preference_weight: "5.0"
+            preference_weight: "5.0",
         }
     ],
-    schedule_nurses: ["patrick", "eve",
-                      "nurse2", "nurse3",
-                      "head nurse 2", "head nurse 3"]
+    schedule_nurses: [
+        "patrick",
+        "eve",
+        "nurse2",
+        "nurse3",
+        "head nurse 2",
+        "head nurse 3",
+    ],
 }
 
 
@@ -62,4 +68,3 @@ class TestGenerateCppInputFile(TestCase):
 
     def test_generate_schedule(self):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
-
