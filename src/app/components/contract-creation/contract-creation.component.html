@@ -41,10 +41,12 @@
         
         <h2>Choose a constraint to be added </h2>
         <br>
-        <div class="constraints" *ngFor="let constraint of possibleConstraints; let i= index">
+        <div class="constraints">        
+            <div *ngFor="let constraint of possibleConstraints; let i= index">
             <button class="constraint-button" mat-raised-button (click)="addConstraint(constraint)">
                 {{ constraint }}
             </button>
         </div>
+    </div>
     </div>
 </div>
