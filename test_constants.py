@@ -77,7 +77,7 @@ full_time_not_valid_contract_with_general = {
 }
 
 full_time_valid_contract_with_general = {
-    contract_name: "FullTime_Valid",
+    contract_name: "FullTime Valid",
     profile: profile1,
     contract_constraints: [
         {
@@ -89,7 +89,7 @@ full_time_valid_contract_with_general = {
 }
 
 full_time_valid_contract_with_general_update_to_invalid = {
-    contract_name: "FullTime_Valid",
+    contract_name: "FullTime Valid",
     profile: profile1,
     contract_constraints: [
         {
@@ -101,7 +101,7 @@ full_time_valid_contract_with_general_update_to_invalid = {
 }
 
 full_time_contract_with_day_shift_type = {
-    contract_name: "FullTime_Valid",
+    contract_name: "FullTime Valid",
     profile: profile1,
     contract_constraints: [
         {
@@ -202,7 +202,7 @@ test_work_shift_group[shift_group_shifts_list] = ["Day"]
 
 nurse1 = {
     nurse_name: "nurse1",
-    nurse_contracts: ["FullTime_Valid", "minConsContract"],
+    nurse_contracts: ["FullTime Valid", "minConsContract"],
     nurse_username: "nurse1",
     profile: profile1,
 }
@@ -219,7 +219,7 @@ random_hex2 = "12345678123456781234567812345679"
 nurse_group2 = {
     nurse_group_name: "group2",
     nurse_group_nurses_list: [],
-    nurse_group_contracts_list: ["FullTime_Valid", "minConsContract"],
+    nurse_group_contracts_list: ["FullTime Valid", "minConsContract"],
     profile: profile1,
 }
 user1_name = "user1"
@@ -245,7 +245,7 @@ skill_array = ["Nurse", "HeadNurse", "Sociologist", "Nurse"]
 
 patrick_nurse = {
     nurse_name: "Patrick",
-    nurse_contracts: ["FullTime_Valid"],
+    nurse_contracts: ["FullTime Valid"],
     nurse_username: "patrick",
     profile: profile1,
     nurse_contract_groups: [],
