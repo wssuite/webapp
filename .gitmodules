@@ -4,3 +4,6 @@
 [submodule "front-end-application"]
 	path = front-end-application
 	url = https://gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/front-end-application.git
+[submodule "cpp-invoker"]
+	path = cpp-invoker
+	url = ./cpp-invoker/
