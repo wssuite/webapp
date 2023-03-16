@@ -1,8 +1,8 @@
-from flask import Blueprint, request
-
+from flask import Blueprint
+import sys
 mod = Blueprint("controller", __name__, url_prefix="/solver")
 
 
 @mod.route("/test", methods=["POST"])
 def test():
-    return request.host
+    return sys.argv[1]
