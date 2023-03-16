@@ -2,8 +2,8 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShiftGroupInterface } from 'src/app/models/Shift';
-import { APIService } from 'src/app/services/api-service/api.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { ShiftGroupService } from 'src/app/services/shift/shift-group.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
@@ -18,7 +18,7 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
   shiftsGroup: string[];
   connectedUser!: boolean;
   
-  constructor(public dialog: MatDialog, private apiService: APIService, private profileService: ProfileService) {
+  constructor(public dialog: MatDialog, private shiftGroupService: ShiftGroupService, private profileService: ProfileService) {
     this.shiftsGroup = [];
   }
   ngOnInit(): void {
@@ -37,7 +37,7 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
   }
 
   getShiftsGroup(){
-    this.apiService.getShiftGroupNames().subscribe({
+    this.shiftGroupService.getShiftGroupNames().subscribe({
       next: (shiftsGroup: string[])=> {
         this.shiftsGroup = shiftsGroup;
         console.log(shiftsGroup)
@@ -77,7 +77,7 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
     try
     { 
       //call api service to push the contract
-      this.apiService.removeShiftGroup(shiftGroupName).subscribe({
+      this.shiftGroupService.removeShiftGroup(shiftGroupName).subscribe({
         error: (err: HttpErrorResponse)=> {
           if(err.status === HttpStatusCode.Ok) {
             const index = this.shiftsGroup.indexOf(shiftGroupName);
@@ -98,7 +98,7 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
   }
 
   modifyShiftGroup(shiftGroupName: string){
-    this.apiService.getShiftGroupByName(shiftGroupName).subscribe({
+    this.shiftGroupService.getShiftGroupByName(shiftGroupName).subscribe({
       next:(shiftGroup: ShiftGroupInterface) =>{
         this.openShiftGroupCreationDialog(shiftGroup);
       },

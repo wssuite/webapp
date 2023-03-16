@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import {  MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { Credentials } from 'src/app/models/Credentials';
-import { APIService } from 'src/app/services/api-service/api.service';
+import { AccountService } from 'src/app/services/account/account.service';
 
 
 @Component({
@@ -22,7 +22,8 @@ export class AccountCreationDialogComponent {
   passwordConfirmationControlForm: FormControl;
   disabled: boolean;
 
-  constructor(public dialogRef: MatDialogRef<AccountCreationDialogComponent >,  private api: APIService, private dialog: MatDialog) { 
+  constructor(public dialogRef: MatDialogRef<AccountCreationDialogComponent >,  private api: AccountService,
+     private dialog: MatDialog) { 
     this.username = "";
     this.password = "";
     this.passwordConfirmation = "";

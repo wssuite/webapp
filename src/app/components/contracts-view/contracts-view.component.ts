@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
-import { APIService } from 'src/app/services/api-service/api.service';
+//import { APIService } from 'src/app/services/api-service/api.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { ContractCreationDialogComponent } from '../contract-creation-dialog/contract-creation-dialog.component';
@@ -26,7 +26,7 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
   page!: PageEvent;
   indexBefore: number;
 
-  constructor(private dialog: MatDialog, private apiService: APIService, private profileService: ProfileService,
+  constructor(private dialog: MatDialog, private contractService: ContractService, private profileService: ProfileService,
     private contarctService: ContractService) {
     this.contracts = [];
     this.displayedContracts = [];
@@ -49,7 +49,7 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
   }
   
   getContracts(){
-    this.apiService.getContractNames().subscribe({
+    this.contractService.getContractNames().subscribe({
       next: (contracts: string[])=> {
         this.contracts = contracts;
         this.setDisplayedContracts(this.indexBefore);
@@ -82,7 +82,7 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
   }
 
   modifyContract(name: string) {
-    this.apiService.getContractByName(name).subscribe({
+    this.contractService.getContractByName(name).subscribe({
       next:(contractJson: ContractInterface) =>{
         const contract: Contract = this.contarctService.fromJson(contractJson);
         this.openContractCreationDialog(contract);
@@ -108,7 +108,7 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
   }
 
   deleteContract(contract:string){
-    this.apiService.deleteContract(contract).subscribe({
+    this.contractService.deleteContract(contract).subscribe({
       error:(error: HttpErrorResponse)=>{
         if(error.status === HttpStatusCode.Ok){
           this.getContracts();

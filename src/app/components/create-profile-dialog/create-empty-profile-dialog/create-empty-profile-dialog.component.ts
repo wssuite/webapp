@@ -3,7 +3,8 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseProfile } from 'src/app/models/Profile';
-import { APIService } from 'src/app/services/api-service/api.service';
+//import { APIService } from 'src/app/services/api-service/api.service';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
 @Component({
@@ -18,7 +19,7 @@ export class CreateEmptyProfileDialogComponent {
 
   profileNames: string[];
 
-  constructor(public dialogRef: MatDialogRef<CreateEmptyProfileDialogComponent>, private api: APIService,
+  constructor(public dialogRef: MatDialogRef<CreateEmptyProfileDialogComponent>, private api: ProfileService,
     private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: {profiles: BaseProfile[]}){
     this.name = '';
     this.nameCtrl = new FormControl(null, Validators.required);
