@@ -7,6 +7,11 @@ mat-panel-title{
     font-weight: bold;
 }
 
+.tool-tip-icon{
+    margin-left: 10px;
+    color: rgb(161, 158, 158);
+}
+
 .contract-container {
     margin-left: 1vw;
 }
@@ -16,6 +21,7 @@ mat-panel-title{
     position: relative;
     margin-right: 6vw;
     margin-left: 2vw;
+    transform: scale(1.5);
 }
 
 .constraint-container {
@@ -60,10 +66,6 @@ mat-expansion-panel {
 
 .delete-skill-button {
     margin-left: 1vw;
-}
-
-mat-icon{
-    transform: scale(1.5);
 }
 
 .constraint-button{

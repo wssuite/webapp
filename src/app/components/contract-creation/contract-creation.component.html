@@ -16,7 +16,9 @@
             <div *ngFor="let constraint of contract.constraints; let i= index" class="constraint-container">
                 <mat-expansion-panel [expanded]="i === contract.constraints.length -1">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
+                        <mat-panel-title>{{constraint.displayName}} <mat-icon class="tool-tip-icon" matTooltip="Info about the action"
+                            matTooltipPosition="right">help</mat-icon>
+                        </mat-panel-title>
                     </mat-expansion-panel-header>
                     <ng-container [ngSwitch]="constraint.name">
                         <app-unwanted-patterns *ngSwitchCase="unwantedPatternsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
