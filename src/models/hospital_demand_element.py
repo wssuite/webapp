@@ -27,5 +27,5 @@ class HospitalDemandElement(Jsonify, Stringify):
         return (
             f"{self.date},{self.day},{self.shift},"
             f"{self.skill},{self.min_value},{self.min_weight},"
-            f"{self.max_value}{self.max_weight}\n"
+            f"{self.max_value},{self.max_weight}\n"
         )

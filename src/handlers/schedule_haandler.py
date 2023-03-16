@@ -22,6 +22,7 @@ class ScheduleHandler(BaseHandler):
         demand = ScheduleDemand().from_json(json)
         self.verify_profile_accessors_access(token, demand.profile)
         detailed_demand = ScheduleDemandDetailed()
+        nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)
         """TODO: Get the id from the file system based on versioning"""
         detailed_demand.id = str(random.random())
         """Get the nurses objects included in the demand"""
@@ -29,14 +30,21 @@ class ScheduleHandler(BaseHandler):
             nurse_dict = self.nurse_dao.find_by_username(nurse, demand.profile)
             if nurse is not None:
                 nurse_object = Nurse().from_json(nurse_dict)
-                detailed_demand.nurses.append(nurse_object)
+
                 for preference in demand.preferences:
                     if preference.username == nurse_object.username:
                         preference.id = nurse_object.id
 
+                for nurse_group in nurse_groups:
+                    nurse_group_object = NurseGroup().from_json(nurse_group)
+                    if nurse in nurse_group_object.nurses:
+                        nurse_object.direct_contracts.extend(nurse_group_object.contracts)
+                        nurse_object.contract_groups.extend(nurse_group_object.contract_groups)
+
+                detailed_demand.nurses.append(nurse_object)
+
         detailed_demand.set_from_schedule_demand(demand)
         contracts = self.contract_dao.fetch_all(demand.profile)
-        nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)
         contract_groups = self.contract_group_dao.fetch_all(demand.profile)
         skills = self.skill_dao.get_all(demand.profile)
         shifts = self.shift_dao.fetch_all(demand.profile)
@@ -48,9 +56,6 @@ class ScheduleHandler(BaseHandler):
         )
         ScheduleHandler.add_object_to_demand_list(
             contract_groups, ContractGroup, detailed_demand.contract_groups
-        )
-        ScheduleHandler.add_object_to_demand_list(
-            nurse_groups, NurseGroup, detailed_demand.nurse_groups
         )
         ScheduleHandler.add_object_to_demand_list(
             skills, Skill, detailed_demand.skills

@@ -13,13 +13,11 @@ from constants import (
     schedule_shifts,
     schedule_shift_types,
     schedule_shift_groups,
-    schedule_nurse_groups,
     schedule_contract_groups,
     schedule_skills,
     contract_section,
     contract_group_section,
     nurse_section,
-    nurse_group_section,
     shift_group_section,
     shift_type_section,
     shift_section,
@@ -32,7 +30,6 @@ from constants import (
 from src.models.shift_group import ShiftGroup
 from src.models.shift import Shift
 from src.models.shift_type import ShiftType
-from src.models.nurse_group import NurseGroup
 from src.models.nurse import Nurse
 from src.models.contract import Contract
 from src.models.contract_group import ContractGroup
@@ -76,9 +73,6 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
         ContractGroup, serialized_name=schedule_contract_groups
     )
     contracts = ObjectListField(Contract, serialized_name=schedule_contracts)
-    nurse_groups = ObjectListField(
-        NurseGroup, serialized_name=schedule_nurse_groups
-    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -88,7 +82,6 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
         self.contracts = []
         self.contract_groups = []
         self.shift_types = []
-        self.nurse_groups = []
         self.skills = []
         self.shifts = []
         self.shift_groups = []
@@ -104,9 +97,6 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
         )
         nurse_sec = ScheduleDemandDetailed.__develop_section(
             self.nurses, nurse_section
-        )
-        nurse_group_sec = ScheduleDemandDetailed.__develop_section(
-            self.nurse_groups, nurse_group_section
         )
         contract_group_sec = ScheduleDemandDetailed.__develop_section(
             self.contract_groups, contract_group_section
@@ -129,7 +119,7 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
         return (
             f"{header_sec}{info_sec}{skill_sec}{shift_sec}{shift_group_sec}"
             f"{shift_type_sec}{contract_sec}{contract_group_sec}"
-            f"{nurse_sec}{nurse_group_sec}{hospital_demand_sec}"
+            f"{nurse_sec}{hospital_demand_sec}"
             f"{preferences_sec}"
         )
 

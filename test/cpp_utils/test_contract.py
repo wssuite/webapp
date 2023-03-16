@@ -164,7 +164,7 @@ constraints
 {5},1.0,5.0,5.0,hard,Early
 {6},hard
 {7},hard
-{8},hard,2,([Monday,Wednesday,Friday],[Late,Early,MidDay]),([Tuesday],[Early])
+{8},hard,2,Monday|Wednesday|Friday;Late|Early|MidDay,Tuesday;Early
 {9},hard,Early
 }}
 """.format(
