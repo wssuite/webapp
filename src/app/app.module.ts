@@ -82,6 +82,7 @@ import { SkillCreationComponent } from './components/skill-creation/skill-creati
 import { NurseCreationComponent } from './components/nurse-component/nurse-creation/nurse-creation.component';
 import { NurseGroupCreationComponent } from './components/nurse-component/nurse-group-creation/nurse-group-creation.component';
 import { NursePreferenceComponent } from './components/nurse-preference/nurse-preference.component';
+import { MatTableModule } from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -176,6 +177,7 @@ import { NursePreferenceComponent } from './components/nurse-preference/nurse-pr
     MatMenuModule,
     MatPaginatorModule,
     MatAutocompleteModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
