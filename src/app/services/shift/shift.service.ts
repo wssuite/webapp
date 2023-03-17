@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ADD_SHIFT_URL, FETCH_SHIFT_BY_NAMES, FETCH_SHIFT_NAMES, REMOVE_SHIFT_URL, UPDATE_SHIFT_URL } from 'src/app/constants/api-constants';
+import { ADD_SHIFT_URL, FETCH_ALL_SHIFT, FETCH_SHIFT_BY_NAMES, FETCH_SHIFT_NAMES, REMOVE_SHIFT_URL, UPDATE_SHIFT_URL } from 'src/app/constants/api-constants';
 import { ShiftInterface } from 'src/app/models/Shift';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
@@ -50,6 +50,19 @@ export class ShiftService {
       throw new Exception("user not logged in");
     }
     
+  }
+
+  getAllShift():Observable<ShiftInterface[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<ShiftInterface[]>(FETCH_ALL_SHIFT, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in")
+    }
   }
   getShiftNames():Observable<string[]> {
     try{

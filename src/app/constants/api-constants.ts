@@ -36,6 +36,7 @@ export const LOGOUT_URL = USER_URL + "/logout"
 
 
 export const SHIFT_URL= BASE_URL + "/shift";
+export const FETCH_ALL_SHIFT = SHIFT_URL + FETCH_ALL;
 export const FETCH_SHIFT_NAMES = SHIFT_URL + FETCH_NAMES;
 export const FETCH_SHIFT_BY_NAMES = SHIFT_URL + FETCH_BY_NAMES;
 export const ADD_SHIFT_URL = SHIFT_URL + ADD_STRING;

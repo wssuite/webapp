@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component,  OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShiftInterface } from 'src/app/models/Shift';
 import { ProfileService } from 'src/app/services/profile/profile.service';
@@ -8,6 +8,10 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ShiftCreationDialogComponent } from '../shift-creation-dialog/shift-creation-dialog.component';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+
 
 @Component({
   selector: 'app-shifts-view',
@@ -18,10 +22,18 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
   
   shifts: string[];
   connectedUser!:boolean;
-  
+  displayedColumns: string[]; 
+  dataSource: MatTableDataSource<ShiftInterface>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(public dialog: MatDialog, private apiService: ShiftService, private profileService: ProfileService) {
     this.shifts = [];
+    this.displayedColumns =  ['name', 'startTime', 'endTime','actions'];
+    this.dataSource = new MatTableDataSource();
+
+  
   }
 
   ngOnInit(): void {
@@ -37,7 +49,10 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
       this.profileService.profileChanged.subscribe(()=>{
         this.getShifts();
       })
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
   }
+
 
   getShifts(){
     this.apiService.getShiftNames().subscribe({
@@ -48,8 +63,19 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
         this.openErrorDialog(error.error);
       }
     })
+    this.apiService.getAllShift().subscribe({
+      next: (shift: ShiftInterface[])=> {
+        this.dataSource.data = shift;
+        console.log(this.dataSource);
+      },
+      error: (error: HttpErrorResponse)=> {
+        this.openErrorDialog(error.error);
+      }
+    
+    })
   }
 
+  
   openShiftCreationDialog(shift: ShiftInterface) {
     const dialog = this.dialog.open(ShiftCreationDialogComponent,  
       { disableClose: true,  
@@ -85,6 +111,7 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
             const index = this.shifts.indexOf(shiftName);
             if (index > -1) {
               this.shifts.splice(index, 1);
+              this.getShifts();
             }
           }
           else{
@@ -110,6 +137,15 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
     })
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 }
+
 
 
