@@ -49,6 +49,8 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
       this.profileService.profileChanged.subscribe(()=>{
         this.getShiftsType();
       })
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
   }
 
   getShiftsType(){

@@ -44,6 +44,8 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
     this.profileService.profileChanged.subscribe(()=>{
       this.getShiftsGroup();
     })
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   getShiftsGroup(){
