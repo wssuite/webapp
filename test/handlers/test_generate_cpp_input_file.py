@@ -20,6 +20,8 @@ from constants import (
     preference_username,
     preference_pref,
     schedule_nurses,
+    schedule_skills,
+    schedule_shifts,
 )
 from test.db_test_constants import build_db, random_hex
 
@@ -55,6 +57,8 @@ hospital_demand_dict = {
         "head nurse 2",
         "head nurse 3",
     ],
+    schedule_skills: ["Nurse", "HeadNurse"],
+    schedule_shifts: ["Early", "MidDay", "Late"],
 }
 
 

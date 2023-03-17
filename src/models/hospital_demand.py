@@ -49,6 +49,8 @@ class ScheduleDemand(Jsonify):
     )
     preferences = ObjectListField(NursePreferenceElement, schedule_pref)
     nurses = ListField(str, serialized_name=schedule_nurses)
+    skills = ListField(str, serialized_name=schedule_skills)
+    shifts = ListField(str, serialized_name=schedule_shifts)
 
 
 class ScheduleDemandDetailed(Jsonify, Stringify):
