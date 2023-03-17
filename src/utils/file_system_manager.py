@@ -3,6 +3,7 @@ from src.exceptions.file_system_exceptions import (
     NoSolutionFoundException,
     NoVersionFoundException,
 )
+import shutil
 
 dataset_directory = "dataset"
 base_directory = os.getcwd()
@@ -46,3 +47,11 @@ class FileSystemManager:
     @staticmethod
     def current_version(dir_name: str):
         return len(os.listdir(dir_name))
+
+    @staticmethod
+    def delete_dir(name):
+        shutil.rmtree(name)
+
+    @staticmethod
+    def get_dataset_directory_path():
+        return f"{base_directory}/{dataset_directory}"
