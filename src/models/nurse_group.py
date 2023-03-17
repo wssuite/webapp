@@ -9,7 +9,7 @@ from constants import (
     nurse_group_contract_groups,
 )
 from src.models.string_reader import StringReader
-from src.utils.import_util import sanitize_array
+from src.utils.import_util import sanitize_array, Wrapper
 
 
 class NurseGroup(Jsonify, DBDocument, StringReader):
@@ -42,6 +42,7 @@ class NurseGroup(Jsonify, DBDocument, StringReader):
     def read_line(self, line):
         tokens = line.split(',')
         tokens = sanitize_array(tokens)
-        self.name = tokens[0]
+        wrapper = Wrapper(tokens)
+        self.name = wrapper.get_by_index(0)
         for i in range(1, len(tokens)):
-            self.nurses.append(tokens[i])
+            self.nurses.append(wrapper.get_by_index(i))

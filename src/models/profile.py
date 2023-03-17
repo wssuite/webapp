@@ -2,11 +2,9 @@ from src.models.jsonify import Jsonify
 from src.models.db_document import DBDocument
 from pykson import StringField, ListField
 from constants import profile_name, profile_creator, profile_access
-from src.models.string_reader import StringReader
-from src.utils.import_util import sanitize_array
 
 
-class Profile(Jsonify, DBDocument, StringReader):
+class Profile(Jsonify, DBDocument,):
     name = StringField(serialized_name=profile_name)
     access = ListField(str, serialized_name=profile_access)
     creator = StringField(serialized_name=profile_creator)
@@ -21,9 +19,3 @@ class Profile(Jsonify, DBDocument, StringReader):
             profile_name: self.name,
             profile_creator: self.creator,
         }
-
-    def read_line(self, line):
-        tokens = line.split(',')
-        tokens = sanitize_array(tokens)
-        self.name = tokens[1]
-        return self.to_json()

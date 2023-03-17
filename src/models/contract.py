@@ -33,7 +33,7 @@ from constants import (
 
 from src.models.db_document import DBDocument
 from src.models.string_reader import StringReader
-from src.utils.import_util import sanitize_array, skip_line
+from src.utils.import_util import sanitize_array, skip_line, Wrapper
 
 
 class ContractConstraintCreator:
@@ -118,7 +118,8 @@ class Contract(Jsonify, DBDocument, StringReader):
     def read_contract(self, profile_name, contract_string):
         self.profile = profile_name
         lines = contract_string.split('\n')
-        self.name = lines[0].split(',')[1]
+        wrapper = Wrapper(lines[0].split(','))
+        self.name = wrapper.get_by_index(1)
         self.constraints = []
         for i in range(1, len(lines)):
             if not skip_line(lines[i]):

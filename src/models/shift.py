@@ -3,7 +3,7 @@ from src.models.jsonify import Jsonify
 from pykson import StringField
 from constants import shift_name, shift_start_time, shift_end_time, profile
 from src.models.string_reader import StringReader
-from src.utils.import_util import sanitize_array
+from src.utils.import_util import sanitize_array, Wrapper
 
 
 class Shift(Jsonify, DBDocument, StringReader):
@@ -22,7 +22,8 @@ class Shift(Jsonify, DBDocument, StringReader):
     def read_line(self, line):
         tokens = line.split(',')
         tokens = sanitize_array(tokens)
-        self.name = tokens[0]
-        self.start_time = tokens[1]
-        self.end_time = tokens[2]
+        wrapper = Wrapper(tokens)
+        self.name = wrapper.get_by_index(0)
+        self.start_time = wrapper.get_by_index(1)
+        self.end_time = wrapper.get_by_index(2)
         return self
