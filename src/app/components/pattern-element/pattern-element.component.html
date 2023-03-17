@@ -1,6 +1,6 @@
 <div (mouseleave)="emitElement()">
     <label> Days: </label>
-    <app-button-multiselect [(elements)]="element.days" [allPossibleElements]="possibleDays"></app-button-multiselect>
+    <app-button-multiselect [(elements)]="element.days" [allPossibleElements]="possibleDays" [customSelectors]="customSelectorDays"></app-button-multiselect>
     <!-- <mat-form-field appearance="fill">
         <mat-label> choose a day </mat-label>
         <mat-select [(value)]="element.days" [formControl]="daySelectorFormControl" (selectionChange)="emitElement()" multiple>

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { CustomSelector } from "src/app/models/CustomSelector";
 
 @Component({
   selector: "app-button-multiselect",
@@ -10,6 +11,7 @@ export class ButtonMultiselectComponent {
   @Output() elementsChange!: EventEmitter<string[]>;
 
   @Input() allPossibleElements!: string[];
+  @Input() customSelectors!: CustomSelector[];
 
   constructor(){
     this.elementsChange = new EventEmitter<string[]>;
@@ -36,6 +38,10 @@ export class ButtonMultiselectComponent {
 
   deselectAll() {
     this.elements = [];
+  }
+
+  applyCustomSelection(elementsToSelect: string[]) {
+    this.elements = [...elementsToSelect];
   }
 
 }

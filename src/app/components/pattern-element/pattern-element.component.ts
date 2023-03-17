@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { CustomSelector } from 'src/app/models/CustomSelector';
 import { PatternElement } from 'src/app/models/PatternElement';
 import { DateUtils } from 'src/app/utils/DateUtils';
 
@@ -11,6 +12,8 @@ import { DateUtils } from 'src/app/utils/DateUtils';
 export class PatternElementComponent implements OnInit{
 
   possibleDays: string[]
+  customSelectorDays: CustomSelector[];
+
 
   @Input() possibleShifts!: string[]
   @Input() element!: PatternElement
@@ -24,6 +27,11 @@ export class PatternElementComponent implements OnInit{
 
   constructor() {
     this.possibleDays = DateUtils.days;
+    this.customSelectorDays = [
+      new CustomSelector("Weekdays", DateUtils.weekdays),
+      new CustomSelector("Weekend", DateUtils.weekendDays),
+    ]
+    
     this.elementChange = new EventEmitter<PatternElement>();
     this.errorState = new EventEmitter<boolean>();
     this.daySelectorFormControl = new FormControl(null, Validators.required);
