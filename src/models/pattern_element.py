@@ -12,7 +12,7 @@ class PatternElement(Jsonify, StringReader):
         return self.shifts
 
     def read_line(self, line):
-        tokens = line.split(',')
-        self.days = tokens[0].split('|')
-        self.shifts = tokens[1].split('|')
+        tokens = line.split(",")
+        self.days = tokens[0].split("|")
+        self.shifts = tokens[1].split("|")
         return self

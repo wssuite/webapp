@@ -5,7 +5,7 @@ from src.utils.import_util import sanitize_array, skip_line
 
 class TestImportUtil(unittest.TestCase):
     def test_sanitize_array_should_return_empty_array(self):
-        tokens = ['', '', '', '']
+        tokens = ["", "", "", ""]
         expected_output = []
         output = sanitize_array(tokens)
         self.assertEqual(expected_output, output)

@@ -14,18 +14,18 @@ class ShiftType(Jsonify, DBDocument, StringReader):
     def db_json(self):
         return self.to_json()
 
-    def red_shift_type(self, line, profile_name):
+    def read_shift_type(self, line, profile_name):
         self.profile = profile_name
         return self.read_line(line)
 
     def read_line(self, line):
         self.shifts = []
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = wrapper.get_by_index(0)
         for i in range(1, len(tokens)):
-            if tokens[i] != '':
+            if tokens[i] != "":
                 self.shifts.append(wrapper.get_by_index(i))
 
         return self

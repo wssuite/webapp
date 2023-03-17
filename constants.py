@@ -56,12 +56,22 @@ unwanted_skills = "unwantedSkills"
 
 """Imported constraint names"""
 unwanted_pattern_import_name = "unwanted patterns"
-total_weekends_in_four_weeks_import_name = "total number of working weekends in four weeks"
-min_max_consecutive_shift_type_import_name = "minimum and maximum of consecutive shift type"
-min_max_consecutive_weekends_import_name = "minimum and maximum of consecutive working weekends"
-min_max_num_assignments_in_four_weeks_import_name = "minimum and maximum number of assignments in four weeks"
+total_weekends_in_four_weeks_import_name = (
+    "total number of working weekends in four weeks"
+)
+min_max_consecutive_shift_type_import_name = (
+    "minimum and maximum of consecutive shift type"
+)
+min_max_consecutive_weekends_import_name = (
+    "minimum and maximum of consecutive working weekends"
+)
+min_max_num_assignments_in_four_weeks_import_name = (
+    "minimum and maximum number of assignments in four weeks"
+)
 complete_weekends_import_name = "complete weekends"
-identical_shift_during_weekend_import_name = "identical shift types during weekend"
+identical_shift_during_weekend_import_name = (
+    "identical shift types during weekend"
+)
 alternative_shift_import_name = "unwanted shift"
 number_of_free_days_after_shift_import_name = "number of free days after shift"
 unwanted_skills_import_name = "unwanted skills"
@@ -137,3 +147,13 @@ duplicate_name = "other_profile_name"
 """Contract group"""
 contract_group_name = "name"
 contract_group_contracts_list = "contracts"
+
+"""Detailed profile constants"""
+profile_contracts = "contracts"
+profile_shifts = "shifts"
+profile_contract_groups = "contractGroups"
+profile_shift_types = "shiftTypes"
+profile_shift_groups = "shiftGroups"
+profile_nurses = "nurses"
+profile_nurse_groups = "nurseGroups"
+profile_skills = "skills"

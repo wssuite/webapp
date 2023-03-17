@@ -11,7 +11,8 @@ from constants import (
     min_constraint_weight,
     max_constraint_weight,
     unwanted_pattern_elements,
-    contract_skills, bind_map,
+    contract_skills,
+    bind_map,
 )
 from src.models.pattern_element import PatternElement
 from src.models.jsonify import Jsonify
@@ -70,7 +71,7 @@ class ContractIntegerConstraint(ContractConstraint):
         return self.name
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = bind_map[wrapper.get_by_index(0).lower()]
@@ -92,7 +93,7 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
         return [self.shift]
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = bind_map[wrapper.get_by_index(0).lower()]
@@ -116,7 +117,7 @@ class ContractMinMaxConstraint(ContractConstraint):
         return self.name
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = bind_map[wrapper.get_by_index(0).lower()]
@@ -140,7 +141,7 @@ class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
         return [self.shift]
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = bind_map[wrapper.get_by_index(0).lower()]
@@ -163,7 +164,7 @@ class ContractBooleanConstraint(ContractConstraint):
         return self.name
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = bind_map[wrapper.get_by_index(0).lower()]
@@ -190,7 +191,7 @@ class ContractUnwantedPatterns(ContractConstraint):
         }
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = bind_map[wrapper.get_by_index(0).lower()]
@@ -198,8 +199,9 @@ class ContractUnwantedPatterns(ContractConstraint):
         i = 1
 
         while i < len(tokens) - 1:
-            new_line = wrapper.get_by_index(i) + "," + \
-                       wrapper.get_by_index(i+1)
+            new_line = (
+                wrapper.get_by_index(i) + "," + wrapper.get_by_index(i + 1)
+            )
             self.pattern_elements.append(PatternElement().read_line(new_line))
             i += 2
 
@@ -231,7 +233,7 @@ class ContractAlternativeShift(ContractConstraint):
         return [self.shift]
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = bind_map[wrapper.get_by_index(0).lower()]
@@ -255,7 +257,7 @@ class ContractUnwantedSkills(ContractConstraint):
         return self.unwanted_skills
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = bind_map[wrapper.get_by_index(0).lower()]

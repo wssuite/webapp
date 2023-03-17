@@ -33,12 +33,13 @@ class Nurse(Jsonify, DBDocument, StringReader):
             if c in contract_groups:
                 self.contract_groups.append(c)
 
-        self.direct_contracts = [c for c in self.direct_contracts
-                                 if c not in contract_groups]
+        self.direct_contracts = [
+            c for c in self.direct_contracts if c not in contract_groups
+        ]
         return self
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.username = wrapper.get_by_index(0)

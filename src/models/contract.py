@@ -28,7 +28,8 @@ from constants import (
     contract_shifts,
     profile,
     unwanted_skills,
-    contract_skills, bind_map,
+    contract_skills,
+    bind_map,
 )
 
 from src.models.db_document import DBDocument
@@ -57,7 +58,7 @@ class ContractConstraintCreator:
         ]().from_json(data)
 
     def create_contract_constraint_from_string(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         name = bind_map[tokens[0].lower()]
         return self.dict_contract_constraints[name]().read_line(line)
@@ -117,8 +118,8 @@ class Contract(Jsonify, DBDocument, StringReader):
 
     def read_contract(self, profile_name, contract_string):
         self.profile = profile_name
-        lines = contract_string.split('\n')
-        wrapper = Wrapper(lines[0].split(','))
+        lines = contract_string.split("\n")
+        wrapper = Wrapper(lines[0].split(","))
         self.name = wrapper.get_by_index(1)
         self.constraints = []
         for i in range(1, len(lines)):
@@ -129,5 +130,6 @@ class Contract(Jsonify, DBDocument, StringReader):
         return self
 
     def read_line(self, line):
-        return self.constraint_creator.\
-            create_contract_constraint_from_string(line)
+        return self.constraint_creator.create_contract_constraint_from_string(
+            line
+        )

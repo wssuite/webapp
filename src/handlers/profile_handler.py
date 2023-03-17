@@ -1,6 +1,7 @@
 from werkzeug.datastructures import FileStorage
 
 from src.handlers.base_handler import BaseHandler
+from src.importers.importer import CSVImporter
 from src.models.profile import Profile
 from constants import (
     user_username,
@@ -84,4 +85,5 @@ class ProfileHandler(BaseHandler):
     def import_file(self, token, file: FileStorage):
         self.verify_token(token)
         file.save(file.filename)
-        
+        file_path = "../../{}".format(file.filename)
+        CSVImporter().read_file(file_name=file_path)

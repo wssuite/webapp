@@ -23,7 +23,7 @@ class ContractGroup(DBDocument, Jsonify, StringReader):
         return self.read_line(line)
 
     def read_line(self, line):
-        tokens = line.split(',')
+        tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
         self.name = wrapper.get_by_index(0)
