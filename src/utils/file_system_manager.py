@@ -40,7 +40,7 @@ class FileSystemManager:
 
     @staticmethod
     def create_dir_if_not_exist(name):
-        exists = os.path.exists(name)
+        exists = FileSystemManager.exist(name)
         if exists is False:
             os.mkdir(name)
 
@@ -55,3 +55,7 @@ class FileSystemManager:
     @staticmethod
     def get_dataset_directory_path():
         return f"{base_directory}/{dataset_directory}"
+
+    @staticmethod
+    def exist(name):
+        return os.path.exists(name)

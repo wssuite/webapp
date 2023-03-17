@@ -1,4 +1,4 @@
-import random
+import json
 from typing import Type
 
 from src.handlers.base_handler import BaseHandler
@@ -12,19 +12,44 @@ from src.models.shift_type import ShiftType
 from src.models.shift import Shift
 from src.models.skill import Skill
 from src.models.jsonify import Jsonify
+from constants import profile, start_date, end_date
+from src.utils.file_system_manager import FileSystemManager
 
 
 class ScheduleHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
 
-    def generate_schedule(self, token, json):
-        demand = ScheduleDemand().from_json(json)
+    def generate_schedule(self, token, demand_json):
+        demand = ScheduleDemand().from_json(demand_json)
         self.verify_profile_accessors_access(token, demand.profile)
+
+        """Get th path for next version"""
+        r_path = (
+            f"{demand_json[profile]}/{demand_json[start_date]}"
+            f"_{demand_json[end_date]}"
+        )
+        fs = FileSystemManager()
+        full_path = f"{fs.get_dataset_directory_path()}/{r_path}"
+        fs.create_dir_if_not_exist(full_path)
+        curr_version = fs.current_version(full_path)
+        next_version = curr_version + 1
+        full_path += f"/{str(next_version)}"
+        fs.create_dir_if_not_exist(full_path)
         detailed_demand = ScheduleDemandDetailed()
+
+        """Dump the demand in an input.json file"""
+        with open(f"{full_path}/input.json", "w") as f:
+            json.dump(demand.to_json(), f)
+
+        detailed_demand.id = next_version
+        self.__build_detailed_demand(demand, detailed_demand)
+
+        with open(f"{full_path}/input.txt", "w") as f:
+            f.write(detailed_demand.to_string())
+
+    def __build_detailed_demand(self, demand, detailed_demand):
         nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)
-        """TODO: Get the id from the file system based on versioning"""
-        detailed_demand.id = str(random.random())
         """Get the nurses objects included in the demand"""
         for nurse in demand.nurses:
             nurse_dict = self.nurse_dao.find_by_username(nurse, demand.profile)
@@ -73,8 +98,6 @@ class ScheduleHandler(BaseHandler):
         ScheduleHandler.add_object_to_demand_list(
             shift_types, ShiftType, detailed_demand.shift_types
         )
-        with open("input.txt", "w") as f:
-            f.write(detailed_demand.to_string())
 
     @staticmethod
     def add_object_to_demand_list(
