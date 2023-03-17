@@ -66,7 +66,6 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
     this.apiService.getAllShift().subscribe({
       next: (shift: ShiftInterface[])=> {
         this.dataSource.data = shift;
-        console.log(this.dataSource);
       },
       error: (error: HttpErrorResponse)=> {
         this.openErrorDialog(error.error);

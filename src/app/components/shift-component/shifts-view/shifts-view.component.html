@@ -3,7 +3,7 @@
 <div *ngIf="this.shifts.length>0">
     <mat-form-field>
       <mat-label>Filter</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Morning" #input>
     </mat-form-field>
     
     <div class="mat-elevation-z8">
@@ -59,7 +59,7 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 15,20]" aria-label="Select page of users"></mat-paginator>
 </div></div>
   <app-sidenav-shift></app-sidenav-shift>
-  <button class="buttonCreate" mat-raised-button color="primary"  (click)="createNewShift()">Create new shift</button>
+  <button class="buttonCreate" mat-raised-button color="primary"  (click)="createNewShift()">Add new shift</button>
 </div>
 <ng-template #elseBlock>
   <app-not-connected></app-not-connected>

@@ -1,6 +1,9 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ShiftTypeService } from 'src/app/services/shift/shift-type.service';
@@ -19,11 +22,18 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
   
   shiftsType: string[];
   connectedUser!:boolean;
+  displayedColumns: string[]; 
+  dataSource: MatTableDataSource<ShiftTypeInterface>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   constructor(private dialog: MatDialog, private shiftTypeService: ShiftTypeService,
      private profileService: ProfileService) {
     this.shiftsType = [];
+    this.displayedColumns =  ['name', 'shifts','actions'];
+    this.dataSource = new MatTableDataSource();
 
   }
   ngOnInit(): void {
@@ -50,6 +60,15 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
         this.openErrorDialog(error.error);
       }
     })
+    this.shiftTypeService.getAllShiftType().subscribe({
+      next: (shiftType: ShiftTypeInterface[])=> {
+        this.dataSource.data = shiftType;
+      },
+      error: (error: HttpErrorResponse)=> {
+        this.openErrorDialog(error.error);
+      }
+    })
+    
   }
 
   openShiftTypeCreationDialog(shiftType: ShiftTypeInterface) {
@@ -110,6 +129,15 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
         this.openErrorDialog(error.error);
       }
     })
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 
