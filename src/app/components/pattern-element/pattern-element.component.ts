@@ -31,7 +31,7 @@ export class PatternElementComponent implements OnInit{
       new CustomSelector("Weekdays", DateUtils.weekdays),
       new CustomSelector("Weekend", DateUtils.weekendDays),
     ]
-    
+
     this.elementChange = new EventEmitter<PatternElement>();
     this.errorState = new EventEmitter<boolean>();
     this.daySelectorFormControl = new FormControl(null, Validators.required);
@@ -49,6 +49,8 @@ export class PatternElementComponent implements OnInit{
   }
 
   emitErrorState() {
-    this.errorState.emit(this.daySelectorFormControl.hasError('required') || this.shiftSelectorFormControl.hasError('required'))
+    const noDaySelected = this.element.days.length == 0;
+    const noShiftSelected = this.element.shifts.length == 0;
+    this.errorState.emit(noDaySelected || noShiftSelected);
   }
 }

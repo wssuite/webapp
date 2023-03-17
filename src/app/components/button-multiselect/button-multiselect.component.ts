@@ -13,8 +13,11 @@ export class ButtonMultiselectComponent {
   @Input() allPossibleElements!: string[];
   @Input() customSelectors!: CustomSelector[];
 
+  @Output() selectionChanged!: EventEmitter<boolean>;
+
   constructor(){
     this.elementsChange = new EventEmitter<string[]>;
+    this.selectionChanged = new EventEmitter<boolean>;
   }
 
   toggleElement(elementName: string) {
@@ -26,6 +29,8 @@ export class ButtonMultiselectComponent {
     } else {
       this.elements.push(elementName);
     }
+
+    this.selectionChanged.emit(true);
   }
 
   isSelected(elementName: string) {
@@ -34,14 +39,17 @@ export class ButtonMultiselectComponent {
 
   selectAll() {
     this.elements = [...this.allPossibleElements];
+    this.selectionChanged.emit(true);
   }
 
   deselectAll() {
     this.elements = [];
+    this.selectionChanged.emit(true);
   }
 
   applyCustomSelection(elementsToSelect: string[]) {
     this.elements = [...elementsToSelect];
+    this.selectionChanged.emit(true);
   }
 
 }
