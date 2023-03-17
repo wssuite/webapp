@@ -1,5 +1,5 @@
 // import {SelectionModel} from '@angular/cdk/collections';
- import {Component} from '@angular/core';
+ import {AfterViewInit, Component, OnInit} from '@angular/core';
 
 
 @Component({
@@ -10,10 +10,35 @@
   export class NursePreferenceComponent {
     shifts: string[];
     timetable: string[];
+
+    buttonState: string;
+
     constructor(){
+      this.buttonState = "check_box_outline_blank";
       this.shifts = ["early", "late", "evening", "night"];
       this.timetable = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
       
+    }
+
+    changeButtonState() {
+      switch(this.buttonState){
+        case "check_box_outline_blank": {
+          this.buttonState = "check_box";
+          break;
+        }
+        case "check_box": {
+          this.buttonState = "indeterminate_check_box";
+          break;
+        }
+        case "indeterminate_check_box": {
+          this.buttonState = "check_box_outline_blank";
+          break;
+        }
+        default: {
+          this.buttonState = "check_box_outline_blank";
+          break;
+        }
+      }
     }
   }
 

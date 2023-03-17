@@ -18,7 +18,11 @@
     </tr>
     <tr *ngFor="let shift of shifts">
       <td *ngFor="let date of timetable" class="schedule-cells">
-        <mat-checkbox class="example-margin"></mat-checkbox>
+        <div>
+          <button (click)="changeButtonState()">
+            <mat-icon >{{this.buttonState}}</mat-icon>
+          </button>
+        </div>
       </td>
     </tr>
   </table>
