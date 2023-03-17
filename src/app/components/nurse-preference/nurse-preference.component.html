@@ -1,69 +1,31 @@
-<table>
-  <tr>
-    <th *ngFor="let date of timetable">
-      {{date}}
-    </th>
-  </tr>
-  <tr *ngFor="let shift of shifts">
-    <td *ngFor="let date of timetable" class="schedule-cells">
-      <div>
-        <button (click)="changeButtonState(shift, date)">
-          <mat-icon>{{getButtonState(shift, date)}}</mat-icon>
-        </button>
-      </div>
-    </td>
-  </tr>
-</table>
-
-
-<!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                    [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()"
-                    [aria-label]="checkboxLabel()">
-      </mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()"
-                    (change)="$event ? selection.toggle(row) : null"
-                    [checked]="selection.isSelected(row)"
-                    [aria-label]="checkboxLabel(row)">
-      </mat-checkbox>
-    </td>
-  </ng-container>
-
-
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef> No. </th>
-    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-  </ng-container>
-
-
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
-
-
-  <div *ngFor="let item of data">
-  <ng-container *ngFor="let i of item.weight" [matColumnDef]="weight">
-    <th mat-header-cell *matHeaderCellDef> Weight </th>
-    <td mat-cell *matCellDef="let element"> {{element.weight[i]}} </td>
-  </ng-container>
+<div>
+  <div>
+    <table>
+      <tr>
+        <th class="employee-name-header">Shift</th>
+      </tr>
+      <tr *ngFor="let shift of shifts">
+        <td class="employee-name-cell">{{shift}}</td>
+    </tr>
+    </table>
   </div>
 
+  <table>
+    <tr>
+      <th *ngFor="let date of timetable">
+        {{date}}
+      </th>
+    </tr>
+    <tr *ngFor="let shift of shifts">
+      <td *ngFor="let date of timetable" class="schedule-cells">
+        <div>
+          <button (click)="changeButtonState(shift, date)">
+            <mat-icon>{{getButtonState(shift, date)}}</mat-icon>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </table>
 
-  <ng-container matColumnDef="symbol">
-    <th mat-header-cell *matHeaderCellDef> Symbol </th>
-    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-      (click)="selection.toggle(row)">
-  </tr>
-</table> -->
+</div>
 
