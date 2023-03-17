@@ -1,4 +1,4 @@
-from src.handlers.schedule_haandler import ScheduleHandler
+from src.handlers.schedule_handler import ScheduleHandler
 from src.dao.abstract_dao import connect_to_fake_db
 from unittest import TestCase
 from constants import (

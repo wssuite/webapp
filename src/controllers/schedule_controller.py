@@ -8,7 +8,7 @@ from flask import request
 from src.exceptions.project_base_exception import ProjectBaseException
 from constants import user_token, ok_message
 from src.dao.abstract_dao import DBConnection
-from src.handlers.schedule_haandler import ScheduleHandler
+from src.handlers.schedule_handler import ScheduleHandler
 
 """
     To manually test these endpoints, in the project's root, please create
