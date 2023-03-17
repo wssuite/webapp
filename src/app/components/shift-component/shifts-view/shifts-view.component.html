@@ -1,5 +1,6 @@
 <div *ngIf="connectedUser; else elseBlock">
   <app-header></app-header>
+  <app-sidenav-shift></app-sidenav-shift>
 <div *ngIf="this.shifts.length>0">
     <mat-form-field>
       <mat-label>Filter</mat-label>
@@ -58,7 +59,6 @@
   </table>
   <mat-paginator [pageSizeOptions]="[5, 10, 15,20]" aria-label="Select page of users"></mat-paginator>
 </div></div>
-  <app-sidenav-shift></app-sidenav-shift>
   <button class="buttonCreate" mat-raised-button color="primary"  (click)="createNewShift()">Add new shift</button>
 </div>
 <ng-template #elseBlock>
