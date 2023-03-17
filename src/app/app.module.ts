@@ -81,6 +81,7 @@ import { SkillCreationDialogComponent } from './components/skill-creation-dialog
 import { SkillCreationComponent } from './components/skill-creation/skill-creation.component';
 import { NurseCreationComponent } from './components/nurse-component/nurse-creation/nurse-creation.component';
 import { NurseGroupCreationComponent } from './components/nurse-component/nurse-group-creation/nurse-group-creation.component';
+import { ButtonMultiselectComponent } from './components/button-multiselect/button-multiselect.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,7 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
     SkillCreationComponent,
     NurseCreationComponent,
     NurseGroupCreationComponent,
+    ButtonMultiselectComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,8 @@
+<button
+  mat-raised-button
+  *ngFor="let element of allPossibleElements"
+  (click)="toggleElement(element)"
+  [color]="isSelected(element) ? 'primary' : '' "
+>
+  {{ element }}
+</button>
