@@ -29,4 +29,13 @@ export class ButtonMultiselectComponent {
   isSelected(elementName: string) {
     return this.elements.includes(elementName);
   }
+
+  selectAll() {
+    this.elements = [...this.allPossibleElements];
+  }
+
+  deselectAll() {
+    this.elements = [];
+  }
+
 }
