@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NurseGroupInterface } from 'src/app/models/Nurse';
 import { NurseGroupService } from 'src/app/services/nurse/nurse-group.service';
@@ -8,6 +8,9 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { NurseGroupCreationDialogComponent } from '../nurse-group-creation-dialog/nurse-group-creation-dialog.component';
+import { MatPaginator } from "@angular/material/paginator";
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-nurse-group0view',
@@ -18,9 +21,16 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
   
   nurseGroups: string[];
   connectedUser!:boolean;
+  displayedColumns: string[]; 
+  dataSource: MatTableDataSource<NurseGroupInterface>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(public dialog: MatDialog, private nurseGroupService: NurseGroupService, private profileService: ProfileService) {
     this.nurseGroups = [];
+    this.displayedColumns =  ['name','nurses', 'contracts','actions'];
+    this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit(): void {
@@ -33,15 +43,25 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-      this.profileService.profileChanged.subscribe(()=>{
-        this.getNurseGroups();
-      })
+    this.profileService.profileChanged.subscribe(()=>{
+      this.getNurseGroups();
+    })
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   getNurseGroups(){
-    this.nurseGroupService.getAllNurseGroup().subscribe({
+    this.nurseGroupService.getAllNurseGroupName().subscribe({
       next: (name: string[])=> {
         this.nurseGroups = name;
+      },
+      error: (error: HttpErrorResponse)=> {
+        this.openErrorDialog(error.error);
+      }
+    })
+    this.nurseGroupService.getAllNurseGroup().subscribe({
+      next: (nurse: NurseGroupInterface[])=> {
+        this.dataSource.data = nurse;
       },
       error: (error: HttpErrorResponse)=> {
         this.openErrorDialog(error.error);
@@ -87,6 +107,7 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
             const index = this.nurseGroups.indexOf(groupName);
             if (index > -1) {
               this.nurseGroups.splice(index, 1);
+              this.getNurseGroups();
             }
           }
           else{
@@ -111,6 +132,16 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
       }
     })
   }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
 
 }
 
