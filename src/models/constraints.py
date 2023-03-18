@@ -1,4 +1,7 @@
-from src.models.stringify import Stringify
+from src.models.stringify import (
+    Stringify,
+    extract_string_from_simple_object_array,
+)
 from pykson import StringField, ObjectListField, ListField
 from constants import (
     constraint_name,
@@ -64,6 +67,9 @@ class ContractIntegerConstraint(ContractConstraint):
     def repr(self):
         return self.name
 
+    def to_string(self):
+        return f"{self.name},{self.weight},{self.value}\n"
+
 
 class ContractIntegerShiftConstraint(ContractIntegerConstraint):
     shift = StringField(serialized_name=shift_constraint)
@@ -76,6 +82,9 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
 
     def get_shift(self):
         return [self.shift]
+
+    def to_string(self):
+        return f"{self.name},{self.weight},{self.value},{self.shift}\n"
 
 
 class ContractMinMaxConstraint(ContractConstraint):
@@ -91,6 +100,12 @@ class ContractMinMaxConstraint(ContractConstraint):
     def repr(self):
         return self.name
 
+    def to_string(self):
+        return (
+            f"{self.name},{self.minValue},"
+            f"{self.minWeight},{self.maxValue},{self.maxWeight}\n"
+        )
+
 
 class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
     shift = StringField(serialized_name=shift_constraint)
@@ -104,6 +119,12 @@ class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
     def get_shift(self):
         return [self.shift]
 
+    def to_string(self):
+        return (
+            f"{self.name},{self.minValue},{self.minWeight},"
+            f"{self.maxValue},{self.maxWeight},{self.shift}\n"
+        )
+
 
 class ContractBooleanConstraint(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -114,6 +135,9 @@ class ContractBooleanConstraint(ContractConstraint):
 
     def repr(self):
         return self.name
+
+    def to_string(self):
+        return f"{self.name},{self.weight}\n"
 
 
 class ContractUnwantedPatterns(ContractConstraint):
@@ -143,6 +167,12 @@ class ContractUnwantedPatterns(ContractConstraint):
 
         return shifts
 
+    def to_string(self):
+        ret = f"{self.name},{self.weight},{len(self.pattern_elements)}"
+        for pattern in self.pattern_elements:
+            ret += f",{pattern.to_string()}"
+        return f"{ret}\n"
+
 
 class ContractAlternativeShift(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -158,6 +188,9 @@ class ContractAlternativeShift(ContractConstraint):
     def get_shift(self):
         return [self.shift]
 
+    def to_string(self):
+        return f"{self.name},{self.weight},{self.shift}\n"
+
 
 class ContractUnwantedSkills(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -172,3 +205,13 @@ class ContractUnwantedSkills(ContractConstraint):
 
     def get_skills(self):
         return self.unwanted_skills
+
+    def to_string(self):
+        skill_string = extract_string_from_simple_object_array(
+            self.unwanted_skills
+        )
+
+        return (
+            f"{self.name},{self.weight},"
+            f"{len(self.unwanted_skills)}{skill_string}\n"
+        )

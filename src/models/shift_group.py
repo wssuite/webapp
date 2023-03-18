@@ -7,6 +7,10 @@ from constants import (
     profile,
     shift_group_shift_types,
 )
+from src.models.stringify import (
+    Stringify,
+    extract_string_from_simple_object_array,
+)
 
 """
 The conceptual difference between a shift type and a shift
@@ -16,7 +20,7 @@ in its array
 """
 
 
-class ShiftGroup(Jsonify, DBDocument):
+class ShiftGroup(Jsonify, DBDocument, Stringify):
     name = StringField(serialized_name=shift_group_name)
     shifts = ListField(str, serialized_name=shift_group_shifts_list)
     profile = StringField(serialized_name=profile, default_value="")
@@ -24,3 +28,13 @@ class ShiftGroup(Jsonify, DBDocument):
 
     def db_json(self):
         return self.to_json()
+
+    def to_string(self):
+        shifts_string = extract_string_from_simple_object_array(self.shifts)
+        shift_types_string = extract_string_from_simple_object_array(
+            self.shift_types
+        )
+        return (
+            f"{self.name},{len(self.shifts)}{shifts_string},"
+            f"{len(self.shift_types)}{shift_types_string}\n"
+        )
