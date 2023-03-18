@@ -37,6 +37,14 @@ export class ButtonMultiselectComponent {
     return this.elements.includes(elementName);
   }
 
+  areAllSelected() {
+    return this.elements.length == this.allPossibleElements.length;
+  }
+
+  areNoneSelected() {
+    return this.elements.length == 0;
+  }
+
   isCustomSelectorActive(elements: string[]) {
     let areAllSelected = true;
 
