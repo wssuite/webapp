@@ -36,8 +36,10 @@ from constants import (
     profile_nurses,
     profile_nurse_groups,
     profile_contract_groups,
+    nurse_id,
 )
 from src.importers.importer import CSVImporter
+from src.models.profile import DetailedProfile
 from test_constants import (
     profile1,
     early_shift,
@@ -49,6 +51,14 @@ from test_constants import (
     nurse_skill,
     sociologist_skill,
     head_nurse_skill,
+    contract_group_with_contradiction,
+    contract_group_without_contradiction,
+    patrick_nurse,
+    nurse1,
+    nurse_with_contract_group,
+    problematic_nurse_group,
+    nurse_group_with_contract_groups,
+    not_problematic_group,
 )
 
 
@@ -199,8 +209,10 @@ unwanted shift,Early,hard,,,,,,,
 ,,,,,,,,,
 name,contract 2,,,,,,,,
 name,contract 3,,,,,,,,"""
-        profile_name = profile1
-        contracts = CSVImporter.read_contracts(profile_name, contracts_string)
+        profile_name_test = profile1
+        contracts = CSVImporter.read_contracts(
+            profile_name_test, contracts_string
+        )
         output_json = []
         for contract in contracts:
             output_json.append(contract.to_json())
@@ -253,6 +265,60 @@ Rest,,,,"""
 
         self.assertEqual(self.expected_shift_groups, json)
 
+    def test_contract_groups_creation(self):
+        profile_name_test = profile1
+        expected_groups = [
+            contract_group_without_contradiction,
+            contract_group_with_contradiction,
+        ]
+        string = """contract_group_without_contradiction,minConsContract,,,,
+contract_group_with_contradiction,General,FullTime_Not_Valid,,,"""
+        groups = CSVImporter.read_contract_groups(string, profile_name_test)
+        json = []
+        for cg in groups:
+            json.append(cg.to_json())
+        self.assertEqual(expected_groups, json)
+
+    def test_nurses_creation(self):
+        profile_name_test = profile1
+        p_copy = patrick_nurse.copy()
+        n1 = nurse1.copy()
+        expected_nurses = [p_copy, n1, nurse_with_contract_group]
+        string = """patrick,Patrick,FullTime_Valid,,,
+nurse1,nurse1,FullTime_Valid,minConsContract,,
+random,Random nurse,contract_group_without_contradiction,,,"""
+        nurses = CSVImporter.create_nurses(
+            string, profile_name_test, ["contract_group_without_contradiction"]
+        )
+        json = []
+        for n in nurses:
+            nu = n.to_json()
+            nu.pop(nurse_id)
+            json.append(nu)
+        self.assertEqual(expected_nurses, json)
+
+    def test_nurse_groups_creation(self):
+        profile_name_test = profile1
+        expected_nurses = [
+            not_problematic_group,
+            nurse_group_with_contract_groups,
+            problematic_nurse_group,
+        ]
+        string = """not problematic_group,patrick,,,,
+random_group,contract_group_without_contradiction,,,,
+problematic group,FullTime_Not_Valid,patrick,,,"""
+        nurses = CSVImporter.create_nurse_groups(
+            string,
+            profile_name_test,
+            ["FullTime_Not_Valid"],
+            ["contract_group_without_contradiction"],
+        )
+        json = []
+        for n in nurses:
+            nu = n.to_json()
+            json.append(nu)
+        self.assertEqual(expected_nurses, json)
+
     def test_skills_creation(self):
         profile_name_test = profile1
         string = """Nurse,HeadNurse
@@ -275,7 +341,7 @@ shift types,,,,,,,,,
 #shift type name ,Shifts,,,,,,,,
 Day,Early,,,,,,,,
 Night,Late,,,,,,,,
-shift groups
+shift groups,,,,,,
 Work,,,,
 Rest,,,,
 contracts,,,,,,,,,
@@ -312,4 +378,10 @@ Sociologist"""
         file_name = "import.txt"
         mockfs.create_file(file_name, contents=text)
         actual_profile = CSVImporter().read_file(file_name)
-        self.assertEqual(actual_profile, self.expected_profile)
+        actual_profile_obj = DetailedProfile().from_json(actual_profile)
+        self.assertEqual(3, len(actual_profile_obj.contracts))
+        self.assertEqual(profile1, actual_profile_obj.name)
+        self.assertEqual(2, len(actual_profile_obj.shifts))
+        self.assertEqual(2, len(actual_profile_obj.shift_types))
+        self.assertEqual(2, len(actual_profile_obj.shift_groups))
+        self.assertEqual(3, len(actual_profile_obj.skills))

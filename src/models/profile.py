@@ -60,18 +60,6 @@ class DetailedProfile(Jsonify):
     )
     skills = ObjectListField(Skill, serialized_name=profile_skills)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.name = ""
-        self.contracts = []
-        self.shifts = []
-        self.contract_groups = []
-        self.shift_types = []
-        self.shift_groups = []
-        self.nurses = []
-        self.nurse_groups = []
-        self.skills = []
-
     def to_json(self):
         contracts_json = DetailedProfile.__get_json_list__(self.contracts)
         shifts_json = DetailedProfile.__get_json_list__(self.shifts)

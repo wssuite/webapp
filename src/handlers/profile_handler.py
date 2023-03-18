@@ -12,6 +12,7 @@ from constants import (
     rest,
 )
 from src.models.shift_group import ShiftGroup
+import os
 
 
 class ProfileHandler(BaseHandler):
@@ -85,5 +86,8 @@ class ProfileHandler(BaseHandler):
     def import_file(self, token, file: FileStorage):
         self.verify_token(token)
         file.save(file.filename)
-        file_path = "../../{}".format(file.filename)
-        CSVImporter().read_file(file_name=file_path)
+        file_path = file.filename
+        profile_json = CSVImporter().read_file(file_name=file_path)
+        print(profile_json)
+        os.remove(file_path)
+        return profile_json

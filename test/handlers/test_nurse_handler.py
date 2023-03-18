@@ -96,7 +96,7 @@ class TestNurseHandler(TestCase):
             self.handler.delete(random_hex, "patrick", profile1)
 
     def test_delete_nurse_with_no_nurse_groups_raise_error(self):
-        self.handler.nurse_dao.insert_one(nurse1)
+        self.handler.nurse_dao.insert_one(nurse1.copy())
         actual_before = self.handler.get_all_usernames(random_hex, profile1)
         expected_before = ["patrick", "nurse1"]
         self.handler.delete(random_hex, "nurse1", profile1)

@@ -97,7 +97,6 @@ def import_file():
     try:
         token = request.args[user_token]
         file = request.files["file"]
-        profile_handler.import_file(token, file)
-        return Response(ok_message, 200)
+        return profile_handler.import_file(token, file)
     except ProjectBaseException as e:
         return Response(e.args, 500)
