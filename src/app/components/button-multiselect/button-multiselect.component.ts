@@ -49,9 +49,11 @@ export class ButtonMultiselectComponent {
   isCustomSelectorActive(elements: string[]) {
     let areAllSelected = true;
 
-    for(let element of elements)
-      if(!this.isSelected(element))
+    for(const element of elements) {
+      if(!this.isSelected(element)) {
         areAllSelected = false;
+      }
+    }
 
     return areAllSelected && elements.length == this.elements.length;
   }
@@ -80,7 +82,7 @@ export class ButtonMultiselectComponent {
   }
 
   private fillElements(newElements: string[]) {
-    for(let element of newElements) {
+    for(const element of newElements) {
       this.elements.push(element);
     }
     this.elementsChange.emit(this.elements);
