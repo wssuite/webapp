@@ -1,3 +1,23 @@
 .file-input {
     display: none;
 }
+
+mat-expansion-panel{
+    margin-top: 2vh;
+}
+
+.upload-btn{
+    margin-left: 2vw;
+}
+
+.import-file-section{
+    margin-left:2vw;
+    margin-right:2vw;
+    margin-top: 2vh;
+}
+
+.content-section{
+    margin-top: 2vh;
+    margin-left:2vw;
+    margin-right:2vw
+}

@@ -1,10 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit} from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MAIN_MENU } from 'src/app/constants/app-routes';
+import { Contract, ContractInterface } from 'src/app/models/Contract';
+import { NurseGroupInterface, NurseInterface } from 'src/app/models/Nurse';
 import { BaseProfile, DetailedProfile } from 'src/app/models/Profile';
+import { ShiftInterface, ShiftTypeInterface } from 'src/app/models/Shift';
+import { SkillInterface } from 'src/app/models/skill';
+import { ContractService } from 'src/app/services/contract/contract.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
@@ -20,22 +26,43 @@ export class ImportProfileComponent implements OnInit{
   validProfile: boolean;
   profileNames: string[]
   connectedUser: boolean;
+  profileNameCtrl: FormControl;
+  contracts: Contract[];
+  possibleShifts: string[];
+  possibleShiftTypes: string[];
+  contractShifts: string[];
+  skills: string[];
+  contractNames: string[];
+  nurses: string[];
+  nurseGroups: string[];
 
   constructor( private profileService: ProfileService,
-    private dialog: MatDialog, private router: Router){
+    private dialog: MatDialog, private router: Router,
+     private contractService: ContractService){
       this.fileName = '';
       this.validProfile = false;
       this.profileNames = [];
       this.connectedUser = false;
+      this.profileNameCtrl = new FormControl(null, Validators.required)
+      this.contracts = [];
+      this.possibleShifts = []
+      this.possibleShiftTypes = []
+      this.contractShifts = []
+      this.skills = []
+      this.contractNames = []
+      this.nurses = []
+      this.nurseGroups = []
     }
 
   ngOnInit(): void {
+    this.profileNames = []
     try{
       this.profileService.getAllProfiles().subscribe({
         next: (profiles: BaseProfile[])=>{
           profiles.forEach((p: BaseProfile)=>{
             this.profileNames.push(p.profile)
           })
+          console.log(this.profileNames)
         },
         error: (err: HttpErrorResponse)=>{
           this.openErrorDialog(err.error)
@@ -57,7 +84,8 @@ export class ImportProfileComponent implements OnInit{
       next: (data: DetailedProfile)=> {
         this.profile = data
         this.validProfile = true;
-        console.log(this.profile)
+        this.readArrays();  
+        console.log(data)
       },
       error: (err: HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
@@ -73,6 +101,38 @@ export class ImportProfileComponent implements OnInit{
   openErrorDialog(message: string){
     this.dialog.open(ErrorMessageDialogComponent, {
       data:{message: message}
+    })
+  }
+
+  nameExist(): boolean{
+    if(this.profileNames === undefined){
+      return false
+    }
+    return this.profileNames.includes(this.profile.profile)
+  }
+
+  readArrays(){
+    this.profile.contracts.forEach((c:ContractInterface)=>{
+      this.contracts.push(this.contractService.fromJson(c))
+      this.contractNames.push(c.name);
+    })
+    console.log(this.contracts)
+    this.profile.shifts.forEach((shift:ShiftInterface)=>{
+      this.possibleShifts.push(shift.name)
+      this.contractShifts.push(shift.name)
+    })
+    this.profile.shiftTypes.forEach((st: ShiftTypeInterface)=>{
+      this.possibleShiftTypes.push(st.name)
+      this.contractShifts.push(st.name)
+    })
+    this.profile.skills.forEach((skill: SkillInterface)=>{
+      this.skills.push(skill.name)
+    })
+    this.profile.nurses.forEach((nurse: NurseInterface)=>{
+      this.nurses.push(nurse.username)
+    })
+    this.profile.nurseGroups.forEach((group: NurseGroupInterface)=>{
+      this.nurseGroups.push(group.name)
     })
   }
 }

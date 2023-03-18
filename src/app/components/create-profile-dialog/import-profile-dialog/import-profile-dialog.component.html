@@ -1,10 +1,134 @@
-<input type="file" class="file-input"
-    (change)="onFileSelected($event)" #fileUpload>
+<div *ngIf="connectedUser; else elseBlock" class="import-container">
+    <div class="import-file-section">
+        <input type="file" class="file-input"
+            (change)="onFileSelected($event)" #fileUpload>
 
-<div class="file-upload">
-    {{fileName || "No file uploaded"}}
-    <button mat-mini-fab color="primary" class="upload-btn"
-      (click)="fileUpload.click()">
-        <mat-icon>attach_file</mat-icon>
-    </button>
+        <div class="file-upload">
+            {{fileName || "No file uploaded"}}
+            <button mat-mini-fab color="primary" class="upload-btn"
+            (click)="fileUpload.click()">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="content-section" *ngIf="validProfile">
+        <!-- show detailed profile data-->
+        <mat-form-field appearance="fill">
+            <mat-label>Profile name</mat-label>
+            <input matInput [(ngModel)]="profile.profile" 
+            [formControl]="profileNameCtrl"/>
+        </mat-form-field>
+        <mat-error *ngIf="nameExist()">
+            Profile name is already used
+        </mat-error>
+        <mat-accordion multi>
+            <mat-expansion-panel class="shifts-section">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><h1>Shifts</h1></mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-exansion-panel *ngFor="let shift of profile.shifts; let i=index" class="shift-element">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{shift.name}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-shift-creation [(shift)]="profile.shifts[i]" [shifts]="possibleShifts"></app-shift-creation>
+                    <button mat-raised-button color="accent">
+                        Remove
+                    </button>
+                </mat-exansion-panel>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="shift-types-section">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><h1>Shift types</h1></mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-expansion-panel *ngFor="let shiftType of profile.shiftTypes; let i=index" class="shift-type-element">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{shiftType.name}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-shift-type-creation [(shiftType)]="profile.shiftTypes[i]" [possibleShifts]="possibleShifts"></app-shift-type-creation>
+                    <button mat-raised-button color="accent">
+                        Remove
+                    </button>
+                </mat-expansion-panel>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="shift-groups-section">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><h1>Shift groups</h1></mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-expansion-panel *ngFor="let shiftGroup of profile.shiftGroups; let i=index" class="shift-group-element">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{shiftGroup.name}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-shift-group-creation [(shiftGroup)]="profile.shiftGroups[i]" [possibleShifts]="possibleShifts" [possibleShiftsType]="possibleShiftTypes"></app-shift-group-creation>
+                    <button mat-raised-button color="accent">
+                        Remove
+                    </button>
+                </mat-expansion-panel>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="contracts-section">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><h1>Contracts</h1></mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-expansion-panel *ngFor="let c of contracts; let i=index" class="contract-element">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{c.name}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-contract-creation [(contract)]="contracts[i]" [possibleShifts]="contractShifts" [possibleSkills]="skills" [contracts]="contractNames"></app-contract-creation>
+                    <button mat-raised-button color="accent">
+                        Remove
+                    </button>
+                </mat-expansion-panel>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="nurses-section">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><h1>Nurses</h1></mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-expansion-panel *ngFor="let n of profile.nurses; let i=index" class="nurse-element">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{n.username}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-nurse-creation [(nurse)]="profile.nurses[i]" [possibleContracts]="contractNames" [nurses]="nurses"></app-nurse-creation>
+                    <button mat-raised-button color="accent">
+                        Remove
+                    </button>
+                </mat-expansion-panel>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="nurse-groups-section">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><h1>Nurse groups</h1></mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-expansion-panel *ngFor="let n of profile.nurseGroups; let i=index" class="nurse-group-element">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{n.name}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-nurse-group-creation [(nurseGroup)]="profile.nurseGroups[i]" [possibleContracts]="contractNames" [possibleNurses]="nurses" [nurseGroups]="nurseGroups"></app-nurse-group-creation>
+                    <button mat-raised-button color="accent">
+                        Remove
+                    </button>
+                </mat-expansion-panel>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="skills-section">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><h1>Skills</h1></mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-expansion-panel *ngFor="let s of profile.skills; let i=index" class="skill-element">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{s.name}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-skill-creation [(skill)]="profile.skills[i]" [skills]="skills"></app-skill-creation>
+                    <button mat-raised-button color="accent">
+                        Remove
+                    </button>
+                </mat-expansion-panel>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
 </div>
+<ng-template #elseBlock>
+    <app-not-connected></app-not-connected>
+</ng-template>
