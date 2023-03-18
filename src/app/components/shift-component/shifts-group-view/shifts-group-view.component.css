@@ -27,3 +27,21 @@ mat-card {
     margin-bottom: 1vh;
 }
 
+::ng-deep #skill-button {
+    background-color: white;
+    color: black;
+}
+
+::ng-deep #shift-button {
+    background-color: white;
+    color: black;
+}
+::ng-deep #shift-type-button {
+    background-color: white;
+    color: black;
+}
+
+::ng-deep #shift-group-nav-bar #shift-group-button {
+    background-color: #3F51B5;
+    color: white;
+}

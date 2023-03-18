@@ -1,6 +1,6 @@
 <div *ngIf="connectedUser; else elseBlock">
   <app-header></app-header>
-  <app-sidenav-shift></app-sidenav-shift>
+  <app-sidenav-shift id="shift-group-nav-bar"></app-sidenav-shift>
   <div *ngIf="this.shiftsGroup.length>0">
     <mat-form-field align="end">
       <mat-label>Filter</mat-label>
