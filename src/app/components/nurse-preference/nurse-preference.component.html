@@ -1,10 +1,21 @@
 <div>
   <div>
+    <label> Nurse: </label>
+    <mat-form-field appearance="fill">
+        <mat-label> choose a nurse </mat-label>
+        <mat-select [(value)]="nurse" [formControl]="nurseSelectorFormControl" (selectionChange)="emitElement()" multiple>
+            <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
+                {{nurse}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
     <table>
       <tr>
         <th class="employee-name-header">Shift</th>
       </tr>
-      <tr *ngFor="let shift of shifts">
+      <tr *ngFor="let shift of  possibleShifts">
         <td class="employee-name-cell">{{shift}}</td>
     </tr>
     </table>
@@ -16,7 +27,7 @@
         {{date}}
       </th>
     </tr>
-    <tr *ngFor="let shift of shifts">
+    <tr *ngFor="let shift of  possibleShifts">
       <td *ngFor="let date of timetable" class="schedule-cells">
         <div>
           <button (click)="changeButtonState(shift, date)">
