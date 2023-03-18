@@ -82,6 +82,7 @@ import { SkillCreationComponent } from './components/skill-creation/skill-creati
 import { NurseCreationComponent } from './components/nurse-component/nurse-creation/nurse-creation.component';
 import { NurseGroupCreationComponent } from './components/nurse-component/nurse-group-creation/nurse-group-creation.component';
 import { MinMaxHopspitalDemandComponent } from './components/min-max-hopspital-demand/min-max-hopspital-demand.component';
+import { HopspitalDemandCreationComponent } from './components/hopspital-demand-creation/hopspital-demand-creation.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { MinMaxHopspitalDemandComponent } from './components/min-max-hopspital-d
     NurseCreationComponent,
     NurseGroupCreationComponent,
     MinMaxHopspitalDemandComponent,
+    HopspitalDemandCreationComponent,
   ],
   imports: [
     BrowserModule,
