@@ -8,7 +8,7 @@ import { MAIN_MENU } from 'src/app/constants/app-routes';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { NurseGroupInterface, NurseInterface } from 'src/app/models/Nurse';
 import { BaseProfile, DetailedProfile } from 'src/app/models/Profile';
-import { ShiftInterface, ShiftTypeInterface } from 'src/app/models/Shift';
+import { ShiftInterface, ShiftTypeInterface, ShiftGroupInterface } from 'src/app/models/Shift';
 import { SkillInterface } from 'src/app/models/skill';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
@@ -134,5 +134,98 @@ export class ImportProfileComponent implements OnInit{
     this.profile.nurseGroups.forEach((group: NurseGroupInterface)=>{
       this.nurseGroups.push(group.name)
     })
+  }
+
+  addShift(){
+    const newShift: ShiftInterface = {
+      startTime:'',
+      endTime:'',
+      name:'',
+      profile: this.profile.profile,
+    }
+    this.profile.shifts.push(newShift)
+  }
+
+  addShiftGroup(){
+    const newSG: ShiftGroupInterface ={
+      name:'',
+      shifts:[],
+      profile: this.profile.profile,
+      shiftTypes:[]
+    }
+    this.profile.shiftGroups.push(newSG)
+  }
+
+  addShiftType() {
+    const newST: ShiftTypeInterface = {
+      name:'',
+      shifts:[],
+      profile: this.profile.profile
+    }
+    this.profile.shiftTypes.push(newST)
+  }
+
+  addContract() {
+    this.contracts.push(new Contract())
+  }
+
+  addNurse() {
+    const newNurse: NurseInterface = {
+      name:'',
+      username:'',
+      contracts:[],
+      profile: this.profile.profile
+    }
+    this.profile.nurses.push(newNurse)
+  }
+
+  addNurseGroup() {
+    const ng: NurseGroupInterface = {
+      name:'',
+      contracts:[],
+      nurses:[],
+      profile: this.profile.profile
+    }
+    this.profile.nurseGroups.push(ng)
+  }
+
+  addSkill(){
+    const skill: SkillInterface = {
+      name:'',
+      profile: this.profile.profile
+    }
+    this.profile.skills.push(skill)
+  }
+
+  removeSkill(index: number){
+    this.profile.skills.splice(index, 1);
+  }
+
+  removeShift(index: number){
+    this.profile.shifts.splice(index,1);
+  }
+
+  removeShiftType(index: number){
+    this.profile.shiftTypes.splice(index,1);
+  }
+
+  removeShiftGroup(index:number) {
+    this.profile.shiftGroups.splice(index,1);
+  }
+
+  removeNurse(index: number) {
+    this.profile.nurses.splice(index,1);
+  }
+
+  removeNurseGroup(index: number) {
+    this.profile.nurseGroups.splice(index,1);
+  }
+
+  removeContract(index:number) {
+    this.contracts.splice(index,1);
+  }
+
+  cancel(){
+    this.router.navigate(["/" + MAIN_MENU])
   }
 }
