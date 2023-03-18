@@ -29,7 +29,7 @@
     </tr>
     <tr *ngFor="let shift of  possibleShifts">
       <td *ngFor="let date of timetable" class="schedule-cells">
-        <mat-checkbox (click)="updatePreferences(shift, date)" [checked]="preferences[shift][date].pref" [disabled]="!weight" matTooltip="{{showToolTip(shift, date)}}"></mat-checkbox>
+        <mat-checkbox (click)="updatePreferences(shift, date)" [checked]="preferences[shift][date].pref" [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" matTooltip="{{showToolTip(shift, date)}}"></mat-checkbox>
       </td>
     </tr>
   </table>

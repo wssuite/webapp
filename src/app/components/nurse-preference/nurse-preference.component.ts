@@ -1,6 +1,7 @@
 // import {SelectionModel} from '@angular/cdk/collections';
  import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
 
 
 @Component({
@@ -9,6 +10,7 @@ import { FormControl, Validators } from '@angular/forms';
     styleUrls: ['./nurse-preference.component.css']
   })
   export class NursePreferenceComponent {
+  regex = WEIGHT_ALLOWED_INTEGERS
   weight: string;
   possibleShifts: string[];
   timetable: string[];
