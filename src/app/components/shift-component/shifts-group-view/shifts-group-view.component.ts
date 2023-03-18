@@ -103,6 +103,7 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
             const index = this.shiftsGroup.indexOf(shiftGroupName);
             if (index > -1) {
               this.shiftsGroup.splice(index, 1);
+              this.getShiftsGroup();
             }
           }
           else{

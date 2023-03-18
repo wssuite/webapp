@@ -108,6 +108,7 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
             const index = this.shiftsType.indexOf(shiftTypeName);
             if (index > -1) {
               this.shiftsType.splice(index, 1);
+              this.getShiftsType();
             }
           }
           else{
