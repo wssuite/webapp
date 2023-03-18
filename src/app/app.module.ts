@@ -72,7 +72,7 @@ import { ShiftTypeCreationComponent } from './components/shift-component/shift-t
 import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
 import { CreateProfileDialogComponent } from './components/create-profile-dialog/create-profile-dialog.component';
 import { CreateEmptyProfileDialogComponent } from './components/create-profile-dialog/create-empty-profile-dialog/create-empty-profile-dialog.component';
-import { ImportProfileDialogComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
+import { ImportProfileComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
 import { DuplicateProfileComponent } from './components/create-profile-dialog/duplicate-profile/duplicate-profile.component';
 import { ShareProfileComponent } from './components/create-profile-dialog/share-profile/share-profile.component';
 import { ShiftGroupCreationComponent } from './components/shift-component/shift-group-creation/shift-group-creation.component';
@@ -130,7 +130,7 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
     UnwantedSkillsComponent,
     CreateProfileDialogComponent,
     CreateEmptyProfileDialogComponent,
-    ImportProfileDialogComponent,
+    ImportProfileComponent,
     DuplicateProfileComponent,
     ShareProfileComponent,
     ShiftGroupCreationComponent,

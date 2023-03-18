@@ -2,7 +2,7 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CREATE_EMPTY_PROFILE, DELETE_PROFILE, DUPLICATE_PROFILE, FETACH_PROFILES, FETCH_PROFILE_ACCESSORS, IMPORT_PROFILE, REVOKE_PROFILE_ACCESS, SHARE_PROFILE } from 'src/app/constants/api-constants';
-import { BaseProfile } from 'src/app/models/Profile';
+import { BaseProfile, DetailedProfile } from 'src/app/models/Profile';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 
@@ -114,11 +114,11 @@ export class ProfileService {
     }
   }
 
-  import(formData: FormData): Observable<HttpResponse<string>>{
+  import(formData: FormData): Observable<DetailedProfile>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<HttpResponse<string>>(IMPORT_PROFILE, formData, {
+      return this.httpClient.post<DetailedProfile>(IMPORT_PROFILE, formData, {
         params: queryParams,
       })
     }
