@@ -20,6 +20,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -174,6 +178,11 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
     MatMenuModule,
     MatPaginatorModule,
     MatAutocompleteModule,
+    MatTableModule,
+    MatSortModule,
+    MatDividerModule,
+    MatButtonToggleModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],
