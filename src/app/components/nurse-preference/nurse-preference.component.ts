@@ -52,6 +52,11 @@ import { FormControl, Validators } from '@angular/forms';
     console.log("nurse selected", this.selectedNurse);
   }
 
+  showToolTip(shift: string, date: string):string {
+    if(this.preferences[shift][date].pref) return "The weight is "+ this.preferences[shift][date].weight;
+    return ""
+  }
+
 
 }
 
