@@ -31,6 +31,7 @@ export class ButtonMultiselectComponent {
     }
 
     this.selectionChanged.emit(true);
+    this.elementsChange.emit(this.elements);
   }
 
   isSelected(elementName: string) {
@@ -58,16 +59,19 @@ export class ButtonMultiselectComponent {
   selectAll() {
     this.replaceElements(this.allPossibleElements);
     this.selectionChanged.emit(true);
+    this.elementsChange.emit(this.elements);
   }
 
   deselectAll() {
     this.resetElements();
     this.selectionChanged.emit(true);
+    this.elementsChange.emit(this.elements);
   }
 
   applyCustomSelection(elementsToSelect: string[]) {
     this.replaceElements(elementsToSelect);
     this.selectionChanged.emit(true);
+    this.elementsChange.emit(this.elements);
   }
 
   private replaceElements(newElements: string[]) {
@@ -79,10 +83,12 @@ export class ButtonMultiselectComponent {
     for(let element of newElements) {
       this.elements.push(element);
     }
+    this.elementsChange.emit(this.elements);
   }
 
   private resetElements() {
     this.elements.splice(0, this.elements.length);
+    this.elementsChange.emit(this.elements);
   }
 
 }
