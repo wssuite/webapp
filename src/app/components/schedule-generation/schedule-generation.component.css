@@ -12,10 +12,7 @@ div {
 .addNurseButton, .removeNurseButton{
     margin-left: 5vw;
 }
-.chips {
-    width:fit-content;
-    margin: 5px;
-}
+
 .generateScheduleButton{
     position: absolute;
     height:75px;
