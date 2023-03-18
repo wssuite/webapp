@@ -63,6 +63,7 @@ import { NurseGroupViewComponent } from './components/nurse-component/nurse-grou
 import { MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 
+
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
 import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
 import { ContractsViewComponent } from './components/contracts-view/contracts-view.component';
@@ -184,7 +185,6 @@ import { ButtonMultiselectComponent } from './components/button-multiselect/butt
     MatSortModule,
     MatDividerModule,
     MatButtonToggleModule,
-
   ],
   providers: [],
   bootstrap: [AppComponent],

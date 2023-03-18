@@ -17,3 +17,8 @@ export interface ShiftGroupInterface{
   profile: string;
   shiftTypes: string[];
 }
+
+export interface viewShiftInterface{
+  name:string;
+  description: string;
+}
