@@ -183,3 +183,25 @@ unwanted shift,Early,hard,,,,,,,
 ,,,,,,,,,"""
         contract = Contract().read_contract(profile1, string)
         self.assertEqual(self.contract_dict, contract.to_json())
+
+    def test_contract_creation_from_string_with_unknown_constraints(self):
+        string = """name,FullTime,,,,,,,,
+        #constraint name ,,,,,,,,,
+        #,shift,value,weight,,,,,,
+        some random constraint,,,,,
+        number of free days after shift,Early,1.0,hard
+,,,,,,"""
+        expected = {
+            contract_name: "FullTime",
+            contract_constraints: [
+                {
+                    constraint_name: number_of_free_days_after_shift,
+                    shift_constraint: "Early",
+                    integer_constraint_value: "1.0",
+                    constraint_weight: "hard",
+                }
+            ],
+            profile: profile1,
+        }
+        contract = Contract().read_contract(profile1, string)
+        self.assertEqual(expected, contract.to_json())

@@ -124,8 +124,11 @@ class Contract(Jsonify, DBDocument, StringReader):
         self.constraints = []
         for i in range(1, len(lines)):
             if not skip_line(lines[i]):
-                constraint = self.read_line(lines[i])
-                self.constraints.append(constraint)
+                try:
+                    constraint = self.read_line(lines[i])
+                    self.constraints.append(constraint)
+                except KeyError:
+                    continue
 
         return self
 
