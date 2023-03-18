@@ -26,7 +26,9 @@ from constants import (
     pattern_element_day,
     unwanted_skills,
     contract_skills,
+    profile,
 )
+from test_constants import profile1
 
 
 class TestContract(TestCase):
@@ -106,6 +108,7 @@ class TestContract(TestCase):
                     constraint_weight: "hard",
                 },
             ],
+            profile: profile1,
         }
 
     def tearDown(self) -> None:
@@ -151,6 +154,57 @@ class TestContract(TestCase):
         copy_contract = contract.copy()
         self.assertNotEqual(copy_contract, contract)
         self.assertEqual(copy_contract.db_json(), contract.db_json())
+
+    def test_contract_creation_from_string(self):
+        string = """name,FullTime,,,,,,,,
+#constraint name ,,,,,,,,,
+#,shift,value,weight,,,,,,
+number of free days after shift,Early,1.0,hard
+,,,,,,
+#,skills,weight,,,,,,,
+unwanted skills,Nurse,hard,,,,,,,
+#,value,weight,,,,,,,
+total number of working weekends in four weeks,1.0,5.0,5.0,hard,,,,,,,
+#,min value,min weight,max value,max weight
+,,,,,
+minimum and maximum number of assignments in four weeks,1.0,5.0,5.0,hard,,,,,
+#,min value,min weight,max value,max weight,,,,,
+minimum and maximum of consecutive working weekends,1.0,5.0,5.0,hard,,,,,
+#,shift,min value,min weight,max value,max weight,,,,
+minimum and maximum of consecutive shift type,Early,1.0,5.0,5.0,hard,,,,
+#,weight,,,,,,,,
+identical shift types during weekend,hard,,,,,,,,
+#,weight,,,,,,,,
+complete weekends,hard,,,,,,,,
+#,days,,,,,,,shift,weight
+Unwanted patterns,Monday|Wednesday|Friday,Late|Early|MidDay,Tuesday,Early,hard
+#,shift,weight,,,,,,,
+unwanted shift,Early,hard,,,,,,,
+,,,,,,,,,"""
+        contract = Contract().read_contract(profile1, string)
+        self.assertEqual(self.contract_dict, contract.to_json())
+
+    def test_contract_creation_from_string_with_unknown_constraints(self):
+        string = """name,FullTime,,,,,,,,
+        #constraint name ,,,,,,,,,
+        #,shift,value,weight,,,,,,
+        some random constraint,,,,,
+        number of free days after shift,Early,1.0,hard
+,,,,,,"""
+        expected = {
+            contract_name: "FullTime",
+            contract_constraints: [
+                {
+                    constraint_name: number_of_free_days_after_shift,
+                    shift_constraint: "Early",
+                    integer_constraint_value: "1.0",
+                    constraint_weight: "hard",
+                }
+            ],
+            profile: profile1,
+        }
+        contract = Contract().read_contract(profile1, string)
+        self.assertEqual(expected, contract.to_json())
 
     def test_contract_to_string(self):
         expected = """{{

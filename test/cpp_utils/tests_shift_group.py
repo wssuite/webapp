@@ -24,3 +24,12 @@ class TestShiftGroups(TestCase):
     def test_shift_group_creation_from_json_keeps_same_json_structure(self):
         shift_group = ShiftGroup().from_json(self.shift_group_dict)
         self.assertEqual(self.shift_group_dict, shift_group.db_json())
+
+    def test_shift_group_creation_from_string_parse_structure(self):
+        shift_types = ["Day"]
+        profile_name = profile1
+        shift_group_string = "Work,Early,Midnight,Day"
+        shift_group = ShiftGroup().read_shift_group(
+            shift_group_string, profile_name, shift_types
+        )
+        self.assertEqual(self.shift_group_dict, shift_group.to_json())
