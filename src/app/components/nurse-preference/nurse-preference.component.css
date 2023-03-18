@@ -1,0 +1,37 @@
+.shift-name-table {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+.timetable-table {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.shift-name-table {
+  width: 100px;
+}
+
+.shift-name-cell {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-color: rgb(235, 234, 234);
+}
+
+.timetable-table {
+  width: calc(100% - 120px);
+}
+
+.schedule-cells{
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.checkbox-row {
+    background-color: rgb(235, 234, 234);
+}
+
+.checkbox {
+    border-width: 0px;
+    background-color: rgb(235, 234, 234);
+}
