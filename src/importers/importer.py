@@ -69,7 +69,7 @@ class CSVImporter(BaseImporter):
                     if current_section != "":
                         sections_map[current_section] = string
                     current_section = tokens[0].lower()
-                    string = ""
+                    string = sections_map[current_section]
                 else:
                     string += lines[j]
             j += 1

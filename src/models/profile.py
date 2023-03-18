@@ -87,6 +87,15 @@ class DetailedProfile(Jsonify):
             profile_skills: skills_json,
         }
 
+    def from_json(self, data):
+        detailed = super(DetailedProfile, self).from_json(data)
+        contracts = data[profile_contracts]
+        detailed.contracts = []
+        for contract in contracts:
+            contract_obj = Contract().from_json(contract)
+            detailed.contracts.append(contract_obj)
+        return detailed
+
     @staticmethod
     def __get_json_list__(objects):
         ret = []

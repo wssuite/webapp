@@ -100,3 +100,14 @@ def import_file():
         return profile_handler.import_file(token, file)
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/saveImport", methods=["POST"])
+def save_import_profile():
+    try:
+        token = request.args[user_token]
+        json = request.json
+        profile_handler.save_import(token, json)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)

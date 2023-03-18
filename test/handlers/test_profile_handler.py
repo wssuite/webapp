@@ -11,8 +11,42 @@ from test_constants import (
     profile_access,
     user1_name,
     admin,
+    nurse_skill,
+    head_nurse_skill,
+    sociologist_skill,
+    early_shift,
+    late_shift,
+    day_shift_type,
+    night_shift_type,
+    rest_shift_group,
+    work_shift_group,
+    day_shift_group,
+    night_shift_group,
+    unwanted_skills_contract,
+    general_contract_dict,
+    min_cons_contract,
+    full_time_valid_contract_with_general,
+    contract_group_without_contradiction,
+    nurse1,
+    nurse_group1,
 )
-from constants import user_token
+from constants import (
+    user_token,
+    profile_name,
+    profile_nurse_groups,
+    profile_nurses,
+    profile_contract_groups,
+    profile_contracts,
+    profile_shift_groups,
+    profile_shift_types,
+    profile_shifts,
+    profile_skills,
+    work,
+    shift_group_name,
+    profile,
+    shift_group_shifts_list,
+    shift_group_shift_types,
+)
 from src.models.user import User
 from src.exceptions.user_exceptions import ProfileAccessException
 
@@ -96,3 +130,57 @@ class TestProfileHandler(TestCase):
         actual = self.handler.get_accessors_list(random_hex, profile1)
         expected = [admin]
         self.assertEqual(expected, actual)
+
+    def test_save_import(self):
+        detailed_profile = {
+            profile_name: profile1,
+            profile_skills: [nurse_skill, head_nurse_skill, sociologist_skill],
+            profile_shifts: [early_shift, late_shift],
+            profile_shift_types: [day_shift_type, night_shift_type],
+            profile_shift_groups: [
+                work_shift_group,
+                rest_shift_group,
+                day_shift_group,
+                night_shift_group,
+            ],
+            profile_contracts: [
+                unwanted_skills_contract,
+                min_cons_contract,
+                general_contract_dict,
+                full_time_valid_contract_with_general,
+            ],
+            profile_contract_groups: [contract_group_without_contradiction],
+            profile_nurses: [nurse1],
+            profile_nurse_groups: [nurse_group1],
+        }
+        self.handler.save_import(random_hex, detailed_profile)
+        profile_exist = self.handler.profile_dao.exist(profile1)
+        actual_shifts = self.handler.shift_dao.fetch_all(profile1)
+        actual_skills = self.handler.skill_dao.get_all(profile1)
+        actual_shift_types = self.handler.shift_type_dao.fetch_all(profile1)
+        actual_shift_groups = self.handler.shift_group_dao.fetch_all(profile1)
+        actual_contracts = self.handler.contract_dao.fetch_all(profile1)
+        actual_contract_groups = self.handler.contract_group_dao.fetch_all(
+            profile1
+        )
+        actual_nurses = self.handler.nurse_dao.fetch_all(profile1)
+        actual_nurse_groups = self.handler.nurse_group_dao.fetch_all(profile1)
+        actual_work_shift_group = self.handler.shift_group_dao.find_by_name(
+            work, profile1
+        )
+        expected_work_shift_group = {
+            shift_group_name: work,
+            shift_group_shifts_list: ["Early", "Late"],
+            profile: profile1,
+            shift_group_shift_types: ["Day", "Night"],
+        }
+        self.assertTrue(profile_exist)
+        self.assertEqual(2, len(actual_shifts))
+        self.assertEqual(3, len(actual_skills))
+        self.assertEqual(2, len(actual_shift_types))
+        self.assertEqual(4, len(actual_shift_groups))
+        self.assertEqual(4, len(actual_contracts))
+        self.assertEqual(1, len(actual_contract_groups))
+        self.assertEqual(1, len(actual_nurses))
+        self.assertEqual(1, len(actual_nurse_groups))
+        self.assertEqual(expected_work_shift_group, actual_work_shift_group)

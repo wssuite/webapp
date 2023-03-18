@@ -1,8 +1,7 @@
 from werkzeug.datastructures import FileStorage
-
 from src.handlers.base_handler import BaseHandler
 from src.importers.importer import CSVImporter
-from src.models.profile import Profile
+from src.models.profile import Profile, DetailedProfile
 from constants import (
     user_username,
     work_shift_group,
@@ -88,6 +87,40 @@ class ProfileHandler(BaseHandler):
         file.save(file.filename)
         file_path = file.filename
         profile_json = CSVImporter().read_file(file_name=file_path)
-        print(profile_json)
         os.remove(file_path)
         return profile_json
+
+    def save_import(self, token, json):
+        d_p = DetailedProfile().from_json(json)
+        self.create_profile(token, d_p.name)
+        for skill in d_p.skills:
+            self.skill_dao.insert_one_if_not_exist(skill.db_json())
+        for shift in d_p.shifts:
+            self.shift_dao.insert_one_if_not_exist(shift.db_json())
+            self.shift_group_dao.add_shift_to_shift_group_list(
+                work, shift.name, d_p.name
+            )
+        for shift_type in d_p.shift_types:
+            self.shift_type_dao.insert_one_if_not_exist(shift_type.db_json())
+            self.shift_group_dao.add_shift_type_to_shift_group_list(
+                work, shift_type.name, d_p.name
+            )
+
+        for shift_group in d_p.shift_groups:
+            if shift_group.name != work and shift_group.name != rest:
+                self.shift_group_dao.insert_one_if_not_exist(
+                    shift_group.db_json()
+                )
+
+        for contract in d_p.contracts:
+            self.contract_dao.insert_one(contract.db_json())
+
+        for contract_group in d_p.contract_groups:
+            self.contract_group_dao.insert_if_not_exist(
+                contract_group.db_json()
+            )
+
+        for nurse in d_p.nurses:
+            self.nurse_dao.insert_one(nurse.db_json())
+        for nurse_group in d_p.nurse_groups:
+            self.nurse_group_dao.insert_one_if_not_exist(nurse_group.db_json())
