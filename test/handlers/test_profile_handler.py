@@ -203,3 +203,36 @@ class TestProfileHandler(TestCase):
         self.assertEqual(1, len(actual_nurses))
         self.assertEqual(1, len(actual_nurse_groups))
         self.assertEqual(expected_work_shift_group, actual_work_shift_group)
+
+    def test_export_profile(self):
+        detailed_profile = {
+            profile_name: profile1,
+            profile_skills: [nurse_skill, head_nurse_skill, sociologist_skill],
+            profile_shifts: [early_shift, late_shift],
+            profile_shift_types: [day_shift_type, night_shift_type],
+            profile_shift_groups: [
+                work_shift_group,
+                rest_shift_group,
+                day_shift_group,
+                night_shift_group,
+            ],
+            profile_contracts: [
+                unwanted_skills_contract,
+                min_cons_contract,
+                general_contract_dict,
+                full_time_valid_contract_with_general,
+            ],
+            profile_contract_groups: [contract_group_without_contradiction],
+            profile_nurses: [nurse1],
+            profile_nurse_groups: [nurse_group1],
+        }
+        self.handler.save_import(random_hex, detailed_profile)
+        actual_profile = self.handler.export_profile(random_hex, profile1)
+        self.assertEqual(2, len(actual_profile[profile_shifts]))
+        self.assertEqual(3, len(actual_profile[profile_skills]))
+        self.assertEqual(2, len(actual_profile[profile_shift_types]))
+        self.assertEqual(4, len(actual_profile[profile_shift_groups]))
+        self.assertEqual(4, len(actual_profile[profile_contracts]))
+        self.assertEqual(1, len(actual_profile[profile_contract_groups]))
+        self.assertEqual(1, len(actual_profile[profile_nurses]))
+        self.assertEqual(1, len(actual_profile[profile_nurse_groups]))

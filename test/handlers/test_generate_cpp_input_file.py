@@ -161,8 +161,10 @@ class TestGenerateCppInputFile(TestCase):
 
     def test_generate_schedule(self):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
-        full_path = (f"{base_directory}/{dataset_directory}/"
-                     f"{profile1}/2023-06-01_2023-06-02")
+        full_path = (
+            f"{base_directory}/{dataset_directory}/"
+            f"{profile1}/2023-06-01_2023-06-02"
+        )
         folder_exist = self.fs.exists(full_path)
         self.assertTrue(folder_exist)
         versions = self.fs.listdir(full_path)

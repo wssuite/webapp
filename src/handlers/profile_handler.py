@@ -9,6 +9,15 @@ from constants import (
     rest_shift_group,
     work,
     rest,
+    profile_name,
+    profile_contracts,
+    profile_skills,
+    profile_contract_groups,
+    profile_shifts,
+    profile_shift_types,
+    profile_shift_groups,
+    profile_nurses,
+    profile_nurse_groups,
 )
 from src.models.shift_group import ShiftGroup
 from src.utils.file_system_manager import FileSystemManager
@@ -132,3 +141,25 @@ class ProfileHandler(BaseHandler):
             self.nurse_dao.insert_one(nurse.db_json())
         for nurse_group in d_p.nurse_groups:
             self.nurse_group_dao.insert_one_if_not_exist(nurse_group.db_json())
+
+    def export_profile(self, token, profile_to_export):
+        self.verify_token(token)
+        skills = self.skill_dao.get_all(profile_to_export)
+        contracts = self.contract_dao.fetch_all(profile_to_export)
+        contract_groups = self.contract_group_dao.fetch_all(profile_to_export)
+        shifts = self.shift_dao.fetch_all(profile_to_export)
+        shift_types = self.shift_type_dao.fetch_all(profile_to_export)
+        shift_groups = self.shift_group_dao.fetch_all(profile_to_export)
+        nurses = self.nurse_dao.fetch_all(profile_to_export)
+        nurse_groups = self.nurse_group_dao.fetch_all(profile_to_export)
+        return {
+            profile_name: profile_to_export,
+            profile_skills: skills,
+            profile_shifts: shifts,
+            profile_shift_types: shift_types,
+            profile_shift_groups: shift_groups,
+            profile_contracts: contracts,
+            profile_contract_groups: contract_groups,
+            profile_nurses: nurses,
+            profile_nurse_groups: nurse_groups,
+        }

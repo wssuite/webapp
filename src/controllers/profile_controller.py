@@ -111,3 +111,13 @@ def save_import_profile():
         return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/export", methods=["GET"])
+def export_profile():
+    try:
+        token = request.args[user_token]
+        profile_name = request.args[profile]
+        return profile_handler.export_profile(token, profile_name)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
