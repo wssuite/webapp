@@ -13,6 +13,7 @@ export class PatternElementComponent implements OnInit{
 
   possibleDays: string[]
   customSelectorDays: CustomSelector[];
+  customSelectorShifts: CustomSelector[];
 
 
   @Input() possibleShifts!: string[]
@@ -30,7 +31,9 @@ export class PatternElementComponent implements OnInit{
     this.customSelectorDays = [
       new CustomSelector("Weekdays", DateUtils.weekdays),
       new CustomSelector("Weekend", DateUtils.weekendDays),
-    ]
+    ];
+
+    this.customSelectorShifts = [];
 
     this.elementChange = new EventEmitter<PatternElement>();
     this.errorState = new EventEmitter<boolean>();

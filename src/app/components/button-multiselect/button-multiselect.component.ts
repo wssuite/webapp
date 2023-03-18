@@ -37,19 +37,44 @@ export class ButtonMultiselectComponent {
     return this.elements.includes(elementName);
   }
 
+  isCustomSelectorActive(elements: string[]) {
+    let areAllSelected = true;
+
+    for(let element of elements)
+      if(!this.isSelected(element))
+        areAllSelected = false;
+
+    return areAllSelected && elements.length == this.elements.length;
+  }
+
   selectAll() {
-    this.elements = [...this.allPossibleElements];
+    this.replaceElements(this.allPossibleElements);
     this.selectionChanged.emit(true);
   }
 
   deselectAll() {
-    this.elements = [];
+    this.resetElements();
     this.selectionChanged.emit(true);
   }
 
   applyCustomSelection(elementsToSelect: string[]) {
-    this.elements = [...elementsToSelect];
+    this.replaceElements(elementsToSelect);
     this.selectionChanged.emit(true);
+  }
+
+  private replaceElements(newElements: string[]) {
+    this.resetElements();
+    this.fillElements(newElements);
+  }
+
+  private fillElements(newElements: string[]) {
+    for(let element of newElements) {
+      this.elements.push(element);
+    }
+  }
+
+  private resetElements() {
+    this.elements.splice(0, this.elements.length);
   }
 
 }

@@ -1,6 +1,13 @@
 <button mat-raised-button (click)="selectAll()">All</button>
 <button mat-raised-button (click)="deselectAll()">None</button>
-<button mat-raised-button *ngFor="let customSelector of customSelectors" (click)="applyCustomSelection(customSelector.elementsToSelect)">{{customSelector.name}}</button>
+<button
+mat-raised-button
+  *ngFor="let customSelector of customSelectors"
+  (click)="applyCustomSelection(customSelector.elementsToSelect)"
+  [color]="isCustomSelectorActive(customSelector.elementsToSelect) ? 'primary' : '' "
+>
+  {{customSelector.name}}
+</button>
 <hr>
 <button
   mat-raised-button
