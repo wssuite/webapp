@@ -2,8 +2,8 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShiftInterface } from 'src/app/models/Shift';
-import { APIService } from 'src/app/services/api-service/api.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { ShiftService } from 'src/app/services/shift/shift.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
@@ -20,7 +20,7 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
   connectedUser!:boolean;
   
 
-  constructor(public dialog: MatDialog, private apiService: APIService, private profileService: ProfileService) {
+  constructor(public dialog: MatDialog, private apiService: ShiftService, private profileService: ProfileService) {
     this.shifts = [];
   }
 

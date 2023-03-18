@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountCreationDialogComponent } from './account-creation-dialog/account-creation-dialog.component';
-import { APIService } from 'src/app/services/api-service/api.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
+import { AccountService } from 'src/app/services/account/account.service';
 
 @Component({
   selector: 'app-account-creation',
@@ -14,7 +14,7 @@ export class AccountCreationComponent implements OnInit{
   accounts: string[]
   connectedUser!:boolean;
   
-  constructor(public dialog: MatDialog, private api: APIService) {
+  constructor(public dialog: MatDialog, private api: AccountService) {
     this.accounts = []
   }
   ngOnInit(): void {

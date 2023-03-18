@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SkillInterface } from 'src/app/models/skill';
-import { APIService } from 'src/app/services/api-service/api.service';
+import { SkillService } from 'src/app/services/shift/skill.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 
@@ -16,46 +16,46 @@ export class SkillCreationDialogComponent {
   skillErrorState: boolean;
   constructor(public dialogRef: MatDialogRef<SkillCreationDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: {skill: SkillInterface, skills: string[]},  
-    private api: APIService,
+    private api: SkillService,
     private dialog: MatDialog,                                       
     ) { 
       this.errorState = new EventEmitter();
       this.skillErrorState = true;
-}
+  }
 
-add() {
-  try
-  { 
-    console.log(this.data.skill);
-    this.api.addSkill(this.data.skill).subscribe({
-      error: (err: HttpErrorResponse)=> {
-        if(err.status === HttpStatusCode.Ok) {
-          this.close();
-        }
-        else{
-          this.openErrorDialog(err.error)
-        }
-      } 
+  add() {
+    try
+    { 
+      console.log(this.data.skill);
+      this.api.addSkill(this.data.skill).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }
+          else{
+            this.openErrorDialog(err.error)
+          }
+        } 
+      })
+  }
+  catch(e){
+    this.openErrorDialog((e as Exception).getMessage())
+  }
+  }
+
+  openErrorDialog(message: string) {
+    this.dialog.open(ErrorMessageDialogComponent, {
+      data: {message: message},
     })
-}
-catch(e){
-  this.openErrorDialog((e as Exception).getMessage())
-}
-}
+  }
 
-openErrorDialog(message: string) {
-  this.dialog.open(ErrorMessageDialogComponent, {
-    data: {message: message},
-  })
-}
+  close(){
+    this.dialogRef.close();
+  }
 
-close(){
-  this.dialogRef.close();
-}
-
-updateSkillErrorState(e: boolean) {
-  console.log("update")
-  this.skillErrorState = e;
-}
+  updateSkillErrorState(e: boolean) {
+    console.log("update")
+    this.skillErrorState = e;
+  }
 
 }

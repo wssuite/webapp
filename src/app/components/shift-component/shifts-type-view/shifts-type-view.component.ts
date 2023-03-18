@@ -2,8 +2,8 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
-import { APIService } from 'src/app/services/api-service/api.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { ShiftTypeService } from 'src/app/services/shift/shift-type.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
@@ -21,7 +21,8 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
   connectedUser!:boolean;
 
 
-  constructor(private dialog: MatDialog, private apiService: APIService, private profileService: ProfileService) {
+  constructor(private dialog: MatDialog, private shiftTypeService: ShiftTypeService,
+     private profileService: ProfileService) {
     this.shiftsType = [];
 
   }
@@ -41,7 +42,7 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
   }
 
   getShiftsType(){
-    this.apiService.getShiftTypeNames().subscribe({
+    this.shiftTypeService.getShiftTypeNames().subscribe({
       next: (shiftsType: string[])=> {
       this.shiftsType = shiftsType;
       },
@@ -80,7 +81,7 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
     try
     { 
       //call api service to push the contract
-      this.apiService.removeShiftType(shiftTypeName).subscribe({
+      this.shiftTypeService.removeShiftType(shiftTypeName).subscribe({
         error: (err: HttpErrorResponse)=> {
           if(err.status === HttpStatusCode.Ok) {
             const index = this.shiftsType.indexOf(shiftTypeName);
@@ -101,7 +102,7 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
   }
 
   modifyShiftType(shiftTypeName: string){
-    this.apiService.getShiftTypeByName(shiftTypeName).subscribe({
+    this.shiftTypeService.getShiftTypeByName(shiftTypeName).subscribe({
       next:(shiftType: ShiftTypeInterface) =>{
         this.openShiftTypeCreationDialog(shiftType);
       },

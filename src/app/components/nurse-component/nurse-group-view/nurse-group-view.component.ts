@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NurseGroupInterface } from 'src/app/models/Nurse';
-import { APIService } from 'src/app/services/api-service/api.service';
+import { NurseGroupService } from 'src/app/services/nurse/nurse-group.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
@@ -19,7 +19,7 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
   nurseGroups: string[];
   connectedUser!:boolean;
 
-  constructor(public dialog: MatDialog, private apiService: APIService, private profileService: ProfileService) {
+  constructor(public dialog: MatDialog, private nurseGroupService: NurseGroupService, private profileService: ProfileService) {
     this.nurseGroups = [];
   }
 
@@ -39,7 +39,7 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
   }
 
   getNurseGroups(){
-    this.apiService.getAllNurseGroup().subscribe({
+    this.nurseGroupService.getAllNurseGroup().subscribe({
       next: (name: string[])=> {
         this.nurseGroups = name;
       },
@@ -81,7 +81,7 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
     try
     { 
       //call api service to push the contract
-      this.apiService.removeNurseGroup(groupName).subscribe({
+      this.nurseGroupService.removeNurseGroup(groupName).subscribe({
         error: (err: HttpErrorResponse)=> {
           if(err.status === HttpStatusCode.Ok) {
             const index = this.nurseGroups.indexOf(groupName);
@@ -102,7 +102,7 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
   }
 
   modifyNurseGroup(groupName: string){
-    this.apiService.getNurseGroupByName(groupName).subscribe({
+    this.nurseGroupService.getNurseGroupByName(groupName).subscribe({
       next:(nurseGroup: NurseGroupInterface) =>{
         this.openNurseGroupCreationDialog(nurseGroup);
       },
