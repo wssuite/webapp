@@ -11,6 +11,7 @@ import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
   })
   export class NursePreferenceComponent {
   regex = WEIGHT_ALLOWED_INTEGERS
+
   weight: string;
   possibleShifts: string[];
   timetable: string[];
@@ -41,9 +42,10 @@ import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
       this.preferences[shift][date] = { pref: false, weight: '' };
     }
     let pref = this.preferences[shift][date].pref;
-    const weight =  this.weight;
+    let weight =  this.weight;
     if(this.weight ===  this.preferences[shift][date].weight){
-      pref = false;  
+      pref = false;
+      weight = "";
       console.log("value pref", pref)
     } else {
       pref = true;
@@ -57,6 +59,13 @@ import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
   showToolTip(shift: string, date: string):string {
     if(this.preferences[shift][date].pref) return "The weight is "+ this.preferences[shift][date].weight;
     return ""
+  }
+
+  getButtonState(shift: string, date: string): string {
+    if(this.preferences[shift][date].pref === true) {
+      return "indeterminate_check_box"
+    }
+    return "check_box_outline_blank";
   }
 
 
