@@ -1,6 +1,7 @@
 import json
 from typing import Type
 
+from exceptions.project_base_exception import ProjectBaseException
 from src.handlers.base_handler import BaseHandler
 from src.models.hospital_demand import ScheduleDemandDetailed, ScheduleDemand
 from src.models.nurse import Nurse
@@ -47,6 +48,20 @@ class ScheduleHandler(BaseHandler):
 
         with open(f"{full_path}/input.txt", "w") as f:
             f.write(detailed_demand.to_string())
+
+        return str(next_version)
+
+    def get_input_problem_path(self, token, profile_name, start, end, version):
+        self.verify_profile_accessors_access(token, profile_name)
+        fs = FileSystemManager()
+        path = (
+            f"{fs.get_dataset_directory_path()}/{profile_name}/"
+            f"{start}_{end}/{version}/input.txt"
+        )
+        if fs.exist(path):
+            return path
+        else:
+            raise ProjectBaseException("The problem doesn't exist")
 
     def __build_detailed_demand(self, demand, detailed_demand):
         nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)

@@ -1,0 +1,76 @@
+HEADERS
+(0,patrick)
+(1,eve)
+END
+SCHEDULING_PERIOD
+profile1,1,2023-06-01,2023-06-02
+END
+SKILLS
+HeadNurse
+Nurse
+END
+SHIFTS
+Late,16:00:00,24:00:00
+Early,08:00:00,16:00:00
+MidDay,12:00:00,16:00:00
+END
+SHIFT_GROUPS
+Work,3,Late,Early,MidDay,2,Night,Day
+Rest,0,0
+END
+SHIFT_TYPES
+Night,1,Late
+Day,2,Early,MidDay
+END
+CONTRACTS
+{
+contractName,General
+constraints
+NumberOfFreeDaysAfterShift,hard,1.0,Late
+MinMaxConsecutiveWeekends,1.0,5.0,3.0,hard
+}
+{
+contractName,Nurses contracts
+constraints
+unwantedSkills,hard,1,HeadNurse
+TotalWeekendsInFourWeeks,1.0,5.0,5.0,hard
+IdentShiftTypesDuringWeekend,hard
+}
+{
+contractName,Head nurses contracts
+constraints
+unwantedSkills,hard,1,Nurse
+TotalWeekendsInFourWeeks,1.0,5.0,3.0,hard
+IdentShiftTypesDuringWeekend,hard
+}
+{
+contractName,patrick's contract
+constraints
+MinMaxConsecutiveShiftType,1.0,hard,3.0,hard,Late
+CompleteWeekends,5.0
+AlternativeShift,hard,MidDay
+unwantedPatterns,hard,2,Monday|Friday;Late,Tuesday|Saturday;Early|MidDay
+}
+{
+contractName,eve's contract
+constraints
+MinMaxConsecutiveShiftType,1.0,hard,3.0,hard,Late
+CompleteWeekends,5.0
+AlternativeShift,hard,Late
+unwantedPatterns,hard,2,Monday|Friday;Late,Tuesday|Saturday;Early|MidDay
+}
+END
+CONTRACT_GROUPS
+head nurse contract group,1,Head nurses contracts
+nurse contract group,1,Nurses contracts
+END
+EMPLOYEES
+0,patrick,2,patrick's contract,General,1,nurse contract group
+1,eve,2,eve's contract,General,1,head nurse contract group
+END
+HOSPITAL_DEMAND
+2023-06-01,Late,Nurse,1.0,hard,10.0,5.0
+END
+PREFERENCES
+2023-06-01,1,ON,Early,5.0
+END

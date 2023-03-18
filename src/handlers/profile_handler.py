@@ -143,7 +143,7 @@ class ProfileHandler(BaseHandler):
             self.nurse_group_dao.insert_one_if_not_exist(nurse_group.db_json())
 
     def export_profile(self, token, profile_to_export):
-        self.verify_token(token)
+        self.verify_profile_accessors_access(token, profile_to_export)
         skills = self.skill_dao.get_all(profile_to_export)
         contracts = self.contract_dao.fetch_all(profile_to_export)
         contract_groups = self.contract_group_dao.fetch_all(profile_to_export)

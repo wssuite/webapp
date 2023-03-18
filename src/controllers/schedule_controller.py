@@ -1,4 +1,4 @@
-from flask import Blueprint, Response
+from flask import Blueprint, Response, send_file
 from werkzeug.exceptions import BadRequestKeyError
 
 import error_msg
@@ -6,7 +6,7 @@ from src.utils.file_system_manager import FileSystemManager
 from src.models.schedule import Schedule
 from flask import request
 from src.exceptions.project_base_exception import ProjectBaseException
-from constants import user_token, ok_message
+from constants import user_token, profile, start_date, end_date
 from src.dao.abstract_dao import DBConnection
 from src.handlers.schedule_handler import ScheduleHandler
 
@@ -50,7 +50,22 @@ def generate_schedule():
     try:
         token = request.args[user_token]
         json = request.json
-        schedule_handler.generate_schedule(token, json)
-        return Response(ok_message, 200)
+        return schedule_handler.generate_schedule(token, json)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+
+
+@mod.route("/exportProblem", methods=["GET"])
+def export_problem():
+    try:
+        token = request.args[user_token]
+        profile_name = request.args[profile]
+        start = request.args[start_date]
+        end = request.args[end_date]
+        version = request.args["version"]
+        path = schedule_handler.get_input_problem_path(
+            token, profile_name, start, end, version
+        )
+        return send_file(path, as_attachment=True)
     except ProjectBaseException as e:
         return Response(e.args, 500)
