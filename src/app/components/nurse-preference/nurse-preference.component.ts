@@ -9,85 +9,30 @@ import { FormControl, Validators } from '@angular/forms';
     styleUrls: ['./nurse-preference.component.css']
   })
   export class NursePreferenceComponent {
+    weight: string;
     possibleShifts: string[];
     timetable: string[];
-    buttonStates: {[key: string]: {[key: string]: string}};
-    selectedShifts: {shift: string, date: string, weight: number}[] = [];
+    selectedShifts: {shift: string, date: string, weight: string}[] = [];
     possibleNurses: string [];
-    nurse: string[] = [];
-    nursePreferences: {[key: string]: {[key: string]: number}} = {};
+    selectedNurse: string[] = [];
+    schedulePreference: {[key: string]: {[key: string]: {pref:boolean, weight: string}}} = {};
     nurseSelectorFormControl = new FormControl();
   
     constructor(){
-      this.buttonStates = {};
+      this.weight = '';
       this.possibleShifts = ["early", "late", "evening", "night"];
       this.timetable = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
       this.possibleNurses = ["Nurse A", "Nurse B", "Nurse C", "Nurse D"];
-      
-      for (const shift of this.possibleShifts){
-        this.buttonStates[shift] = {}; // initialize the state of each button for this shift
-        for (const date of this.timetable) {
-          this.buttonStates[shift][date] = "check_box_outline_blank"; // default state
-        }
-      }
-      this.updateNursePreferences(); // initialize the nurse preferences
     }
-  
-    changeButtonState(shift: string, date: string) {
-      const currentState = this.buttonStates[shift][date];
-      switch(currentState){
-        case "check_box_outline_blank": {
-          this.buttonStates[shift][date] = "check_box";
-          const weight = 1;
-          this.selectedShifts.push({shift, date, weight}); // add to selected shifts
-          break;
-        }
-        case "check_box": {
-          this.buttonStates[shift][date] = "indeterminate_check_box";
-          const weight = 0.5;
-          const index = this.selectedShifts.findIndex(selectedShift => 
-            selectedShift.shift === shift && selectedShift.date === date);
-          this.selectedShifts[index].weight = weight; // update weight
-          break;
-        }
-        case "indeterminate_check_box": {
-          this.buttonStates[shift][date] = "check_box_outline_blank";
-          const index = this.selectedShifts.findIndex(selectedShift => 
-            selectedShift.shift === shift && selectedShift.date === date);
-          this.selectedShifts.splice(index, 1);
-          break;
-        }
-        default: {
-          this.buttonStates[shift][date] = "check_box_outline_blank";
-          break;
-        }
-      }
-      this.updateNursePreferences(); // update nurse preferences when selected shifts change
-    }
-  
-    getButtonState(shift: string, date: string): string {
-      return this.buttonStates[shift][date];
-    }
-  
-    updateElement() {
-      this.updateNursePreferences(); // update nurse preferences when nurse selection changes
-    }
-  
-    updateNursePreferences() {
-      // reset nurse preferences
-      this.nursePreferences = {};
 
-      for (const nurse of this.nurse) {
-        this.nursePreferences[nurse] = {};
-        for (const shift of this.possibleShifts) {
-          for (const date of this.timetable) {
-            const selectedShift = this.selectedShifts.find(selectedShift => 
-              selectedShift.shift === shift && selectedShift.date === date);
-            const weight = selectedShift ? selectedShift.weight : 0;
-            this.nursePreferences[nurse][`${shift}_${date}`] = weight;
-          }
+    updatePreferences( shift: string, date: string, checked: boolean) {
+        if (!this.schedulePreference[shift]) {
+          this.schedulePreference[shift] = {};
         }
-      }
+        const weight = checked ? this.weight : '';
+        this.schedulePreference[shift][date] = { pref: checked, weight };
+      console.log("nurse preference", this.schedulePreference);
+      console.log("nurse selected", this.selectedNurse);
     }
   }
   

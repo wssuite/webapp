@@ -3,8 +3,8 @@
     <label> Nurse: </label>
     <mat-form-field appearance="fill">
         <mat-label> choose a nurse </mat-label>
-        <mat-select [(value)]="nurse" [formControl]="nurseSelectorFormControl" (selectionChange)="updateElement()" multiple>
-            <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
+        <mat-select [(value)]="selectedNurse" [formControl]="nurseSelectorFormControl" multiple>
+            <mat-option *ngFor="let nurse of possibleNurses" [value]="selectedNurse">
                 {{nurse}}
             </mat-option>
         </mat-select>
@@ -29,14 +29,12 @@
     </tr>
     <tr *ngFor="let shift of  possibleShifts">
       <td *ngFor="let date of timetable" class="schedule-cells">
-        <div>
-          <button (click)="changeButtonState(shift, date)">
-            <mat-icon>{{getButtonState(shift, date)}}</mat-icon>
-          </button>
-        </div>
+        <mat-checkbox (click)="updatePreferences(shift, date, true)" [disabled]="!weight"> </mat-checkbox>
       </td>
     </tr>
   </table>
+  
+  <app-weight [(weight)]="weight"></app-weight>
 
 </div>
 
