@@ -5,7 +5,7 @@ import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CONSULT_SCHEDULE } from "src/app/constants/app-routes";
-import { HospitalDemandInterface, ScheduleDataInterface } from "src/app/models/hospital-demand";
+import { ScheduleDataInterface } from "src/app/models/hospital-demand";
 import { NurseInterface } from "src/app/models/Nurse";
 import { ContractService } from "src/app/services/contract/contract.service";
 import { NurseGroupService } from "src/app/services/nurse/nurse-group.service";

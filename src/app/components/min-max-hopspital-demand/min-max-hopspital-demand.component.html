@@ -1,1 +1,37 @@
-<p>min-max-hopspital-demand works!</p>
+<div (mouseleave)="emitDemand()" class="min-min-hospital-demand-container">
+    <div class="hospital-variables-container">
+        <label>Shift: </label>
+        <mat-form-field appearance="fill">
+            <mat-label>choose a shift </mat-label>
+            <mat-select [(value)]="hospitalDemand.shiftId" [formControl]="selectShiftFormCtrl" (selectionChange)="emitDemand()">
+                <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
+                    {{shift}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <label>Skill: </label>
+        <mat-form-field appearance="fill">
+            <mat-label>choose a skill </mat-label>
+            <mat-select [(value)]="hospitalDemand.skillId" [formControl]="selectSkillFormCtrl" (selectionChange)="emitDemand()">
+                <mat-option *ngFor="let skill of possibleSkills" [value]="skill">
+                    {{skill}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <div class="min-value-container">
+            <label>Min value: </label>
+            <app-numeric-input [(value)]="hospitalDemand.minValue" (errorState)="updateMinValueErrorState($event)"></app-numeric-input>
+            <div class="weight-container">
+                <app-weight [(weight)]="hospitalDemand.minWeight" [label]="minWeightLabel" (errorState)="updateMinWeightErrorState($event)"></app-weight>
+            </div>
+        </div>
+        <br><br>
+        <div class="max-value-container">
+            <label>Max value: </label>
+            <app-numeric-input [(value)]="hospitalDemand.maxValue" (errorState)="updateMaxValueErrorState($event)"></app-numeric-input>
+            <app-weight [(weight)]="hospitalDemand.maxWeight" [label]="maxWeightLabel" (errorState)="updateMaxWeightErrorState($event)"></app-weight>
+        </div>
+    </div>
+</div>
+

@@ -1,11 +1,11 @@
 export interface HospitalDemandInterface {
     date: string;
-    shift: string;
-    skill: string;
-    max: number;
-    max_weight: number;
-    min: number;
-    min_weight: number;
+    shiftId: string;
+    skillId: string;
+    maxValue: string;
+    maxWeight: string;
+    minValue: string;
+    minWeight: string;
 }
 
 export interface ScheduleDataInterface{
