@@ -4,40 +4,42 @@
     <mat-form-field appearance="fill">
         <mat-label> choose a nurse </mat-label>
         <mat-select [(value)]="selectedNurse" [formControl]="nurseSelectorFormControl" multiple>
-            <mat-option *ngFor="let nurse of possibleNurses" [value]="selectedNurse">
+            <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
                 {{nurse}}
             </mat-option>
         </mat-select>
     </mat-form-field>
   </div>
-  <div>
+  <div class="shift-name-table">
     <table>
       <tr>
-        <th class="employee-name-header">Shift</th>
+        <th class="shift-name-header">Shift</th>
       </tr>
       <tr *ngFor="let shift of  possibleShifts">
-        <td class="employee-name-cell">{{shift}}</td>
+        <td class="shift-name-cell">{{shift}}</td>
     </tr>
     </table>
   </div>
-
-  <table>
-    <tr>
-      <th *ngFor="let date of timetable">
-        {{date}}
-      </th>
-    </tr>
-    <tr *ngFor="let shift of  possibleShifts">
-      <td *ngFor="let date of timetable" class="schedule-cells">
-        <button (click)="updatePreferences(shift, date)" [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" matTooltip="{{showToolTip(shift, date)}}">
-          <mat-icon>{{this.getButtonState(shift, date)}}</mat-icon>
-        </button>
-      </td>
-    </tr>
-  </table>
+  <div class="timetable-table">
+    <table>
+      <tr>
+        <th class="date-header"*ngFor="let date of timetable">
+          {{date}}
+        </th>
+      </tr>
+      <tr class="checkbox-row"*ngFor="let shift of  possibleShifts">
+        <td  class="checkbox-cell" *ngFor="let date of timetable" class="schedule-cells">
+          <button class="checkbox" (click)="updatePreferences(shift, date)" [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" matTooltip="{{showToolTip(shift, date)}}">
+            <mat-icon>{{this.getButtonState(shift, date)}}</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+ 
   
-  <app-weight [(weight)]="weight"></app-weight>
+  <app-weight class="weight" [(weight)]="weight"></app-weight>
+  <div>The schedule preference : </div>
 
-</div>
 
 
