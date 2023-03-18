@@ -3,7 +3,7 @@
     <label> Nurse: </label>
     <mat-form-field appearance="fill">
         <mat-label> choose a nurse </mat-label>
-        <mat-select [(value)]="nurse" [formControl]="nurseSelectorFormControl" (selectionChange)="emitElement()" multiple>
+        <mat-select [(value)]="nurse" [formControl]="nurseSelectorFormControl" (selectionChange)="updateElement()" multiple>
             <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
                 {{nurse}}
             </mat-option>

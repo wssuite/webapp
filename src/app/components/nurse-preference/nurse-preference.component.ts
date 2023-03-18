@@ -11,17 +11,19 @@ import { FormControl, Validators } from '@angular/forms';
   export class NursePreferenceComponent {
     possibleShifts: string[];
     timetable: string[];
-    buttonStates: {[key: string]: {[key: string]: string}}; // state of each button
-    selectedShifts: {shift: string, date: string, weight: number}[] = []; // selected shifts and dates
-    possibleNurses = ["Nurse A", "Nurse B", "Nurse C", "Nurse D"];
+    buttonStates: {[key: string]: {[key: string]: string}};
+    selectedShifts: {shift: string, date: string, weight: number}[] = [];
+    possibleNurses: string [];
     nurse: string[] = [];
-    nursePreferences: {[key: string]: {[key: string]: number}} = {}; // nurse preferences
+    nursePreferences: {[key: string]: {[key: string]: number}} = {};
     nurseSelectorFormControl = new FormControl();
   
     constructor(){
       this.buttonStates = {};
       this.possibleShifts = ["early", "late", "evening", "night"];
       this.timetable = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+      this.possibleNurses = ["Nurse A", "Nurse B", "Nurse C", "Nurse D"];
+      
       for (const shift of this.possibleShifts){
         this.buttonStates[shift] = {}; // initialize the state of each button for this shift
         for (const date of this.timetable) {
@@ -50,7 +52,6 @@ import { FormControl, Validators } from '@angular/forms';
         }
         case "indeterminate_check_box": {
           this.buttonStates[shift][date] = "check_box_outline_blank";
-          // remove from selected shifts
           const index = this.selectedShifts.findIndex(selectedShift => 
             selectedShift.shift === shift && selectedShift.date === date);
           this.selectedShifts.splice(index, 1);
@@ -61,7 +62,6 @@ import { FormControl, Validators } from '@angular/forms';
           break;
         }
       }
-      console.log("shift selected", this.selectedShifts);
       this.updateNursePreferences(); // update nurse preferences when selected shifts change
     }
   
@@ -69,14 +69,14 @@ import { FormControl, Validators } from '@angular/forms';
       return this.buttonStates[shift][date];
     }
   
-    emitElement() {
-      console.log("Nurse selected: ", this.nurse);
+    updateElement() {
       this.updateNursePreferences(); // update nurse preferences when nurse selection changes
     }
   
     updateNursePreferences() {
       // reset nurse preferences
       this.nursePreferences = {};
+
       for (const nurse of this.nurse) {
         this.nursePreferences[nurse] = {};
         for (const shift of this.possibleShifts) {
@@ -88,7 +88,6 @@ import { FormControl, Validators } from '@angular/forms';
           }
         }
       }
-      console.log("nursePreferences", this.nursePreferences)
     }
   }
   
