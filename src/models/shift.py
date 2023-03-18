@@ -5,8 +5,10 @@ from constants import shift_name, shift_start_time, shift_end_time, profile
 from src.models.string_reader import StringReader
 from src.utils.import_util import sanitize_array, Wrapper
 
+from src.models.stringify import Stringify
 
-class Shift(Jsonify, DBDocument, StringReader):
+
+class Shift(Jsonify, DBDocument, Stringify, StringReader):
     name = StringField(serialized_name=shift_name)
     start_time = StringField(serialized_name=shift_start_time)
     end_time = StringField(serialized_name=shift_end_time)
@@ -27,3 +29,6 @@ class Shift(Jsonify, DBDocument, StringReader):
         self.start_time = wrapper.get_by_index(1)
         self.end_time = wrapper.get_by_index(2)
         return self
+
+    def to_string(self):
+        return f"{self.name},{self.start_time},{self.end_time}\n"

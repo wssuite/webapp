@@ -5,8 +5,13 @@ from pykson import StringField, ListField
 from src.models.string_reader import StringReader
 from src.utils.import_util import sanitize_array, Wrapper
 
+from src.models.stringify import (
+    Stringify,
+    extract_string_from_simple_object_array,
+)
 
-class ShiftType(Jsonify, DBDocument, StringReader):
+
+class ShiftType(Jsonify, DBDocument, Stringify, StringReader):
     name = StringField(serialized_name=shift_type_name)
     shifts = ListField(str, serialized_name=shift_type_shifts_lists)
     profile = StringField(serialized_name=profile, default_value="")
@@ -29,3 +34,7 @@ class ShiftType(Jsonify, DBDocument, StringReader):
                 self.shifts.append(wrapper.get_by_index(i))
 
         return self
+
+    def to_string(self):
+        shifts_string = extract_string_from_simple_object_array(self.shifts)
+        return f"{self.name},{len(self.shifts)}{shifts_string}\n"

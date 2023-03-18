@@ -48,9 +48,9 @@ class TestNurseDao(TestCase):
 
     def test_insert_nurse_when_not_exist_succeed(self):
         nurse = Nurse().from_json(self.nurse_dict)
-        nurse_id_inserted = self.dao.insert_one(nurse.db_json())
+        self.dao.insert_one(nurse.db_json())
         nurse_dict = self.nurse_dict.copy()
-        nurse_dict[nurse_id] = str(nurse_id_inserted.inserted_id)
+        nurse_dict[nurse_id] = "0"
         all_nurses = self.dao.fetch_all(profile1)
         self.assertEqual(1, len(all_nurses))
         self.assertEqual(nurse_dict, all_nurses[0])
@@ -66,7 +66,7 @@ class TestNurseDao(TestCase):
         nurse = Nurse().from_json(self.nurse_dict)
         inserted_id = self.dao.insert_one(nurse.db_json())
         nurse_dict = self.nurse_dict.copy()
-        nurse_dict[nurse_id] = str(inserted_id.inserted_id)
+        nurse_dict[nurse_id] = inserted_id
         part_time = self.dao.get_with_contracts(["ParTime"], profile1)
         full_time = self.dao.get_with_contracts(["FullTime"], profile1)
         self.assertEqual(0, len(part_time))
@@ -78,7 +78,7 @@ class TestNurseDao(TestCase):
         inserted_id = self.dao.insert_one(nurse.db_json())
         self.dao.update(self.nurse_update)
         result = self.nurse_update.copy()
-        result[nurse_id] = str(inserted_id.inserted_id)
+        result[nurse_id] = inserted_id
         nurse_updated = self.dao.find_by_username(
             self.nurse_dict[nurse_username], self.nurse_dict[profile]
         )
@@ -109,11 +109,11 @@ class TestNurseDao(TestCase):
 
     def test_get_nurses_with_contract_groups(self):
         nurse = Nurse().from_json(nurse_with_contract_group.copy())
-        inserted_id = self.dao.insert_one(nurse.db_json())
+        self.dao.insert_one(nurse.db_json())
         actual_nurse_with_contract_group = self.dao.get_with_contract_groups(
             ["contract_group_without_contradiction"], profile1
         )
         expected = nurse_with_contract_group.copy()
-        expected[nurse_id] = str(inserted_id.inserted_id)
+        expected[nurse_id] = "0"
         self.assertEqual(1, len(actual_nurse_with_contract_group))
         self.assertEqual(expected, actual_nurse_with_contract_group[0])

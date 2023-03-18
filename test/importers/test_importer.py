@@ -284,8 +284,8 @@ contract_group_with_contradiction,General,FullTime_Not_Valid,,,"""
         p_copy = patrick_nurse.copy()
         n1 = nurse1.copy()
         expected_nurses = [p_copy, n1, nurse_with_contract_group]
-        string = """patrick,Patrick,FullTime_Valid,,,
-nurse1,nurse1,FullTime_Valid,minConsContract,,
+        string = """patrick,Patrick,FullTime Valid,,,
+nurse1,nurse1,FullTime Valid,minConsContract,,
 random,Random nurse,contract_group_without_contradiction,,,"""
         nurses = CSVImporter.create_nurses(
             string, profile_name_test, ["contract_group_without_contradiction"]

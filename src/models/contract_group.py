@@ -10,7 +10,13 @@ from src.models.string_reader import StringReader
 from src.utils.import_util import sanitize_array, Wrapper
 
 
-class ContractGroup(DBDocument, Jsonify, StringReader):
+from src.models.stringify import (
+    Stringify,
+    extract_string_from_simple_object_array,
+)
+
+
+class ContractGroup(DBDocument, Jsonify, StringReader, Stringify):
     name = StringField(serialized_name=contract_group_name)
     contracts = ListField(str, serialized_name=contract_group_contracts_list)
     profile = StringField(serialized_name=profile)
@@ -31,3 +37,9 @@ class ContractGroup(DBDocument, Jsonify, StringReader):
             self.contracts.append(wrapper.get_by_index(i))
 
         return self
+
+    def to_string(self):
+        contracts_string = extract_string_from_simple_object_array(
+            self.contracts
+        )
+        return f"{self.name},{len(self.contracts)}{contracts_string}\n"

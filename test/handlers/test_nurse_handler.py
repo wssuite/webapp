@@ -77,13 +77,13 @@ class TestNurseHandler(TestCase):
         self.handler.update(random_hex, update.copy())
         actual = self.handler.get_by_username(random_hex, "patrick", profile1)
         expected = update.copy()
-        expected[nurse_id] = str(self.patrick_id.inserted_id)
+        expected[nurse_id] = self.patrick_id
         self.assertEqual(expected, actual)
 
     def test_get_all_nurses(self):
         actual = self.handler.get_all(random_hex, profile1)
         nurse_copy = patrick_nurse.copy()
-        nurse_copy[nurse_id] = str(self.patrick_id.inserted_id)
+        nurse_copy[nurse_id] = self.patrick_id
         expected = [nurse_copy]
         self.assertEqual(expected, actual)
 

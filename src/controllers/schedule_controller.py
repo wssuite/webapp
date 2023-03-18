@@ -6,6 +6,9 @@ from src.utils.file_system_manager import FileSystemManager
 from src.models.schedule import Schedule
 from flask import request
 from src.exceptions.project_base_exception import ProjectBaseException
+from constants import user_token, ok_message
+from src.dao.abstract_dao import DBConnection
+from src.handlers.schedule_handler import ScheduleHandler
 
 """
     To manually test these endpoints, in the project's root, please create
@@ -25,6 +28,8 @@ from src.exceptions.project_base_exception import ProjectBaseException
 """
 mod = Blueprint("schedule_controller", __name__, url_prefix="/schedule")
 
+schedule_handler = ScheduleHandler(DBConnection.get_connection())
+
 
 @mod.route("/nameFilter/<instance>", methods=["GET"])
 def get_schedule_filtered_by_name(instance):
@@ -36,5 +41,16 @@ def get_schedule_filtered_by_name(instance):
         file_path = FileSystemManager.get_solution_path(instance, version)
         schedule = Schedule(file_path)
         return schedule.filter_by_name()
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+
+
+@mod.route("/generate", methods=["POST"])
+def generate_schedule():
+    try:
+        token = request.args[user_token]
+        json = request.json
+        schedule_handler.generate_schedule(token, json)
+        return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)

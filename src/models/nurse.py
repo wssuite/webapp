@@ -9,13 +9,16 @@ from constants import (
     profile,
     nurse_contract_groups,
 )
-
+from src.models.stringify import (
+    Stringify,
+    extract_string_from_simple_object_array,
+)
 from src.models.db_document import DBDocument
 from src.models.string_reader import StringReader
 from src.utils.import_util import sanitize_array, Wrapper
 
 
-class Nurse(Jsonify, DBDocument, StringReader):
+class Nurse(Jsonify, DBDocument, Stringify, StringReader):
     name = StringField(serialized_name=nurse_name, default_value=admin)
     direct_contracts = ListField(str, serialized_name=nurse_contracts)
     id = StringField(serialized_name=nurse_id)
@@ -47,3 +50,16 @@ class Nurse(Jsonify, DBDocument, StringReader):
         self.direct_contracts = []
         for i in range(2, len(tokens)):
             self.direct_contracts.append(wrapper.get_by_index(i))
+
+    def to_string(self):
+        contracts_string = extract_string_from_simple_object_array(
+            self.direct_contracts
+        )
+        contract_groups_string = extract_string_from_simple_object_array(
+            self.contract_groups
+        )
+        return (
+            f"{self.id},{self.username},{len(self.direct_contracts)}"
+            f"{contracts_string},{len(self.contract_groups)}"
+            f"{contract_groups_string}\n"
+        )

@@ -205,3 +205,33 @@ unwanted shift,Early,hard,,,,,,,
         }
         contract = Contract().read_contract(profile1, string)
         self.assertEqual(expected, contract.to_json())
+
+    def test_contract_to_string(self):
+        expected = """{{
+contractName,FullTime
+constraints
+{0},hard,1.0,Early
+{1},hard,1,Nurse
+{2},1.0,5.0,5.0,hard
+{3},1.0,5.0,5.0,hard
+{4},1.0,5.0,5.0,hard
+{5},1.0,5.0,5.0,hard,Early
+{6},hard
+{7},hard
+{8},hard,2,Monday|Wednesday|Friday;Late|Early|MidDay,Tuesday;Early
+{9},hard,Early
+}}
+""".format(
+            number_of_free_days_after_shift,
+            unwanted_skills,
+            total_weekends_in_four_weeks,
+            min_max_num_assignments_in_four_weeks,
+            min_max_consecutive_weekends,
+            min_max_consecutive_shift_type,
+            identical_shift_during_weekend,
+            complete_weekends,
+            unwanted_pattern,
+            alternative_shift,
+        )
+        contract = Contract().from_json(self.contract_dict)
+        self.assertEqual(expected, contract.to_string())

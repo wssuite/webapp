@@ -35,6 +35,10 @@ from constants import (
 from src.models.db_document import DBDocument
 from src.models.string_reader import StringReader
 from src.utils.import_util import sanitize_array, skip_line, Wrapper
+from src.models.stringify import (
+    Stringify,
+    extract_string_from_complex_object_array,
+)
 
 
 class ContractConstraintCreator:
@@ -64,7 +68,7 @@ class ContractConstraintCreator:
         return self.dict_contract_constraints[name]().read_line(line)
 
 
-class Contract(Jsonify, DBDocument, StringReader):
+class Contract(Jsonify, DBDocument, Stringify, StringReader):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = ""
@@ -135,4 +139,12 @@ class Contract(Jsonify, DBDocument, StringReader):
     def read_line(self, line):
         return self.constraint_creator.create_contract_constraint_from_string(
             line
+        )
+
+    def to_string(self):
+        constraints_string = extract_string_from_complex_object_array(
+            self.constraints
+        )
+        return "{{\ncontractName,{0}\nconstraints\n{1}}}\n".format(
+            self.name, constraints_string
         )
