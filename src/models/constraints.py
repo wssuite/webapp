@@ -1,3 +1,4 @@
+from src.models.string_reader import StringReader
 from src.models.stringify import (
     Stringify,
     extract_string_from_simple_object_array,
@@ -14,9 +15,11 @@ from constants import (
     max_constraint_weight,
     unwanted_pattern_elements,
     contract_skills,
+    bind_map,
 )
 from src.models.pattern_element import PatternElement
 from src.models.jsonify import Jsonify
+from src.utils.import_util import sanitize_array, Wrapper
 
 """
 Note: The following constraints are conceptually
@@ -42,7 +45,7 @@ class BaseConstraint(Jsonify, Stringify):
         super().__init__(*args, **kwargs)
 
 
-class ContractConstraint(BaseConstraint):
+class ContractConstraint(BaseConstraint, StringReader):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -55,6 +58,9 @@ class ContractConstraint(BaseConstraint):
     def get_skills(self):
         return []
 
+    def read_line(self, line):
+        pass
+
 
 class ContractIntegerConstraint(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -66,6 +72,15 @@ class ContractIntegerConstraint(ContractConstraint):
 
     def repr(self):
         return self.name
+
+    def read_line(self, line):
+        tokens = line.split(",")
+        tokens = sanitize_array(tokens)
+        wrapper = Wrapper(tokens)
+        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.value = wrapper.get_by_index(1)
+        self.weight = wrapper.get_by_index(2)
+        return self
 
     def to_string(self):
         return f"{self.name},{self.weight},{self.value}\n"
@@ -83,6 +98,16 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
     def get_shift(self):
         return [self.shift]
 
+    def read_line(self, line):
+        tokens = line.split(",")
+        tokens = sanitize_array(tokens)
+        wrapper = Wrapper(tokens)
+        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.shift = wrapper.get_by_index(1)
+        self.value = wrapper.get_by_index(2)
+        self.weight = wrapper.get_by_index(3)
+        return self
+
     def to_string(self):
         return f"{self.name},{self.weight},{self.value},{self.shift}\n"
 
@@ -99,6 +124,17 @@ class ContractMinMaxConstraint(ContractConstraint):
 
     def repr(self):
         return self.name
+
+    def read_line(self, line):
+        tokens = line.split(",")
+        tokens = sanitize_array(tokens)
+        wrapper = Wrapper(tokens)
+        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.minValue = wrapper.get_by_index(1)
+        self.minWeight = wrapper.get_by_index(2)
+        self.maxValue = wrapper.get_by_index(3)
+        self.maxWeight = wrapper.get_by_index(4)
+        return self
 
     def to_string(self):
         return (
@@ -119,6 +155,18 @@ class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
     def get_shift(self):
         return [self.shift]
 
+    def read_line(self, line):
+        tokens = line.split(",")
+        tokens = sanitize_array(tokens)
+        wrapper = Wrapper(tokens)
+        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.shift = wrapper.get_by_index(1)
+        self.minValue = wrapper.get_by_index(2)
+        self.minWeight = wrapper.get_by_index(3)
+        self.maxValue = wrapper.get_by_index(4)
+        self.maxWeight = wrapper.get_by_index(5)
+        return self
+
     def to_string(self):
         return (
             f"{self.name},{self.minValue},{self.minWeight},"
@@ -135,6 +183,14 @@ class ContractBooleanConstraint(ContractConstraint):
 
     def repr(self):
         return self.name
+
+    def read_line(self, line):
+        tokens = line.split(",")
+        tokens = sanitize_array(tokens)
+        wrapper = Wrapper(tokens)
+        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.weight = wrapper.get_by_index(1)
+        return self
 
     def to_string(self):
         return f"{self.name},{self.weight}\n"
@@ -157,6 +213,24 @@ class ContractUnwantedPatterns(ContractConstraint):
             constraint_weight: self.weight,
             unwanted_pattern_elements: array,
         }
+
+    def read_line(self, line):
+        tokens = line.split(",")
+        tokens = sanitize_array(tokens)
+        wrapper = Wrapper(tokens)
+        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.pattern_elements = []
+        i = 1
+
+        while i < len(tokens) - 1:
+            new_line = (
+                wrapper.get_by_index(i) + "," + wrapper.get_by_index(i + 1)
+            )
+            self.pattern_elements.append(PatternElement().read_line(new_line))
+            i += 2
+
+        self.weight = wrapper.get_by_index(len(tokens) - 1)
+        return self
 
     def get_shift(self):
         shifts = []
@@ -188,6 +262,15 @@ class ContractAlternativeShift(ContractConstraint):
     def get_shift(self):
         return [self.shift]
 
+    def read_line(self, line):
+        tokens = line.split(",")
+        tokens = sanitize_array(tokens)
+        wrapper = Wrapper(tokens)
+        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.shift = wrapper.get_by_index(1)
+        self.weight = wrapper.get_by_index(2)
+        return self
+
     def to_string(self):
         return f"{self.name},{self.weight},{self.shift}\n"
 
@@ -205,6 +288,17 @@ class ContractUnwantedSkills(ContractConstraint):
 
     def get_skills(self):
         return self.unwanted_skills
+
+    def read_line(self, line):
+        tokens = line.split(",")
+        tokens = sanitize_array(tokens)
+        wrapper = Wrapper(tokens)
+        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        for i in range(1, len(tokens) - 1):
+            self.unwanted_skills.append(wrapper.get_by_index(i))
+
+        self.weight = wrapper.get_by_index(len(tokens) - 1)
+        return self
 
     def to_string(self):
         skill_string = extract_string_from_simple_object_array(

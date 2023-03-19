@@ -90,3 +90,24 @@ def get_accessors():
         return profile_handler.get_accessors_list(token, profile_name)
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/import", methods=["POST"])
+def import_file():
+    try:
+        token = request.args[user_token]
+        file = request.files["file"]
+        return profile_handler.import_file(token, file)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+
+
+@mod.route("/saveImport", methods=["POST"])
+def save_import_profile():
+    try:
+        token = request.args[user_token]
+        json = request.json
+        profile_handler.save_import(token, json)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)

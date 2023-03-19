@@ -205,6 +205,7 @@ nurse1 = {
     nurse_contracts: ["FullTime Valid", "minConsContract"],
     nurse_username: "nurse1",
     profile: profile1,
+    nurse_contract_groups: [],
 }
 
 nurse_group1 = {

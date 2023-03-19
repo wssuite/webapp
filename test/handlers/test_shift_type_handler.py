@@ -32,7 +32,7 @@ class TestShiftHandler(TestCase):
         self.handler.shift_group_dao.insert_one_if_not_exist(
             test_work_shift_group.copy()
         )
-        self.handler.shift_dao.insert_one_if_not_exist(early_shift)
+        self.handler.shift_dao.insert_one_if_not_exist(early_shift.copy())
         self.handler.profile_dao.insert_if_not_exist(test_profile.copy())
 
     def tearDown(self) -> None:
@@ -57,7 +57,7 @@ class TestShiftHandler(TestCase):
         actual_before = self.handler.get_all_names(random_hex, profile1)
         expected_before = ["Day"]
         self.assertEqual(expected_before, actual_before)
-        self.handler.shift_dao.insert_one_if_not_exist(late_shift)
+        self.handler.shift_dao.insert_one_if_not_exist(late_shift.copy())
         self.handler.add(random_hex, night_shift_type)
         actual_after = self.handler.get_all_names(random_hex, profile1)
         expected_after = ["Day", "Night"]
@@ -105,7 +105,7 @@ class TestShiftHandler(TestCase):
         self.handler.shift_type_dao.insert_one_if_not_exist(
             day_shift_type.copy()
         )
-        self.handler.shift_dao.insert_one_if_not_exist(late_shift)
+        self.handler.shift_dao.insert_one_if_not_exist(late_shift.copy())
         self.handler.add(random_hex, night_shift_type.copy())
         all_shift_types_before = self.handler.get_all(random_hex, profile1)
         self.handler.delete(random_hex, "Night", profile1)

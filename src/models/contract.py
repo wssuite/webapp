@@ -29,9 +29,12 @@ from constants import (
     profile,
     unwanted_skills,
     contract_skills,
+    bind_map,
 )
 
 from src.models.db_document import DBDocument
+from src.models.string_reader import StringReader
+from src.utils.import_util import sanitize_array, skip_line, Wrapper
 from src.models.stringify import (
     Stringify,
     extract_string_from_complex_object_array,
@@ -58,8 +61,14 @@ class ContractConstraintCreator:
             data[constraint_name]
         ]().from_json(data)
 
+    def create_contract_constraint_from_string(self, line):
+        tokens = line.split(",")
+        tokens = sanitize_array(tokens)
+        name = bind_map[tokens[0].lower()]
+        return self.dict_contract_constraints[name]().read_line(line)
 
-class Contract(Jsonify, DBDocument, Stringify):
+
+class Contract(Jsonify, DBDocument, Stringify, StringReader):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = ""
@@ -67,6 +76,7 @@ class Contract(Jsonify, DBDocument, Stringify):
         self.shifts = []
         self.profile = ""
         self.skills = []
+        self.constraint_creator = ContractConstraintCreator()
 
     def from_json(self, data: dict):
         contract = Contract()
@@ -74,10 +84,9 @@ class Contract(Jsonify, DBDocument, Stringify):
         contract.name = data.setdefault(contract_name, "")
         contract.profile = data.setdefault(profile, "")
 
-        constraint_creator = ContractConstraintCreator()
         constraints = data.setdefault(contract_constraints, [])
         for constraint in constraints:
-            new_constraint = constraint_creator.create_contact_constraint(
+            new_constraint = self.constraint_creator.create_contact_constraint(
                 constraint
             )
             contract.constraints.append(new_constraint)
@@ -110,6 +119,27 @@ class Contract(Jsonify, DBDocument, Stringify):
 
     def copy(self):
         return Contract().from_json(self.to_json())
+
+    def read_contract(self, profile_name, contract_string):
+        self.profile = profile_name
+        lines = contract_string.split("\n")
+        wrapper = Wrapper(lines[0].split(","))
+        self.name = wrapper.get_by_index(1)
+        self.constraints = []
+        for i in range(1, len(lines)):
+            if not skip_line(lines[i]):
+                try:
+                    constraint = self.read_line(lines[i])
+                    self.constraints.append(constraint)
+                except KeyError:
+                    continue
+
+        return self
+
+    def read_line(self, line):
+        return self.constraint_creator.create_contract_constraint_from_string(
+            line
+        )
 
     def to_string(self):
         constraints_string = extract_string_from_complex_object_array(
