@@ -1,45 +1,34 @@
-<div>
-  <div>
-    <label> Nurse: </label>
-    <mat-form-field appearance="fill">
-        <mat-label> choose a nurse </mat-label>
-        <mat-select [(value)]="selectedNurse" [formControl]="nurseSelectorFormControl" multiple>
-            <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
-                {{nurse}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-  </div>
+<div class="schedule-container">
   <div class="shift-name-table">
     <table>
       <tr>
-        <th class="shift-name-header">Shift</th>
+        <th class="shift-name-header">Nurse</th>
       </tr>
-      <tr *ngFor="let shift of  possibleShifts">
-        <td class="shift-name-cell">{{shift}}</td>
-    </tr>
+      <tr *ngFor="let nurse of possibleNurses">
+        <td class="shift-name-cell">{{nurse}}</td>
+      </tr>
     </table>
   </div>
   <div class="timetable-table">
-    <table>
-      <tr>
-        <th class="date-header"*ngFor="let date of timetable">
-          {{date}}
-        </th>
-      </tr>
-      <tr class="checkbox-row"*ngFor="let shift of  possibleShifts">
-        <td  class="checkbox-cell" *ngFor="let date of timetable" class="schedule-cells">
-          <button class="checkbox" (click)="updatePreferences(shift, date)" [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" matTooltip="{{showToolTip(shift, date)}}">
-            <mat-icon>{{this.getButtonState(shift, date)}}</mat-icon>
-          </button>
-        </td>
-      </tr>
-    </table>
+    <div class="date-table" *ngFor="let date of timetable">
+      <caption> {{date}}</caption>
+      <table>
+        <tr>
+          <th class="date-header"*ngFor="let shift of possibleShifts">
+            {{shift}}
+          </th>
+        </tr>
+        <tr class="checkbox-row"*ngFor="let nurse of possibleNurses">
+          <td  class="checkbox-cell" *ngFor="let shift of possibleShifts" class="schedule-cells">
+            <button class="checkbox" (click)="updatePreferences(date, nurse, shift)" [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" matTooltip="{{showToolTip(date, nurse, shift)}}">
+              <mat-icon>{{this.getButtonState(date, nurse, shift)}}</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
- 
-  
-  <app-weight class="weight" [(weight)]="weight"></app-weight>
-  <div>The schedule preference : </div>
+</div>
 
-
-
+<app-weight class="weight" [(weight)]="weight"></app-weight>
+<div>The schedule preference :</div>

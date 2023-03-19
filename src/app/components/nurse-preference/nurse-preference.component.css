@@ -1,37 +1,34 @@
-.shift-name-table {
-    display: inline-block;
-    vertical-align: top;
+.schedule-container {
+    display: flex;
+    flex-direction: row;
   }
-
-.timetable-table {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.shift-name-table {
-  width: 100px;
-}
-
-.shift-name-cell {
+  
+  .shift-name-table {
+    display: flex;
+  }
+  
+  .shift-name-cell {
     padding-top: 6px;
     padding-bottom: 6px;
     background-color: rgb(235, 234, 234);
-}
-
-.timetable-table {
-  width: calc(100% - 120px);
-}
-
-.schedule-cells{
+  }
+  
+  .timetable-table {
+    display: flex;
+    overflow-x: scroll;
+  }
+  
+  .schedule-cells {
     padding-left: 25px;
     padding-right: 25px;
-}
-
-.checkbox-row {
+  }
+  
+  .checkbox-row {
     background-color: rgb(235, 234, 234);
-}
-
-.checkbox {
+  }
+  
+  .checkbox {
     border-width: 0px;
     background-color: rgb(235, 234, 234);
-}
+  }
+  

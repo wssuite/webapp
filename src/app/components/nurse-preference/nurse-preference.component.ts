@@ -15,10 +15,9 @@ import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
   weight: string;
   possibleShifts: string[];
   timetable: string[];
-  selectedShifts: { shift: string, date: string, weight: string }[] = [];
+  selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
   possibleNurses: string[];
-  selectedNurse: string[] = [];
-  preferences: { [shift: string]: { [date: string]: { pref: boolean, weight: string } } } = {};
+  preferences: {[date: string]: {[nurse: string]: { [shift: string]: { pref: string, weight: string }} } } = {};
   nurseSelectorFormControl = new FormControl();
 
   constructor() {
@@ -26,44 +25,53 @@ import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
     this.possibleShifts = ["early", "late", "evening", "night"];
     this.timetable = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     this.possibleNurses = ["Nurse A", "Nurse B", "Nurse C", "Nurse D"];
-    for (const shift of this.possibleShifts) {
-      this.preferences[shift] = {};
-      for (const date of this.timetable) {
-        this.preferences[shift][date] = { pref: false, weight: '' };
+    for(const date of this.timetable){
+      this.preferences[date] = {};
+      for (const nurse of this.possibleNurses) {
+        this.preferences[date][nurse] = {};
+        for (const shift of this.possibleShifts) {
+          this.preferences[date][nurse][shift] = { pref: '', weight: '' };
+        }
       }
     }
   }
 
-  updatePreferences(shift: string, date: string) {
-    if (!this.preferences[shift]) {
-      this.preferences[shift] = {};
+  updatePreferences(date: string, nurse: string, shift: string) {
+    if (!this.preferences[nurse]) {
+      this.preferences[nurse] = {};
     }
-    if (!this.preferences[shift][date]) {
-      this.preferences[shift][date] = { pref: false, weight: '' };
+    if (!this.preferences[date][nurse][shift]) {
+      this.preferences[date][nurse][shift] = { pref: '', weight: '' };
     }
-    let pref = this.preferences[shift][date].pref;
+    let pref = this.preferences[date][nurse][shift].pref;
     let weight =  this.weight;
-    if(this.weight ===  this.preferences[shift][date].weight){
-      pref = false;
-      weight = "";
-      console.log("value pref", pref)
+    if(this.weight ===  this.preferences[date][nurse][shift].weight){
+      if(this.preferences[date][nurse][shift].pref === 'ON') {
+        pref = 'OFF';
+      } else {
+        pref = '';
+        weight = "";
+      }
+      
+      
     } else {
-      pref = true;
-      console.log("ici", this.weight ===  this.preferences[shift][date].weight, this.weight, this.preferences[shift][date].weight)
+      pref = 'ON';
     }
-    this.preferences[shift][date] = { pref, weight };
-    console.log("nurse preference", this.preferences);
-    console.log("nurse selected", this.selectedNurse);
+    this.preferences[date][nurse][shift] = { pref, weight };
+    console.log(this.preferences);
   }
 
-  showToolTip(shift: string, date: string):string {
-    if(this.preferences[shift][date].pref) return "The weight is "+ this.preferences[shift][date].weight;
+  showToolTip(date: string,nurse: string, shift: string):string {
+    if(this.preferences[date][nurse][shift].pref) return "The weight is "+ this.preferences[date][nurse][shift].weight;
     return ""
   }
 
-  getButtonState(shift: string, date: string): string {
-    if(this.preferences[shift][date].pref === true) {
-      return "indeterminate_check_box"
+  getButtonState(date: string, nurse: string, shift: string): string {
+    if(this.preferences[date][nurse][shift].pref === 'ON') {
+      return "check"
+    } 
+    if (this.preferences[date][nurse][shift].pref === 'OFF') {
+      return "close"
     }
     return "check_box_outline_blank";
   }
