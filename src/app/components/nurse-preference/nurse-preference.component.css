@@ -3,12 +3,12 @@
     flex-direction: row;
   }
   
-  .shift-name-table {
+  .nurse-name-table {
     display: flex;
     width: 150px;
   }
   
-  .shift-name-header {
+  .nurse-name-header {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -16,7 +16,7 @@
     height: 5px;
   }
   
-  .shift-name-cell {
+  .nurse-name-cell {
     padding-top: 2px;
     padding-bottom: 2px;
     background-color: rgb(235, 234, 234);
@@ -26,10 +26,13 @@
     display: flex;
     overflow-x: scroll;
   }
-  
-  .schedule-cells {
-    padding-left: 25px;
-    padding-right: 25px;
+  .date-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    width: 335px;
+    background-color: #A7C6EA;
   }
   
   .checkbox-row {
@@ -39,5 +42,6 @@
   .checkbox {
     border-width: 0px;
     background-color: rgb(235, 234, 234);
+    width: 80px;
   }
   

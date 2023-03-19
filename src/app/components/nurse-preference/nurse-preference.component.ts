@@ -18,24 +18,30 @@ interface  SchedulePref
     templateUrl: './nurse-preference.component.html',
     styleUrls: ['./nurse-preference.component.css']
   })
-  export class NursePreferenceComponent {
+  export class NursePreferenceComponent implements OnInit {
   regex = WEIGHT_ALLOWED_INTEGERS
 
   weight: string;
   possibleShifts: string[];
+
   timetable: string[];
   selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
   possibleNurses: string[];
   preferences: {[date: string]: {[nurse: string]: { [shift: string]: { pref: string, weight: string }} } } = {};
   nurseSelectorFormControl = new FormControl();
   scedulePref: SchedulePref[];
+  
 
   constructor() {
     this.scedulePref = [];
     this.weight = '';
     this.possibleShifts = ["early", "late", "evening", "night"];
-    this.timetable = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    this.timetable = ["Monday, April 3, 2023", "Tuesday, April 4, 2023", "Wednesday, April 5, 2023", "Thursday, April 6, 2023", "Friday, April 7, 2023", "Saturday, April 8, 2023", "Sunday, April 9, 2023"];
     this.possibleNurses = ["Nurse A", "Nurse B", "Nurse C", "Nurse D"];
+  }
+
+  ngOnInit(): void {
+    //initiate preferences
     for(const date of this.timetable){
       this.preferences[date] = {};
       for (const nurse of this.possibleNurses) {
@@ -86,6 +92,16 @@ interface  SchedulePref
       return "close"
     }
     return "check_box_outline_blank";
+  }
+
+  getButtonStyle(date: string, nurse: string, shift: string) {
+    const pref = this.preferences[date][nurse][shift].pref;
+    if (pref === 'ON') {
+      return {'background-color': 'rgb(228, 241, 226)' };
+    } else if (pref === 'OFF') {
+      return {'background-color': 'rgb(246, 233, 232)' };
+    }
+    return { 'background-color': 'rgb(235, 234, 234)' };
   }
 
   emitSchedulePref(){
