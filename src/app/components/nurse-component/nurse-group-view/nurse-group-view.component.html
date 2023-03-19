@@ -1,11 +1,14 @@
 <div *ngIf="connectedUser; else elseBlock">
   <app-header></app-header>
-  <app-sidenav-nurse></app-sidenav-nurse>
-<div *ngIf="this.nurseGroups.length>0">
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Morning" #input>
-  </mat-form-field>
+  <app-sidenav-nurse id="nurse-group-nav-bar"></app-sidenav-nurse>
+<div *ngIf="this.nurseGroups.length>0; else noNurseGroups">
+  <div class="button-container">
+    <mat-form-field class="filter">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Morning" #input>
+    </mat-form-field>
+    <button mat-raised-button class="buttonCreate" color="primary"  (click)="createNewNurseGroup()">Add new Nurse Group</button>
+  </div>
   
   <div class="mat-elevation-z8">
 
@@ -61,9 +64,13 @@
 <mat-paginator [pageSizeOptions]="[5, 10, 15,20]" aria-label="Select page of users"></mat-paginator>
 </div>
 </div>
+<ng-template #noNurseGroups>
+  <div class="button-container">
+    <button mat-raised-button class="buttonCreate" color="primary"  (click)="createNewNurseGroup()">Add new Nurse Group</button>
+  </div>
+</ng-template>
 
 </div>
-<button mat-raised-button class="buttonCreate" color="primary"  (click)="createNewNurseGroup()">Add new Nurse Group</button>
 <ng-template #elseBlock>
   <app-not-connected></app-not-connected>
 </ng-template>
