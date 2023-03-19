@@ -1,7 +1,16 @@
-// import {SelectionModel} from '@angular/cdk/collections';
- import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
+
+
+interface  SchedulePref
+  {
+      preference_date: string,
+      preference_username: string,
+      preference_pref: string,
+      preference_shift: string,
+      preference_weight: string,
+  }
 
 
 @Component({
@@ -19,8 +28,10 @@ import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
   possibleNurses: string[];
   preferences: {[date: string]: {[nurse: string]: { [shift: string]: { pref: string, weight: string }} } } = {};
   nurseSelectorFormControl = new FormControl();
+  scedulePref: SchedulePref[];
 
   constructor() {
+    this.scedulePref = [];
     this.weight = '';
     this.possibleShifts = ["early", "late", "evening", "night"];
     this.timetable = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -59,6 +70,7 @@ import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
     }
     this.preferences[date][nurse][shift] = { pref, weight };
     console.log(this.preferences);
+    this.emitSchedulePref();
   }
 
   showToolTip(date: string,nurse: string, shift: string):string {
@@ -76,6 +88,24 @@ import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
     return "check_box_outline_blank";
   }
 
-
+  emitSchedulePref(){
+    this.scedulePref = [];
+    for(const date of this.timetable){
+      for (const nurse of this.possibleNurses) {
+        for (const shift of this.possibleShifts) {
+          if(this.preferences[date][nurse][shift].pref === 'OFF' || this.preferences[date][nurse][shift].pref === 'ON'){
+            const schedule = {
+              preference_date: date, 
+              preference_username: nurse, 
+              preference_pref: this.preferences[date][nurse][shift].pref,
+              preference_shift: shift,
+              preference_weight: this.preferences[date][nurse][shift].weight
+            }
+            this.scedulePref.push(schedule);
+          }
+        }
+      }
+    }
+    console.log("emit schedule", this.scedulePref)
+  }
 }
-
