@@ -5,6 +5,13 @@
   
   .shift-name-table {
     display: flex;
+    width: 150px;
+  }
+  
+  .shift-name-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .shift-name-cell {
