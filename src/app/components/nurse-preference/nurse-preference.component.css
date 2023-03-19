@@ -12,11 +12,13 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-top: 20px;
+    height: 5px;
   }
   
   .shift-name-cell {
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     background-color: rgb(235, 234, 234);
   }
   
