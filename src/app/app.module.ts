@@ -20,6 +20,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -59,6 +63,7 @@ import { NurseGroupViewComponent } from './components/nurse-component/nurse-grou
 import { MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 
+
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
 import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
 import { ContractsViewComponent } from './components/contracts-view/contracts-view.component';
@@ -81,6 +86,7 @@ import { SkillCreationDialogComponent } from './components/skill-creation-dialog
 import { SkillCreationComponent } from './components/skill-creation/skill-creation.component';
 import { NurseCreationComponent } from './components/nurse-component/nurse-creation/nurse-creation.component';
 import { NurseGroupCreationComponent } from './components/nurse-component/nurse-group-creation/nurse-group-creation.component';
+import { ButtonMultiselectComponent } from './components/button-multiselect/button-multiselect.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +145,7 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
     SkillCreationComponent,
     NurseCreationComponent,
     NurseGroupCreationComponent,
+    ButtonMultiselectComponent,
   ],
   imports: [
     BrowserModule,
@@ -174,6 +181,10 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
     MatMenuModule,
     MatPaginatorModule,
     MatAutocompleteModule,
+    MatTableModule,
+    MatSortModule,
+    MatDividerModule,
+    MatButtonToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

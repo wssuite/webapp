@@ -92,7 +92,7 @@ export class NurseGroupCreationComponent implements OnInit {
       this.nurseGroup.nurses.splice(index, 1);
     }
     if (nurse !== undefined && nurse !== null) {
-      this.possibleContracts.push(nurse);
+      this.possibleNurses.push(nurse);
     }
     if(this.nurseGroup.nurses.length === 0){
       this.nurseSelectorError = true;

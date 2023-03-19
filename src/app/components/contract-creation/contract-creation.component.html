@@ -16,7 +16,9 @@
             <div *ngFor="let constraint of contract.constraints; let i= index" class="constraint-container">
                 <mat-expansion-panel [expanded]="i === contract.constraints.length -1">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>{{constraint.displayName}}</mat-panel-title>
+                        <mat-panel-title>{{constraint.displayName}} <mat-icon class="tool-tip-icon" matTooltip="Info about the action"
+                            matTooltipPosition="right">help</mat-icon>
+                        </mat-panel-title>
                     </mat-expansion-panel-header>
                     <ng-container [ngSwitch]="constraint.name">
                         <app-unwanted-patterns *ngSwitchCase="unwantedPatternsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
@@ -32,7 +34,7 @@
                         <div *ngSwitchDefault>Empty</div>
                     </ng-container>
                 </mat-expansion-panel>
-                <button mat-raised-button color="accent" (click)="removeConstraint(i)" class="delete-button">
+                <button mat-icon-button color="warn" (click)="removeConstraint(i)" class="delete-button">
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
@@ -41,10 +43,12 @@
         
         <h2>Choose a constraint to be added </h2>
         <br>
-        <div class="constraints" *ngFor="let constraint of possibleConstraints; let i= index">
+        <div class="constraints">        
+            <div *ngFor="let constraint of possibleConstraints; let i= index">
             <button class="constraint-button" mat-raised-button (click)="addConstraint(constraint)">
                 {{ constraint }}
             </button>
         </div>
+    </div>
     </div>
 </div>

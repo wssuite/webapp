@@ -1,0 +1,19 @@
+<button mat-raised-button (click)="selectAll()" [color]="areAllSelected() ? 'primary' : ''">All</button>
+<button mat-raised-button (click)="deselectAll()" [color]="areNoneSelected() ? 'primary' : ''">None</button>
+<button
+mat-raised-button
+  *ngFor="let customSelector of customSelectors"
+  (click)="applyCustomSelection(customSelector.elementsToSelect)"
+  [color]="isCustomSelectorActive(customSelector.elementsToSelect) ? 'primary' : '' "
+>
+  {{customSelector.name}}
+</button>
+<hr>
+<button
+  mat-raised-button
+  *ngFor="let element of allPossibleElements"
+  (click)="toggleElement(element)"
+  [color]="isSelected(element) ? 'primary' : '' "
+>
+  {{ element }}
+</button>

@@ -33,5 +33,6 @@ button{
 
 .nav-bar {
     background-color:white;
-    height: 10vh;
+    height: 100px;
+    width: 100%;
 }

@@ -8,16 +8,13 @@
     flex-direction: row;
     align-items:flex-end;
     right: 0%;
-    
-    /*height: 10vh;*/
-}
+    }
 
 .header-container{
-    /*background-color:aliceblue;
-    height: 5vh;*/
     display: flex;
     background-color:white;
-    height: 10vh;
+    height: 80px;
+    width: 100%;
 }
 
 .add-user{

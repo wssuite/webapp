@@ -1,8 +1,12 @@
 .additional-items {
     display: flex;
+    flex-direction: column;
     position: relative;
     align-items: start;
-    top:0%;
-    display: inline-flex;
     float: right;
+}
+
+.add-button{
+    margin-top: 10px;
+    margin-left: 10px;
 }
