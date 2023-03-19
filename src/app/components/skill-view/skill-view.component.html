@@ -1,5 +1,6 @@
 <div *ngIf="connectedUser; else elseBlock">
     <app-header></app-header>
+    <app-sidenav-shift id="skill-nav-bar"></app-sidenav-shift>
       <div *ngIf="this.skills.length>0; else noSkills">
         <div class="button-container">
         <mat-form-field class="filter">
@@ -8,7 +9,6 @@
         </mat-form-field>
           <button class="buttonCreate" mat-raised-button color="primary"  (click)="addNewSkill()">Add new skill</button>
         </div>
-        <app-sidenav-shift id="skill-nav-bar"></app-sidenav-shift>
 
         
         <div class="mat-elevation-z8">
@@ -52,7 +52,7 @@
         <div class="button-container">
           <button class="buttonCreate" mat-raised-button color="primary"  (click)="addNewSkill()">Add new skill</button>
         </div>
-        <app-sidenav-shift id="skill-nav-bar"></app-sidenav-shift>
+        <!-- <app-sidenav-shift id="skill-nav-bar"></app-sidenav-shift> -->
       </ng-template>
   </div>
   <ng-template #elseBlock>
