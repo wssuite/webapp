@@ -59,3 +59,17 @@ class FileSystemManager:
     @staticmethod
     def exist(name):
         return os.path.exists(name)
+
+    @staticmethod
+    def get_path_to_generate_schedule(profile, start_date, end_date):
+        r_path = os.path.join(profile, f"{start_date}_{end_date}")
+        full_path = os.path.join(
+            FileSystemManager.get_dataset_directory_path(),
+            r_path
+        )
+        FileSystemManager.create_dir_if_not_exist(full_path)
+        curr_version = FileSystemManager.current_version(full_path)
+        next_version = curr_version + 1
+        full_path = os.path.join(full_path, str(next_version))
+        FileSystemManager.create_dir_if_not_exist(full_path)
+        return full_path, next_version
