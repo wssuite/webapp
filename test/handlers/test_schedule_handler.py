@@ -68,7 +68,8 @@ class TestScheduleHandler(TestCase):
     def setUp(self):
         self.handler = ScheduleHandler(connect_to_fake_db())
         self.setUpPyfakefs()
-        self.fs.create_dir(f"{base_directory}/{dataset_directory}/{profile1}")
+        path = self.fs.joinpaths(base_directory, dataset_directory, profile1)
+        self.fs.create_dir(path)
         build_db(self.handler)
 
     def tearDown(self) -> None:
@@ -78,16 +79,22 @@ class TestScheduleHandler(TestCase):
         version = self.handler.generate_schedule(
             random_hex, hospital_demand_dict
         )
-        full_path = (
-            f"{base_directory}/{dataset_directory}/"
-            f"{profile1}/2023-06-01_2023-06-02/{version}"
+        full_path = self.fs.joinpaths(
+            base_directory, dataset_directory,
+            profile1, "2023-06-01_2023-06-02", version
         )
         folder_exist = self.fs.exists(full_path)
         self.assertTrue(folder_exist)
         actual = self.handler.get_input_problem_path(
             random_hex, profile1, "2023-06-01", "2023-06-02", version
         )
-        self.assertEqual(f"{full_path}/input.txt", actual)
+        expected_path = self.fs.joinpaths(full_path, "input.txt")
+        if self.fs.is_linux is True:
+            self.assertEqual(
+                f"{base_directory}/{dataset_directory}/{profile1}/"
+                f"2023-06-01_2023-06-02/{version}/input.txt", expected_path)
+
+        self.assertEqual(expected_path, actual)
 
     def test_get_input_file_path_if_not_exist_raise_error(self):
         with self.assertRaises(ProjectBaseException):

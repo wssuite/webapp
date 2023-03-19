@@ -1,4 +1,5 @@
 import json
+import os.path
 from typing import Type
 
 from exceptions.project_base_exception import ProjectBaseException
@@ -26,27 +27,24 @@ class ScheduleHandler(BaseHandler):
         self.verify_profile_accessors_access(token, demand.profile)
 
         """Get th path for next version"""
-        r_path = (
-            f"{demand_json[profile]}/{demand_json[start_date]}"
-            f"_{demand_json[end_date]}"
-        )
-        fs = FileSystemManager()
-        full_path = f"{fs.get_dataset_directory_path()}/{r_path}"
-        fs.create_dir_if_not_exist(full_path)
-        curr_version = fs.current_version(full_path)
-        next_version = curr_version + 1
-        full_path += f"/{str(next_version)}"
-        fs.create_dir_if_not_exist(full_path)
+        full_path, next_version = (
+            FileSystemManager.get_path_to_generate_schedule(
+                demand_json[profile],
+                demand_json[start_date],
+                demand_json[end_date]
+            ))
         detailed_demand = ScheduleDemandDetailed()
 
+        input_json = os.path.join(full_path, "input.json")
         """Dump the demand in an input.json file"""
-        with open(f"{full_path}/input.json", "w") as f:
+        with open(input_json, "w") as f:
             json.dump(demand.to_json(), f)
 
         detailed_demand.id = next_version
         self.__build_detailed_demand(demand, detailed_demand)
 
-        with open(f"{full_path}/input.txt", "w") as f:
+        input_txt = os.path.join(full_path, "input.txt")
+        with open(input_txt, "w") as f:
             f.write(detailed_demand.to_string())
 
         return str(next_version)
@@ -54,10 +52,7 @@ class ScheduleHandler(BaseHandler):
     def get_input_problem_path(self, token, profile_name, start, end, version):
         self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()
-        path = (
-            f"{fs.get_dataset_directory_path()}/{profile_name}/"
-            f"{start}_{end}/{version}/input.txt"
-        )
+        path = fs.get_input_problem_path(profile_name, start, end, version)
         if fs.exist(path):
             return path
         else:
@@ -116,7 +111,7 @@ class ScheduleHandler(BaseHandler):
 
     @staticmethod
     def add_object_to_demand_list(
-        array, object_type: Type[Jsonify], destination
+            array, object_type: Type[Jsonify], destination
     ):
         for element in array:
             t = object_type().from_json(element)
