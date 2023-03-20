@@ -28,7 +28,6 @@ interface  SchedulePref
   selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
   possibleNurses: string[];
   preferences: {[date: string]: {[nurse: string]: { [shift: string]: { pref: string, weight: string }} } } = {};
-  stateButtonAllNurse: {[nurse: string]:{ pref: string, weight: string }} = {};
   nurseSelectorFormControl = new FormControl();
   scedulePref: SchedulePref[];
   
@@ -47,7 +46,6 @@ interface  SchedulePref
       this.preferences[date] = {};
       for (const nurse of this.possibleNurses) {
         this.preferences[date][nurse] = {};
-        this.stateButtonAllNurse[nurse] = {pref: '', weight: ''};
         for (const shift of this.possibleShifts) {
           this.preferences[date][nurse][shift] = { pref: '', weight: '' };
         }
@@ -55,7 +53,7 @@ interface  SchedulePref
     }
   }
 
-  updatePreferences(date: string, nurse: string, shift: string, allNurse = false, newPref= '', newWeight='') {
+  updatePreferences(date: string, nurse: string, shift: string) {
     if (!this.preferences[nurse]) {
       this.preferences[nurse] = {};
     }
@@ -71,40 +69,14 @@ interface  SchedulePref
         pref = '';
         weight = "";
       }
+      
+      
     } else {
       pref = 'ON';
     }
-    if (allNurse) {
-      console.log(newPref)
-      for (const shift of this.possibleShifts) {
-        
-        this.preferences[date][nurse][shift] = { pref: newPref, weight: newWeight };
-      }
-    } else {
-      this.preferences[date][nurse][shift] = { pref, weight };
-    }
+    this.preferences[date][nurse][shift] = { pref, weight };
+    console.log(this.preferences);
     this.emitSchedulePref();
-  }
-  updateAllPreferences(nurse: string) {
-    let newPref = this.stateButtonAllNurse[nurse].pref;
-    let newWeight =  this.weight;
-    console.log("weight", this.stateButtonAllNurse[nurse].weight )
-    if(this.weight ===  this.stateButtonAllNurse[nurse].weight){
-      console.log("here",this.stateButtonAllNurse[nurse].pref)
-      if(this.stateButtonAllNurse[nurse].pref === 'ON') {
-        newPref  = 'OFF';
-      } else {
-        newPref  = '';
-        newWeight = "";
-      }
-    } else {
-      newPref  = 'ON';
-    }
-    this.stateButtonAllNurse[nurse] = {pref: newPref, weight: newWeight}
-    for(const date of this.timetable){
-      for (const shift of this.possibleShifts) {
-        this.updatePreferences(date, nurse, shift, true, newPref, newWeight);
-      }}
   }
 
   showToolTip(date: string,nurse: string, shift: string):string {
@@ -117,26 +89,6 @@ interface  SchedulePref
       return "check"
     } 
     if (this.preferences[date][nurse][shift].pref === 'OFF') {
-      return "close"
-    }
-    return "check_box_outline_blank";
-  }
-
-  getButtonStyleAllNurse( nurse: string) {
-    const pref = this.stateButtonAllNurse[nurse].pref;
-    if (pref === 'ON') {
-      return {'background-color': 'rgb(228, 241, 226)' };
-    } else if (pref === 'OFF') {
-      return {'background-color': 'rgb(246, 233, 232)' };
-    }
-    return { 'background-color': 'rgb(235, 234, 234)' };
-  }
-
-  getButtonStateAllNurse(nurse: string): string {
-    if(this.stateButtonAllNurse[nurse].pref === 'ON') {
-      return "check"
-    } 
-    if (this.stateButtonAllNurse[nurse].pref === 'OFF') {
       return "close"
     }
     return "check_box_outline_blank";
