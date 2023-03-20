@@ -30,11 +30,20 @@ export class ImportProfileComponent implements OnInit{
   contracts: Contract[];
   possibleShifts: string[];
   possibleShiftTypes: string[];
+  possibleShiftGroups: string[]
   contractShifts: string[];
   skills: string[];
   contractNames: string[];
   nurses: string[];
   nurseGroups: string[];
+
+  shiftsErrorState: boolean[];
+  shiftTypesErrorState: boolean[];
+  shiftGroupsErrorState: boolean[];
+  contractsErrorState: boolean[];
+  nursesErrorState: boolean[];
+  nurseGroupsErrorState: boolean[];
+  skillsErrorState: boolean[]
 
   constructor( private profileService: ProfileService,
     private dialog: MatDialog, private router: Router,
@@ -52,6 +61,15 @@ export class ImportProfileComponent implements OnInit{
       this.contractNames = []
       this.nurses = []
       this.nurseGroups = []
+      this.possibleShiftGroups = []
+
+      this.shiftsErrorState = []
+      this.shiftTypesErrorState = []
+      this.shiftGroupsErrorState = []
+      this.contractsErrorState = []
+      this.nursesErrorState = []
+      this.nurseGroupsErrorState = []
+      this.skillsErrorState = []
     }
 
   ngOnInit(): void {
@@ -83,9 +101,9 @@ export class ImportProfileComponent implements OnInit{
     this.profileService.import(formData).subscribe({
       next: (data: DetailedProfile)=> {
         this.profile = data
-        this.validProfile = true;
         this.readArrays();  
         console.log(data)
+        this.validProfile = true;
       },
       error: (err: HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
@@ -115,24 +133,36 @@ export class ImportProfileComponent implements OnInit{
     this.profile.contracts.forEach((c:ContractInterface)=>{
       this.contracts.push(this.contractService.fromJson(c))
       this.contractNames.push(c.name);
+      this.contractsErrorState.push(true);
     })
-    console.log(this.contracts)
     this.profile.shifts.forEach((shift:ShiftInterface)=>{
       this.possibleShifts.push(shift.name)
       this.contractShifts.push(shift.name)
+      this.shiftsErrorState.push(true)
     })
     this.profile.shiftTypes.forEach((st: ShiftTypeInterface)=>{
       this.possibleShiftTypes.push(st.name)
       this.contractShifts.push(st.name)
+      this.shiftTypesErrorState.push(true)
+    })
+    this.profile.shiftGroups.forEach((shiftGroup: ShiftGroupInterface)=>{
+      this.possibleShiftGroups.push(shiftGroup.name);
+      this.contractShifts.push(shiftGroup.name);
     })
     this.profile.skills.forEach((skill: SkillInterface)=>{
       this.skills.push(skill.name)
+      this.skillsErrorState.push(true)
     })
     this.profile.nurses.forEach((nurse: NurseInterface)=>{
       this.nurses.push(nurse.username)
+      this.nursesErrorState.push(true)
     })
     this.profile.nurseGroups.forEach((group: NurseGroupInterface)=>{
       this.nurseGroups.push(group.name)
+      this.nurseGroupsErrorState.push(true)
+    })
+    this.profile.shiftGroups.forEach(()=>{
+      this.shiftGroupsErrorState.push(true);
     })
   }
 
@@ -144,6 +174,7 @@ export class ImportProfileComponent implements OnInit{
       profile: this.profile.profile,
     }
     this.profile.shifts.push(newShift)
+    this.shiftsErrorState.push(true);
   }
 
   addShiftGroup(){
@@ -154,6 +185,7 @@ export class ImportProfileComponent implements OnInit{
       shiftTypes:[]
     }
     this.profile.shiftGroups.push(newSG)
+    this.shiftGroupsErrorState.push(true)
   }
 
   addShiftType() {
@@ -163,10 +195,12 @@ export class ImportProfileComponent implements OnInit{
       profile: this.profile.profile
     }
     this.profile.shiftTypes.push(newST)
+    this.shiftTypesErrorState.push(true);
   }
 
   addContract() {
     this.contracts.push(new Contract())
+    this.contractsErrorState.push(true);
   }
 
   addNurse() {
@@ -177,6 +211,7 @@ export class ImportProfileComponent implements OnInit{
       profile: this.profile.profile
     }
     this.profile.nurses.push(newNurse)
+    this.nursesErrorState.push(true);
   }
 
   addNurseGroup() {
@@ -187,6 +222,7 @@ export class ImportProfileComponent implements OnInit{
       profile: this.profile.profile
     }
     this.profile.nurseGroups.push(ng)
+    this.nurseGroupsErrorState.push(true);
   }
 
   addSkill(){
@@ -195,37 +231,135 @@ export class ImportProfileComponent implements OnInit{
       profile: this.profile.profile
     }
     this.profile.skills.push(skill)
+    this.skillsErrorState.push(true)
   }
 
   removeSkill(index: number){
     this.profile.skills.splice(index, 1);
+    this.skillsErrorState.splice(index,1);
   }
 
   removeShift(index: number){
     this.profile.shifts.splice(index,1);
+    this.shiftsErrorState.splice(index,1);
   }
 
   removeShiftType(index: number){
     this.profile.shiftTypes.splice(index,1);
+    this.shiftTypesErrorState.splice(index,1);
   }
 
   removeShiftGroup(index:number) {
     this.profile.shiftGroups.splice(index,1);
+    this.shiftGroupsErrorState.splice(index,1);
   }
 
   removeNurse(index: number) {
     this.profile.nurses.splice(index,1);
+    this.nursesErrorState.splice(index,1);
   }
 
   removeNurseGroup(index: number) {
     this.profile.nurseGroups.splice(index,1);
+    this.nurseGroupsErrorState.splice(index,1);
   }
 
   removeContract(index:number) {
     this.contracts.splice(index,1);
+    this.contractsErrorState.splice(index,1)
   }
 
   cancel(){
     this.router.navigate(["/" + MAIN_MENU])
+  }
+
+  shiftSectionHasError(){
+    return this.shiftsErrorState.includes(true)
+  }
+  shiftHasError(index: number) {
+    return this.shiftsErrorState[index]
+  }
+
+  shiftTypeSectionHasError(){
+    return this.shiftTypesErrorState.includes(true)
+  }
+  shiftTypeHasError(index:number){
+    return this.shiftTypesErrorState[index]
+  }
+
+  shiftGroupSectionHasError(){
+    return this.shiftGroupsErrorState.includes(true)
+  }
+
+  shiftGroupHasError(index: number){
+    return this.shiftGroupsErrorState[index]
+  }
+
+  contractSectionHasError(){
+    return this.contractsErrorState.includes(true)
+  }
+
+  contractHasError(index:number){
+    return this.contractsErrorState[index]
+  }
+
+  nurseSectionHasError(){
+    return this.nursesErrorState.includes(true)
+  }
+
+  nurseHasError(i:number) {
+    return this.nursesErrorState[i]
+  }
+
+  nurseGroupSectionHasError() {
+    return this.nurseGroupsErrorState.includes(true)
+  }
+
+  nurseGroupHasError(i:number) {
+    return this.nurseGroupsErrorState[i]
+  }
+
+  skillSectionHasError() {
+    return this.skillsErrorState.includes(true)
+  }
+
+  skillHasError(i:number) {
+    return this.skillsErrorState[i];
+  }
+
+  formHasError(){
+    return this.skillSectionHasError() ||
+     this.nurseSectionHasError() || this.nurseGroupSectionHasError()
+      || this.contractSectionHasError() || this.shiftGroupSectionHasError()
+      || this.shiftSectionHasError() || this.shiftTypeSectionHasError() ||
+      this.nameExist() || this.profileNameCtrl.hasError("required") 
+  }
+
+  updateShiftErrorState(index:number, e:boolean){
+    this.shiftsErrorState[index] = e;
+  }
+
+  updateShiftTypeErrorState(index:number, e:boolean){
+    this.shiftTypesErrorState[index] = e;
+  }
+
+  updateShiftGroupErrorState(index:number, e:boolean){
+    this.shiftGroupsErrorState[index] = e;
+  }
+
+  updateContractErrorState(index:number, e:boolean){
+    this.contractsErrorState[index] = e;
+  }
+
+  updateNurseErrorState(index:number, e:boolean){
+    this.nursesErrorState[index] = e;
+  }
+
+  updateNurseGroupErrorState(index:number, e:boolean){
+    this.nurseGroupsErrorState[index] = e;
+  }
+
+  updateSkillErrorState(index:number, e:boolean){
+    this.skillsErrorState[index] = e;
   }
 }

@@ -13,7 +13,7 @@
   <div *ngIf="possibleShifts.length > 0">
     <mat-form-field appearance="fill">
       <mat-label>Select a shift</mat-label>
-      <mat-select [(ngModel)]="selectedShift" >
+      <mat-select [(value)]="selectedShift" (selectionChange)="emitShiftType()">
         <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
             {{shift}}
         </mat-option>

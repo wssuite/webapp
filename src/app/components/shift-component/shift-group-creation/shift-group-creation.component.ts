@@ -37,7 +37,8 @@ export class ShiftGroupCreationComponent implements OnInit{
     this.inputDisabled = this.shiftGroup.name === ""? false: true;
     this.nameShiftGroupFormCtrl = new FormControl({value: this.shiftGroup.name, disabled: this.inputDisabled},
       Validators.required);
-    this.shiftGroupStartName = this.shiftGroup.name; 
+    this.shiftGroupStartName = this.shiftGroup.name;
+    this.emitShiftGroup() 
   }
 
   addShift() {
@@ -100,7 +101,8 @@ export class ShiftGroupCreationComponent implements OnInit{
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameShiftGroupFormCtrl.hasError('required') || (this.nameExist() && this.shiftGroupStartName === '') ||this.shiftGroupSelectorError );
+    this.errorState.emit(this.nameShiftGroupFormCtrl.hasError('required') ||
+     (this.nameExist() && this.shiftGroupStartName === '') ||(this.shiftGroup.shifts.length === 0 && this.shiftGroup.shiftTypes.length === 0));
     console.log("error");
   }
 

@@ -35,6 +35,7 @@ export class ShiftTypeCreationComponent implements OnInit {
     this.nameShiftTypeFormCtrl = new FormControl({value: this.shiftType.name, disabled: this.inputDisabled},
       Validators.required);
     this.shiftTypeStartName = this.shiftType.name;
+    this.emitShiftType()
    
   }
 
@@ -72,7 +73,7 @@ export class ShiftTypeCreationComponent implements OnInit {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameShiftTypeFormCtrl.hasError('required') || (this.nameExist() && this.shiftTypeStartName === '') ||this.shiftTypeSelectorError );
+    this.errorState.emit(this.nameShiftTypeFormCtrl.hasError('required') || (this.nameExist() && this.shiftTypeStartName === '') || this.shiftType.shifts.length === 0);
     console.log("error");
   }
 

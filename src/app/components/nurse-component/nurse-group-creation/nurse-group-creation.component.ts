@@ -43,7 +43,8 @@ export class NurseGroupCreationComponent implements OnInit {
     this.inputDisabled = this.nurseGroup.name === ""? false: true;
     this.nameNurseGroupFormCtrl = new FormControl({value: this.nurseGroup.name, disabled: this.inputDisabled},
       Validators.required);
-    this.nurseGroupStartname = this.nurseGroup.name; 
+    this.nurseGroupStartname = this.nurseGroup.name;
+    this.emitNurseGroup();
   }
 
   addContract() {
@@ -107,7 +108,7 @@ export class NurseGroupCreationComponent implements OnInit {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameNurseGroupFormCtrl.hasError('required') || this.nameNurseGroupFormCtrl.hasError('required') || (this.nameExist() && this. nurseGroupStartname === '') ||this.contractSelectorError ||this.nameNurseGroupFormCtrl.hasError('required') || (this.nameExist() && this.nurseGroupStartname === '') || this.contractSelectorError || this.nurseSelectorError );
+    this.errorState.emit(this.nameNurseGroupFormCtrl.hasError('required') || this.nameNurseGroupFormCtrl.hasError('required') || (this.nameExist() && this. nurseGroupStartname === '') ||this.nameNurseGroupFormCtrl.hasError('required') || (this.nameExist() && this.nurseGroupStartname === '') || this.nurseGroup.contracts.length === 0 || this.nurseGroup.nurses.length === 0 );
     console.log("error");
   }
 

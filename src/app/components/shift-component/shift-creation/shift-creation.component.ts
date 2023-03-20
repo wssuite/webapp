@@ -43,6 +43,7 @@ export class ShiftCreationComponent implements OnInit{
     this.endTimeFormCtrl = new FormControl({value: this.shift.endTime, disabled: false},
         Validators.required);
       this.shiftStartName = this.shift.name;
+      this.emitShift()
   }
 
   convertTime(time: string): Time{

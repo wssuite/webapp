@@ -69,6 +69,7 @@ export class ContractCreationComponent implements OnInit{
     for(let i = 0; i< this.contract.constraints.length; i++){
       this.constraintsErrorState.push(true)
     }
+    this.emitContract()
   }
   
   addConstraint(name: string) {
