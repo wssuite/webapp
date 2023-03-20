@@ -3,6 +3,7 @@ import { BASE_VALUE } from 'src/app/constants/constraints';
 import { SkillDemandInterface } from 'src/app/models/hospital-demand';
 
 
+
 @Component({
   selector: 'app-min-max-hopspital-demand',
   templateUrl: './min-max-hopspital-demand.component.html',
@@ -20,8 +21,7 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
   minWeightLabel: string;
   maxWeightLabel: string;
   skillDemand: SkillDemandInterface;
-
-
+  
   constructor() {
     this.demandChange = new EventEmitter();
     this.errorState = new EventEmitter();
@@ -44,6 +44,7 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
       this.maxValueErrorState = this.skillDemand.maxValue === BASE_VALUE;
       this.maxWeightErrorState = this.skillDemand.maxWeight === BASE_VALUE;
       this.minWeightErrorState = this.skillDemand.minWeight === BASE_VALUE;
+      this.skillDemand.skillId = this.skill;
   }
 
   emitErrorState(){
@@ -75,5 +76,21 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
     this.maxWeightErrorState = e;
     this.emitSkillDemand();
   }
+
+  /*isSelected = (event: any) => {
+    const date = event as moment.Moment
+    
+    return (this.dates.find(x => x.isSame(date))) ? "selected" : null;
+  };
+  
+  select(event: any, calendar: any) {
+    const date: moment.Moment = event
+
+    const index = this.dates.findIndex(x => x.isSame(date));
+    if (index < 0) this.dates.push(date);
+    else this.dates.splice(index, 1);
+
+    calendar.updateTodaysDate();
+  }*/
 }
 

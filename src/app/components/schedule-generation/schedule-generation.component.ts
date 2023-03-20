@@ -5,12 +5,13 @@ import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CONSULT_SCHEDULE } from "src/app/constants/app-routes";
-import { ScheduleDataInterface } from "src/app/models/hospital-demand";
+import { HospitalDemand, HospitalDemandInterface, ScheduleDataInterface } from "src/app/models/hospital-demand";
 import { NurseInterface } from "src/app/models/Nurse";
 import { NurseService } from "src/app/services/nurse/nurse.service";
 import { ShiftService } from "src/app/services/shift/shift.service";
 import { SkillService } from "src/app/services/shift/skill.service";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
+
 
 @Component({
   selector: "app-schedule-generation",
@@ -42,16 +43,24 @@ export class ScheduleGenerationComponent implements OnInit  {
   selectedShift: string;
   shifts: string[];
 
+  selectSkillFormCtrl: FormControl;
+  possibleSkills: string[];
+  selectedSkill: string;
+  skills: string[];
+
+  hospitalDemands: HospitalDemand[];
 
   scheduleData!: ScheduleDataInterface;
 
-  
   constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService, 
     private nurseService: NurseService, private dialog: MatDialog
   ){
     this.startDate = new Date();
-
     this.endDate = new Date();
+    this.possibleSkills = [];
+    this.selectedSkill = this.possibleSkills[0];
+    this.skills = [];
+    this.selectSkillFormCtrl = new FormControl(null, Validators.required);
 
     this.problemNameFormCtrl = new FormControl(null, Validators.required);
     this.problemName = "";
@@ -61,6 +70,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     this.possibleShifts = [];
     this.selectedShift = this.possibleShifts[0];
     this.shifts = [];
+    this.hospitalDemands = [];
 
   }
   ngOnInit(): void {
@@ -87,6 +97,22 @@ export class ScheduleGenerationComponent implements OnInit  {
           this.openErrorDialog(error.error);
         }
       })
+
+      try{
+        this.skillService.getAllSkills().subscribe({
+          next:(skills: string[])=>{
+            skills.forEach((skill: string)=>{
+              this.possibleSkills.push(skill);
+            })
+          },
+          error: (error: HttpErrorResponse)=>{
+            this.openErrorDialog(error.error);
+          }
+        })
+  
+      }catch(err){
+        //Do nothing
+      }
 
       
     }catch(err){
@@ -143,6 +169,39 @@ export class ScheduleGenerationComponent implements OnInit  {
     }
   }
 
+  
+  addSkill() {
+    const index = this.possibleSkills.indexOf(this.selectedSkill);
+    if (index > -1) {
+      this.possibleSkills.splice(index, 1);
+    }
+    this.skills.push(this.selectedSkill);
+    if (this.possibleSkills.length > 0) {
+        this.selectedSkill = this.possibleSkills[0];
+    }
+  }
+  
+  removeSkill(skill: string) {
+    const index = this.skills.indexOf(skill);
+    if (index > -1) {
+      this.skills.splice(index,1);
+    if (skill !== undefined && skill !== null) {
+      this.possibleSkills.push(skill);
+    }
+  }
+}
+
+  addDemand(){
+    const newDemand: HospitalDemand = new HospitalDemand();
+    this.hospitalDemands.push(newDemand);
+  }
+
+  removeDemand(pattern:HospitalDemand) {
+    const index = this.hospitalDemands.indexOf(pattern);
+    if(index > -1){
+      this.hospitalDemands.splice(index, 1);
+    }
+  }
 
   updateStartDate(e: MatDatepickerInputEvent<Date>) {
     this.startDate =

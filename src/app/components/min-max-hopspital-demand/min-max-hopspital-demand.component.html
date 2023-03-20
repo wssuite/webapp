@@ -1,6 +1,6 @@
 <div (mouseleave)="emitSkillDemand()" class="min-min-hospital-demand-container">
     <div class="hospital-variables-container">
-        <h2>{{skillDemand.skillId}}</h2>
+        <h3>{{skillDemand.skillId}}</h3>
         <div class="min-value-container">
             <label>Min value: </label>
             <app-numeric-input [(value)]="skillDemand.minValue" (errorState)="updateMinValueErrorState($event)"></app-numeric-input>
