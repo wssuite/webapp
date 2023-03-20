@@ -30,3 +30,7 @@ footer{
     background-color: white;
     display: block;
 }
+
+h1:hover{
+    cursor: pointer;
+}
