@@ -146,4 +146,8 @@ export class ContractCreationComponent implements OnInit{
   nameExist(): boolean {
     return this.contracts.includes(this.contract.name);
   }
+
+  constraintHasErrorState(index:number){
+    return this.constraintsErrorState[index];
+  }
 }

@@ -16,7 +16,10 @@
             <div *ngFor="let constraint of contract.constraints; let i= index" class="constraint-container">
                 <mat-expansion-panel [expanded]="i === contract.constraints.length -1">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>{{constraint.displayName}} <mat-icon class="tool-tip-icon" matTooltip="Info about the action"
+                        <mat-panel-title>
+                            <mat-icon *ngIf="constraintHasErrorState(i)" color="warn">error</mat-icon>
+                            {{constraint.displayName}}
+                            <mat-icon class="tool-tip-icon" matTooltip="Info about the action"
                             matTooltipPosition="right">help</mat-icon>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
