@@ -5,6 +5,11 @@
         <th class="nurse-name-header">Nurse</th>
       </tr>
       <tr *ngFor="let nurse of possibleNurses">
+        <td>
+          <button class="button-all-nurse" [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" (click)="updateAllPreferences(nurse)" [ngStyle]="getButtonStyleAllNurse(nurse)">
+            <mat-icon>{{getButtonStateAllNurse(nurse)}}</mat-icon>
+          </button>
+        </td>
         <td class="nurse-name-cell">{{nurse}}</td>
       </tr>
     </table>
