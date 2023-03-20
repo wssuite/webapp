@@ -1,7 +1,71 @@
 
+<mat-expansion-panel (opened)="panelOpenState = true"(closed)="panelOpenState = false">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+    {{shift}}
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Date
+        </mat-panel-title>
+        <mat-panel-description>
+          Enter the date you want to specify the hospital request
+          <mat-icon>date_range</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-  <mat-card class="demo-inline-calendar-card">
-    <mat-calendar [(selected)]="selected" [dateFilter]="dateFilter"
-    [rangeMode]="true"></mat-calendar>
-  </mat-card>
-  <p>Selected date: {{selected}}</p>
+      <mat-form-field appearance="fill">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
+      </mat-form-field>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Skill
+        </mat-panel-title>
+        <mat-panel-description>
+          Add skills
+          <mat-icon>assignment_ind</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+        <div *ngIf="possibleSkills.length > 0">
+          <mat-form-field appearance="fill">
+            <mat-label>select a skill</mat-label>
+            <mat-select [(value)]="selectedSkill">
+              <mat-option *ngFor="let skill of possibleSkills" [value]="skill">
+                {{skill}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button class="addSkilltButton" (click)="addSkill()">
+            add Skill
+          </button>
+        </div>
+
+        <table class="skillsTable">
+         <app-min-max-hopspital-demand [skill]="selectedSkill"></app-min-max-hopspital-demand>
+        </table>
+  
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">End</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  
+  </mat-accordion>
+</mat-expansion-panel>
+
+
+
+
+

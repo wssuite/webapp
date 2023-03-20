@@ -1,6 +1,11 @@
 export interface HospitalDemandInterface {
     date: string;
     shiftId: string;
+    skillDemands: SkillDemandInterface[];
+
+}
+
+export interface SkillDemandInterface{
     skillId: string;
     maxValue: string;
     maxWeight: string;

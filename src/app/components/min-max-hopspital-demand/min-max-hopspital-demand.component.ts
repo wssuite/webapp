@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
 import { BASE_VALUE } from 'src/app/constants/constraints';
-import { HospitalDemandInterface } from 'src/app/models/hospital-demand';
-import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
+import { SkillDemandInterface } from 'src/app/models/hospital-demand';
+
 
 @Component({
   selector: 'app-min-max-hopspital-demand',
@@ -10,20 +9,18 @@ import { MinMaxShiftConstraint } from 'src/app/models/MinMaxShiftConstraint';
   styleUrls: ['./min-max-hopspital-demand.component.css']
 })
 export class MinMaxHopspitalDemandComponent implements OnInit{
-  @Input() hospitalDemand!: HospitalDemandInterface;
-  @Output() demandChange: EventEmitter<HospitalDemandInterface>;
-  @Input() possibleShifts!: string[];
-  @Input() possibleSkills!: string[];
+  @Output() demandChange: EventEmitter<SkillDemandInterface>;
+  @Input() skill!: string;
   @Output() errorState: EventEmitter<boolean>;
   
   minValueErrorState: boolean;
   maxValueErrorState: boolean;
   maxWeightErrorState: boolean;
   minWeightErrorState: boolean;
-  selectShiftFormCtrl: FormControl;
-  selectSkillFormCtrl: FormControl;
   minWeightLabel: string;
   maxWeightLabel: string;
+  skillDemand: SkillDemandInterface;
+
 
   constructor() {
     this.demandChange = new EventEmitter();
@@ -32,50 +29,51 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
     this.maxValueErrorState = true;
     this.maxWeightErrorState = true;
     this.minWeightErrorState = true;
-    this.selectShiftFormCtrl = new FormControl(null, Validators.required);
-    this.selectSkillFormCtrl = new FormControl(null, Validators.required);
     this.maxWeightLabel = " Max weight";
     this.minWeightLabel = "Min weight"
+    this.skillDemand = {
+      skillId: this.skill,
+      maxValue: "0",
+      maxWeight: "0",
+      minValue: "0",
+      minWeight: "0"};
   }
 
   ngOnInit(): void {
-      this.selectShiftFormCtrl.setValue(this.hospitalDemand.shiftId);
-      this.selectSkillFormCtrl.setValue(this.hospitalDemand.shiftId);
-      this.minValueErrorState = this.hospitalDemand.minValue === "";
-      this.maxValueErrorState = this.hospitalDemand.maxValue === "";
-      this.maxWeightErrorState = this.hospitalDemand.maxWeight === BASE_VALUE;
-      this.minWeightErrorState = this.hospitalDemand.minWeight === BASE_VALUE;
+      this.minValueErrorState = this.skillDemand.minValue === BASE_VALUE;
+      this.maxValueErrorState = this.skillDemand.maxValue === BASE_VALUE;
+      this.maxWeightErrorState = this.skillDemand.maxWeight === BASE_VALUE;
+      this.minWeightErrorState = this.skillDemand.minWeight === BASE_VALUE;
   }
 
   emitErrorState(){
     this.errorState.emit(this.minValueErrorState || this.maxValueErrorState ||
-          this.minWeightErrorState || this.maxWeightErrorState ||
-          this.selectSkillFormCtrl.hasError('required') ||  this.selectShiftFormCtrl.hasError('required')) ;
+          this.minWeightErrorState || this.maxWeightErrorState) ;
   }
 
-  emitDemand() {
-    this.demandChange.emit(this.hospitalDemand);
+  emitSkillDemand() {
+    this.demandChange.emit(this.skillDemand);
     this.emitErrorState();
   }
 
   updateMinValueErrorState(e: boolean) {
     this.minValueErrorState = e;
-    this.emitDemand();
+    this.emitSkillDemand();
   }
 
   updateMaxValueErrorState(e: boolean) {
     this.maxValueErrorState = e;
-    this.emitDemand(); 
+    this.emitSkillDemand();
   }
 
   updateMinWeightErrorState(e: boolean) {
     this.minWeightErrorState = e;
-    this.emitDemand();
+    this.emitSkillDemand();
   }
 
   updateMaxWeightErrorState(e: boolean) {
     this.maxWeightErrorState = e;
-    this.emitDemand();
+    this.emitSkillDemand();
   }
 }
 

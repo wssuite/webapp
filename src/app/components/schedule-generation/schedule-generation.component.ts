@@ -37,9 +37,6 @@ export class ScheduleGenerationComponent implements OnInit  {
   selectedNurse: NurseInterface;
   nurses:NurseInterface[];
 
-  possibleSkills: string[];
-  selectedSkill: string;
-  skills: string[];
 
   possibleShifts: string[];
   selectedShift: string;
@@ -61,9 +58,6 @@ export class ScheduleGenerationComponent implements OnInit  {
     this.possibleNurses = [];
     this.selectedNurse = this.possibleNurses[0];
     this.nurses  = [];
-    this.possibleSkills = [];
-    this.selectedSkill = this.possibleSkills[0];
-    this.skills = [];
     this.possibleShifts = [];
     this.selectedShift = this.possibleShifts[0];
     this.shifts = [];
@@ -75,18 +69,6 @@ export class ScheduleGenerationComponent implements OnInit  {
         next: (shifts: string[])=>{
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
-          })
-        },
-        error: (error: HttpErrorResponse)=>{
-          this.openErrorDialog(error.error);
-        }
-      })
-
-
-      this.skillService.getAllSkills().subscribe({
-        next:(skills: string[])=>{
-          skills.forEach((skill: string)=>{
-            this.possibleSkills.push(skill);
           })
         },
         error: (error: HttpErrorResponse)=>{
@@ -160,27 +142,6 @@ export class ScheduleGenerationComponent implements OnInit  {
       this.possibleShifts.push(shift);
     }
   }
-
-  addSkill() {
-    const index = this.possibleSkills.indexOf(this.selectedSkill);
-    if (index > -1) {
-      this.possibleSkills.splice(index, 1);
-    }
-    this.skills.push(this.selectedSkill);
-    if (this.possibleSkills.length > 0) {
-        this.selectedSkill = this.possibleSkills[0];
-    }
-  }
-  
-  removeSkill(skill: string) {
-    const index = this.skills.indexOf(skill);
-    if (index > -1) {
-      this.skills.splice(index,1);
-    if (skill !== undefined && skill !== null) {
-      this.possibleSkills.push(skill);
-    }
-  }
-}
 
 
   updateStartDate(e: MatDatepickerInputEvent<Date>) {
