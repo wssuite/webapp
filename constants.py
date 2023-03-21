@@ -90,6 +90,22 @@ bind_map = {
     unwanted_skills_import_name: unwanted_skills,
     alternative_shift_import_name: alternative_shift,
 }
+
+export_bind_map = {
+    unwanted_pattern: unwanted_pattern_import_name,
+    total_weekends_in_four_weeks: total_weekends_in_four_weeks_import_name,
+    min_max_consecutive_shift_type: min_max_consecutive_shift_type_import_name,
+    min_max_consecutive_weekends: min_max_consecutive_weekends_import_name,
+    min_max_num_assignments_in_four_weeks:
+        min_max_num_assignments_in_four_weeks_import_name,
+    complete_weekends: complete_weekends_import_name,
+    identical_shift_during_weekend: identical_shift_during_weekend_import_name,
+    number_of_free_days_after_shift:
+        number_of_free_days_after_shift_import_name,
+    unwanted_skills: unwanted_skills_import_name,
+    alternative_shift: alternative_shift_import_name,
+}
+
 """Contract"""
 sub_contract_names = "subContractNames"
 contract_name = "name"

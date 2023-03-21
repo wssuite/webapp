@@ -1,3 +1,4 @@
+from models.exporter import CSVExporter
 from src.models.string_reader import StringReader
 from src.models.stringify import (
     Stringify,
@@ -16,6 +17,7 @@ from constants import (
     unwanted_pattern_elements,
     contract_skills,
     bind_map,
+    export_bind_map,
 )
 from src.models.pattern_element import PatternElement
 from src.models.jsonify import Jsonify
@@ -45,7 +47,10 @@ class BaseConstraint(Jsonify, Stringify):
         super().__init__(*args, **kwargs)
 
 
-class ContractConstraint(BaseConstraint, StringReader):
+class ContractConstraint(BaseConstraint, StringReader, CSVExporter):
+    def export(self):
+        pass
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -85,6 +90,10 @@ class ContractIntegerConstraint(ContractConstraint):
     def to_string(self):
         return f"{self.name},{self.weight},{self.value}\n"
 
+    def export(self):
+        export_name = export_bind_map[self.name]
+        return f"{export_name},{self.weight},{self.value}\n"
+
 
 class ContractIntegerShiftConstraint(ContractIntegerConstraint):
     shift = StringField(serialized_name=shift_constraint)
@@ -110,6 +119,10 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
 
     def to_string(self):
         return f"{self.name},{self.weight},{self.value},{self.shift}\n"
+
+    def export(self):
+        export_name = export_bind_map[self.name]
+        return f"{export_name},{self.shift},{self.value},{self.weight}"
 
 
 class ContractMinMaxConstraint(ContractConstraint):
@@ -140,6 +153,13 @@ class ContractMinMaxConstraint(ContractConstraint):
         return (
             f"{self.name},{self.minValue},"
             f"{self.minWeight},{self.maxValue},{self.maxWeight}\n"
+        )
+
+    def export(self):
+        export_name = export_bind_map[self.name]
+        return (
+            f"{export_name},{self.minValue},{self.minWeight},"
+            f"{self.maxValue},{self.maxWeight}"
         )
 
 
@@ -173,6 +193,13 @@ class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
             f"{self.maxValue},{self.maxWeight},{self.shift}\n"
         )
 
+    def export(self):
+        export_name = export_bind_map[self.name]
+        return (
+            f"{export_name},{self.shift},{self.minValue},{self.minWeight},"
+            f"{self.maxValue},{self.maxWeight}\n"
+        )
+
 
 class ContractBooleanConstraint(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -194,6 +221,10 @@ class ContractBooleanConstraint(ContractConstraint):
 
     def to_string(self):
         return f"{self.name},{self.weight}\n"
+
+    def export(self):
+        export_name = export_bind_map[self.name]
+        return f"{export_name},{self.weight}"
 
 
 class ContractUnwantedPatterns(ContractConstraint):
@@ -247,6 +278,13 @@ class ContractUnwantedPatterns(ContractConstraint):
             ret += f",{pattern.to_string()}"
         return f"{ret}\n"
 
+    def export(self):
+        ret = export_bind_map[self.name]
+        for pattern in self.pattern_elements:
+            ret += f",{pattern.export()}"
+        ret += f",{self.weight}"
+        return f"{ret}\n"
+
 
 class ContractAlternativeShift(ContractConstraint):
     name = StringField(serialized_name=constraint_name)
@@ -273,6 +311,10 @@ class ContractAlternativeShift(ContractConstraint):
 
     def to_string(self):
         return f"{self.name},{self.weight},{self.shift}\n"
+
+    def export(self):
+        export_name = export_bind_map[self.name]
+        return f"{export_name},{self.shift},{self.weight}"
 
 
 class ContractUnwantedSkills(ContractConstraint):
@@ -308,4 +350,13 @@ class ContractUnwantedSkills(ContractConstraint):
         return (
             f"{self.name},{self.weight},"
             f"{len(self.unwanted_skills)}{skill_string}\n"
+        )
+
+    def export(self):
+        export_name = export_bind_map[self.name]
+        skill_string = extract_string_from_simple_object_array(
+            self.unwanted_skills
+        )
+        return (
+            f"{export_name},{skill_string},{self.weight}"
         )

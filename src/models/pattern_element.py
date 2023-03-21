@@ -1,3 +1,4 @@
+from models.exporter import CSVExporter
 from src.models.jsonify import Jsonify
 from pykson import ListField
 from constants import pattern_element_shift, pattern_element_day
@@ -5,7 +6,10 @@ from src.models.string_reader import StringReader
 from src.models.stringify import Stringify
 
 
-class PatternElement(Jsonify, Stringify, StringReader):
+class PatternElement(Jsonify, Stringify, StringReader, CSVExporter):
+    def export(self):
+        self.to_string()
+
     shifts = ListField(str, serialized_name=pattern_element_shift)
     days = ListField(str, serialized_name=pattern_element_day)
 
