@@ -1,13 +1,13 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CONSULT_SCHEDULE } from "src/app/constants/app-routes";
-import { HospitalDemand, HospitalDemandInterface, ScheduleDataInterface } from "src/app/models/hospital-demand";
+import { HospitalDemand, ScheduleDataInterface } from "src/app/models/hospital-demand"
 import { NurseInterface } from "src/app/models/Nurse";
-import { NurseService } from "src/app/services/nurse/nurse.service";
+import { NurseService } from "src/app/services/nurse/nurse.service"
 import { ShiftService } from "src/app/services/shift/shift.service";
 import { SkillService } from "src/app/services/shift/skill.service";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
@@ -37,6 +37,7 @@ export class ScheduleGenerationComponent implements OnInit  {
   possibleNurses: NurseInterface[];
   selectedNurse: NurseInterface;
   nurses:NurseInterface[];
+  nursesUsername: string[];
 
 
   possibleShifts: string[];
@@ -67,6 +68,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     this.possibleNurses = [];
     this.selectedNurse = this.possibleNurses[0];
     this.nurses  = [];
+    this.nursesUsername = [];
     this.possibleShifts = [];
     this.selectedShift = this.possibleShifts[0];
     this.shifts = [];
@@ -88,9 +90,10 @@ export class ScheduleGenerationComponent implements OnInit  {
 
       
       this.nurseService.getAllNurse().subscribe({
-        next: (nurseGroups: NurseInterface[])=> {
-          nurseGroups.forEach((nurseGroup: NurseInterface)=>{
-            this.possibleNurses.push(nurseGroup);
+        next: (nurses: NurseInterface[])=> {
+          nurses.forEach((nurse: NurseInterface)=>{
+            this.possibleNurses.push(nurse);
+            this.nursesUsername.push(nurse.username);
           })
         },
         error: (error: HttpErrorResponse)=> {

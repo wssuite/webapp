@@ -136,6 +136,10 @@
     </tr>
   </table>
 </div>
+<div *ngIf= "shifts.length > 0" class="nursePreferenceSection">
+  <H1 class="HospitalDemandSectionTitle">Nurse Preferences</H1>  
+  <app-nurse-preference [shifts]="shifts" [nurses]="nursesUsername" ></app-nurse-preference>
+</div>
 
   <div  class="HospitalDemandSection">
     <H1 class="HospitalDemandSectionTitle">Hospital Demand</H1>  

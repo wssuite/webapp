@@ -1,6 +1,13 @@
 <p>Put here any component you want to test!</p>
 <mat-expansion-panel>
     <mat-expansion-panel-header>
+        <mat-panel-title>Nurse preference</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-nurse-preference></app-nurse-preference>
+</mat-expansion-panel>
+<p>The nurse preference</p>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
         <mat-panel-title>{{alternativeConstraint.displayName}}</mat-panel-title>
     </mat-expansion-panel-header>
     <app-alternative-shift [(constraint)]="alternativeConstraint" (errorState)="updateAlternativeConstraintErrorState($event)" [possibleShifts]="possibleShifts"></app-alternative-shift>
