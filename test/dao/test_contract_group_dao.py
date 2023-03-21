@@ -27,6 +27,19 @@ class TestContractGroupDao(TestCase):
         self.assertEqual(1, len(actual))
         self.assertEqual(contract_group_without_contradiction, actual[0])
 
+    def test_insert_contract_group_with_another_profile_if_not_exist_succeed(
+            self
+    ):
+        contract_group = ContractGroup().from_json(
+            contract_group_without_contradiction
+        )
+        self.dao.insert_if_not_exist(contract_group.db_json().copy())
+        contract_group.profile = profile2
+        self.dao.insert_if_not_exist(contract_group.db_json().copy())
+        actual_profile2 = self.dao.fetch_all(profile2)
+        self.assertEqual(1, len(actual_profile2))
+        self.assertEqual(contract_group.to_json(), actual_profile2[0])
+
     def test_insert_contract_group_if_exist_raise_error(self):
         contract_group = ContractGroup().from_json(
             contract_group_without_contradiction

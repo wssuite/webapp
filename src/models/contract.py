@@ -29,7 +29,7 @@ from constants import (
     profile,
     unwanted_skills,
     contract_skills,
-    bind_map,
+    bind_map, min_max_hours_in_four_weeks,
 )
 
 from src.models.db_document import DBDocument
@@ -49,6 +49,7 @@ class ContractConstraintCreator:
             min_max_consecutive_shift_type: ContractMinMaxShiftConstraint,
             min_max_consecutive_weekends: ContractMinMaxConstraint,
             min_max_num_assignments_in_four_weeks: ContractMinMaxConstraint,
+            min_max_hours_in_four_weeks: ContractMinMaxConstraint,
             identical_shift_during_weekend: ContractBooleanConstraint,
             complete_weekends: ContractBooleanConstraint,
             alternative_shift: ContractAlternativeShift,

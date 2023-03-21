@@ -19,7 +19,7 @@ class SkillDao(AbstractDao):
     def exist(self, name, profile_name):
         return (
             self.collection.find_one(
-                {skill_name: name}, {profile: profile_name}
+                {skill_name: name, profile: profile_name}
             )
             is not None
         )
