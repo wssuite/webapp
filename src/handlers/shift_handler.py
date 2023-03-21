@@ -2,7 +2,13 @@ from src.dao.shift_dao import Shift
 from src.dao.shift_group_dao import ShiftGroupDao
 from src.handlers.base_handler import BaseHandler
 from src.exceptions.shift_exceptions import CannotDeleteShift, ShiftNotExist
-from constants import shift_name, work
+from constants import (
+    shift_name,
+    work,
+    contract_name,
+    shift_type_name,
+    shift_group_name,
+)
 
 
 def add_shift_in_work_shift_group(
@@ -37,13 +43,32 @@ class ShiftHandler(BaseHandler):
     def delete(self, token, name, profile):
         super().delete(token, name, profile)
         usage = []
-        usage.extend(self.contract_dao.get_including_shifts([name], profile))
-        usage.extend(self.shift_type_dao.get_including_shifts([name], profile))
         usage.extend(
-            self.shift_group_dao.get_including_shifts([name], profile)
+            [
+                contract[contract_name]
+                for contract in self.contract_dao.get_including_shifts(
+                    [name], profile
+                )
+            ]
+        )
+        usage.extend(
+            [
+                shift_type[shift_type_name]
+                for shift_type in self.shift_type_dao.get_including_shifts(
+                    [name], profile
+                )
+            ]
+        )
+        usage.extend(
+            [
+                shift_group[shift_group_name]
+                for shift_group in self.shift_group_dao.get_including_shifts(
+                    [name], profile
+                )
+            ]
         )
         if len(usage) > 1:
-            raise CannotDeleteShift(name)
+            raise CannotDeleteShift(name, usage)
         self.shift_dao.remove(name, profile)
         remove_shift_from_work_shift_group(name, self.shift_group_dao, profile)
 

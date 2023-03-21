@@ -24,9 +24,10 @@ class ContractAlreadyExistException(ProjectBaseException):
 
 
 class CannotDeleteContract(ProjectBaseException):
-    def __init__(self, name):
+    def __init__(self, name, usage):
         contract = f"the contract {name}"
-        msg = deletion_error.format(contract)
+        usage_str = self.get_usage_str(usage)
+        msg = deletion_error.format(contract, usage_str)
         super(CannotDeleteContract, self).__init__(msg)
 
 
@@ -49,8 +50,10 @@ class ContractGroupNotExist(ProjectBaseException):
 
 
 class ContractGroupDeletionError(ProjectBaseException):
-    def __init__(self, group):
+    def __init__(self, group, usage):
         contract_group = f"the contract group {group}"
+        usage_str = self.get_usage_str(usage)
+
         super(ContractGroupDeletionError, self).__init__(
-            deletion_error.format(contract_group)
+            deletion_error.format(contract_group, usage_str)
         )

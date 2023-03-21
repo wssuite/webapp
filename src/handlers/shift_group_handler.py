@@ -1,5 +1,5 @@
 from src.dao.shift_group_dao import ShiftGroup
-from constants import shift_group_name, work, rest
+from constants import shift_group_name, work, rest, contract_name
 from src.exceptions.shift_exceptions import (
     ShiftNotExist,
     CannotDeleteDefaultShiftGroup,
@@ -44,9 +44,14 @@ class ShiftGroupHandler(BaseHandler):
         super().delete(token, name, profile)
         if name == work or name == rest:
             raise CannotDeleteDefaultShiftGroup(name)
-        usage = self.contract_dao.get_including_shifts([name], profile)
+        usage = [
+            contract[contract_name]
+            for contract in self.contract_dao.get_including_shifts(
+                [name], profile
+            )
+        ]
         if len(usage) > 0:
-            raise CannotDeleteShiftGroup(name)
+            raise CannotDeleteShiftGroup(name, usage)
         self.shift_group_dao.remove(name, profile)
 
     def get_all(self, token, profile):

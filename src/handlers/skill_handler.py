@@ -1,3 +1,4 @@
+from constants import contract_name
 from src.dao.skill_dao import skill_name
 from src.handlers.base_handler import BaseHandler
 from src.exceptions.skill_exceptions import CannotDeleteSkill
@@ -15,9 +16,14 @@ class SkillHandler(BaseHandler):
 
     def delete(self, token, name, profile_name):
         super().delete(token, name, profile_name)
-        usage = self.contract_dao.get_including_skills([name], profile_name)
+        usage = [
+            contract[contract_name]
+            for contract in self.contract_dao.get_including_skills(
+                [name], profile_name
+            )
+        ]
         if len(usage) > 0:
-            raise CannotDeleteSkill(name)
+            raise CannotDeleteSkill(name, usage)
         self.skill_dao.remove(name, profile_name)
 
     def get_all_names(self, token, profile_name):

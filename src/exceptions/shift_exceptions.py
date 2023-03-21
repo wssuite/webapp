@@ -34,16 +34,18 @@ class ShiftNotExist(ProjectBaseException):
 
 
 class CannotDeleteShift(ProjectBaseException):
-    def __init__(self, name):
+    def __init__(self, name, usage):
         shift = f"the shift {name}"
-        msg = deletion_error.format(shift)
+        usage_str = self.get_usage_str(usage)
+        msg = deletion_error.format(shift, usage_str)
         super(CannotDeleteShift, self).__init__(msg)
 
 
 class CannotDeleteShiftType(ProjectBaseException):
-    def __init__(self, name):
+    def __init__(self, name, usage):
         shift_type = f"the shift type {name}"
-        msg = deletion_error.format(shift_type)
+        usage_str = self.get_usage_str(usage)
+        msg = deletion_error.format(shift_type, usage_str)
         super(CannotDeleteShiftType, self).__init__(msg)
 
 
@@ -54,7 +56,8 @@ class CannotDeleteDefaultShiftGroup(ProjectBaseException):
 
 
 class CannotDeleteShiftGroup(ProjectBaseException):
-    def __init__(self, name):
+    def __init__(self, name, usage):
         shift_group = f"the shift group {name}"
-        msg = deletion_error.format(shift_group)
+        usage_str = self.get_usage_str(usage)
+        msg = deletion_error.format(shift_group, usage_str)
         super(CannotDeleteShiftGroup, self).__init__(msg)

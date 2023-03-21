@@ -124,7 +124,7 @@ def export_profile():
             mimetype="text/csv",
             headers={
                 "Content-disposition": f"attachment; filename="
-                                       f"{profile_name}.csv"
+                f"{profile_name}.csv"
             },
         )
     except ProjectBaseException as e:

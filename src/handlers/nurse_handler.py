@@ -10,6 +10,7 @@ from src.exceptions.nurse_exceptions import NurseNotFound, CannotDeleteNurse
 from constants import (
     nurse_username,
     nurse_id,
+    nurse_group_name,
 )
 
 
@@ -95,7 +96,12 @@ class NurseHandler(BaseHandler):
 
     def delete(self, token, name, profile):
         super().delete(token, name, profile)
-        usage = self.nurse_group_dao.get_with_nurses([name], profile)
+        usage = [
+            nurse_group[nurse_group_name]
+            for nurse_group in self.nurse_group_dao.get_with_nurses(
+                [name], profile
+            )
+        ]
         if len(usage) > 0:
-            raise CannotDeleteNurse(name)
+            raise CannotDeleteNurse(name, usage)
         self.nurse_dao.remove(name, profile)
