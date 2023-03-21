@@ -76,6 +76,7 @@ export const REVOKE_PROFILE_ACCESS = PROFILE_URL + "/revokeAccess";
 export const SHARE_PROFILE = PROFILE_URL + "/share";
 export const IMPORT_PROFILE = PROFILE_URL + "/import";
 export const SAVE_IMPORT = PROFILE_URL + "/saveImport";
+export const EXPORT_PROFILE = PROFILE_URL + "/export"
 //const UPDATE= "/update"
 export const UPDATE_CONTRACT_URL = CONTRACT_URL + UPDATE;
 export const FETCH_CONTRACT_BY_NAME = CONTRACT_URL + FETCH_BY_NAME;

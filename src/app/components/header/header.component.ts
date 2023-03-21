@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { saveAs } from 'file-saver';
 import { CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
 import { BaseProfile } from 'src/app/models/Profile';
 import { AccountService } from 'src/app/services/account/account.service';
@@ -179,6 +180,15 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       height: '65%',
       width: '55%', 
       position: {top:'5vh',left: '25%', right: '25%'},
+    })
+  }
+
+  export() {
+    this.profileService.export().subscribe({
+      next: (data: {content: string})=>{
+        const file = new File([data.content], CacheUtils.getProfile() + ".csv", {type:"text/csv;charset=utf-8"});
+        saveAs(file);
+      }
     })
   }
 }
