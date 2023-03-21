@@ -6,6 +6,7 @@ import { MatDialog} from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MAIN_MENU } from 'src/app/constants/app-routes';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
+import { ContractGroupInterface } from 'src/app/models/ContractGroup';
 import { NurseGroupInterface, NurseInterface } from 'src/app/models/Nurse';
 import { BaseProfile, DetailedProfile } from 'src/app/models/Profile';
 import { ShiftInterface, ShiftTypeInterface, ShiftGroupInterface } from 'src/app/models/Shift';
@@ -361,5 +362,46 @@ export class ImportProfileComponent implements OnInit{
 
   updateSkillErrorState(index:number, e:boolean){
     this.skillsErrorState[index] = e;
+  }
+
+  saveProfile(){
+    const profileContracts: ContractInterface[] = [];
+    this.contracts.forEach((contract: Contract)=>{
+      profileContracts.push(contract.toJson(this.profile.profile))
+    })
+    this.profile.shifts.forEach((shift:ShiftInterface)=>{
+      shift.profile = this.profile.profile;
+    })
+    this.profile.shiftTypes.forEach((shiftType: ShiftTypeInterface)=>{
+      shiftType.profile = this.profile.profile
+    })
+    this.profile.shiftGroups.forEach((sg: ShiftGroupInterface)=>{
+      sg.profile = this.profile.profile
+    })
+    this.profile.nurseGroups.forEach((ng: NurseGroupInterface)=>{
+      ng.profile = this.profile.profile
+    })
+    this.profile.nurses.forEach((n: NurseInterface)=>{
+      n.profile = this.profile.profile
+    })
+    this.profile.skills.forEach((s: SkillInterface)=>{
+      s.profile = this.profile.profile
+    })
+    this.profile.contracts = profileContracts;
+    this.profile.contractGroups.forEach((cg: ContractGroupInterface)=>{
+      cg.profile = this.profile.profile
+    })
+    this.profileService.save(this.profile).subscribe({
+      error: (err: HttpErrorResponse)=>{
+        if(err.status === HttpStatusCode.Ok){
+          this.profileService.emitNewProfileCreation();
+          this.router.navigate(["/" + MAIN_MENU])
+        }
+        else{
+          this.profileService.deleteProfileByName(this.profile.profile)
+          this.openErrorDialog(err.error)
+        }
+      }
+    })
   }
 }

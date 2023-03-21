@@ -1,4 +1,5 @@
 import { ContractInterface } from "./Contract";
+import { ContractGroupInterface } from "./ContractGroup";
 import { NurseGroupInterface, NurseInterface } from "./Nurse";
 import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "./Shift";
 import { SkillInterface } from "./skill";
@@ -11,7 +12,7 @@ export interface BaseProfile {
 export interface DetailedProfile{
     profile: string;
     contracts: ContractInterface[];
-    // to add contract groups
+    contractGroups: ContractGroupInterface[],
     shifts: ShiftInterface[];
     shiftTypes: ShiftTypeInterface[];
     shiftGroups: ShiftGroupInterface[];

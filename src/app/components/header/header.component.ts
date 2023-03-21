@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
@@ -17,7 +17,7 @@ import { ErrorMessageDialogComponent } from '../error-message-dialog/error-messa
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit, AfterViewInit{
   
   isAdmin!: boolean;
   profiles: BaseProfile[];
@@ -41,6 +41,12 @@ export class HeaderComponent implements OnInit{
     } catch(err){
       this.connectedUser = false;
     }
+  }
+
+  ngAfterViewInit(): void {
+      this.profileService.newProfileCreated.subscribe(()=>{
+        this.getProfiles(true)
+      })
   }
   
   getProfiles(useLatProfile: boolean){
