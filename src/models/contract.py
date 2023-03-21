@@ -30,7 +30,8 @@ from constants import (
     profile,
     unwanted_skills,
     contract_skills,
-    bind_map, min_max_hours_in_four_weeks,
+    bind_map,
+    min_max_hours_in_four_weeks,
 )
 
 from src.models.db_document import DBDocument
@@ -71,7 +72,6 @@ class ContractConstraintCreator:
 
 
 class Contract(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = ""

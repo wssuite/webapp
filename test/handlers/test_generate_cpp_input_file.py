@@ -162,8 +162,12 @@ class TestGenerateCppInputFile(TestCase):
 
     def test_generate_schedule(self):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
-        full_path = self.fs.joinpaths(base_directory, dataset_directory,
-                                      profile1, "2023-06-01_2023-06-02")
+        full_path = self.fs.joinpaths(
+            base_directory,
+            dataset_directory,
+            profile1,
+            "2023-06-01_2023-06-02",
+        )
         folder_exist = self.fs.exists(full_path)
         self.assertTrue(folder_exist)
         versions = self.fs.listdir(full_path)
@@ -174,7 +178,8 @@ class TestGenerateCppInputFile(TestCase):
             self.assertEqual(
                 f"{base_directory}/{dataset_directory}/{profile1}/"
                 f"2023-06-01_2023-06-02/1/input.txt",
-                input_txt_path)
+                input_txt_path,
+            )
 
         actual = fake_file.contents
         self.assertEqual(expected, actual)

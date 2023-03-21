@@ -50,3 +50,16 @@ class TestNurse(TestCase):
         }
         nurse = Nurse().read_nurse(nurse_string, profile_name, [])
         self.assertEqual(expected_nurse, nurse.to_json())
+
+    def test_export_nurse(self):
+        expected = "suz,Suzane,contract 2\n"
+        nurse_dict = {
+            nurse_contract_groups: [],
+            nurse_username: "suz",
+            nurse_name: "Suzane",
+            profile: profile1,
+            nurse_id: None,
+            nurse_contracts: ["contract 2"],
+        }
+        nurse = Nurse().from_json(nurse_dict)
+        self.assertEqual(expected, nurse.export())

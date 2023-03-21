@@ -28,7 +28,7 @@ class TestContractGroupDao(TestCase):
         self.assertEqual(contract_group_without_contradiction, actual[0])
 
     def test_insert_contract_group_with_another_profile_if_not_exist_succeed(
-            self
+        self,
     ):
         contract_group = ContractGroup().from_json(
             contract_group_without_contradiction

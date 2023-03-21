@@ -279,7 +279,7 @@ class TestConstraints(TestCase):
         self.assertEqual(expected, constraint.export())
 
     def test_create_unwanted_pattern_from_string_with_one_element_succeeds(
-            self
+        self,
     ):
         string = (
             "Unwanted patterns,"
@@ -335,7 +335,7 @@ class TestConstraints(TestCase):
         self.assertEqual(expected, constraint.export())
 
     def test_create_unwanted_pattern_from_string_with_two_elements_succeeds(
-            self
+        self,
     ):
         string = (
             "Unwanted patterns,Monday|Tuesday,Early,Thursday|Friday,"

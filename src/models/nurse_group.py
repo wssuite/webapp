@@ -1,3 +1,4 @@
+from models.exporter import CSVExporter
 from src.models.db_document import DBDocument
 from src.models.jsonify import Jsonify
 from pykson import ListField, StringField
@@ -18,7 +19,7 @@ from src.models.stringify import (
 )
 
 
-class NurseGroup(Jsonify, DBDocument, Stringify, StringReader):
+class NurseGroup(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
     name = StringField(serialized_name=nurse_group_name)
     nurses = ListField(str, serialized_name=nurse_group_nurses_list)
     contracts = ListField(str, serialized_name=nurse_group_contracts_list)
@@ -68,4 +69,17 @@ class NurseGroup(Jsonify, DBDocument, Stringify, StringReader):
             f"{self.name},{len(self.nurses)}{nurses_string},"
             f"{len(self.contracts)}{contracts_string},"
             f"{len(self.contract_groups)}{contract_groups_string}\n"
+        )
+
+    def export(self):
+        nurses_string = extract_string_from_simple_object_array(self.nurses)
+        contracts_string = extract_string_from_simple_object_array(
+            self.contracts
+        )
+        contract_groups_string = extract_string_from_simple_object_array(
+            self.contract_groups
+        )
+        return (
+            f"{self.name}{contracts_string}"
+            f"{contract_groups_string}{nurses_string}\n"
         )

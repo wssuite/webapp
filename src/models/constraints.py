@@ -357,6 +357,4 @@ class ContractUnwantedSkills(ContractConstraint):
         skill_string = extract_string_from_simple_object_array(
             self.unwanted_skills
         )
-        return (
-            f"{export_name}{skill_string},{self.weight}\n"
-        )
+        return f"{export_name}{skill_string},{self.weight}\n"

@@ -26,7 +26,8 @@ from constants import (
     pattern_element_day,
     unwanted_skills,
     contract_skills,
-    profile, min_max_hours_in_four_weeks,
+    profile,
+    min_max_hours_in_four_weeks,
 )
 from test_constants import profile1
 
@@ -258,7 +259,7 @@ constraints
             complete_weekends,
             unwanted_pattern,
             alternative_shift,
-            min_max_hours_in_four_weeks
+            min_max_hours_in_four_weeks,
         )
         contract = Contract().from_json(self.contract_dict)
         self.assertEqual(expected, contract.to_string())

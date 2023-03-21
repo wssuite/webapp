@@ -33,3 +33,8 @@ class TestShiftGroups(TestCase):
             shift_group_string, profile_name, shift_types
         )
         self.assertEqual(self.shift_group_dict, shift_group.to_json())
+
+    def test_export_shift_group(self):
+        expected = "Work,Early,Midnight,Day\n"
+        shift_group = ShiftGroup().from_json(self.shift_group_dict)
+        self.assertEqual(expected, shift_group.export())

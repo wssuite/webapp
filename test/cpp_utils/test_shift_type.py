@@ -26,3 +26,8 @@ class TestShiftType(TestCase):
             shift_type_string, profile_name
         )
         self.assertEqual(self.shift_type_dict, shift_type.to_json())
+
+    def test_export_shift_type(self):
+        expected = "Day,Early,MidDay\n"
+        shift_type = ShiftType().from_json(self.shift_type_dict)
+        self.assertEqual(expected, shift_type.export())

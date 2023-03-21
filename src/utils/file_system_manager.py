@@ -64,8 +64,7 @@ class FileSystemManager:
     def get_path_to_generate_schedule(profile, start_date, end_date):
         r_path = os.path.join(profile, f"{start_date}_{end_date}")
         full_path = os.path.join(
-            FileSystemManager.get_dataset_directory_path(),
-            r_path
+            FileSystemManager.get_dataset_directory_path(), r_path
         )
         FileSystemManager.create_dir_if_not_exist(full_path)
         curr_version = FileSystemManager.current_version(full_path)
@@ -81,5 +80,5 @@ class FileSystemManager:
             profile_name,
             f"{start_date}_{end_date}",
             version,
-            "input.txt"
+            "input.txt",
         )

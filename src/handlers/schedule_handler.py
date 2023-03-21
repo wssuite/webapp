@@ -27,12 +27,14 @@ class ScheduleHandler(BaseHandler):
         self.verify_profile_accessors_access(token, demand.profile)
 
         """Get th path for next version"""
-        full_path, next_version = (
-            FileSystemManager.get_path_to_generate_schedule(
-                demand_json[profile],
-                demand_json[start_date],
-                demand_json[end_date]
-            ))
+        (
+            full_path,
+            next_version,
+        ) = FileSystemManager.get_path_to_generate_schedule(
+            demand_json[profile],
+            demand_json[start_date],
+            demand_json[end_date],
+        )
         detailed_demand = ScheduleDemandDetailed()
 
         input_json = os.path.join(full_path, "input.json")
@@ -111,7 +113,7 @@ class ScheduleHandler(BaseHandler):
 
     @staticmethod
     def add_object_to_demand_list(
-            array, object_type: Type[Jsonify], destination
+        array, object_type: Type[Jsonify], destination
     ):
         for element in array:
             t = object_type().from_json(element)

@@ -80,8 +80,11 @@ class TestScheduleHandler(TestCase):
             random_hex, hospital_demand_dict
         )
         full_path = self.fs.joinpaths(
-            base_directory, dataset_directory,
-            profile1, "2023-06-01_2023-06-02", version
+            base_directory,
+            dataset_directory,
+            profile1,
+            "2023-06-01_2023-06-02",
+            version,
         )
         folder_exist = self.fs.exists(full_path)
         self.assertTrue(folder_exist)
@@ -92,7 +95,9 @@ class TestScheduleHandler(TestCase):
         if self.fs.is_linux is True:
             self.assertEqual(
                 f"{base_directory}/{dataset_directory}/{profile1}/"
-                f"2023-06-01_2023-06-02/{version}/input.txt", expected_path)
+                f"2023-06-01_2023-06-02/{version}/input.txt",
+                expected_path,
+            )
 
         self.assertEqual(expected_path, actual)
 

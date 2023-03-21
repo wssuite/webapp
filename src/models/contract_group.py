@@ -1,4 +1,6 @@
 from pykson import StringField, ListField
+
+from models.exporter import CSVExporter
 from src.models.db_document import DBDocument
 from src.models.jsonify import Jsonify
 from constants import (
@@ -16,7 +18,7 @@ from src.models.stringify import (
 )
 
 
-class ContractGroup(DBDocument, Jsonify, StringReader, Stringify):
+class ContractGroup(DBDocument, Jsonify, StringReader, Stringify, CSVExporter):
     name = StringField(serialized_name=contract_group_name)
     contracts = ListField(str, serialized_name=contract_group_contracts_list)
     profile = StringField(serialized_name=profile)
@@ -43,3 +45,9 @@ class ContractGroup(DBDocument, Jsonify, StringReader, Stringify):
             self.contracts
         )
         return f"{self.name},{len(self.contracts)}{contracts_string}\n"
+
+    def export(self):
+        contracts_string = extract_string_from_simple_object_array(
+            self.contracts
+        )
+        return f"{self.name}{contracts_string}\n"
