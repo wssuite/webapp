@@ -12,7 +12,7 @@ export const TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID = "TotalWeekendsInFourWeeks";
 export const TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME =
   "Minimum and Maximum Number of Weekends in Four Weeks";
 export const ALTERNATIVE_SHIFT_ID="AlternativeShift";
-export const ALTERNATIVE_SHIFT_DISPLAY_NAME="Unwanted Shifts"
+export const ALTERNATIVE_SHIFT_DISPLAY_NAME="Unwanted Shift"
 export const FREE_DAYS_AFTER_SHIFT_ID = "NumberOfFreeDaysAfterShift";
 export const FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME = "Number of Free Days After Shift";
 export const MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID = "MinMaxConsecutiveShiftType";
@@ -31,6 +31,8 @@ export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME =
 
 export const UNWANTED_SKILLS_ID="unwantedSkills";
 export const UNWANTED_SKILLS_DISPLAY_NAME = "Unwanted Skills";
+export const MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME = "Minimum and Maximum of working hours in four weeks"
+export const MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID = "MinMaxHoursInFourWeeks";
 
 export const CONSTRAINTS = [
   FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_SKILLS_DISPLAY_NAME, ALTERNATIVE_SHIFT_DISPLAY_NAME,
@@ -38,6 +40,7 @@ export const CONSTRAINTS = [
   TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME,
   MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME,
   MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME,
+  MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME
 ];
 
 export const DISPLAY_NAME_ID_MAP: Map<string,string> = new Map();
