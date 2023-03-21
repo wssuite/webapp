@@ -271,6 +271,8 @@ export class ImportProfileComponent implements OnInit{
   }
 
   cancel(){
+    this.profileService.editionFinished = true;
+    this.profileService.newProfileCreated = false;
     this.router.navigate(["/" + MAIN_MENU])
   }
 
@@ -394,7 +396,9 @@ export class ImportProfileComponent implements OnInit{
     this.profileService.save(this.profile).subscribe({
       error: (err: HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
-          this.profileService.emitNewProfileCreation();
+          this.profileService.editionFinished = true;
+          this.profileService.emitNewProfileCreation(true);
+          this.profileService.newProfileCreated = true;
           this.router.navigate(["/" + MAIN_MENU])
         }
         else{

@@ -44,8 +44,8 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-      this.profileService.newProfileCreated.subscribe(()=>{
-        this.getProfiles(true)
+      this.profileService.newImportedProfileCreated.subscribe((created: boolean)=>{
+        this.getProfiles(created);
       })
   }
   
@@ -97,7 +97,19 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       position: {top:'5vh',left: '25%', right: '25%'},
     })
     dialog.afterClosed().subscribe(()=>{
-      this.getProfiles(true);
+      console.log("here")
+      /*this.profileService.editionFinished.subscribe((isFinished: boolean)=>{
+        console.log(isFinished)
+        if(isFinished){
+          console.log(isFinished)
+          this.profileService.newProfileCreated.subscribe((verdict: boolean)=>{
+            this.getProfiles(verdict);
+          })
+        }
+      })*/
+      if(this.profileService.editionFinished){
+        this.getProfiles(this.profileService.newProfileCreated);
+      }
     })
   }
 

@@ -13,15 +13,19 @@ export class ProfileService {
 
 
   profileChanged: Subject<boolean>;
-  newProfileCreated: Subject<boolean>;
+  newProfileCreated: boolean;
+  editionFinished: boolean;
+  newImportedProfileCreated: Subject<boolean>;
   
   constructor(private httpClient: HttpClient) { 
     this.profileChanged = new Subject();
-    this.newProfileCreated = new Subject();
+    this.newProfileCreated = false;
+    this.editionFinished = false;
+    this.newImportedProfileCreated = new Subject()
   }
 
-  emitNewProfileCreation(){
-    this.newProfileCreated.next(true);
+  emitNewProfileCreation(verdict: boolean){
+    this.newImportedProfileCreated.next(verdict);
   }
 
   emitProfileChange(){

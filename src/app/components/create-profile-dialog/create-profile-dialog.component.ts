@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import {Router } from '@angular/router';
 import { IMPORT } from 'src/app/constants/app-routes';
 import { BaseProfile } from 'src/app/models/Profile';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 import { CreateEmptyProfileDialogComponent } from './create-empty-profile-dialog/create-empty-profile-dialog.component';
 
 @Component({
@@ -16,8 +17,9 @@ export class CreateProfileDialogComponent {
     public dialogRef: MatDialogRef<CreateProfileDialogComponent>,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data:{profiles: BaseProfile[], closeDisplayed: boolean},
-    private router: Router
+    private router: Router, private service: ProfileService
   ){}
+
 
   createEmptyProfile(){
     const dialog = this.dialog.open(CreateEmptyProfileDialogComponent, {
@@ -27,20 +29,13 @@ export class CreateProfileDialogComponent {
       position: {top:'5vh',left: '25%', right: '25%'}
     })
     dialog.afterClosed().subscribe(()=>{
-      this.dialogRef.close();
+      this.service.editionFinished = true
+      this.dialogRef.close()
     })
   }
 
   importProfile(){
-    /*const dialog = this.dialog.open(ImportProfileComponent, {
-      data: {profiles: this.data.profiles},
-      height: '65%',
-      width: '55%', 
-      position: {top:'5vh',left: '25%', right: '25%'}
-    })
-    dialog.afterClosed().subscribe(()=>{
-      this.dialogRef.close();
-    })*/
+    this.service.editionFinished = false;
     this.dialogRef.close()
     this.router.navigate(["/" + IMPORT])
   }
