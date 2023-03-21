@@ -1,6 +1,6 @@
 from typing import List
 
-from models.exporter import CSVExporter
+from src.models.exporter import CSVExporter
 from src.models.contract import Contract
 from src.models.contract_group import ContractGroup
 from src.models.jsonify import Jsonify

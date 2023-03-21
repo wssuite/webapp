@@ -1,4 +1,4 @@
-from models.exporter import CSVExporter
+from src.models.exporter import CSVExporter
 from src.models.string_reader import StringReader
 from src.models.stringify import (
     Stringify,

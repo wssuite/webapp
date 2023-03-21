@@ -1,4 +1,4 @@
-from models.exporter import CSVExporter
+from src.models.exporter import CSVExporter
 from src.models.db_document import DBDocument
 from src.models.jsonify import Jsonify
 from pykson import ListField, StringField

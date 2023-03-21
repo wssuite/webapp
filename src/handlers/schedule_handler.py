@@ -2,7 +2,7 @@ import json
 import os.path
 from typing import Type
 
-from exceptions.project_base_exception import ProjectBaseException
+from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.base_handler import BaseHandler
 from src.models.hospital_demand import ScheduleDemandDetailed, ScheduleDemand
 from src.models.nurse import Nurse
