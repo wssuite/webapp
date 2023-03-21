@@ -228,7 +228,8 @@ class TestProfileHandler(TestCase):
         }
         text = """profile
 name,profile1
-skillsNurse
+skills
+Nurse
 HeadNurse
 Sociologist
 shifts
