@@ -1,4 +1,4 @@
-from models.exporter import CSVExporter
+from src.models.exporter import CSVExporter
 from src.models.jsonify import Jsonify
 from src.models.db_document import DBDocument
 from constants import shift_type_name, shift_type_shifts_lists, profile

@@ -1,6 +1,6 @@
 from pykson import StringField, ListField
 
-from models.exporter import CSVExporter
+from src.models.exporter import CSVExporter
 from src.models.db_document import DBDocument
 from src.models.jsonify import Jsonify
 from constants import (

@@ -1,4 +1,4 @@
-from models.exporter import CSVExporter
+from src.models.exporter import CSVExporter
 from src.models.jsonify import Jsonify
 from pykson import ListField
 from constants import pattern_element_shift, pattern_element_day

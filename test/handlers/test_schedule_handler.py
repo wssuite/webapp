@@ -1,4 +1,4 @@
-from exceptions.project_base_exception import ProjectBaseException
+from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.schedule_handler import ScheduleHandler
 from src.dao.abstract_dao import connect_to_fake_db
 from constants import (
