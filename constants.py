@@ -103,6 +103,7 @@ export_bind_map = {
     min_max_consecutive_weekends: min_max_consecutive_weekends_import_name,
     min_max_num_assignments_in_four_weeks:
         min_max_num_assignments_in_four_weeks_import_name,
+    min_max_hours_in_four_weeks: min_max_hours_in_four_weeks_import_name,
     complete_weekends: complete_weekends_import_name,
     identical_shift_during_weekend: identical_shift_during_weekend_import_name,
     number_of_free_days_after_shift:

@@ -92,7 +92,7 @@ class ContractIntegerConstraint(ContractConstraint):
 
     def export(self):
         export_name = export_bind_map[self.name]
-        return f"{export_name},{self.weight},{self.value}\n"
+        return f"{export_name},{self.value},{self.weight}\n"
 
 
 class ContractIntegerShiftConstraint(ContractIntegerConstraint):
@@ -122,7 +122,7 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
 
     def export(self):
         export_name = export_bind_map[self.name]
-        return f"{export_name},{self.shift},{self.value},{self.weight}"
+        return f"{export_name},{self.shift},{self.value},{self.weight}\n"
 
 
 class ContractMinMaxConstraint(ContractConstraint):
@@ -159,7 +159,7 @@ class ContractMinMaxConstraint(ContractConstraint):
         export_name = export_bind_map[self.name]
         return (
             f"{export_name},{self.minValue},{self.minWeight},"
-            f"{self.maxValue},{self.maxWeight}"
+            f"{self.maxValue},{self.maxWeight}\n"
         )
 
 
@@ -224,7 +224,7 @@ class ContractBooleanConstraint(ContractConstraint):
 
     def export(self):
         export_name = export_bind_map[self.name]
-        return f"{export_name},{self.weight}"
+        return f"{export_name},{self.weight}\n"
 
 
 class ContractUnwantedPatterns(ContractConstraint):
@@ -314,7 +314,7 @@ class ContractAlternativeShift(ContractConstraint):
 
     def export(self):
         export_name = export_bind_map[self.name]
-        return f"{export_name},{self.shift},{self.weight}"
+        return f"{export_name},{self.shift},{self.weight}\n"
 
 
 class ContractUnwantedSkills(ContractConstraint):
@@ -358,5 +358,5 @@ class ContractUnwantedSkills(ContractConstraint):
             self.unwanted_skills
         )
         return (
-            f"{export_name},{skill_string},{self.weight}"
+            f"{export_name}{skill_string},{self.weight}\n"
         )
