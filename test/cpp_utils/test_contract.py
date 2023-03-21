@@ -192,6 +192,23 @@ minimum and maximum hours in four weeks,1.0,5.0,5.0,hard,,,,,
         contract = Contract().read_contract(profile1, string)
         self.assertEqual(self.contract_dict, contract.to_json())
 
+    def test_export_contract(self):
+        expected = """name,FullTime
+number of free days after shift,Early,1.0,hard
+unwanted skills,Nurse,hard
+total number of working weekends in four weeks,1.0,5.0,5.0,hard
+minimum and maximum number of assignments in four weeks,1.0,5.0,5.0,hard
+minimum and maximum of consecutive working weekends,1.0,5.0,5.0,hard
+minimum and maximum of consecutive shift type,Early,1.0,5.0,5.0,hard
+identical shift types during weekend,hard
+complete weekends,hard
+unwanted patterns,Monday|Wednesday|Friday,Late|Early|MidDay,Tuesday,Early,hard
+unwanted shift,Early,hard
+minimum and maximum hours in four weeks,1.0,5.0,5.0,hard
+"""
+        contract = Contract().from_json(self.contract_dict)
+        self.assertEqual(expected, contract.export())
+
     def test_contract_creation_from_string_with_unknown_constraints(self):
         string = """name,FullTime,,,,,,,,
         #constraint name ,,,,,,,,,

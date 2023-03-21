@@ -1,5 +1,6 @@
 from typing import Type, List
 
+from models.exporter import CSVExporter
 from src.models.jsonify import Jsonify
 from src.models.constraints import (
     ContractConstraint,
@@ -69,7 +70,8 @@ class ContractConstraintCreator:
         return self.dict_contract_constraints[name]().read_line(line)
 
 
-class Contract(Jsonify, DBDocument, Stringify, StringReader):
+class Contract(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = ""
@@ -149,3 +151,9 @@ class Contract(Jsonify, DBDocument, Stringify, StringReader):
         return "{{\ncontractName,{0}\nconstraints\n{1}}}\n".format(
             self.name, constraints_string
         )
+
+    def export(self):
+        ret_string = f"name,{self.name}\n"
+        for constraint in self.constraints:
+            ret_string += constraint.export()
+        return ret_string
