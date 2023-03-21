@@ -1,5 +1,4 @@
 from src.dao.abstract_dao import connect_to_fake_db
-from unittest import TestCase
 from src.handlers.profile_handler import ProfileHandler
 from test_constants import (
     profile1,
@@ -49,6 +48,8 @@ from constants import (
 )
 from src.models.user import User
 from src.exceptions.user_exceptions import ProfileAccessException
+from pyfakefs.fake_filesystem_unittest import TestCase
+from src.utils.file_system_manager import base_directory, dataset_directory
 
 
 class TestProfileHandler(TestCase):
@@ -59,17 +60,23 @@ class TestProfileHandler(TestCase):
         user = User().from_json(user_dict)
         self.handler.user_dao.insert_one(user.db_json())
         self.handler.user_dao.insert_one(user1)
+        self.setUpPyfakefs()
+        self.fs.create_dir(base_directory)
 
     def tearDown(self) -> None:
-        pass
+        self.tearDownPyfakefs()
 
     def test_create_profile(self):
         self.handler.create_profile(random_hex, profile1)
         all_profiles = self.handler.profile_dao.fetch_all()
+        profile_dir_exist = self.fs.exists(
+            f"{base_directory}/{dataset_directory}/{profile1}"
+        )
         self.assertEqual(1, len(all_profiles))
         expected = test_profile.copy()
         expected.pop(profile_access)
         self.assertEqual(expected, all_profiles[0])
+        self.assertTrue(profile_dir_exist)
 
     def test_get_all_profiles_change_with_access(self):
         self.handler.create_profile(random_hex, profile1)
@@ -105,10 +112,14 @@ class TestProfileHandler(TestCase):
         )
         all_profiles = self.handler.profile_dao.fetch_all()
         new_profile = self.handler.profile_dao.find_by_name("profile2")
+        other_profile_exist = self.fs.exists(
+            f"{base_directory}/{dataset_directory}/profile2"
+        )
         self.assertEqual(2, len(all_profiles))
         self.assertEqual(2, len(shift_groups_after_duplication))
         self.assertEqual(2, len(shift_groups_duplicated))
         self.assertNotEqual(None, new_profile)
+        self.assertTrue(other_profile_exist)
 
     def test_delete_profile_when_not_creator_raise_error(self):
         self.handler.create_profile(random_hex, profile1)
@@ -116,13 +127,21 @@ class TestProfileHandler(TestCase):
         with self.assertRaises(ProfileAccessException):
             self.handler.delete_profile(random_hex2, profile1)
         all_profiles = self.handler.profile_dao.fetch_all()
+        profile_dir_exist = self.fs.exists(
+            f"{base_directory}/{dataset_directory}/{profile1}"
+        )
         self.assertEqual(1, len(all_profiles))
+        self.assertTrue(profile_dir_exist)
 
     def test_delete_profile_when_creator_succeed(self):
         self.handler.create_profile(random_hex, profile1)
         self.handler.share(random_hex, profile1, [user1_name])
         self.handler.delete_profile(random_hex, profile1)
         all_profiles = self.handler.profile_dao.fetch_all()
+        profile_dir_exist = self.fs.exists(
+            f"{base_directory}/{dataset_directory}/{profile1}"
+        )
+        self.assertFalse(profile_dir_exist)
         self.assertEqual(0, len(all_profiles))
 
     def test_get_accessors_list(self):

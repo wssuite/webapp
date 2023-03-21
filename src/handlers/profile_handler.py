@@ -11,6 +11,7 @@ from constants import (
     rest,
 )
 from src.models.shift_group import ShiftGroup
+from src.utils.file_system_manager import FileSystemManager
 import os
 
 
@@ -20,11 +21,15 @@ class ProfileHandler(BaseHandler):
 
     def create_profile(self, token, profile_name):
         user = self.verify_token(token)
+        fs = FileSystemManager()
+
         profile_object = Profile()
         profile_object.name = profile_name
         profile_object.creator = user[user_username]
         profile_object.access = [user[user_username]]
         self.profile_dao.insert_if_not_exist(profile_object.db_json())
+        profile_path = f"{fs.get_dataset_directory_path()}/{profile_name}"
+        fs.create_dir_if_not_exist(profile_path)
         w_group_dict = work_shift_group.copy()
         w_group_dict[profile] = profile_name
         w_group = ShiftGroup().from_json(w_group_dict)
@@ -40,6 +45,7 @@ class ProfileHandler(BaseHandler):
 
     def delete_profile(self, token, name):
         self.verify_profile_creator_access(token, name)
+        fs = FileSystemManager()
         self.profile_dao.remove(name)
         self.shift_dao.delete_all(name)
         self.skill_dao.delete_all(name)
@@ -49,6 +55,8 @@ class ProfileHandler(BaseHandler):
         self.nurse_dao.delete_all(name)
         self.nurse_group_dao.delete_all(name)
         self.contract_group_dao.delete_all(name)
+        profile_path = f"{fs.get_dataset_directory_path()}/{name}"
+        fs.delete_dir(profile_path)
 
     """
     When duplicating a profile, we want to duplicate the work
