@@ -206,6 +206,7 @@ complete weekends,hard
 unwanted patterns,Monday|Wednesday|Friday,Late|Early|MidDay,Tuesday,Early,hard
 unwanted shift,Early,hard
 minimum and maximum hours in four weeks,1.0,5.0,5.0,hard
+
 """
         contract = Contract().from_json(self.contract_dict)
         self.assertEqual(expected, contract.export())

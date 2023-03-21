@@ -156,4 +156,4 @@ class Contract(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
         ret_string = f"name,{self.name}\n"
         for constraint in self.constraints:
             ret_string += constraint.export()
-        return ret_string
+        return f"{ret_string}\n"

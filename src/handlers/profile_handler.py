@@ -152,7 +152,7 @@ class ProfileHandler(BaseHandler):
         shift_groups = self.shift_group_dao.fetch_all(profile_to_export)
         nurses = self.nurse_dao.fetch_all(profile_to_export)
         nurse_groups = self.nurse_group_dao.fetch_all(profile_to_export)
-        return {
+        profile_json = {
             profile_name: profile_to_export,
             profile_skills: skills,
             profile_shifts: shifts,
@@ -163,3 +163,5 @@ class ProfileHandler(BaseHandler):
             profile_nurses: nurses,
             profile_nurse_groups: nurse_groups,
         }
+        detailed = DetailedProfile().from_json(profile_json)
+        return detailed.export()

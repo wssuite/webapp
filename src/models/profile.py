@@ -1,3 +1,6 @@
+from typing import List
+
+from models.exporter import CSVExporter
 from src.models.contract import Contract
 from src.models.contract_group import ContractGroup
 from src.models.jsonify import Jsonify
@@ -41,7 +44,7 @@ class Profile(Jsonify, DBDocument):
         }
 
 
-class DetailedProfile(Jsonify):
+class DetailedProfile(Jsonify, CSVExporter):
     name = StringField(serialized_name=profile_name)
     contracts = ObjectListField(Contract, serialized_name=profile_contracts)
     shifts = ObjectListField(Shift, serialized_name=profile_shifts)
@@ -96,10 +99,37 @@ class DetailedProfile(Jsonify):
             detailed.contracts.append(contract_obj)
         return detailed
 
+    def export(self):
+        ret_str = f"profile\nname,{self.name}\n"
+        ret_str += "skills\n"
+        ret_str += DetailedProfile.__get_export_str(self.skills)
+        ret_str += "shifts\n"
+        ret_str += DetailedProfile.__get_export_str(self.shifts)
+        ret_str += "shift types\n"
+        ret_str += DetailedProfile.__get_export_str(self.shift_types)
+        ret_str += "shift groups\n"
+        ret_str += DetailedProfile.__get_export_str(self.shift_groups)
+        ret_str += "contracts\n"
+        ret_str += DetailedProfile.__get_export_str(self.contracts)
+        ret_str += "contract groups\n"
+        ret_str += DetailedProfile.__get_export_str(self.contract_groups)
+        ret_str += "nurses\n"
+        ret_str += DetailedProfile.__get_export_str(self.nurses)
+        ret_str += "nurse groups\n"
+        ret_str += DetailedProfile.__get_export_str(self.nurse_groups)
+        return ret_str
+
     @staticmethod
     def __get_json_list__(objects):
         ret = []
         for obj in objects:
             ret.append(obj.to_json())
 
+        return ret
+
+    @staticmethod
+    def __get_export_str(objects: List[CSVExporter]):
+        ret = ""
+        for obj in objects:
+            ret += obj.export()
         return ret

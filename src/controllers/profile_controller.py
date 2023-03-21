@@ -118,6 +118,14 @@ def export_profile():
     try:
         token = request.args[user_token]
         profile_name = request.args[profile]
-        return profile_handler.export_profile(token, profile_name)
+        export_str = profile_handler.export_profile(token, profile_name)
+        return Response(
+            export_str,
+            mimetype="text/csv",
+            headers={
+                "Content-disposition": f"attachment; filename="
+                                       f"{profile_name}.csv"
+            },
+        )
     except ProjectBaseException as e:
         return Response(e.args, 500)
