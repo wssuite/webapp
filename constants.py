@@ -70,7 +70,7 @@ min_max_num_assignments_in_four_weeks_import_name = (
     "minimum and maximum number of assignments in four weeks"
 )
 min_max_hours_in_four_weeks_import_name = (
-    "minimum and maximum hours in four weeks"
+    "minimum and maximum of working hours in four weeks"
 )
 complete_weekends_import_name = "complete weekends"
 identical_shift_during_weekend_import_name = (
