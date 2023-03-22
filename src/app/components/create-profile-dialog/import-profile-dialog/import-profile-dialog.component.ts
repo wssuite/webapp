@@ -4,6 +4,7 @@ import { Component, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import * as saveAs from 'file-saver';
 import { MAIN_MENU } from 'src/app/constants/app-routes';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { ContractGroupInterface } from 'src/app/models/ContractGroup';
@@ -405,6 +406,18 @@ export class ImportProfileComponent implements OnInit{
           this.profileService.deleteProfileByName(this.profile.profile)
           this.openErrorDialog(err.error)
         }
+      }
+    })
+  }
+
+  downloadTemplate(){
+    this.profileService.downloadTemplate().subscribe({
+      next: (data: {content: string})=>{
+        const file = new File([data.content], "template.csv", {type:"text/csv;charset=utf-8"});
+        saveAs(file);
+      },
+      error: (err: HttpErrorResponse)=>{
+        this.openErrorDialog(err.error)
       }
     })
   }
