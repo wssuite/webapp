@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, send_file
+from flask import Blueprint, Response
 from werkzeug.exceptions import BadRequestKeyError
 
 import error_msg
@@ -66,6 +66,12 @@ def export_problem():
         path = schedule_handler.get_input_problem_path(
             token, profile_name, start, end, version
         )
-        return send_file(path, as_attachment=True)
+        problem_str = ""
+        with open(path) as file:
+            lines = file.readlines()
+            for line in lines:
+                problem_str += line
+
+        return {'content': problem_str}
     except ProjectBaseException as e:
         return Response(e.args, 500)
