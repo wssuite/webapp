@@ -67,11 +67,6 @@ class ScheduleHandler(BaseHandler):
             nurse_dict = self.nurse_dao.find_by_username(nurse, demand.profile)
             if nurse is not None:
                 nurse_object = Nurse().from_json(nurse_dict)
-
-                for preference in demand.preferences:
-                    if preference.username == nurse_object.username:
-                        preference.id = nurse_object.id
-
                 for nurse_group in nurse_groups:
                     nurse_group_object = NurseGroup().from_json(nurse_group)
                     if nurse in nurse_group_object.nurses:
@@ -85,6 +80,31 @@ class ScheduleHandler(BaseHandler):
                 detailed_demand.nurses.append(nurse_object)
 
         detailed_demand.set_from_schedule_demand(demand)
+
+        """Filter the demand and the preferences before appending them
+         to the detailed demand"""
+        for preference in demand.preferences:
+            """Get the nurse for the given preference"""
+            nurse_dict = self.nurse_dao.find_by_username(
+                preference.username, demand.profile
+            )
+            """if the nurse is found the dict will not be empty and we can
+             proceed to verify the shift """
+            if nurse_dict is not None:
+                nurse_obj = Nurse().from_json(nurse_dict)
+                preference.id = nurse_obj.id
+                shift_exist = self.shift_dao.exist(
+                    preference.shift, demand.profile
+                )
+                if shift_exist is True or preference.shift.lower() == "any":
+                    detailed_demand.preferences.append(preference)
+
+        for element in demand.hospital_demand:
+            skill_exist = self.skill_dao.exist(element.skill, demand.profile)
+            shift_exist = self.shift_dao.exist(element.shift, demand.profile)
+            if skill_exist is True and shift_exist is True:
+                detailed_demand.hospital_demand.append(element)
+
         contracts = self.contract_dao.fetch_all(demand.profile)
         contract_groups = self.contract_group_dao.fetch_all(demand.profile)
         skills = self.skill_dao.get_all(demand.profile)
