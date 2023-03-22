@@ -29,9 +29,13 @@ export class ShiftConstraintComponent implements OnInit{
   }
 
   ngOnInit(): void {
-      this.weightErrorState = this.constraint.weight === BASE_VALUE;
-      this.valueErrorState = this.constraint.value === '';
-      this.selectFormCtrl.setValue(this.constraint.shiftId);
+    if(!this.possibleShifts.includes(this.constraint.shiftId)){
+      this.constraint.shiftId = "";
+    }
+    this.weightErrorState = this.constraint.weight === BASE_VALUE;
+    this.valueErrorState = this.constraint.value === '';
+    this.selectFormCtrl.setValue(this.constraint.shiftId);
+    this.emitConstraint();
   }
 
   emitErrorState() {

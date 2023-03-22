@@ -43,8 +43,14 @@ export class NurseCreationComponent implements OnInit {
     this.nameNurseFormCtrl = new FormControl({value: this.nurse.name, disabled: this.inputDisabled},
         Validators.required);
     this.nurseStartUsername = this.nurse.username;
+    
+    for(let i=0; i< this.nurse.contracts.length; i++) {
+      if(!this.possibleContracts.includes(this.nurse.contracts[i])){
+        this.nurse.contracts.splice(i, 1);
+      }
+    }
+
     this.emitNurse()
-   
   }
 
   addContract() {

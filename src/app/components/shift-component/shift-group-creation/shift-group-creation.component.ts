@@ -38,6 +38,16 @@ export class ShiftGroupCreationComponent implements OnInit{
     this.nameShiftGroupFormCtrl = new FormControl({value: this.shiftGroup.name, disabled: this.inputDisabled},
       Validators.required);
     this.shiftGroupStartName = this.shiftGroup.name;
+    for(let i=0; i< this.shiftGroup.shifts.length; i++) {
+      if(!this.possibleShifts.includes(this.shiftGroup.shifts[i])){
+        this.shiftGroup.shifts.splice(i, 1);
+      }
+    }
+    for(let i=0; i< this.shiftGroup.shiftTypes.length; i++) {
+      if(!this.possibleShiftsType.includes(this.shiftGroup.shiftTypes[i])){
+        this.shiftGroup.shiftTypes.splice(i, 1);
+      }
+    }
     this.emitShiftGroup() 
   }
 
