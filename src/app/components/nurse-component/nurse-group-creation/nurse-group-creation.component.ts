@@ -44,6 +44,19 @@ export class NurseGroupCreationComponent implements OnInit {
     this.nameNurseGroupFormCtrl = new FormControl({value: this.nurseGroup.name, disabled: this.inputDisabled},
       Validators.required);
     this.nurseGroupStartname = this.nurseGroup.name;
+
+    for(let i=0; i< this.nurseGroup.contracts.length; i++) {
+      if(!this.possibleContracts.includes(this.nurseGroup.contracts[i])){
+        this.nurseGroup.contracts.splice(i, 1);
+      }
+    }
+
+    for(let i=0; i< this.nurseGroup.nurses.length; i++) {
+      if(!this.possibleNurses.includes(this.nurseGroup.nurses[i])){
+        this.nurseGroup.nurses.splice(i, 1);
+      }
+    }
+
     this.emitNurseGroup();
   }
 

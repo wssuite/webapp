@@ -35,11 +35,15 @@ export class MinMaxConsecutiveShiftComponent implements OnInit{
   }
 
   ngOnInit(): void {
-      this.selectFormCtrl.setValue(this.constraint.shiftId);
-      this.minValueErrorState = this.constraint.minValue === '';
-      this.maxValueErrorState = this.constraint.maxValue === '';
-      this.maxWeightErrorState = this.constraint.maxWeight === BASE_VALUE;
-      this.minWeightErrorState = this.constraint.minWeight === BASE_VALUE;
+    if(!this.possibleShifts.includes(this.constraint.shiftId)){
+      this.constraint.shiftId = ''
+    }
+    this.selectFormCtrl.setValue(this.constraint.shiftId);
+    this.minValueErrorState = this.constraint.minValue === '';
+    this.maxValueErrorState = this.constraint.maxValue === '';
+    this.maxWeightErrorState = this.constraint.maxWeight === BASE_VALUE;
+    this.minWeightErrorState = this.constraint.minWeight === BASE_VALUE;
+    this.emitConstraint()
   }
 
   emitErrorState(){

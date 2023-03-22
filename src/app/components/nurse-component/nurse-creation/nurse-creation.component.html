@@ -18,7 +18,7 @@
    <div *ngIf="possibleContracts.length > 0">
      <mat-form-field appearance="fill">
        <mat-label>Select a contract</mat-label>
-       <mat-select [(value)]="selectedContract" (selectionChanged)="emitNurse()">
+       <mat-select [(value)]="selectedContract" (selectionChange)="emitNurse()">
          <mat-option *ngFor="let contract of possibleContracts" [value]="contract">
            {{ contract }}
          </mat-option>
