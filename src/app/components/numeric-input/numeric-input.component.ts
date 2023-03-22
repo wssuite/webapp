@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
   FormControl,
   FormGroupDirective,
@@ -27,7 +27,7 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: "./numeric-input.component.html",
   styleUrls: ["./numeric-input.component.css"],
 })
-export class NumericInputComponent {
+export class NumericInputComponent implements OnInit{
   @Input() value!: string;
   @Output() valueChange: EventEmitter<string>;
 
@@ -45,6 +45,11 @@ export class NumericInputComponent {
     ]);
     this.matcher = new CustomErrorStateMatcher();
     this.errorState = new EventEmitter();
+  }
+
+  ngOnInit(): void {
+      this.inputCtrl.setValue(this.value);
+      this.emitValue();
   }
 
   emitValue() {
