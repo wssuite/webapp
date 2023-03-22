@@ -205,7 +205,7 @@ identical shift types during weekend,hard
 complete weekends,hard
 unwanted patterns,Monday|Wednesday|Friday,Late|Early|MidDay,Tuesday,Early,hard
 unwanted shift,Early,hard
-minimum and maximum hours in four weeks,1.0,5.0,5.0,hard
+minimum and maximum of working hours in four weeks,1.0,5.0,5.0,hard
 
 """
         contract = Contract().from_json(self.contract_dict)
