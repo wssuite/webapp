@@ -1,3 +1,4 @@
+from src.models.exporter import CSVExporter
 from src.models.db_document import DBDocument
 from src.models.jsonify import Jsonify
 from pykson import StringField
@@ -8,7 +9,7 @@ from src.utils.import_util import sanitize_array, Wrapper
 from src.models.stringify import Stringify
 
 
-class Shift(Jsonify, DBDocument, Stringify, StringReader):
+class Shift(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
     name = StringField(serialized_name=shift_name)
     start_time = StringField(serialized_name=shift_start_time)
     end_time = StringField(serialized_name=shift_end_time)
@@ -32,3 +33,6 @@ class Shift(Jsonify, DBDocument, Stringify, StringReader):
 
     def to_string(self):
         return f"{self.name},{self.start_time},{self.end_time}\n"
+
+    def export(self):
+        return self.to_string()

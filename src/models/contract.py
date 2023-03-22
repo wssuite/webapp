@@ -1,5 +1,6 @@
 from typing import Type, List
 
+from src.models.exporter import CSVExporter
 from src.models.jsonify import Jsonify
 from src.models.constraints import (
     ContractConstraint,
@@ -30,6 +31,7 @@ from constants import (
     unwanted_skills,
     contract_skills,
     bind_map,
+    min_max_hours_in_four_weeks,
 )
 
 from src.models.db_document import DBDocument
@@ -49,6 +51,7 @@ class ContractConstraintCreator:
             min_max_consecutive_shift_type: ContractMinMaxShiftConstraint,
             min_max_consecutive_weekends: ContractMinMaxConstraint,
             min_max_num_assignments_in_four_weeks: ContractMinMaxConstraint,
+            min_max_hours_in_four_weeks: ContractMinMaxConstraint,
             identical_shift_during_weekend: ContractBooleanConstraint,
             complete_weekends: ContractBooleanConstraint,
             alternative_shift: ContractAlternativeShift,
@@ -68,7 +71,7 @@ class ContractConstraintCreator:
         return self.dict_contract_constraints[name]().read_line(line)
 
 
-class Contract(Jsonify, DBDocument, Stringify, StringReader):
+class Contract(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = ""
@@ -148,3 +151,9 @@ class Contract(Jsonify, DBDocument, Stringify, StringReader):
         return "{{\ncontractName,{0}\nconstraints\n{1}}}\n".format(
             self.name, constraints_string
         )
+
+    def export(self):
+        ret_string = f"name,{self.name}\n"
+        for constraint in self.constraints:
+            ret_string += constraint.export()
+        return f"{ret_string}\n"

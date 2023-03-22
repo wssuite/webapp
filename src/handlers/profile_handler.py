@@ -9,8 +9,18 @@ from constants import (
     rest_shift_group,
     work,
     rest,
+    profile_name,
+    profile_contracts,
+    profile_skills,
+    profile_contract_groups,
+    profile_shifts,
+    profile_shift_types,
+    profile_shift_groups,
+    profile_nurses,
+    profile_nurse_groups,
 )
 from src.models.shift_group import ShiftGroup
+from src.utils.file_system_manager import FileSystemManager
 import os
 
 
@@ -20,11 +30,15 @@ class ProfileHandler(BaseHandler):
 
     def create_profile(self, token, profile_name):
         user = self.verify_token(token)
+        fs = FileSystemManager()
+
         profile_object = Profile()
         profile_object.name = profile_name
         profile_object.creator = user[user_username]
         profile_object.access = [user[user_username]]
         self.profile_dao.insert_if_not_exist(profile_object.db_json())
+        profile_path = f"{fs.get_dataset_directory_path()}/{profile_name}"
+        fs.create_dir_if_not_exist(profile_path)
         w_group_dict = work_shift_group.copy()
         w_group_dict[profile] = profile_name
         w_group = ShiftGroup().from_json(w_group_dict)
@@ -40,6 +54,7 @@ class ProfileHandler(BaseHandler):
 
     def delete_profile(self, token, name):
         self.verify_profile_creator_access(token, name)
+        fs = FileSystemManager()
         self.profile_dao.remove(name)
         self.shift_dao.delete_all(name)
         self.skill_dao.delete_all(name)
@@ -49,6 +64,8 @@ class ProfileHandler(BaseHandler):
         self.nurse_dao.delete_all(name)
         self.nurse_group_dao.delete_all(name)
         self.contract_group_dao.delete_all(name)
+        profile_path = f"{fs.get_dataset_directory_path()}/{name}"
+        fs.delete_dir(profile_path)
 
     """
     When duplicating a profile, we want to duplicate the work
@@ -124,3 +141,27 @@ class ProfileHandler(BaseHandler):
             self.nurse_dao.insert_one(nurse.db_json())
         for nurse_group in d_p.nurse_groups:
             self.nurse_group_dao.insert_one_if_not_exist(nurse_group.db_json())
+
+    def export_profile(self, token, profile_to_export):
+        self.verify_profile_accessors_access(token, profile_to_export)
+        skills = self.skill_dao.get_all(profile_to_export)
+        contracts = self.contract_dao.fetch_all(profile_to_export)
+        contract_groups = self.contract_group_dao.fetch_all(profile_to_export)
+        shifts = self.shift_dao.fetch_all(profile_to_export)
+        shift_types = self.shift_type_dao.fetch_all(profile_to_export)
+        shift_groups = self.shift_group_dao.fetch_all(profile_to_export)
+        nurses = self.nurse_dao.fetch_all(profile_to_export)
+        nurse_groups = self.nurse_group_dao.fetch_all(profile_to_export)
+        profile_json = {
+            profile_name: profile_to_export,
+            profile_skills: skills,
+            profile_shifts: shifts,
+            profile_shift_types: shift_types,
+            profile_shift_groups: shift_groups,
+            profile_contracts: contracts,
+            profile_contract_groups: contract_groups,
+            profile_nurses: nurses,
+            profile_nurse_groups: nurse_groups,
+        }
+        detailed = DetailedProfile().from_json(profile_json)
+        return detailed.export()

@@ -19,3 +19,8 @@ class TestContractGroup(TestCase):
         profile_name = profile1
         group = ContractGroup().read_contract_group(string, profile_name)
         self.assertEqual(self.dict, group.to_json())
+
+    def test_export_contract_group(self):
+        expected = "contract_group_without_contradiction,minConsContract\n"
+        group = ContractGroup().from_json(self.dict)
+        self.assertEqual(expected, group.export())

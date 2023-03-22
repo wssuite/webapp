@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 from src.handlers.schedule_handler import ScheduleHandler
 from src.dao.abstract_dao import connect_to_fake_db
 from constants import (
@@ -24,13 +22,14 @@ from constants import (
     schedule_skills,
     schedule_shifts,
 )
-from test.db_test_constants import build_db, random_hex
+from test.db_test_constants import build_db, random_hex, profile1
 from pyfakefs.fake_filesystem_unittest import TestCase
+from src.utils.file_system_manager import base_directory, dataset_directory
 
 hospital_demand_dict = {
     start_date: "2023-06-01",
     end_date: "2023-06-02",
-    profile: "profile1",
+    profile: profile1,
     schedule_hospital_demand: [
         {
             demand_date: "2023-06-01",
@@ -72,7 +71,7 @@ expected = """HEADERS
 (5,head nurse 3)
 END
 SCHEDULING_PERIOD
-profile1,3.0,2023-06-01,2023-06-02
+profile1,1,2023-06-01,2023-06-02
 END
 SKILLS
 Nurse
@@ -154,15 +153,37 @@ class TestGenerateCppInputFile(TestCase):
     def setUp(self):
         self.handler = ScheduleHandler(connect_to_fake_db())
         self.setUpPyfakefs()
+        path = self.fs.joinpaths(base_directory, dataset_directory, profile1)
+        self.fs.create_dir(path)
         build_db(self.handler)
 
     def tearDown(self) -> None:
         self.tearDownPyfakefs()
 
-    @patch("random.random")
-    def test_generate_schedule(self, mock_random):
-        mock_random.return_value = 3.0
+    def test_generate_schedule(self):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
-        fake_file = self.fs.get_object("input.txt")
+        full_path = self.fs.joinpaths(
+            base_directory,
+            dataset_directory,
+            profile1,
+            "2023-06-01_2023-06-02",
+        )
+        folder_exist = self.fs.exists(full_path)
+        self.assertTrue(folder_exist)
+        versions = self.fs.listdir(full_path)
+        self.assertEqual(1, len(versions))
+        input_txt_path = self.fs.joinpaths(full_path, "1", "input.txt")
+        fake_file = self.fs.get_object(input_txt_path)
+        if self.fs.is_linux is True:
+            self.assertEqual(
+                f"{base_directory}/{dataset_directory}/{profile1}/"
+                f"2023-06-01_2023-06-02/1/input.txt",
+                input_txt_path,
+            )
+
         actual = fake_file.contents
         self.assertEqual(expected, actual)
+        input_json_path = self.fs.joinpaths(full_path, "1", "input.json")
+        json_file = self.fs.get_object(input_json_path)
+        actual_json = eval(json_file.contents)
+        self.assertEqual(hospital_demand_dict, actual_json)

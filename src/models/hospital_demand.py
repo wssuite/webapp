@@ -52,6 +52,24 @@ class ScheduleDemand(Jsonify):
     skills = ListField(str, serialized_name=schedule_skills)
     shifts = ListField(str, serialized_name=schedule_shifts)
 
+    def to_json(self):
+        h_d = []
+        for element in self.hospital_demand:
+            h_d.append(element.to_json())
+        pref = []
+        for element in self.preferences:
+            pref.append(element.to_json())
+        return {
+            schedule_nurses: self.nurses,
+            schedule_skills: self.skills,
+            schedule_shifts: self.shifts,
+            schedule_pref: pref,
+            profile: self.profile,
+            schedule_start_date: self.start_date,
+            schedule_end_date: self.end_date,
+            schedule_hospital_demand: h_d,
+        }
+
 
 class ScheduleDemandDetailed(Jsonify, Stringify):
     start_date = StringField(serialized_name=schedule_start_date)

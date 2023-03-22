@@ -19,3 +19,8 @@ class TestShift(TestCase):
         profile_name = profile1
         shift = Shift().read_shift(shift_string, profile_name)
         self.assertEqual(self.shift_dict, shift.to_json())
+
+    def test_export_shift(self):
+        expected = "Early,08:00:00,16:00:00\n"
+        shift = Shift().from_json(self.shift_dict)
+        self.assertEqual(expected, shift.export())

@@ -1,3 +1,4 @@
+from src.models.exporter import CSVExporter
 from src.models.jsonify import Jsonify
 from src.models.db_document import DBDocument
 from pykson import ListField, StringField
@@ -22,7 +23,7 @@ in its array
 """
 
 
-class ShiftGroup(Jsonify, DBDocument, Stringify, StringReader):
+class ShiftGroup(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
     name = StringField(serialized_name=shift_group_name)
     shifts = ListField(str, serialized_name=shift_group_shifts_list)
     profile = StringField(serialized_name=profile, default_value="")
@@ -63,3 +64,10 @@ class ShiftGroup(Jsonify, DBDocument, Stringify, StringReader):
             f"{self.name},{len(self.shifts)}{shifts_string},"
             f"{len(self.shift_types)}{shift_types_string}\n"
         )
+
+    def export(self):
+        shifts_string = extract_string_from_simple_object_array(self.shifts)
+        shift_types_string = extract_string_from_simple_object_array(
+            self.shift_types
+        )
+        return f"{self.name}{shifts_string}{shift_types_string}\n"

@@ -33,3 +33,8 @@ class TestNurseGroup(unittest.TestCase):
             line, profile_name, contracts, contract_groups
         )
         self.assertEqual(self.expected_group, nurse_group.to_json())
+
+    def test_export_nurse_group(self):
+        expected = "group 1,contract 1,suz,Mon\n"
+        nurse_group = NurseGroup().from_json(self.expected_group)
+        self.assertEqual(expected, nurse_group.export())

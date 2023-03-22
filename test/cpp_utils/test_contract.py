@@ -27,6 +27,7 @@ from constants import (
     unwanted_skills,
     contract_skills,
     profile,
+    min_max_hours_in_four_weeks,
 )
 from test_constants import profile1
 
@@ -107,6 +108,13 @@ class TestContract(TestCase):
                     shift_constraint: "Early",
                     constraint_weight: "hard",
                 },
+                {
+                    constraint_name: min_max_hours_in_four_weeks,
+                    max_constraint_value: "5.0",
+                    max_constraint_weight: "hard",
+                    min_constraint_value: "1.0",
+                    min_constraint_weight: "5.0",
+                },
             ],
             profile: profile1,
         }
@@ -127,7 +135,7 @@ class TestContract(TestCase):
 
     def test_two_merged_contract_constraints_are_added(self):
         contract = Contract().from_json(self.contract_dict)
-        self.assertEqual(10, len(contract.constraints))
+        self.assertEqual(11, len(contract.constraints))
         added_constraint = ContractMinMaxConstraint().from_json(
             {
                 constraint_name: min_max_num_assignments_in_four_weeks,
@@ -146,7 +154,7 @@ class TestContract(TestCase):
         modified_contract_dict[contract_constraints].append(
             added_constraint.to_json()
         )
-        self.assertEqual(11, len(contract.constraints))
+        self.assertEqual(12, len(contract.constraints))
         self.assertEqual(modified_contract_dict, contract.to_json())
 
     def test_copy_contract_returns_another_object(self):
@@ -180,9 +188,28 @@ complete weekends,hard,,,,,,,,
 Unwanted patterns,Monday|Wednesday|Friday,Late|Early|MidDay,Tuesday,Early,hard
 #,shift,weight,,,,,,,
 unwanted shift,Early,hard,,,,,,,
+minimum and maximum hours in four weeks,1.0,5.0,5.0,hard,,,,,
 ,,,,,,,,,"""
         contract = Contract().read_contract(profile1, string)
         self.assertEqual(self.contract_dict, contract.to_json())
+
+    def test_export_contract(self):
+        expected = """name,FullTime
+number of free days after shift,Early,1.0,hard
+unwanted skills,Nurse,hard
+total number of working weekends in four weeks,1.0,5.0,5.0,hard
+minimum and maximum number of assignments in four weeks,1.0,5.0,5.0,hard
+minimum and maximum of consecutive working weekends,1.0,5.0,5.0,hard
+minimum and maximum of consecutive shift type,Early,1.0,5.0,5.0,hard
+identical shift types during weekend,hard
+complete weekends,hard
+unwanted patterns,Monday|Wednesday|Friday,Late|Early|MidDay,Tuesday,Early,hard
+unwanted shift,Early,hard
+minimum and maximum hours in four weeks,1.0,5.0,5.0,hard
+
+"""
+        contract = Contract().from_json(self.contract_dict)
+        self.assertEqual(expected, contract.export())
 
     def test_contract_creation_from_string_with_unknown_constraints(self):
         string = """name,FullTime,,,,,,,,
@@ -220,6 +247,7 @@ constraints
 {7},hard
 {8},hard,2,Monday|Wednesday|Friday;Late|Early|MidDay,Tuesday;Early
 {9},hard,Early
+{10},1.0,5.0,5.0,hard
 }}
 """.format(
             number_of_free_days_after_shift,
@@ -232,6 +260,7 @@ constraints
             complete_weekends,
             unwanted_pattern,
             alternative_shift,
+            min_max_hours_in_four_weeks,
         )
         contract = Contract().from_json(self.contract_dict)
         self.assertEqual(expected, contract.to_string())

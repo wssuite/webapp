@@ -1,3 +1,4 @@
+from src.models.exporter import CSVExporter
 from src.models.jsonify import Jsonify
 from pykson import StringField, ListField
 from constants import (
@@ -18,7 +19,7 @@ from src.models.string_reader import StringReader
 from src.utils.import_util import sanitize_array, Wrapper
 
 
-class Nurse(Jsonify, DBDocument, Stringify, StringReader):
+class Nurse(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
     name = StringField(serialized_name=nurse_name, default_value=admin)
     direct_contracts = ListField(str, serialized_name=nurse_contracts)
     id = StringField(serialized_name=nurse_id)
@@ -61,5 +62,17 @@ class Nurse(Jsonify, DBDocument, Stringify, StringReader):
         return (
             f"{self.id},{self.username},{len(self.direct_contracts)}"
             f"{contracts_string},{len(self.contract_groups)}"
+            f"{contract_groups_string}\n"
+        )
+
+    def export(self):
+        contracts_string = extract_string_from_simple_object_array(
+            self.direct_contracts
+        )
+        contract_groups_string = extract_string_from_simple_object_array(
+            self.contract_groups
+        )
+        return (
+            f"{self.username},{self.name}{contracts_string}"
             f"{contract_groups_string}\n"
         )

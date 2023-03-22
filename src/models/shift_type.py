@@ -1,3 +1,4 @@
+from src.models.exporter import CSVExporter
 from src.models.jsonify import Jsonify
 from src.models.db_document import DBDocument
 from constants import shift_type_name, shift_type_shifts_lists, profile
@@ -11,7 +12,7 @@ from src.models.stringify import (
 )
 
 
-class ShiftType(Jsonify, DBDocument, Stringify, StringReader):
+class ShiftType(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
     name = StringField(serialized_name=shift_type_name)
     shifts = ListField(str, serialized_name=shift_type_shifts_lists)
     profile = StringField(serialized_name=profile, default_value="")
@@ -38,3 +39,7 @@ class ShiftType(Jsonify, DBDocument, Stringify, StringReader):
     def to_string(self):
         shifts_string = extract_string_from_simple_object_array(self.shifts)
         return f"{self.name},{len(self.shifts)}{shifts_string}\n"
+
+    def export(self):
+        shifts_string = extract_string_from_simple_object_array(self.shifts)
+        return f"{self.name}{shifts_string}\n"

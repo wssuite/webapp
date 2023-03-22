@@ -19,3 +19,8 @@ class TestSkill(TestCase):
         skill_string = "Nurse"
         skill = Skill().read_skill(skill_string, profile_name)
         self.assertEqual(skill.to_json(), self.skill_dict)
+
+    def test_export_skill(self):
+        skill = Skill().from_json(self.skill_dict)
+        expected = "Nurse\n"
+        self.assertEqual(expected, skill.export())
