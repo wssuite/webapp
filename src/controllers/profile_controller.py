@@ -122,3 +122,17 @@ def export_profile():
         return {'content': export_str}
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/downloadTemplate", methods=["GET"])
+def download_template():
+    try:
+        _ = request.args[user_token]
+        template_str = ""
+        with open("template.csv") as file:
+            for line in file.readlines():
+                template_str += line
+
+        return {'content': template_str}
+    except KeyError as e:
+        return Response(e.args, 500)
