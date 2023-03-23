@@ -58,6 +58,10 @@ import { NurseGroupCreationDialogComponent } from './components/nurse-component/
 import { NurseGroupViewComponent } from './components/nurse-component/nurse-group-view/nurse-group-view.component';
 import { MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
 import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
@@ -174,6 +178,10 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
     MatMenuModule,
     MatPaginatorModule,
     MatAutocompleteModule,
+    MatTableModule,
+    MatSortModule,
+    MatDividerModule,
+    MatButtonToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

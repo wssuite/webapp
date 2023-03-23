@@ -1,8 +1,21 @@
-<div class="side-bar">
-        <button
-        *ngFor="let button of buttons"
-        mat--button
-        (click)="redirect(button)">
-          <h1 class="buttonClicked">{{ button }}</h1>
-      </button>
-    </div>
+
+<div class="example-button-row">
+  <button mat-button
+    (click)="redirect('Skill')">
+    <h2>Skill</h2>
+  </button>
+  <button mat-button
+    (click)="redirect('Shift')">
+    <h2>Shift</h2>
+  </button>
+  <button mat-button
+  (click)="redirect('Shift Type')">
+  <h2>Shift Type</h2>
+  </button>
+  <button mat-button
+  (click)="redirect('Shift Group')">
+  <h2>Shift Group</h2>
+  </button>
+</div>
+<mat-divider></mat-divider>
+
