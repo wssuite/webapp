@@ -29,7 +29,7 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
 
   constructor(public dialog: MatDialog, private nurseGroupService: NurseGroupService, private profileService: ProfileService) {
     this.nurseGroups = [];
-    this.displayedColumns =  ['name','nurses', 'contracts','actions'];
+    this.displayedColumns =  ['name','nurses', 'contracts', 'contract_groups','actions'];
     this.dataSource = new MatTableDataSource();
   }
 
@@ -92,7 +92,7 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
 
 
   createNewNurseGroup(){
-    const newNurseGroup = {name: '',contracts:[], nurses:[], profile: CacheUtils.getProfile()};
+    const newNurseGroup = {name: '',contracts:[], nurses:[], contract_groups:[], profile: CacheUtils.getProfile()};
     this.openNurseGroupCreationDialog(newNurseGroup); 
   }
 

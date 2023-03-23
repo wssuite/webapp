@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NurseInterface } from 'src/app/models/Nurse';
+import { ContractGroupService } from 'src/app/services/contract/contract-group.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { NurseService } from 'src/app/services/nurse/nurse.service';
 import { Exception } from 'src/app/utils/Exception';
@@ -17,12 +18,14 @@ export class NurseCreationDialogComponent  implements OnInit{
   nurseErrorState: boolean;
   initNurseUsername: string;
   possibleContracts!: string[];
+  possibleContractsGroup!: string[];
   
 
   constructor(public dialogRef: MatDialogRef<NurseCreationDialogComponent >,
     @Inject(MAT_DIALOG_DATA) public data:  {nurse: NurseInterface, nurses: string[]},
     private api: NurseService,
     private contractService: ContractService,
+    private contractGroupService: ContractGroupService,
     private dialog: MatDialog,  
 ) {
   this.errorState = new EventEmitter();
@@ -32,11 +35,26 @@ export class NurseCreationDialogComponent  implements OnInit{
 }
   ngOnInit(): void {
     this.possibleContracts = [];
+    this.possibleContractsGroup = [];
     try{
       this.contractService.getContractNames().subscribe({
         next: (contracts: string[])=>{
           contracts.forEach((contract: string)=>{
             this.possibleContracts.push(contract);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+    }catch(err){
+      //Do nothing
+    }
+    try{
+      this.contractGroupService.getAllContractGroupName().subscribe({
+        next: (contractsGroup: string[])=>{
+          contractsGroup.forEach((contractGroup: string)=>{
+            this.possibleContractsGroup.push(contractGroup);
           })
         },
         error: (error: HttpErrorResponse)=>{

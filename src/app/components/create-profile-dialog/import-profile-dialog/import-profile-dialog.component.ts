@@ -210,6 +210,7 @@ export class ImportProfileComponent implements OnInit{
       name:'',
       username:'',
       contracts:[],
+      contract_groups:[],
       profile: this.profile.profile
     }
     this.profile.nurses.push(newNurse)
@@ -220,6 +221,7 @@ export class ImportProfileComponent implements OnInit{
     const ng: NurseGroupInterface = {
       name:'',
       contracts:[],
+      contract_groups:[],
       nurses:[],
       profile: this.profile.profile
     }

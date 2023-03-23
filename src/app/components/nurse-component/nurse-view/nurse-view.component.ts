@@ -30,16 +30,12 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
   @ViewChild(MatSort) sort!: MatSort;
 
 
-
   constructor(public dialog: MatDialog, private nurseService: NurseService, private profileService: ProfileService) {
     this.nurses_username = [];
-    this.displayedColumns =  ['name', 'username', 'contracts','actions'];
+    this.displayedColumns =  ['name', 'username', 'contracts','contract_groups','actions'];
     this.dataSource = new MatTableDataSource();
-
-
-
-    
   }
+
   ngOnInit(): void {
     try{
       this.getNurses();
@@ -100,7 +96,7 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
 
 
   createNewNurse(){
-    const newNnurse = {name: '',username: '', contracts:[], profile: CacheUtils.getProfile()};
+    const newNnurse = {name: '',username: '', contracts:[], contract_groups:[], profile: CacheUtils.getProfile()};
     this.openNurseCreationDialog(newNnurse); 
   }
 

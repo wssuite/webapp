@@ -73,3 +73,36 @@
      </tr>
    </table>
  </div>
+ <div class="contractGroupSection">
+  <H1 class="contractSectionTitle">Group Contracts</H1>
+  <div *ngIf="possibleContractsGroup.length > 0">
+    <mat-form-field appearance="fill">
+      <mat-label>Select a group contract</mat-label>
+      <mat-select [(ngModel)]="selectedContractGroup" (selectionChange)="emitNurseGroup()">
+        <mat-option *ngFor="let contractGroup of possibleContractsGroup" [value]="contractGroup">
+          {{ contractGroup }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button class="addContractGroupButton" (click)="addContractGroup()">
+      add group contract
+    </button>
+  </div>
+  <table class="contractGroupTable">
+    <tr *ngFor="let contractGroup of nurseGroup.contract_groups">
+      <td class="contractGroupName">
+        <mat-chip>
+        {{ contractGroup }}
+      </mat-chip>
+      </td>
+      <button
+        mat-raised-button
+        class="removeContractGroupButton"
+        (click)="removeContractGroup(contractGroup)"
+        color="accent"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </tr>
+  </table>
+</div>
