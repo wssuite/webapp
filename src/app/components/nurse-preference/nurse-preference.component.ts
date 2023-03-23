@@ -2,6 +2,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
+import { NurseInterface } from "src/app/models/Nurse";
 
 
 interface  SchedulePref
@@ -24,11 +25,11 @@ interface  SchedulePref
 
   weight: string;
   @Input() shifts!: string[];
-  @Input() nurses!: string[]; 
+  @Input() nurses!: NurseInterface[]; 
 
   timetable: string[];
   selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
-  possibleNurses: string[];
+  possibleNurses: NurseInterface[];
   possibleShifts: string[];
   preferences: {[date: string]: {[nurse: string]: { [shift: string]: { pref: string, weight: string }} } } = {};
   nurseSelectorFormControl = new FormControl();
@@ -40,7 +41,7 @@ interface  SchedulePref
     this.weight = '';
     this.possibleShifts = this.shifts;
     this.timetable = ["Monday, April 3, 2023", "Tuesday, April 4, 2023", "Wednesday, April 5, 2023", "Thursday, April 6, 2023", "Friday, April 7, 2023", "Saturday, April 8, 2023", "Sunday, April 9, 2023"];
-    this.possibleNurses = this.nurses;
+    this.possibleNurses = [];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -50,6 +51,7 @@ interface  SchedulePref
     if (changes["shifts"] && changes["shifts"].currentValue) {
       this.possibleShifts = changes["shifts"].currentValue;
     }
+    this.getButtonState();
   }
 
 
@@ -58,9 +60,9 @@ interface  SchedulePref
     for(const date of this.timetable){
       this.preferences[date] = {};
       for (const nurse of this.possibleNurses) {
-        this.preferences[date][nurse] = {};
+        this.preferences[date][nurse.username] = {};
         for (const shift of this.possibleShifts) {
-          this.preferences[date][nurse][shift] = { pref: '', weight: '' };
+          this.preferences[date][nurse.username][shift] = { pref: '', weight: '' };
         }
       }
     }
@@ -97,7 +99,8 @@ interface  SchedulePref
     return ""
   }
 
-  getButtonState(date: string, nurse: string, shift: string): string {
+  getButtonState(date?: string, nurse?: string, shift?: string): string {
+    if(date !== undefined && nurse !==  undefined && shift !==  undefined) {
     if(this.preferences[date][nurse][shift].pref === 'ON') {
       return "check"
     } 
@@ -106,13 +109,15 @@ interface  SchedulePref
     }
     return "check_box_outline_blank";
   }
+  return "check_box_outline_blank";
+  }
 
   getButtonStyle(date: string, nurse: string, shift: string) {
-    const pref = this.preferences[date][nurse][shift].pref;
-    if (pref === 'ON') {
-      return {'background-color': 'rgb(228, 241, 226)' };
-    } else if (pref === 'OFF') {
-      return {'background-color': 'rgb(246, 233, 232)' };
+      const pref = this.preferences[date][nurse][shift].pref;
+      if (pref === 'ON') {
+        return {'background-color': 'rgb(228, 241, 226)' };
+      } else if (pref === 'OFF') {
+        return {'background-color': 'rgb(246, 233, 232)' };
     }
     return { 'background-color': 'rgb(235, 234, 234)' };
   }
@@ -122,13 +127,13 @@ interface  SchedulePref
     for(const date of this.timetable){
       for (const nurse of this.possibleNurses) {
         for (const shift of this.possibleShifts) {
-          if(this.preferences[date][nurse][shift].pref === 'OFF' || this.preferences[date][nurse][shift].pref === 'ON'){
+          if(this.preferences[date][nurse.username][shift].pref === 'OFF' || this.preferences[date][nurse.username][shift].pref === 'ON'){
             const schedule = {
               preference_date: date, 
-              preference_username: nurse, 
-              preference_pref: this.preferences[date][nurse][shift].pref,
+              preference_username: nurse.username, 
+              preference_pref: this.preferences[date][nurse.username][shift].pref,
               preference_shift: shift,
-              preference_weight: this.preferences[date][nurse][shift].weight
+              preference_weight: this.preferences[date][nurse.username][shift].weight
             }
             this.scedulePref.push(schedule);
           }
