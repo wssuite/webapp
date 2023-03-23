@@ -135,5 +135,5 @@ def download_template():
                 template_str += line
 
         return {'content': template_str}
-    except KeyError as e:
+    except ProjectBaseException as e:
         return Response(e.args, 500)
