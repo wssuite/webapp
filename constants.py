@@ -226,3 +226,8 @@ skill_section = "SKILLS"
 hospital_demand_section = "HOSPITAL_DEMAND"
 preferences_section = "PREFERENCES"
 header_section = "HEADERS"
+
+version = "version"
+state = "state"
+previous_versions = "previousVersions"
+worker_host = "worker"
