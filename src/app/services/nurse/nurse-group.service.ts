@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ADD_NURSE_GROUP_URL, REMOVE_NURSE_GROUP_URL, UPDATE_NURSE_GROUP_URL, FETCH_NURSE_GROUP_BY_NAME, FETCH_ALL_NURSE_GROUP_NAME } from 'src/app/constants/api-constants';
+import { ADD_NURSE_GROUP_URL, REMOVE_NURSE_GROUP_URL, UPDATE_NURSE_GROUP_URL, FETCH_NURSE_GROUP_BY_NAME, FETCH_ALL_NURSE_GROUP_NAME, FETCH_NURSE_GROUP_URL } from 'src/app/constants/api-constants';
 import { NurseGroupInterface } from 'src/app/models/Nurse';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
@@ -68,12 +68,12 @@ export class NurseGroupService {
     }
   }
 
-  getAllNurseGroup(): Observable<string[]> {
+  getAllNurseGroup(): Observable<NurseGroupInterface[]> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<string[]>(FETCH_ALL_NURSE_GROUP_NAME, {
+      return this.httpClient.get<NurseGroupInterface[]>(FETCH_NURSE_GROUP_URL, {
         params: queryParams,
       });
     }catch(err){

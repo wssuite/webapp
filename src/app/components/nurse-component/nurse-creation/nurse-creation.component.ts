@@ -43,7 +43,14 @@ export class NurseCreationComponent implements OnInit {
     this.nameNurseFormCtrl = new FormControl({value: this.nurse.name, disabled: this.inputDisabled},
         Validators.required);
     this.nurseStartUsername = this.nurse.username;
-   
+    
+    for(let i=0; i< this.nurse.contracts.length; i++) {
+      if(!this.possibleContracts.includes(this.nurse.contracts[i])){
+        this.nurse.contracts.splice(i, 1);
+      }
+    }
+
+    this.emitNurse()
   }
 
   addContract() {
@@ -80,7 +87,7 @@ export class NurseCreationComponent implements OnInit {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameNurseFormCtrl.hasError('required') || this.usernameNurseFormCtrl.hasError('required') || (this.usernameExist() && this.nurseStartUsername === '') ||this.contractSelectorError );
+    this.errorState.emit(this.nameNurseFormCtrl.hasError('required') || this.usernameNurseFormCtrl.hasError('required') || (this.usernameExist() && this.nurseStartUsername === '') ||this.nurse.contracts.length === 0 );
     console.log("error");
   }
 

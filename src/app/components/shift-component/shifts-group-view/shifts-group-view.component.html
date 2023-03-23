@@ -1,11 +1,14 @@
 <div *ngIf="connectedUser; else elseBlock">
   <app-header></app-header>
-  <app-sidenav-shift></app-sidenav-shift>
-  <div *ngIf="this.shiftsGroup.length>0">
-    <mat-form-field align="end">
-      <mat-label>Filter</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Morning" #input>
-    </mat-form-field>
+  <app-sidenav-shift id="shift-group-nav-bar"></app-sidenav-shift>
+  <div *ngIf="this.shiftsGroup.length>0; else noShiftGroups">
+    <div class="button-container">
+      <mat-form-field class="filter">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Morning" #input>
+      </mat-form-field>
+      <button mat-raised-button class="buttonCreate" color="primary"  (click)="createNewShiftGroup()">Add new shift group</button>
+    </div>
     
     <div class="mat-elevation-z8">
   
@@ -59,7 +62,11 @@
   </table>
   <mat-paginator [pageSizeOptions]="[5, 10, 15,20]" aria-label="Select page of users"></mat-paginator>
   </div></div>
-<button mat-raised-button class="buttonCreate" color="primary"  (click)="createNewShiftGroup()">Add new shift group</button>
+  <ng-template #noShiftGroups>
+    <div class="button-container">
+      <button mat-raised-button class="buttonCreate" color="primary"  (click)="createNewShiftGroup()">Add new shift group</button>
+    </div>
+  </ng-template>
 </div>
 <ng-template #elseBlock>
   <app-not-connected></app-not-connected>

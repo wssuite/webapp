@@ -38,7 +38,8 @@ export class MinMaxConstraintComponent implements OnInit{
     this.minValueErrorState = this.constraint.minValue === '';
     this.maxValueErrorState = this.constraint.maxValue === '';
     this.maxWeightErrorState = this.constraint.maxWeight === BASE_VALUE;
-    this.minWeightErrorState = this.constraint.minWeight === BASE_VALUE;    
+    this.minWeightErrorState = this.constraint.minWeight === BASE_VALUE; 
+    this.emitConstraint();   
   }
 
   emitConstraint() {

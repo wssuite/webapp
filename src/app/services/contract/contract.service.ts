@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_ID, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID, UNWANTED_SKILLS_DISPLAY_NAME, UNWANTED_SKILLS_ID } from 'src/app/constants/constraints';
+import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_ID, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID, UNWANTED_SKILLS_DISPLAY_NAME, UNWANTED_SKILLS_ID } from 'src/app/constants/constraints';
 import { AlternativeShift, AlternativeShiftInterface } from 'src/app/models/AlternativeShift';
 import { BooleanConstraint } from 'src/app/models/BooleanConstraint';
 import { Constraint, ConstraintInterface } from 'src/app/models/Constraint';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
-import { IntegerConstraint, IntegerConstraintInterface } from 'src/app/models/IntegerConstraint';
 import { MinMaxConstraint, MinMaxConstraintInterface } from 'src/app/models/MinMaxConstraint';
 import { MinMaxShiftConstraint, MinMaxShiftConstraintInterface } from 'src/app/models/MinMaxShiftConstraint';
 import { ShiftConstraint, ShiftConstraintInterface } from 'src/app/models/ShiftConstraint';
@@ -81,8 +80,8 @@ export class ContractService {
           break;
         
         case TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID:
-          constraint = new IntegerConstraint(c.name, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME);
-          constraint.fromJson(c as IntegerConstraintInterface);
+          constraint = new MinMaxConstraint(c.name, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME);
+          constraint.fromJson(c as MinMaxConstraintInterface);
           break;
         
         case MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID:
@@ -98,6 +97,11 @@ export class ContractService {
         case UNWANTED_SKILLS_ID:
           constraint = new UnwantedSkills(c.name, UNWANTED_SKILLS_DISPLAY_NAME);
           constraint.fromJson(c as UnwantedSkills);
+          break;
+
+        case MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID:
+          constraint = new MinMaxConstraint(c.name, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME);
+          constraint.fromJson(c as MinMaxConstraintInterface);
           break;
 
         default: break;

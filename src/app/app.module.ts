@@ -20,6 +20,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -58,9 +62,6 @@ import { NurseGroupCreationDialogComponent } from './components/nurse-component/
 import { NurseGroupViewComponent } from './components/nurse-component/nurse-group-view/nurse-group-view.component';
 import { MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
-import {MatTableModule} from '@angular/material/table';
-import {MatSortModule} from '@angular/material/sort';
-import {MatDividerModule} from '@angular/material/divider';
 
 
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
@@ -76,7 +77,7 @@ import { ShiftTypeCreationComponent } from './components/shift-component/shift-t
 import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
 import { CreateProfileDialogComponent } from './components/create-profile-dialog/create-profile-dialog.component';
 import { CreateEmptyProfileDialogComponent } from './components/create-profile-dialog/create-empty-profile-dialog/create-empty-profile-dialog.component';
-import { ImportProfileDialogComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
+import { ImportProfileComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
 import { DuplicateProfileComponent } from './components/create-profile-dialog/duplicate-profile/duplicate-profile.component';
 import { ShareProfileComponent } from './components/create-profile-dialog/share-profile/share-profile.component';
 import { ShiftGroupCreationComponent } from './components/shift-component/shift-group-creation/shift-group-creation.component';
@@ -85,6 +86,7 @@ import { SkillCreationDialogComponent } from './components/skill-creation-dialog
 import { SkillCreationComponent } from './components/skill-creation/skill-creation.component';
 import { NurseCreationComponent } from './components/nurse-component/nurse-creation/nurse-creation.component';
 import { NurseGroupCreationComponent } from './components/nurse-component/nurse-group-creation/nurse-group-creation.component';
+import { ButtonMultiselectComponent } from './components/button-multiselect/button-multiselect.component';
 
 @NgModule({
   declarations: [
@@ -134,7 +136,7 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
     UnwantedSkillsComponent,
     CreateProfileDialogComponent,
     CreateEmptyProfileDialogComponent,
-    ImportProfileDialogComponent,
+    ImportProfileComponent,
     DuplicateProfileComponent,
     ShareProfileComponent,
     ShiftGroupCreationComponent,
@@ -143,6 +145,7 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
     SkillCreationComponent,
     NurseCreationComponent,
     NurseGroupCreationComponent,
+    ButtonMultiselectComponent,
   ],
   imports: [
     BrowserModule,
