@@ -1,6 +1,9 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { SkillInterface } from 'src/app/models/skill';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { SkillService } from 'src/app/services/shift/skill.service';
@@ -17,9 +20,16 @@ import { SkillCreationDialogComponent } from '../skill-creation-dialog/skill-cre
 export class SkillViewComponent implements OnInit, AfterViewInit{
   skills: string[];
   connectedUser!:boolean;
+  displayedColumns: string[]; 
+  dataSource: MatTableDataSource<string>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(public dialog: MatDialog, private skillService: SkillService, private profileService: ProfileService) {
   this.skills = [];
+      this.displayedColumns =  ['name','actions'];
+    this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit(): void {
@@ -35,12 +45,15 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
     this.profileService.profileChanged.subscribe(()=>{
       this.getSkills()
     })
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   getSkills(){
   this.skillService.getAllSkills().subscribe({
     next: (skill: string[])=> {
       this.skills = skill;
+      this.dataSource.data = skill;
     },
     error: (error: HttpErrorResponse)=> {
       this.openErrorDialog(error.error);
@@ -96,6 +109,15 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
     this.openErrorDialog((e as Exception).getMessage())
   }
 }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
 
 

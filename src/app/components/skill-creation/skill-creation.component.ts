@@ -16,6 +16,7 @@ export class SkillCreationComponent implements OnInit {
 
   nameSkillFormCtrl: FormControl;
   inputDisabled: boolean;
+  skillStartName!: string
 
 
   constructor(){
@@ -24,12 +25,15 @@ export class SkillCreationComponent implements OnInit {
  
     this.nameSkillFormCtrl = new FormControl(null, Validators.required);
     this.inputDisabled = false;
+    //this.skillStartName = ;
   }
 
   ngOnInit(): void {
     this.inputDisabled = this.skill.name === ""? false: true;
+    this.skillStartName = this.skill.name;
     this.nameSkillFormCtrl = new FormControl({value: this.skill.name, disabled: this.inputDisabled},
       Validators.required);
+    this.emitSkill()
 
   }
 
@@ -39,7 +43,8 @@ export class SkillCreationComponent implements OnInit {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameSkillFormCtrl.hasError('required') || (this.nameExist()) );
+    console.log(this.skillStartName);
+    this.errorState.emit(this.nameSkillFormCtrl.hasError('required') || (this.nameExist() && this.skillStartName == "") );
     console.log("error");
   }
 

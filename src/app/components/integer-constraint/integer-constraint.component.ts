@@ -31,6 +31,7 @@ export class IntegerConstraintComponent implements OnInit{
 
   ngOnInit(): void {
     this.weightErrorState = this.constraint.weight === BASE_VALUE;
+    this.emitConstraint();
   }
 
   emitConstraint() {

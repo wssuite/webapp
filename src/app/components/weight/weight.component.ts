@@ -63,6 +63,10 @@ export class WeightComponent implements OnInit{
   ngOnInit(): void {
     this.disabled = this.weight === "hard"? true: false;
     this.update();
+    if(!this.disabled){
+      this.inputCtrl.setValue(this.weight)
+    }
+    this.emitWeight();
   }
 
   update() {

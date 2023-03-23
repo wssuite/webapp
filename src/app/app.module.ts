@@ -20,6 +20,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatSortModule} from '@angular/material/sort';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 
 
@@ -60,6 +63,7 @@ import { NurseGroupViewComponent } from './components/nurse-component/nurse-grou
 import { MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 
+
 import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
 import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
 import { ContractsViewComponent } from './components/contracts-view/contracts-view.component';
@@ -73,7 +77,7 @@ import { ShiftTypeCreationComponent } from './components/shift-component/shift-t
 import { UnwantedSkillsComponent } from './components/unwanted-skills/unwanted-skills.component';
 import { CreateProfileDialogComponent } from './components/create-profile-dialog/create-profile-dialog.component';
 import { CreateEmptyProfileDialogComponent } from './components/create-profile-dialog/create-empty-profile-dialog/create-empty-profile-dialog.component';
-import { ImportProfileDialogComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
+import { ImportProfileComponent } from './components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component';
 import { DuplicateProfileComponent } from './components/create-profile-dialog/duplicate-profile/duplicate-profile.component';
 import { ShareProfileComponent } from './components/create-profile-dialog/share-profile/share-profile.component';
 import { ShiftGroupCreationComponent } from './components/shift-component/shift-group-creation/shift-group-creation.component';
@@ -88,6 +92,7 @@ import { NursePreferenceComponent } from './components/nurse-preference/nurse-pr
 import { MatTableModule } from "@angular/material/table";
 import { ContractGroupCreationComponent } from './components/contract-group-creation/contract-group-creation.component';
 import { ContractGroupCreationDialogComponent } from './components/contract-group-creation-dialog/contract-group-creation-dialog.component';
+import { ButtonMultiselectComponent } from './components/button-multiselect/button-multiselect.component';
 
 @NgModule({
   declarations: [
@@ -137,7 +142,7 @@ import { ContractGroupCreationDialogComponent } from './components/contract-grou
     UnwantedSkillsComponent,
     CreateProfileDialogComponent,
     CreateEmptyProfileDialogComponent,
-    ImportProfileDialogComponent,
+    ImportProfileComponent,
     DuplicateProfileComponent,
     ShareProfileComponent,
     ShiftGroupCreationComponent,
@@ -151,6 +156,7 @@ import { ContractGroupCreationDialogComponent } from './components/contract-grou
     NursePreferenceComponent,
     ContractGroupCreationComponent,
     ContractGroupCreationDialogComponent,
+    ButtonMultiselectComponent,
   ],
   imports: [
     BrowserModule,
@@ -187,6 +193,9 @@ import { ContractGroupCreationDialogComponent } from './components/contract-grou
     MatPaginatorModule,
     MatAutocompleteModule,
     MatTableModule,
+    MatSortModule,
+    MatDividerModule,
+    MatButtonToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -36,6 +36,7 @@ export const LOGOUT_URL = USER_URL + "/logout"
 
 
 export const SHIFT_URL= BASE_URL + "/shift";
+export const FETCH_ALL_SHIFT = SHIFT_URL + FETCH_ALL;
 export const FETCH_SHIFT_NAMES = SHIFT_URL + FETCH_NAMES;
 export const FETCH_SHIFT_BY_NAMES = SHIFT_URL + FETCH_BY_NAMES;
 export const ADD_SHIFT_URL = SHIFT_URL + ADD_STRING;
@@ -44,6 +45,7 @@ export const UPDATE_SHIFT_URL = SHIFT_URL + UPDATE;
 
 
 export const SHIFT_TYPE_URL = BASE_URL + "/shiftType";
+export const FETCH_ALL_SHIFT_TYPE = SHIFT_TYPE_URL + FETCH_ALL;
 export const ADD_SHIFT_TYPE_URL = SHIFT_TYPE_URL + ADD_STRING;
 export const REMOVE_SHIFT_TYPE_URL = SHIFT_TYPE_URL + REMOVE_STRING;
 export const FETCH_SHIFT_TYPE_NAMES = SHIFT_TYPE_URL + FETCH_NAMES;
@@ -52,6 +54,7 @@ export const UPDATE_SHIFT_TYPE_URL = SHIFT_TYPE_URL + UPDATE;
 
 
 export const SHIFT_GROUP_URL = BASE_URL + "/shiftGroup";
+export const FETCH_ALL_SHIFT_GROUP = SHIFT_GROUP_URL + FETCH_ALL;
 export const ADD_SHIFT_GROUP_URL = SHIFT_GROUP_URL + ADD_STRING;
 export const REMOVE_SHIFT_GROUP_URL = SHIFT_GROUP_URL + REMOVE_STRING;
 export const FETCH_SHIFT_GROUP_NAMES = SHIFT_GROUP_URL + FETCH_NAMES;
@@ -71,6 +74,10 @@ const FETCH_ALL_ACCESSORS = "/fetchAllAccessors";
 export const FETCH_PROFILE_ACCESSORS = PROFILE_URL + FETCH_ALL_ACCESSORS;
 export const REVOKE_PROFILE_ACCESS = PROFILE_URL + "/revokeAccess";
 export const SHARE_PROFILE = PROFILE_URL + "/share";
+export const IMPORT_PROFILE = PROFILE_URL + "/import";
+export const SAVE_IMPORT = PROFILE_URL + "/saveImport";
+export const EXPORT_PROFILE = PROFILE_URL + "/export"
+export const DOWNLOAD_IMPORT_TEMPLATE = PROFILE_URL + "/downloadTemplate"
 //const UPDATE= "/update"
 export const UPDATE_CONTRACT_URL = CONTRACT_URL + UPDATE;
 export const FETCH_CONTRACT_BY_NAME = CONTRACT_URL + FETCH_BY_NAME;

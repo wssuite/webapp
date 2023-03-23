@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ADD_SHIFT_TYPE_URL, FETCH_SHIFT_TYPE_BY_NAMES, FETCH_SHIFT_TYPE_NAMES, REMOVE_SHIFT_TYPE_URL, UPDATE_SHIFT_TYPE_URL } from 'src/app/constants/api-constants';
+import { ADD_SHIFT_TYPE_URL, FETCH_ALL_SHIFT_TYPE, FETCH_SHIFT_TYPE_BY_NAMES, FETCH_SHIFT_TYPE_NAMES, REMOVE_SHIFT_TYPE_URL, UPDATE_SHIFT_TYPE_URL } from 'src/app/constants/api-constants';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
@@ -61,6 +61,19 @@ export class ShiftTypeService {
       });
     }catch(err){
       throw new Exception("user not logged in");
+    }
+  }
+
+  getAllShiftType():Observable<ShiftTypeInterface[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<ShiftTypeInterface[]>(FETCH_ALL_SHIFT_TYPE, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in")
     }
   }
 
