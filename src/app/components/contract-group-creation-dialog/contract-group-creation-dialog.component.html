@@ -1,1 +1,14 @@
-<p>contract-group-creation-dialog works!</p>
+<div class="title" mat-dialog-title>Contract Group</div>
+<div class="dialog-container">
+    <div class="contractGroup-container">
+        <app-nurse-group-creation [(contractGroup)]="data.contractGroup" [contractGroups]="data.contractGroups" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateContractGroupErrorState($event)"></app-nurse-group-creation>
+    </div>
+    <div mat-dialog-action class="buttons-container">
+        <button [disabled]="contractGroupErrorState"  mat-raised-button color="primary" (click)="add()">
+            Submit
+        </button>
+        <button  mat-raised-button color="warn" [mat-dialog-close]="true">
+            Cancel
+        </button>
+    </div>
+</div>
