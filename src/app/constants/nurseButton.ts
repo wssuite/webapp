@@ -1,1 +1,0 @@
-export const NURSE_MENU_BUTTONS = ["Nurse","Nurse Group"];

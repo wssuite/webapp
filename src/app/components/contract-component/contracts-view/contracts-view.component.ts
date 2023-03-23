@@ -7,7 +7,7 @@ import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { ContractCreationDialogComponent } from '../contract-creation-dialog/contract-creation-dialog.component';
-import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
+import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
 @Component({
   selector: 'app-contracts-view',

@@ -11,7 +11,6 @@ import { Exception } from 'src/app/utils/Exception';
   providedIn: 'root'
 })
 export class ContractGroupService {
-
   constructor(private httpClient: HttpClient) { }
 
   addContractGroup(contractGroup: ContractGroupInterface):Observable<HttpResponse<string>>{
@@ -68,12 +67,12 @@ export class ContractGroupService {
     }
   }
 
-  getAllContractGroup(): Observable<string[]> {
+  getAllContractGroup(): Observable<ContractGroupInterface[]> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<string[]>(FETCH_CONTRACT_GROUP_URL, {
+      return this.httpClient.get<ContractGroupInterface[]>(FETCH_CONTRACT_GROUP_URL, {
         params: queryParams,
       });
     }catch(err){
@@ -81,7 +80,7 @@ export class ContractGroupService {
     }
   }
 
-  getAllNurseGroupName(): Observable<string[]> {
+  getAllContractGroupName(): Observable<string[]> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());

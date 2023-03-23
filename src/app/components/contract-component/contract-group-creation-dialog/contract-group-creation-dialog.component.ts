@@ -5,7 +5,7 @@ import { ContractGroupInterface } from 'src/app/models/Contract';
 import { ContractGroupService } from 'src/app/services/contract/contract-group.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { Exception } from 'src/app/utils/Exception';
-import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
+import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
 @Component({
   selector: 'app-contract-group-creation-dialog',
