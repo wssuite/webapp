@@ -226,24 +226,24 @@ class TestProfileHandler(TestCase):
             profile_nurses: [nurse1],
             profile_nurse_groups: [nurse_group1],
         }
-        text = """profile
+        text = """profile,
 name,profile1
-skills
+skills,
 Nurse
 HeadNurse
 Sociologist
-shifts
+shifts,
 Early,08:00:00,16:00:00
 Late,18:00:00,24:00:00
-shift types
+shift types,
 Day,Early
 Night,Late
-shift groups
+shift groups,
 Work,Early,Late,Day,Night
 Rest
 Day,Early
 Night
-contracts
+contracts,
 name,unwantedSkillsContract
 unwanted skills,Nurse,hard
 
@@ -256,11 +256,11 @@ unwanted shift,Early,hard
 name,FullTime Valid
 unwanted shift,Late,1.0
 
-contract groups
+contract groups,
 contract_group_without_contradiction,minConsContract
-nurses
+nurses,
 nurse1,nurse1,FullTime Valid,minConsContract
-nurse groups
+nurse groups,
 group1,General,nurse1
 """
         self.handler.save_import(random_hex, detailed_profile)

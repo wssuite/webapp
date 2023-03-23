@@ -100,22 +100,22 @@ class DetailedProfile(Jsonify, CSVExporter):
         return detailed
 
     def export(self):
-        ret_str = f"profile\nname,{self.name}\n"
-        ret_str += "skills\n"
+        ret_str = f"profile,\nname,{self.name}\n"
+        ret_str += "skills,\n"
         ret_str += DetailedProfile.__get_export_str(self.skills)
-        ret_str += "shifts\n"
+        ret_str += "shifts,\n"
         ret_str += DetailedProfile.__get_export_str(self.shifts)
-        ret_str += "shift types\n"
+        ret_str += "shift types,\n"
         ret_str += DetailedProfile.__get_export_str(self.shift_types)
-        ret_str += "shift groups\n"
+        ret_str += "shift groups,\n"
         ret_str += DetailedProfile.__get_export_str(self.shift_groups)
-        ret_str += "contracts\n"
+        ret_str += "contracts,\n"
         ret_str += DetailedProfile.__get_export_str(self.contracts)
-        ret_str += "contract groups\n"
+        ret_str += "contract groups,\n"
         ret_str += DetailedProfile.__get_export_str(self.contract_groups)
-        ret_str += "nurses\n"
+        ret_str += "nurses,\n"
         ret_str += DetailedProfile.__get_export_str(self.nurses)
-        ret_str += "nurse groups\n"
+        ret_str += "nurse groups,\n"
         ret_str += DetailedProfile.__get_export_str(self.nurse_groups)
         return ret_str
 
