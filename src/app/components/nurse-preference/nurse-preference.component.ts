@@ -26,6 +26,8 @@ interface  SchedulePref
   weight: string;
   @Input() shifts!: string[];
   @Input() nurses!: NurseInterface[]; 
+  @Input() startDate!: Date;
+  @Input() endDate!: Date;
 
   timetable: string[];
   selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
