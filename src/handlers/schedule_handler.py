@@ -2,9 +2,13 @@ import json
 import os.path
 from typing import Type
 
+from src.models.solution import Solution
 from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.base_handler import BaseHandler
-from src.models.hospital_demand import ScheduleDemandDetailed, ScheduleDemand
+from src.models.hospital_demand import (
+    ScheduleDemandDetailed,
+    ScheduleDemand,
+)
 from src.models.nurse import Nurse
 from src.models.contract import Contract
 from src.models.nurse_group import NurseGroup
@@ -14,7 +18,14 @@ from src.models.shift_type import ShiftType
 from src.models.shift import Shift
 from src.models.skill import Skill
 from src.models.jsonify import Jsonify
-from constants import profile, start_date, end_date
+from constants import (
+    profile,
+    start_date,
+    end_date,
+    version,
+    state,
+    previous_versions,
+)
 from src.utils.file_system_manager import FileSystemManager
 
 
@@ -22,7 +33,7 @@ class ScheduleHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
 
-    def generate_schedule(self, token, demand_json):
+    def __generate_schedule(self, token, demand_json, v):
         demand = ScheduleDemand().from_json(demand_json)
         self.verify_profile_accessors_access(token, demand.profile)
 
@@ -48,13 +59,70 @@ class ScheduleHandler(BaseHandler):
         input_txt = os.path.join(full_path, "input.txt")
         with open(input_txt, "w") as f:
             f.write(detailed_demand.to_string())
+        """TODO: Launch request to the HAProxy in order for the demand
+        to be scheduled. The state will not be always in progress"""
+        solution_json = {
+            start_date: demand.start_date,
+            end_date: demand.end_date,
+            profile: demand.profile,
+            version: str(next_version),
+            state: "In Progress",
+        }
+        """This will be the case of a schedule regeneration"""
+        if v is not None:
+            previous_solution = self.solution_dao.get_solution(
+                demand.start_date, demand.end_date, demand.profile, v
+            )
+            previous_version_array = previous_solution[
+                previous_versions
+            ]
+            previous_version_array.append(v)
+            solution_json[previous_versions] = previous_version_array
 
-        return str(next_version)
+        solution_object = Solution().from_json(solution_json)
+        self.solution_dao.insert_one(solution_object.db_json())
+        return solution_object.to_json()
 
-    def get_input_problem_path(self, token, profile_name, start, end, version):
+    def generate_schedule(self, token, demand_json):
+        return self.__generate_schedule(token, demand_json, None)
+
+    def regenerate_schedule(self, token, demand_json, v):
+        return self.__generate_schedule(token, demand_json, v)
+
+    def get_detailed_solution(
+        self, token, start, end, profile_name, v
+    ):
+        self.verify_profile_accessors_access(token, profile_name)
+        solution_db = self.solution_dao.get_solution(
+            start, end, profile_name, v
+        )
+        so = Solution().from_json(solution_db)
+        previous_versions_detailed = []
+        for previous_version in so.previous_versions:
+            pv = self.solution_dao.get_solution(
+                start, end, profile_name, previous_version
+            )
+            pvo = Solution().from_json(pv)
+            previous_versions_detailed.append(pvo.to_json())
+        ret_json = so.to_json()
+        ret_json[previous_versions] = previous_versions_detailed
+        """TODO: Get the schedule and the request from the file system"""
+        return ret_json
+
+    def get_latest_solutions_versions(self, token, profile_name):
+        self.verify_profile_accessors_access(token, profile_name)
+        return self.solution_dao.get_latest_versions(profile_name)
+
+    def get_all_solutions(self, token, profile_name):
+        self.verify_profile_accessors_access(token, profile_name)
+        return self.solution_dao.fetch_all(profile_name)
+
+    def get_input_problem_path(
+        self, token, profile_name, start, end, v
+    ):
         self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()
-        path = fs.get_input_problem_path(profile_name, start, end, version)
+        path = fs.get_input_problem_path(profile_name, start, end, v)
         if fs.exist(path):
             return path
         else:
@@ -64,11 +132,15 @@ class ScheduleHandler(BaseHandler):
         nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)
         """Get the nurses objects included in the demand"""
         for nurse in demand.nurses:
-            nurse_dict = self.nurse_dao.find_by_username(nurse, demand.profile)
+            nurse_dict = self.nurse_dao.find_by_username(
+                nurse, demand.profile
+            )
             if nurse is not None:
                 nurse_object = Nurse().from_json(nurse_dict)
                 for nurse_group in nurse_groups:
-                    nurse_group_object = NurseGroup().from_json(nurse_group)
+                    nurse_group_object = NurseGroup().from_json(
+                        nurse_group
+                    )
                     if nurse in nurse_group_object.nurses:
                         nurse_object.direct_contracts.extend(
                             nurse_group_object.contracts
@@ -96,17 +168,26 @@ class ScheduleHandler(BaseHandler):
                 shift_exist = self.shift_dao.exist(
                     preference.shift, demand.profile
                 )
-                if shift_exist is True or preference.shift.lower() == "any":
+                if (
+                    shift_exist is True
+                    or preference.shift.lower() == "any"
+                ):
                     detailed_demand.preferences.append(preference)
 
         for element in demand.hospital_demand:
-            skill_exist = self.skill_dao.exist(element.skill, demand.profile)
-            shift_exist = self.shift_dao.exist(element.shift, demand.profile)
+            skill_exist = self.skill_dao.exist(
+                element.skill, demand.profile
+            )
+            shift_exist = self.shift_dao.exist(
+                element.shift, demand.profile
+            )
             if skill_exist is True and shift_exist is True:
                 detailed_demand.hospital_demand.append(element)
 
         contracts = self.contract_dao.fetch_all(demand.profile)
-        contract_groups = self.contract_group_dao.fetch_all(demand.profile)
+        contract_groups = self.contract_group_dao.fetch_all(
+            demand.profile
+        )
         skills = self.skill_dao.get_all(demand.profile)
         shifts = self.shift_dao.fetch_all(demand.profile)
         shift_types = self.shift_type_dao.fetch_all(demand.profile)
@@ -116,7 +197,9 @@ class ScheduleHandler(BaseHandler):
             contracts, Contract, detailed_demand.contracts
         )
         ScheduleHandler.add_object_to_demand_list(
-            contract_groups, ContractGroup, detailed_demand.contract_groups
+            contract_groups,
+            ContractGroup,
+            detailed_demand.contract_groups,
         )
         ScheduleHandler.add_object_to_demand_list(
             skills, Skill, detailed_demand.skills
