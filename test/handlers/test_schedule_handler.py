@@ -25,6 +25,14 @@ from constants import (
     version,
     state,
     previous_versions,
+    problem,
+    schedule_string,
+    assignment_employee_name,
+    assignments_string,
+    assignment_date,
+    assignment_shift,
+    assignment_skill,
+    schedule,
 )
 from test.db_test_constants import build_db, random_hex, profile1
 from pyfakefs.fake_filesystem_unittest import TestCase
@@ -74,9 +82,7 @@ class TestScheduleHandler(TestCase):
     def setUp(self):
         self.handler = ScheduleHandler(connect_to_fake_db())
         self.setUpPyfakefs()
-        path = self.fs.joinpaths(
-            base_directory, dataset_directory, profile1
-        )
+        path = self.fs.joinpaths(base_directory, dataset_directory, profile1)
         self.fs.create_dir(path)
         build_db(self.handler)
 
@@ -127,10 +133,10 @@ class TestScheduleHandler(TestCase):
                 random_hex, profile1, "2023-06-01", "2023-06-02", "1"
             )
 
-    def test_regenerate_schedule(self):
-        self.handler.generate_schedule(
-            random_hex, hospital_demand_dict
-        )
+    def test_regenerate_schedule_and_get_solution_detail_without_schedule(
+        self,
+    ):
+        self.handler.generate_schedule(random_hex, hospital_demand_dict)
         solution = self.handler.regenerate_schedule(
             random_hex, hospital_demand_dict, "1"
         )
@@ -155,15 +161,63 @@ class TestScheduleHandler(TestCase):
                 state: "In Progress",
             }
         ]
+        expected_detailed[problem] = hospital_demand_dict
+        self.assertEqual(expected_detailed, solution_detailed)
+
+    def test_generate_schedule_and_get_solution_detail_with_schedule(self):
+        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        text = """
+        HEADERS
+        (0,Patrick)
+        END
+        instance1,2023-06-01,2023-06-02
+        Assignments = 1
+        2023-06-01,0,Late,Nurse
+        """
+        solution_file = self.fs.joinpaths(
+            base_directory,
+            dataset_directory,
+            profile1,
+            "2023-06-01_2023-06-02",
+            "1",
+            "sol.txt",
+        )
+        self.fs.create_file(solution_file, contents=text)
+        expected_solution = {
+            start_date: "2023-06-01",
+            end_date: "2023-06-02",
+            schedule_string: [
+                {
+                    assignment_employee_name: "Patrick",
+                    assignments_string: [
+                        {
+                            assignment_date: "2023-06-01",
+                            assignment_employee_name: "Patrick",
+                            assignment_shift: "Late",
+                            assignment_skill: "Nurse",
+                        },
+                    ],
+                }
+            ],
+        }
+        solution_detailed = self.handler.get_detailed_solution(
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1"
+        )
+        expected_detailed = {
+            start_date: "2023-06-01",
+            end_date: "2023-06-02",
+            profile: profile1,
+            version: "1",
+            state: "In Progress",
+            previous_versions: [],
+            problem: hospital_demand_dict,
+            schedule: expected_solution,
+        }
         self.assertEqual(expected_detailed, solution_detailed)
 
     def test_get_latest_solutions(self):
-        self.handler.generate_schedule(
-            random_hex, hospital_demand_dict
-        )
-        self.handler.regenerate_schedule(
-            random_hex, hospital_demand_dict, "1"
-        )
+        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        self.handler.regenerate_schedule(random_hex, hospital_demand_dict, "1")
         actual = self.handler.get_latest_solutions_versions(
             random_hex, profile1
         )
@@ -177,12 +231,8 @@ class TestScheduleHandler(TestCase):
         self.assertEqual([expected_solution], actual)
 
     def test_get_all_solutions(self):
-        self.handler.generate_schedule(
-            random_hex, hospital_demand_dict
-        )
-        self.handler.regenerate_schedule(
-            random_hex, hospital_demand_dict, "1"
-        )
+        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        self.handler.regenerate_schedule(random_hex, hospital_demand_dict, "1")
         actual = self.handler.get_all_solutions(random_hex, profile1)
         expected_solution = [
             {

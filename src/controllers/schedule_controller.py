@@ -1,9 +1,5 @@
 from flask import Blueprint, Response
-from werkzeug.exceptions import BadRequestKeyError
 
-import error_msg
-from src.utils.file_system_manager import FileSystemManager
-from src.models.schedule import Schedule
 from flask import request
 from src.exceptions.project_base_exception import ProjectBaseException
 from constants import user_token, profile, start_date, end_date, version
@@ -29,20 +25,6 @@ from src.handlers.schedule_handler import ScheduleHandler
 mod = Blueprint("schedule_controller", __name__, url_prefix="/schedule")
 
 schedule_handler = ScheduleHandler(DBConnection.get_connection())
-
-
-@mod.route("/nameFilter/<instance>", methods=["GET"])
-def get_schedule_filtered_by_name(instance):
-    try:
-        version = request.args["version"]
-    except BadRequestKeyError:
-        return Response(error_msg.version_required, 400)
-    try:
-        file_path = FileSystemManager.get_solution_path(instance, version)
-        schedule = Schedule(file_path)
-        return schedule.filter_by_name()
-    except ProjectBaseException as e:
-        return Response(e.args, 500)
 
 
 @mod.route("/generate", methods=["POST"])
@@ -72,7 +54,7 @@ def export_problem():
             for line in lines:
                 problem_str += line
 
-        return {'content': problem_str}
+        return {"content": problem_str}
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -97,7 +79,8 @@ def get_detailed_solution():
         profile_name = request.args[profile]
         v = request.args[version]
         return schedule_handler.get_detailed_solution(
-            token, start, end, profile_name, v)
+            token, start, end, profile_name, v
+        )
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -118,6 +101,7 @@ def get_latest_solutions():
         token = request.args[user_token]
         profile_name = request.args[profile]
         return schedule_handler.get_latest_solutions_versions(
-            token, profile_name)
+            token, profile_name
+        )
     except ProjectBaseException as e:
         return Response(e.args, 500)
