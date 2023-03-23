@@ -1,13 +1,13 @@
 export class DateUtils {
   public static dayMultiplicationFactor = 1000 * 60 * 60 * 24;
   public static days = [
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday",
   ];
 
   public static weekdays = [
