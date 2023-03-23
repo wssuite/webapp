@@ -2,7 +2,8 @@
     <div class="title" mat-dialog-title>Nurse</div>
     <div class="dialog-container">
         <div class="nurse-container">
-            <app-nurse-creation [(nurse)]="data.nurse" [nurses]="data.nurses" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateNurseErrorState($event)"></app-nurse-creation>
+            <app-nurse-creation *ngIf="contractsLoaded"
+            [(nurse)]="data.nurse" [nurses]="data.nurses" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateNurseErrorState($event)"></app-nurse-creation>
         </div>
         <div mat-dialog-action class="buttons-container">
             <button [disabled]="nurseErrorState"  mat-raised-button color="primary" (click)="add()">
