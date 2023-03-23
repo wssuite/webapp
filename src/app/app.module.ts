@@ -86,6 +86,8 @@ import { MinMaxHopspitalDemandComponent } from './components/min-max-hopspital-d
 import { HopspitalDemandCreationComponent } from './components/hopspital-demand-creation/hopspital-demand-creation.component';
 import { NursePreferenceComponent } from './components/nurse-preference/nurse-preference.component';
 import { MatTableModule } from "@angular/material/table";
+import { ContractGroupCreationComponent } from './components/contract-group-creation/contract-group-creation.component';
+import { ContractGroupCreationDialogComponent } from './components/contract-group-creation-dialog/contract-group-creation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +149,8 @@ import { MatTableModule } from "@angular/material/table";
     MinMaxHopspitalDemandComponent,
     HopspitalDemandCreationComponent,
     NursePreferenceComponent,
+    ContractGroupCreationComponent,
+    ContractGroupCreationDialogComponent,
   ],
   imports: [
     BrowserModule,
