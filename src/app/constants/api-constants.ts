@@ -23,6 +23,7 @@ const UPDATE= "/update"
 export const ADD_CONTRACT_URL = CONTRACT_URL + ADD_STRING;
 export const FETCH_CONTRACT_NAMES = CONTRACT_URL + FETCH_NAMES;
 
+
 export const USER_URL = BASE_URL + "/user";
 export const LOGIN_URL = USER_URL + "/login";
 export const ADD_ACCOUNT_URL = USER_URL + ADD_STRING;
@@ -32,6 +33,7 @@ const FETCH_USERNAMES="/fetchAllUsernames";
 const FETCH_ALL = "/fetchAll"
 export const GET_USERNAMES = USER_URL + FETCH_USERNAMES;
 export const LOGOUT_URL = USER_URL + "/logout"
+export const FETCH_CONTRACT_URL = CONTRACT_URL + FETCH_ALL;
 
 
 

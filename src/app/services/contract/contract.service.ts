@@ -12,7 +12,7 @@ import { UnwantedPatterns, UnwantedPatternsInterface} from 'src/app/models/Unwan
 import { UnwantedSkills } from 'src/app/models/UnwantedSkills';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ADD_CONTRACT_URL, DELETE_CONTRACT, FETCH_CONTRACT_BY_NAME, FETCH_CONTRACT_NAMES, UPDATE_CONTRACT_URL } from 'src/app/constants/api-constants';
+import { ADD_CONTRACT_URL, DELETE_CONTRACT, FETCH_CONTRACT_BY_NAME, FETCH_CONTRACT_NAMES, FETCH_CONTRACT_URL, UPDATE_CONTRACT_URL } from 'src/app/constants/api-constants';
 import { Exception } from 'src/app/utils/Exception';
 
 @Injectable({
@@ -136,6 +136,22 @@ export class ContractService {
       throw new Exception("user not logged in");
     }
   }
+
+  
+  getContracts():Observable<ContractInterface[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<ContractInterface[]>(FETCH_CONTRACT_URL, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  
 
   getContractByName(name:string):Observable<ContractInterface> {
     try{

@@ -1,13 +1,15 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
 //import { APIService } from 'src/app/services/api-service/api.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { ContractCreationDialogComponent } from '../contract-creation-dialog/contract-creation-dialog.component';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-contracts-view',
@@ -18,19 +20,17 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
 
   contracts: string[];
   connectedUser!:boolean;
-  displayedContracts: string[];
-  /*pageSize = 6;
-  page!: PageEvent;
-  indexBefore: number;*/
-  pageSize = 5;
-  page!: PageEvent;
-  indexBefore: number;
+  displayedColumns: string[]; 
+  dataSource: MatTableDataSource<ContractInterface>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private dialog: MatDialog, private contractService: ContractService, private profileService: ProfileService,
     private contarctService: ContractService) {
     this.contracts = [];
-    this.displayedContracts = [];
-    this.indexBefore = 0;
+    this.dataSource = new MatTableDataSource();
+    this.displayedColumns =  ['name','actions'];
   }
 
   ngOnInit(): void {
@@ -43,16 +43,27 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-      this.profileService.profileChanged.subscribe(()=>{
-        this.getContracts();
-      })
+    this.profileService.profileChanged.subscribe(()=>{
+      this.getContracts();
+    })
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
   
   getContracts(){
     this.contractService.getContractNames().subscribe({
       next: (contracts: string[])=> {
         this.contracts = contracts;
-        this.setDisplayedContracts(this.indexBefore);
+  
+      },
+      error: (error: HttpErrorResponse)=> {
+        this.openErrorDialog(error.error);
+      }
+    })
+    this.contractService.getContracts().subscribe({
+      next: (contracts: ContractInterface[])=> {
+        this.dataSource.data = contracts;
+  
       },
       error: (error: HttpErrorResponse)=> {
         this.openErrorDialog(error.error);
@@ -61,7 +72,6 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
   }
 
   openContractCreationDialog(contract: Contract){
-    this.indexBefore = this.page === undefined? 0: this.page.pageIndex;
     const dialog = this.dialog.open(ContractCreationDialogComponent,
       {data: {contract: contract, contractList: this.contracts},
    })
@@ -93,19 +103,6 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
     })
   }
 
-  handlePageEvent(e: PageEvent){
-    this.page = e;
-    this.setDisplayedContracts(e.pageIndex);
-  }
-
-  setDisplayedContracts(index: number){
-    let startIndex = index * this.pageSize;
-    this.displayedContracts = [];
-    const endIndex = ((startIndex + this.pageSize) > this.contracts.length)? this.contracts.length : startIndex + this.pageSize;
-    for(startIndex; startIndex < endIndex; startIndex++){
-      this.displayedContracts.push(this.contracts[startIndex]);
-    }
-  }
 
   deleteContract(contract:string){
     this.contractService.deleteContract(contract).subscribe({
@@ -118,5 +115,14 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
         }
       }
     })
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }
