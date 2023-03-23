@@ -1,0 +1,107 @@
+# This file is a template to create a profile by importing it on the NurseScheduler web application.,,,,,
+# A profile starts with the keyword profile, all the lines before this keyword will not be considered.,,,,
+# To start defining the shifts, use the keyword shifts on a separate line before defining the shifts.,,,,
+# Each shift is defined on a separate line and it consists of the shift's name, the shift's start time and the shift's end time,,,,
+# To start defining the shift types, use the keyword shift types on a separate line.,,,,
+# Each shift type is defined on a separate line and it consists of the shift type name followed by the shifts list,,,,,
+# To start defining the shift groups, use the keyword shift groups on a separate line.,,,,
+# Each shift group is defined on a separate line and it consists of the shift group name followed by the shifts list and the shift types list,,,,,
+# To start defining the contracts, use the keyword contracts on a separate line.,,,,
+# Each contract begins with the unique contract name on a separate line followed by the constraints list.,,,,,
+# Each constraint is defined on a line which starts with the constraint name.,,,,,
+# Eleven types of constraints are supported by the application.,,,,,
+# The weights used in the constraints of a contract represents the penalty applied when the constraint is not respected
+# unwanted patterns constraint which is a list of pattern elements followed by a weight,,,,,
+# The definition of a pattern element consists of a list of days separated by | followed by a list of shifts separated by |,,,,,
+# unwanted shift constraint is defined by a shiftId which can be a shift, shift type or a shift group followed by a weight
+# The total number of working weekends in four weeks constraint, the minimum and maximum of working hours in four weeks constraint, the minimum and maximum of consecutive working weekends constraint and  minimum and maximum number of assignments in four weeks are defined in the same way
+# total number of working weekends in four weeks is defined by a minimal number, the weight associated to the minimal value, a maximal number and the weight associated to the maximal value
+# number of free days after shift is defined by a shift followed by the number of days and the weight
+# minimum and maximum of consecutive shift type is defined by a shiftId which can be a shift, shift type or a shift group followed by the minimal number, the weight associated to the minimal value, a maximal number and the weight associated to the maximal value
+# The complete weekends and identical shift types during weekend are defined in the same way.
+# A complete weekends constraint consists of the weight associated with the constraint.
+# The unwanted skills constraint is defined by a list of skills followed by the weight of the constraint
+# ,,,,,
+# To start defining the contract groups use the keyword contract groups on a separate line ,,,,,
+# Each contract group is defined on a separate line and it consists of a contract group name followed by a list of contracts
+# To start  defining the nurses of the profile use the keyword nurses on a separate line
+# A nurse is defined on a line and it is defined by a unique username, the nurse name and the list of contracts and contract groups of the nurse
+# To start defining the nurse groups use the keyword nurse groups on a separate line
+# Each nurse group is written on a single line and it is defined by a unique name followed by a list of a nurses, the contracts and the contract groups,
+# To start defining the sills use the keyword skills on a separate line
+# The skills are defined by their names and they can be defined on a single line as well as multiple lines
+# A line that begins with a the symbol # is a commented line and it will not be read
+# You can use and modify the example in this template to create your custom imported profile.,,,,,
+,,,,,
+profile,,,,,
+name,hospital 1,,,,
+shifts,,,,,
+#shift name ,start time,end time,,,
+Early,06:00,12:00,,,
+Late,18:00,23:59,,,
+MidDay,12:00,18:00,,,
+,,,,,
+shift types,,,,,
+#shift type name ,Shifts,,,,
+Day,Early ,,,,
+Night,Late,,,,
+,,,,,
+contracts,,,,,
+name,contract 1,,,,
+#constraint name ,,,,,
+#,days,shift,,,
+Unwanted patterns,Monday|Wednesday|Friday,Late|Early,Tuesday,Early,hard
+#,min value,min weight,max value,max weight,
+total number of working weekends in four weeks,1,5,5,hard,
+#,shift,weight,,,
+unwanted shift,Early ,hard,,,
+#,shift,value,weight,,
+number of free days after shift,Early ,1,10,,
+#,shift,min value,min weight,max value,max weight
+minimum and maximum of consecutive shift type,Early ,1,hard,5,2
+#,weight,,,,
+identical shift types during weekend,5,,,,
+#,weight,,,,
+,,,,,
+,,,,,
+minimum and maximum of working hours in four weeks,80,hard,160,hard,
+#,min value,min weight,max value,max weight,
+minimum and maximum of consecutive working weekends,1,hard,2,hard,
+,,,,,
+,,,,,
+,,,,,
+name,contract 2,,,,
+Unwanted patterns,Tuesday,Early,hard,,
+unwanted shift,MidDay,5,,,
+complete weekends,2,,,,
+unwanted skills,Trainee,10,,,
+#,min value,min weight,max value,max weight,
+minimum and maximum number of assignments in four weeks,20,6,35,10,
+,,,,,
+name,Contract 3,,,,
+minimum and maximum of consecutive shift type,Late,2,5,3,hard
+unwanted skills,HeadNurse,5,,,
+,,,,,
+skills,,,,,
+Nurse,HeadNurse,Trainee,,,
+,,,,,
+,,,,,
+contract groups,,,,,
+#contract group name,contracts,,,,
+contract group,contract 1,contract 2,,,
+,,,,,
+nurses,,,,,
+#username,name,contracts,,,
+suz,Suzane,contract 2,,,
+Mon,Monique,contract 2,,,
+Pat,Patrick,Contract 3,,,
+Ali,Alice,Contract 3,,,
+Bob,Bob,contract 1,,,
+,,,,,
+nurse groups,,,,,
+#group name,contracts,Nurses,,,
+Physio,Contract 3,suz,Mon,,
+Ergo,contract 1,Patrick,Alice,,
+,,,,,
+,,,,,
+shift groups,,,,,
