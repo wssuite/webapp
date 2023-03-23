@@ -5,7 +5,7 @@ from src.exceptions.contract_exceptions import (
     ContractGroupNotExist,
     ContractGroupDeletionError,
 )
-from constants import contract_group_name
+from constants import contract_group_name, nurse_group_name, nurse_username
 from src.utils.contracts_validator import ContractsValidator
 from src.models.contract import Contract
 
@@ -48,13 +48,23 @@ class ContractGroupHandler(BaseHandler):
         super().delete(token, name, profile_name)
         usage = []
         usage.extend(
-            self.nurse_group_dao.get_with_contract_groups([name], profile_name)
+            [
+                group[nurse_group_name]
+                for group in self.nurse_group_dao.get_with_contract_groups(
+                    [name], profile_name
+                )
+            ]
         )
         usage.extend(
-            self.nurse_dao.get_with_contract_groups([name], profile_name)
+            [
+                nurse[nurse_username]
+                for nurse in self.nurse_dao.get_with_contract_groups(
+                    [name], profile_name
+                )
+            ]
         )
         if len(usage) > 0:
-            raise ContractGroupDeletionError(name)
+            raise ContractGroupDeletionError(name, usage)
         self.contract_group_dao.remove(name, profile_name)
 
     def get_all_names(self, token, profile_name):
