@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ADD_NURSE_GROUP_URL, REMOVE_NURSE_GROUP_URL, UPDATE_NURSE_GROUP_URL, FETCH_NURSE_GROUP_BY_NAME, FETCH_ALL_NURSE_GROUP_NAME } from 'src/app/constants/api-constants';
+import { ADD_CONTRACT_GROUP_URL, FETCH_ALL_CONTRACT_GROUP_NAME, FETCH_CONTRACT_GROUP_BY_NAME, FETCH_CONTRACT_GROUP_URL, REMOVE_CONTRACT_GROUP_URL } from 'src/app/constants/api-constants';
+import { ContractGroupInterface } from 'src/app/models/Contract';
 import { NurseGroupInterface } from 'src/app/models/Nurse';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
@@ -9,15 +10,15 @@ import { Exception } from 'src/app/utils/Exception';
 @Injectable({
   providedIn: 'root'
 })
-export class NurseGroupService {
+export class ContractGroupService {
 
   constructor(private httpClient: HttpClient) { }
 
-  addNurseGroup(nurseGroup: NurseGroupInterface):Observable<HttpResponse<string>>{
+  addContractGroup(contractGroup: ContractGroupInterface):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<HttpResponse<string>>(ADD_NURSE_GROUP_URL, nurseGroup, {
+      return this.httpClient.post<HttpResponse<string>>(ADD_CONTRACT_GROUP_URL, contractGroup, {
         params: queryParams,
       });
     }catch(err){
@@ -25,13 +26,13 @@ export class NurseGroupService {
     }
   }
 
-  removeNurseGroup(nurseGroup_name: string):Observable<HttpResponse<string>>{
+  removeContractGroup(contractGroup_name: string):Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append("name", nurseGroup_name);
+      queryParams = queryParams.append("name", contractGroup_name);
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.delete<HttpResponse<string>>(REMOVE_NURSE_GROUP_URL, {
+      return this.httpClient.delete<HttpResponse<string>>(REMOVE_CONTRACT_GROUP_URL, {
         params: queryParams,
       });
     }catch(err){
@@ -41,11 +42,11 @@ export class NurseGroupService {
 
 
   
-  updateNurseGroup(nurseGroup: NurseGroupInterface):Observable<HttpResponse<string>> {
+  updateContractGroup(contractGroup: ContractGroupInterface):Observable<HttpResponse<string>> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.put<HttpResponse<string>>(UPDATE_NURSE_GROUP_URL, nurseGroup, {
+      return this.httpClient.put<HttpResponse<string>>(REMOVE_CONTRACT_GROUP_URL, contractGroup, {
         params: queryParams,
       });
     } catch(err){
@@ -53,13 +54,13 @@ export class NurseGroupService {
     }
   }
 
-  getNurseGroupByName(nurseGroup_name: string):Observable<NurseGroupInterface> {
+  getContractGroupByName(contractGroup_name: string):Observable<ContractGroupInterface> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      queryParams = queryParams.append("name", nurseGroup_name);
+      queryParams = queryParams.append("name", contractGroup_name);
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<NurseGroupInterface>(FETCH_NURSE_GROUP_BY_NAME, {
+      return this.httpClient.get<NurseGroupInterface>(FETCH_CONTRACT_GROUP_BY_NAME, {
         params: queryParams,
       });
     }catch(err){
@@ -67,12 +68,12 @@ export class NurseGroupService {
     }
   }
 
-  getAllNurseGroup(): Observable<string[]> {
+  getAllContractGroup(): Observable<string[]> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<string[]>(FETCH_ALL_NURSE_GROUP_NAME, {
+      return this.httpClient.get<string[]>(FETCH_CONTRACT_GROUP_URL, {
         params: queryParams,
       });
     }catch(err){
@@ -85,7 +86,7 @@ export class NurseGroupService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
-      return this.httpClient.get<string[]>(FETCH_ALL_NURSE_GROUP_NAME, {
+      return this.httpClient.get<string[]>(FETCH_ALL_CONTRACT_GROUP_NAME, {
         params: queryParams,
       });
     }catch(err){

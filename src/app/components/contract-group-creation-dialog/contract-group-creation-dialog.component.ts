@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ContractGroupInterface } from 'src/app/models/Contract';
+import { ContractGroupService } from 'src/app/services/contract/contract-group.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
