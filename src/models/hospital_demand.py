@@ -165,8 +165,6 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
         )
 
     def set_from_schedule_demand(self, schedule_demand: ScheduleDemand):
-        self.hospital_demand = schedule_demand.hospital_demand
-        self.preferences = schedule_demand.preferences
         self.profile = schedule_demand.profile
         self.start_date = schedule_demand.start_date
         self.end_date = schedule_demand.end_date
