@@ -127,7 +127,8 @@ def export_profile():
 @mod.route("/downloadTemplate", methods=["GET"])
 def download_template():
     try:
-        _ = request.args[user_token]
+        token = request.args[user_token]
+        profile_handler.verify_token(token)
         template_str = ""
         with open("template.csv") as file:
             for line in file.readlines():
