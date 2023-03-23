@@ -14,6 +14,8 @@ mat-expansion-panel{
     margin-left:2vw;
     margin-right:2vw;
     margin-top: 2vh;
+    display: flex;
+    justify-content: space-between;
 }
 
 .content-section{

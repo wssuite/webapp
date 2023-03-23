@@ -10,6 +10,7 @@
                 <mat-icon>attach_file</mat-icon>
             </button>
         </div>
+        <button class="download-template-btn" mat-raised-button (click)="downloadTemplate()">Download Template</button>
         <button *ngIf="!validProfile" class="cancel-button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
     </div>
     <div class="content-section" *ngIf="validProfile">
