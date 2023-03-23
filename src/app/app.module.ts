@@ -93,6 +93,7 @@ import { NursePreferenceComponent } from './components/nurse-preference/nurse-pr
 import { ContractGroupCreationComponent } from './components/contract-group-creation/contract-group-creation.component';
 import { ContractGroupCreationDialogComponent } from './components/contract-group-creation-dialog/contract-group-creation-dialog.component';
 import { ButtonMultiselectComponent } from './components/button-multiselect/button-multiselect.component';
+import { SidenavContractComponent } from './components/sidenav-contract/sidenav-contract.component';
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import { ButtonMultiselectComponent } from './components/button-multiselect/butt
     ContractGroupCreationComponent,
     ContractGroupCreationDialogComponent,
     ButtonMultiselectComponent,
+    SidenavContractComponent,
   ],
   imports: [
     BrowserModule,
