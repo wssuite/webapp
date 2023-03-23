@@ -22,6 +22,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSortModule} from '@angular/material/sort';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatTableModule} from '@angular/material/table';
 
 
 
@@ -89,7 +90,6 @@ import { NurseGroupCreationComponent } from './components/nurse-component/nurse-
 import { MinMaxHopspitalDemandComponent } from './components/min-max-hopspital-demand/min-max-hopspital-demand.component';
 import { HopspitalDemandCreationComponent } from './components/hopspital-demand-creation/hopspital-demand-creation.component';
 import { NursePreferenceComponent } from './components/nurse-preference/nurse-preference.component';
-import { MatTableModule } from "@angular/material/table";
 import { ContractGroupCreationComponent } from './components/contract-group-creation/contract-group-creation.component';
 import { ContractGroupCreationDialogComponent } from './components/contract-group-creation-dialog/contract-group-creation-dialog.component';
 import { ButtonMultiselectComponent } from './components/button-multiselect/button-multiselect.component';
