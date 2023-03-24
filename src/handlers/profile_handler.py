@@ -28,23 +28,23 @@ class ProfileHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
 
-    def create_profile(self, token, profile_name):
+    def create_profile(self, token, profile_):
         user = self.verify_token(token)
         fs = FileSystemManager()
 
         profile_object = Profile()
-        profile_object.name = profile_name
+        profile_object.name = profile_
         profile_object.creator = user[user_username]
         profile_object.access = [user[user_username]]
         self.profile_dao.insert_if_not_exist(profile_object.db_json())
-        profile_path = f"{fs.get_dataset_directory_path()}/{profile_name}"
+        profile_path = f"{fs.get_dataset_directory_path()}/{profile_}"
         fs.create_dir_if_not_exist(profile_path)
         w_group_dict = work_shift_group.copy()
-        w_group_dict[profile] = profile_name
+        w_group_dict[profile] = profile_
         w_group = ShiftGroup().from_json(w_group_dict)
         self.shift_group_dao.insert_one_if_not_exist(w_group.db_json())
         r_group_dict = rest_shift_group.copy()
-        r_group_dict[profile] = profile_name
+        r_group_dict[profile] = profile_
         r_group = ShiftGroup().from_json(r_group_dict)
         self.shift_group_dao.insert_one_if_not_exist(r_group.db_json())
 
