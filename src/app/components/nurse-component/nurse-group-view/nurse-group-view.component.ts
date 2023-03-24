@@ -24,13 +24,25 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
   displayedColumns: string[]; 
   dataSource: MatTableDataSource<NurseGroupInterface>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    if (this.dataSource){
+      this.dataSource.paginator = value;
+    }
+  }
+  @ViewChild(MatSort, {static: false})
+  set sort(value: MatSort) {
+    if (this.dataSource){
+      this.dataSource.sort = value;
+    }
+  }
+
 
   constructor(public dialog: MatDialog, private nurseGroupService: NurseGroupService, private profileService: ProfileService) {
     this.nurseGroups = [];
     this.displayedColumns =  ['name','nurses', 'contracts', 'contract_groups','actions'];
     this.dataSource = new MatTableDataSource();
+    this
   }
 
   ngOnInit(): void {
@@ -46,8 +58,7 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
     this.profileService.profileChanged.subscribe(()=>{
       this.getNurseGroups();
     })
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
   }
 
   getNurseGroups(){

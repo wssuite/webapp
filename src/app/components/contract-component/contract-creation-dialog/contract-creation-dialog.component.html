@@ -1,6 +1,7 @@
 <div class="dialog-container">
     <div class="contract-container">
-        <app-contract-creation [(contract)]="data.contract" [possibleShifts]="possibleShifts" 
+        <app-contract-creation *ngIf="shiftsLoaded && shiftTypesLoaded && shiftGroupsLoaded && skillsLoaded" 
+            [(contract)]="data.contract" [possibleShifts]="possibleShifts" 
             (errorState)="updateContractErrorState($event)" [possibleSkills]="possibleSkills"
             [contracts]="this.data.contractList"></app-contract-creation>
     </div>

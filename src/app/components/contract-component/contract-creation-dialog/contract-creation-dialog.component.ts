@@ -19,8 +19,12 @@ export class ContractCreationDialogComponent implements OnInit{
 
   contractErrorState: boolean;
   possibleShifts!: string[];
+  shiftsLoaded: boolean;
+  shiftTypesLoaded: boolean;
+  shiftGroupsLoaded: boolean;
+  skillsLoaded: boolean;
 
-  possibleSkills = ["Nurse", "HeadNurse", "Physiatre"];
+  possibleSkills: string[] = [];
   initName: string;
 
   constructor(
@@ -32,7 +36,10 @@ export class ContractCreationDialogComponent implements OnInit{
   ){
     this.contractErrorState = true;
     this.service.setContract(data.contract);
-    //this.contractCopy = data.contract;
+    this.shiftsLoaded = false;
+    this.shiftTypesLoaded = false;
+    this.shiftGroupsLoaded = false;
+    this.skillsLoaded = false;
     this.initName = data.contract.name;
   }
   ngOnInit(): void {
@@ -43,6 +50,7 @@ export class ContractCreationDialogComponent implements OnInit{
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
           })
+          this.shiftsLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -54,6 +62,7 @@ export class ContractCreationDialogComponent implements OnInit{
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
           })
+          this.shiftTypesLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -65,6 +74,7 @@ export class ContractCreationDialogComponent implements OnInit{
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
           })
+          this.shiftGroupsLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -76,6 +86,7 @@ export class ContractCreationDialogComponent implements OnInit{
           skills.forEach((skill: string)=>{
             this.possibleSkills.push(skill);
           })
+          this.skillsLoaded = true
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
