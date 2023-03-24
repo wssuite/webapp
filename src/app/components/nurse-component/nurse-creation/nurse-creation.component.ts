@@ -53,6 +53,13 @@ export class NurseCreationComponent implements OnInit {
         this.nurse.contracts.splice(i, 1);
       }
     }
+
+    for(let i=0; i< this.nurse.contract_groups.length; i++) {
+      if(!this.possibleContractsGroup.includes(this.nurse.contract_groups[i])){
+        this.nurse.contract_groups.splice(i, 1);
+      }
+    }
+
     this.emitNurse()
   }
 
@@ -117,7 +124,10 @@ export class NurseCreationComponent implements OnInit {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameNurseFormCtrl.hasError('required') || this.usernameNurseFormCtrl.hasError('required') || (this.usernameExist() && this.nurseStartUsername === '') ||this.nurse.contracts.length === 0 );
+    this.errorState.emit(this.nameNurseFormCtrl.hasError('required') ||
+     this.usernameNurseFormCtrl.hasError('required') || 
+     (this.usernameExist() && this.nurseStartUsername === '') 
+     ||(this.nurse.contracts.length === 0  && this.nurse.contract_groups.length === 0) );
     console.log("error");
   }
 

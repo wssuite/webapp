@@ -57,11 +57,19 @@ export class NurseGroupCreationComponent implements OnInit {
       }
     }
 
+    for(let i=0; i< this.nurseGroup.contract_groups.length; i++) {
+      if(!this.possibleContractsGroup.includes(this.nurseGroup.contract_groups[i])){
+        this.nurseGroup.contract_groups.splice(i, 1);
+      }
+    }
+
     for(let i=0; i< this.nurseGroup.nurses.length; i++) {
       if(!this.possibleNurses.includes(this.nurseGroup.nurses[i])){
         this.nurseGroup.nurses.splice(i, 1);
       }
     }
+
+    
 
     this.emitNurseGroup();
   }
@@ -154,7 +162,11 @@ export class NurseGroupCreationComponent implements OnInit {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameNurseGroupFormCtrl.hasError('required') || this.nameNurseGroupFormCtrl.hasError('required') || (this.nameExist() && this. nurseGroupStartname === '') ||this.nameNurseGroupFormCtrl.hasError('required') || (this.nameExist() && this.nurseGroupStartname === '') || this.nurseGroup.contracts.length === 0 || this.nurseGroup.nurses.length === 0 );
+    this.errorState.emit(this.nameNurseGroupFormCtrl.hasError('required') || 
+    this.nameNurseGroupFormCtrl.hasError('required') || 
+    (this.nameExist() && this. nurseGroupStartname === '') ||
+    (this.nameExist() && this.nurseGroupStartname === '') || 
+    this.nurseGroup.contracts.length === 0 || (this.nurseGroup.contract_groups.length === 0 && this.nurseGroup.nurses.length === 0 ));
     console.log("error");
   }
 

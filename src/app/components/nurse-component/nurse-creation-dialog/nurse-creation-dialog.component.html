@@ -2,7 +2,7 @@
     <div class="title" mat-dialog-title>Nurse</div>
     <div class="dialog-container">
         <div class="nurse-container">
-            <app-nurse-creation *ngIf="contractsLoaded"
+            <app-nurse-creation *ngIf="contractsLoaded && contractsGroupLoaded"
             [(nurse)]="data.nurse" [nurses]="data.nurses" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]" [possibleContractsGroup]="possibleContractsGroup" [selectedContractGroup]="possibleContractsGroup[0]"   (errorState)="updateNurseErrorState($event)"></app-nurse-creation>
         </div>
         <div mat-dialog-action class="buttons-container">
