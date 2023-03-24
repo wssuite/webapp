@@ -160,10 +160,12 @@ profile_creator = "creator"
 work_shift_group = {
     shift_group_name: work,
     shift_group_shifts_list: [],
+    shift_group_shift_types: [],
 }
 rest_shift_group = {
     shift_group_name: rest,
     shift_group_shifts_list: [],
+    shift_group_shift_types: [],
 }
 
 duplicate_name = "other_profile_name"
