@@ -2,7 +2,7 @@ import json
 import os.path
 from typing import Type
 
-from models.schedule import Schedule
+from src.models.schedule import Schedule
 from src.models.solution import Solution
 from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.base_handler import BaseHandler
