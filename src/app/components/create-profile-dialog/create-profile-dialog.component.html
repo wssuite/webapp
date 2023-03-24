@@ -1,13 +1,14 @@
 <div class="profile-container">
-    <p>Welcome to Nurse Scheduler application!</p>
-    <p>To get started please create a profile</p>
+    <h1>Welcome to Nurse Scheduler application!</h1>
+    <h2>Create or import a hostpital profile to get started</h2>
     <div class="create-empty-section">
-        <p>You can create an empty profile by specifying only the profile's name</p>
-        <button mat-raised-button color="primary" (click)="createEmptyProfile()">Create profile</button>
+        <button mat-raised-button color="primary" (click)="createEmptyProfile()" class="action-button"  matTooltip="You can create an empty profile by specifying only the profile's name"
+        matTooltipPosition="right">Create profile</button>
     </div>
     <div class="import-section">
-        <p>You can also import a profile</p>
-        <button mat-raised-button color="primary" (click)="importProfile()">Import profile</button>
+        <button mat-raised-button color="primary" (click)="importProfile()" class="action-button" matTooltip="You can also import a profile from a file"
+        matTooltipPosition="right">Import profile</button>
+
     </div>
     <button mat-raised-button *ngIf="data.closeDisplayed" class="close-button" color="warn" [mat-dialog-close]="true">Close</button>
 </div>
