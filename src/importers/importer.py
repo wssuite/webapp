@@ -53,8 +53,10 @@ class CSVImporter(BaseImporter):
         file = open(file_name, "r")
         lines = file.readlines()
         i = 0
-        while lines[i].split(",")[0].lower() != "profile":
+        tokens = sanitize_array(lines[i].split(","))
+        while "profile" not in tokens[0]:
             i += 1
+            tokens = sanitize_array(lines[i].split(","))
 
         i = i + 1
         profile_name = Wrapper(lines[i].split(",")).get_by_index(1)
@@ -265,4 +267,5 @@ class CSVImporter(BaseImporter):
 
 if __name__ == "__main__":
     file_path = sys.argv[1]
-    CSVImporter().read_file(file_path)
+    json = CSVImporter().read_file(file_path)
+    print(json)
