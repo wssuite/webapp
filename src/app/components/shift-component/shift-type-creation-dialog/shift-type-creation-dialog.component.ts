@@ -17,6 +17,7 @@ export class ShiftTypeCreationDialogComponent implements OnInit{
   shiftTypeErrorState: boolean;
   initShiftTypeName: string;
   possibleShifts!: string[];
+  shiftsLoaded: boolean;
   
 
   constructor(public dialogRef: MatDialogRef<ShiftTypeCreationDialogComponent >,
@@ -27,6 +28,7 @@ export class ShiftTypeCreationDialogComponent implements OnInit{
   this.errorState = new EventEmitter();
   this.shiftTypeErrorState = true;
   this.initShiftTypeName = data.shiftType.name;
+  this.shiftsLoaded = false;
       
 }
   ngOnInit(): void {
@@ -37,6 +39,7 @@ export class ShiftTypeCreationDialogComponent implements OnInit{
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
           })
+          this.shiftsLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
