@@ -17,10 +17,6 @@
     width: 100%;
 }
 
-.add-user{
-    height: 20px
-}
-
 .start-container {
     margin-left: 2vw;
     margin-top: 1vh;
@@ -29,6 +25,7 @@
 .duplicate-button, .delete-button, .share-button, .export-button{
     margin-left: 5vw;
 }
+
 .icon{
     transform: scale(3);
 }
