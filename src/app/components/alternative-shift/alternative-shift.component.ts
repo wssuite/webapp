@@ -28,8 +28,12 @@ export class AlternativeShiftComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    if(!this.possibleShifts.includes(this.constraint.shiftId)){
+      this.constraint.shiftId = "";
+    }
     this.shiftSelectorCtrl.setValue(this.constraint.shiftId);
-    this.weightErrorState = this.constraint.weight === BASE_VALUE;    
+    this.weightErrorState = this.constraint.weight === BASE_VALUE;
+    this.emitConstraint();    
   }
 
   emitConstraint() {

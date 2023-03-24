@@ -1,9 +1,13 @@
-<div class="side-bar">
-    <button
-    *ngFor="let button of buttons"
-    mat--button
-    (click)="redirect(button)">
-      <h1 class="buttonClicked">{{ button }}</h1>
+<div class="example-button-row">
+  <button mat-button id="nurse-button"
+    (click)="redirect('Nurse')">
+    <h2>Nurse</h2>
+  </button>
+  <button mat-button id="nurse-group-button"
+    (click)="redirect('Nurse Group')">
+    <h2>Nurse Group</h2>
   </button>
 </div>
+<mat-divider></mat-divider>
+
 

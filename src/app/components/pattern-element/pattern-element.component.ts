@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { CustomSelector } from 'src/app/models/CustomSelector';
 import { PatternElement } from 'src/app/models/PatternElement';
 import { DateUtils } from 'src/app/utils/DateUtils';
 
@@ -11,6 +12,9 @@ import { DateUtils } from 'src/app/utils/DateUtils';
 export class PatternElementComponent implements OnInit{
 
   possibleDays: string[]
+  customSelectorDays: CustomSelector[];
+  customSelectorShifts: CustomSelector[];
+
 
   @Input() possibleShifts!: string[]
   @Input() element!: PatternElement
@@ -24,6 +28,13 @@ export class PatternElementComponent implements OnInit{
 
   constructor() {
     this.possibleDays = DateUtils.days;
+    this.customSelectorDays = [
+      new CustomSelector("Weekdays", DateUtils.weekdays),
+      new CustomSelector("Weekend", DateUtils.weekendDays),
+    ];
+
+    this.customSelectorShifts = [];
+
     this.elementChange = new EventEmitter<PatternElement>();
     this.errorState = new EventEmitter<boolean>();
     this.daySelectorFormControl = new FormControl(null, Validators.required);
@@ -41,6 +52,8 @@ export class PatternElementComponent implements OnInit{
   }
 
   emitErrorState() {
-    this.errorState.emit(this.daySelectorFormControl.hasError('required') || this.shiftSelectorFormControl.hasError('required'))
+    const noDaySelected = this.element.days.length == 0;
+    const noShiftSelected = this.element.shifts.length == 0;
+    this.errorState.emit(noDaySelected || noShiftSelected);
   }
 }

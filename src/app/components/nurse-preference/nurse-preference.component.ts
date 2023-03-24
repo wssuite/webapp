@@ -3,6 +3,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/cor
 import { FormControl } from "@angular/forms";
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
 import { NurseInterface } from "src/app/models/Nurse";
+import { DateUtils } from "src/app/utils/DateUtils";
 
 
 interface  SchedulePref
@@ -36,13 +37,15 @@ interface  SchedulePref
   preferences: {[date: string]: {[nurse: string]: { [shift: string]: { pref: string, weight: string }} } } = {};
   nurseSelectorFormControl = new FormControl();
   scedulePref: SchedulePref[];
+
+  nbColumns: number | undefined;
   
 
   constructor() {
     this.scedulePref = [];
     this.weight = '';
     this.possibleShifts = this.shifts;
-    this.timetable = ["Monday, April 3, 2023", "Tuesday, April 4, 2023", "Wednesday, April 5, 2023", "Thursday, April 6, 2023", "Friday, April 7, 2023", "Saturday, April 8, 2023", "Sunday, April 9, 2023"];
+    this.timetable = [];
     this.possibleNurses = [];
   }
 
@@ -58,6 +61,10 @@ interface  SchedulePref
 
 
   ngOnInit(): void {
+    this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
+    for(let i = 0; i <= this.nbColumns; i++) {
+      this.timetable.push(this.getDayString(i) + this.getDateDayStringByIndex(i));
+    }
     //initiate preferences
     for(const date of this.timetable){
       this.preferences[date] = {};
@@ -122,6 +129,27 @@ interface  SchedulePref
         return {'background-color': 'rgb(246, 233, 232)' };
     }
     return { 'background-color': 'rgb(235, 234, 234)' };
+  }
+
+  getDateDayStringByIndex(index: number): string {
+    if (this.startDate == undefined) {
+      return "";
+    }
+    const nextDay = new Date(
+      +this.startDate + (index + 1) * DateUtils.dayMultiplicationFactor
+    );
+    const local_string = nextDay.toLocaleDateString().replaceAll("/", "-");
+    return DateUtils.arrangeDateString(local_string);
+  }
+
+  getDayString(index: number): string {
+    if (this.startDate == undefined) {
+      return "";
+    }
+    const nextDay = new Date(
+      +this.startDate + (index + 1) * DateUtils.dayMultiplicationFactor
+    ).getDay();
+    return DateUtils.days[nextDay] + "\n";
   }
 
   emitSchedulePref(){
