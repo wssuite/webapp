@@ -20,6 +20,8 @@ export class ShiftGroupCreationDialogComponent implements OnInit {
   initShiftGroupName: string;
   possibleShifts!: string[];
   possibleShiftsType!: string[];
+  shiftsLoaded: boolean;
+  shiftTypesLoaded: boolean;
 
   constructor(public dialogRef: MatDialogRef<ShiftGroupCreationDialogComponent >, 
     @Inject(MAT_DIALOG_DATA) public data: {shiftGroup: ShiftGroupInterface, shiftsGroup: string[]},
@@ -29,6 +31,8 @@ export class ShiftGroupCreationDialogComponent implements OnInit {
     this.errorState = new EventEmitter();
     this.shiftGroupErrorState = true;
     this.initShiftGroupName = data.shiftGroup.name;
+    this.shiftsLoaded = false;
+    this.shiftTypesLoaded = false;
 }
   ngOnInit(): void {
     this.possibleShifts = [];
@@ -39,6 +43,7 @@ export class ShiftGroupCreationDialogComponent implements OnInit {
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
           })
+          this.shiftsLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -50,6 +55,7 @@ export class ShiftGroupCreationDialogComponent implements OnInit {
             shiftsType.forEach((shiftType: string)=>{
               this.possibleShiftsType.push(shiftType);
             })
+            this.shiftTypesLoaded = true;
           },
           error: (error: HttpErrorResponse)=>{
             this.openErrorDialog(error.error);
