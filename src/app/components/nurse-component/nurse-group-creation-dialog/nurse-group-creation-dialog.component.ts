@@ -19,6 +19,8 @@ export class NurseGroupCreationDialogComponent implements OnInit {
   initNurseGroupName: string;
   possibleContracts!: string[];
   possibleNurses!: string[];
+  nursesLoaded: boolean;
+  contractsLoaded: boolean;
   
 
   constructor(public dialogRef: MatDialogRef<NurseGroupCreationDialogComponent >,
@@ -30,6 +32,8 @@ export class NurseGroupCreationDialogComponent implements OnInit {
   this.errorState = new EventEmitter();
   this.nurseGroupErrorState = true;
   this.initNurseGroupName = data.nurseGroup.name;
+  this.nursesLoaded = false;
+  this.contractsLoaded = false;
       
 }
   ngOnInit(): void {
@@ -41,6 +45,7 @@ export class NurseGroupCreationDialogComponent implements OnInit {
           contracts.forEach((contract: string)=>{
             this.possibleContracts.push(contract);
           })
+          this.contractsLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -56,6 +61,7 @@ export class NurseGroupCreationDialogComponent implements OnInit {
           nurses.forEach((nurse: string)=>{
             this.possibleNurses.push(nurse);
           })
+          this.nursesLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
