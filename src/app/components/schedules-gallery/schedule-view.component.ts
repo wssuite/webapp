@@ -10,7 +10,7 @@ import { ErrorMessageDialogComponent } from '../error-message-dialog/error-messa
 import { saveAs } from 'file-saver';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Router } from '@angular/router';
-import { SCHEDULE_GENERATION } from 'src/app/constants/app-routes';
+import { CONSULT_SCHEDULE, SCHEDULE_GENERATION } from 'src/app/constants/app-routes';
 
 @Component({
   selector: 'app-schedule-view',
@@ -71,7 +71,8 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
   }
 
   viewSchedule(schedule: Solution){
-    this.service.getDetailedSolution(schedule);
+    this.service.selectedScheduleToView = schedule;
+    this.router.navigate(["/"+ CONSULT_SCHEDULE])
   }
 
   exportProblem(schedule: Solution) {

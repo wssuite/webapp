@@ -1,8 +1,14 @@
-import { HttpErrorResponse } from "@angular/common/http";
+import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { Assignment, EmployeeSchedule } from "src/app/models/Assignment";
-import { APIService } from "src/app/services/api-service/api.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import * as saveAs from "file-saver";
+import { MAIN_MENU } from "src/app/constants/app-routes";
+import { Assignment } from "src/app/models/Assignment";
+import { DetailedSchedule, Solution } from "src/app/models/Schedule";
+import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
+import { CacheUtils } from "src/app/utils/CacheUtils";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
 
@@ -12,45 +18,68 @@ import { ErrorMessageDialogComponent } from "../error-message-dialog/error-messa
   styleUrls: ["./consult-schedule.component.css"],
 })
 export class ConsultScheduleComponent implements OnInit {
-  employeeSchedule: EmployeeSchedule;
+
+  schedule!: DetailedSchedule;
+  connectedUser: boolean;
   employeeAssignmentsMap: Map<string, Assignment[]>;
-  startDate: Date | undefined;
   endDate: Date | undefined;
+  startDate: Date | undefined;
+  validSchedule: boolean;
   nbColumns: number | undefined;
   indexes: number[] | undefined;
-  validSchedule: boolean;
+  displayedColumns: string[];
+  dataSource: MatTableDataSource<Solution>
 
-  //schedule
-  constructor(private apiService: APIService, public dialog: MatDialog) {
-    this.validSchedule = false;
-    this.employeeSchedule = {
-      startDate: "",
-      endDate: "",
-      schedule: [],
-    };
+  constructor(private service: ScheduleService, public dialog: MatDialog, private router: Router) {
     this.employeeAssignmentsMap = new Map();
+    this.connectedUser = false;
+    this.validSchedule = false;
+    this.dataSource = new MatTableDataSource();
+    this.displayedColumns = ["startDate", "endDate", "versionNumber", "state", "actions"]
   }
 
   ngOnInit(): void {
-    this.apiService.getPrototypeSchedule().subscribe(
-      (schedule: EmployeeSchedule) => {
-        this.employeeSchedule = schedule;
-        this.startDate = new Date(this.employeeSchedule.startDate);
-        this.endDate = new Date(this.employeeSchedule.endDate);
-        this.nbColumns =
-          DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
-        this.indexes = this.getIndexes();
-        for (const sch of this.employeeSchedule.schedule) {
-          this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
+    if(this.service.selectedScheduleToView === undefined){
+      return
+    }
+    try{
+      this.getDetailedSchedule(this.service.selectedScheduleToView);
+      this.connectedUser = true;
+    }
+    catch(err){
+      // Do noting
+    }
+  }
+
+  getDetailedSchedule(schedule: Solution) {
+    this.employeeAssignmentsMap = new Map()
+    this.service.getDetailedSolution(schedule).subscribe({
+      next: (data: DetailedSchedule)=>{
+        this.schedule = data;
+        if(this.schedule.schedule){
+          this.startDate = new Date(this.schedule.schedule.startDate)
+          this.endDate = new Date(this.schedule.schedule.endDate);
+          this.nbColumns =
+            DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
+            this.indexes = this.getIndexes();
+          for (const sch of this.schedule.schedule.schedule) {
+            this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
+          }
         }
+        this.dataSource.data = data.previousVersions;
         this.validSchedule = true;
+        console.log(data)
       },
-      (err: HttpErrorResponse) => {
-        this.dialog.open(ErrorMessageDialogComponent, {
-          data: { message: err.error },
-        });
+      error: (err: HttpErrorResponse)=>{
+        this.openErrorDialog(err.error)
       }
-    );
+    })
+  }
+
+  openErrorDialog(message: string){
+    this.dialog.open(ErrorMessageDialogComponent, {
+      data: {message: message}
+    })
   }
 
   getDateDayStringByIndex(index: number): string {
@@ -98,5 +127,41 @@ export class ConsultScheduleComponent implements OnInit {
       }
     }
     return ret;
+  }
+
+  viewSchedule(schedule: Solution){
+    this.getDetailedSchedule(schedule);
+  }
+
+  exportProblem(schedule: Solution) {
+    this.service.exportProblem(schedule).subscribe({
+      next: (data: {content: string})=>{
+        const file = new File([data.content], CacheUtils.getProfile() + "_" + schedule.startDate + "_" + schedule.endDate + "_" + schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
+        saveAs(file);
+      }
+    })
+  }
+
+  exportCurrentScheduleProblem() {
+    this.service.exportProblemCurrentSchedule(this.schedule.version, this.schedule.startDate, this.schedule.endDate).subscribe({
+      next: (data: {content: string})=>{
+        const file = new File([data.content], CacheUtils.getProfile() + "_" + this.schedule.startDate + "_" + this.schedule.endDate + "_" + this.schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
+        saveAs(file);
+      }
+    })
+  }
+
+  regenerateSchedule() {
+    this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
+      next: ()=> this.router.navigate(["/" + MAIN_MENU]),
+      error: (err: HttpErrorResponse)=>{
+        if(err.status === HttpStatusCode.Ok){
+          this.router.navigate(["/" + MAIN_MENU]);
+        }
+        else{
+          this.openErrorDialog(err.error);
+        }
+      }
+    })
   }
 }
