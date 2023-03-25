@@ -4,7 +4,7 @@
       <tr>
         <th class="nurse-name-header">Nurse</th>
       </tr>
-      <tr *ngFor="let nurse of possibleNurses">
+      <tr *ngFor="let nurse of nurses">
         <td class="nurse-name-cell">{{nurse.name}} - {{nurse.username}}</td>
       </tr>
     </table>
@@ -14,13 +14,16 @@
       <caption class="date-header"> {{date}}</caption>
       <table>
         <tr>
-          <th class="shift-header"*ngFor="let shift of possibleShifts">
+          <th class="shift-header"*ngFor="let shift of shifts">
             {{shift}}
           </th>
         </tr>
-        <tr class="checkbox-row"*ngFor="let nurse of possibleNurses">
-          <td  class="checkbox-cell" *ngFor="let shift of possibleShifts" class="schedule-cells">
-            <button class="checkbox" (click)="updatePreferences(date, nurse.username, shift)" [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" matTooltip="{{showToolTip(date, nurse.username, shift)}}" [ngStyle]="getButtonStyle(date, nurse.username, shift)">
+        <tr class="checkbox-row"*ngFor="let nurse of nurses">
+          <td  class="checkbox-cell" *ngFor="let shift of shifts" class="schedule-cells">
+            <button class="checkbox" (click)="updatePreferences(date, nurse.username, shift)" 
+              [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" 
+              matTooltip="{{showToolTip(date, nurse.username, shift)}}" 
+              [ngStyle]="getButtonStyle(date, nurse.username, shift)">
               <mat-icon>{{getButtonState(date, nurse.username, shift)}}</mat-icon>
             </button>
           </td>
