@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ALL_SOLUTIONS, DETAILED_SOLUTION_URL,
   EXPORT_PROBLEM_URL, GENERATE_SCHEDULE,
   LATEST_SOLUTIONS } from 'src/app/constants/api-constants';
-import { Schedule } from 'src/app/models/Schedule';
+import { Solution } from 'src/app/models/Schedule';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
 
 @Injectable({
@@ -28,7 +28,7 @@ export class ScheduleService {
     }
   }
 
-  exportProblem(schedule: Schedule): Observable<{content: string}> {
+  exportProblem(schedule: Solution): Observable<{content: string}> {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
@@ -45,7 +45,7 @@ export class ScheduleService {
     }
   }
   // TODO: Modify
-  getDetailedSolution(schedule: Schedule){
+  getDetailedSolution(schedule: Solution){
     try{
       let queryParams = new HttpParams;
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
@@ -62,12 +62,12 @@ export class ScheduleService {
     }
   }
 
-  getAllSolutions():Observable<Schedule[]>{
+  getAllSolutions():Observable<Solution[]>{
     try{
       let queryParams = new HttpParams;
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
-      return this.httpClient.get<Schedule[]>(ALL_SOLUTIONS, {
+      return this.httpClient.get<Solution[]>(ALL_SOLUTIONS, {
         params: queryParams
       })
     }
@@ -76,12 +76,12 @@ export class ScheduleService {
     }
   }
 
-  getLatestSolutions(): Observable<Schedule[]>{
+  getLatestSolutions(): Observable<Solution[]>{
     try{
       let queryParams = new HttpParams;
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
-      return this.httpClient.get<Schedule[]>(LATEST_SOLUTIONS, {
+      return this.httpClient.get<Solution[]>(LATEST_SOLUTIONS, {
         params: queryParams
       })
     }

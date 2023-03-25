@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Schedule } from 'src/app/models/Schedule';
+import { Solution } from 'src/app/models/Schedule';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ScheduleService } from 'src/app/services/schedule/schedule-service.service';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
@@ -19,9 +19,9 @@ import { SCHEDULE_GENERATION } from 'src/app/constants/app-routes';
 })
 export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
   connectedUser: boolean;
-  schedules: Schedule[];
+  schedules: Solution[];
   displayedColumns: string[];
-  dataSource: MatTableDataSource<Schedule>
+  dataSource: MatTableDataSource<Solution>
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -52,7 +52,7 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
 
   getSchedules(){
     this.service.getAllSolutions().subscribe({
-      next: (schedules: Schedule[])=> {
+      next: (schedules: Solution[])=> {
         this.schedules = schedules.reverse();
         this.dataSource.data= schedules;
         this.dataSource.paginator = this.paginator;
@@ -70,11 +70,11 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
     })
   }
 
-  viewSchedule(schedule: Schedule){
+  viewSchedule(schedule: Solution){
     this.service.getDetailedSolution(schedule);
   }
 
-  exportProblem(schedule: Schedule) {
+  exportProblem(schedule: Solution) {
     this.service.exportProblem(schedule).subscribe({
       next: (data: {content: string})=>{
         const file = new File([data.content], CacheUtils.getProfile() + "_" + schedule.startDate + "_" + schedule.endDate + "_" + schedule.version + ".txt", {type:"text/plain;charset=utf-8"});

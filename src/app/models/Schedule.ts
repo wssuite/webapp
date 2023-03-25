@@ -1,4 +1,4 @@
-export interface Schedule {
+export interface Solution {
     startDate: string,
     endDate: string,
     profile: string,
