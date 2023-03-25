@@ -1,6 +1,10 @@
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+
 import { NurseInterface } from "src/app/models/Nurse";
 import { NurseService } from "src/app/services/nurse/nurse.service";
 import { ProfileService } from "src/app/services/profile/profile.service";
@@ -18,16 +22,27 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
   
   nurses_username: string[];
   connectedUser!:boolean;
+  displayedColumns: string[]; 
+  dataSource: MatTableDataSource<NurseInterface>;
+
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
 
   constructor(public dialog: MatDialog, private nurseService: NurseService, private profileService: ProfileService) {
     this.nurses_username = [];
+    this.displayedColumns =  ['name', 'username', 'contracts','actions'];
+    this.dataSource = new MatTableDataSource();
+
 
 
     
   }
   ngOnInit(): void {
     try{
-      this.getNursesUsername();
+      this.getNurses();
       this.connectedUser = true;
     }catch(err){
       this.connectedUser = false;
@@ -36,14 +51,25 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit(): void {
     this.profileService.profileChanged.subscribe(()=>{
-      this.getNursesUsername();
-    })    
+      this.getNurses();
+    })  
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
   }
 
-  getNursesUsername(){
+  getNurses(){
     this.nurseService.getAllNurseUsername().subscribe({
       next: (username: string[])=> {
         this.nurses_username = username;
+      },
+      error: (error: HttpErrorResponse)=> {
+        this.openErrorDialog(error.error);
+      }
+    })
+    this.nurseService.getAllNurse().subscribe({
+      next: (nurse: NurseInterface[])=> {
+        this.dataSource.data = nurse;
       },
       error: (error: HttpErrorResponse)=> {
         this.openErrorDialog(error.error);
@@ -68,7 +94,7 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
       });
     
       dialog.afterClosed().subscribe(()=>{
-        this.getNursesUsername();
+        this.getNurses();
       })
   }
 
@@ -89,6 +115,7 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
             const index = this.nurses_username.indexOf(nurseUsername);
             if (index > -1) {
               this.nurses_username.splice(index, 1);
+              this.getNurses();
             }
           }
           else{
@@ -113,5 +140,15 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
       }
     })
   }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
 
 }

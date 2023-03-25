@@ -1,6 +1,8 @@
 <div *ngIf="connectedUser; else elseBlock">
     <app-header></app-header>
-    <button class="create-button" mat-raised-button color="primary"  (click)="createNewContract()">Create new contract</button>
+    <div id="button-container">
+        <button class="create-button" mat-raised-button color="primary"  (click)="createNewContract()">Create new contract</button>
+    </div>
     <div class="contracts-container">
         <div class ="contract-cards-container" >
         <mat-card *ngFor="let contract of displayedContracts">

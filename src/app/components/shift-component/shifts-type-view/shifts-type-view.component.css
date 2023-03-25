@@ -1,31 +1,35 @@
 .buttonCreate{
-    position: absolute;
-    top: 18%;
-    margin-top: 5vh;
-    margin-left: 5vw;
-    font-size: 30px;
-    width: 400px; 
+    margin-right: 2vw;
+    margin-top: 1vh;
+    height: 50px;
+    width: 240px;
+    font-size: large;
 }
 
-mat-card-header{
-    padding: 2%;
-    font-size: 30px;
-    font-weight: bold;
-    
+.button-container{
+    display: flex;
+    justify-content: flex-end;
 }
 
-mat-card {
-    margin-bottom: 1vh;
+.filter{
+    margin-right: 15px;
 }
 
-
-.shiftTypeCard{
-    position:absolute;
-    left: 10%;
-    top: 18%;
-    margin-top: 5vw;
-    margin-left: 20%;
-    width: 60%;
+mat-paginator{
+    margin-top: 10%;
 }
 
+::ng-deep #skill-button {
+    background-color: white;
+}
 
+::ng-deep #shift-button {
+    background-color: white;
+}
+::ng-deep #shifts-type-nav-bar #shift-type-button {
+    background-color: #F6F6F6;
+}
+
+::ng-deep #shift-group-button {
+    background-color: white;
+}

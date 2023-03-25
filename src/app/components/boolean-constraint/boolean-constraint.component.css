@@ -5,3 +5,9 @@
     margin-left: 2vw;
     margin-right: 2vw;
 }
+
+.description-box {
+    width: 20vw;
+    padding: 5px;
+    height: auto;
+}

@@ -11,7 +11,7 @@
    <div *ngIf="possibleNurses.length > 0">
      <mat-form-field appearance="fill">
        <mat-label>Select a nurse</mat-label>
-       <mat-select [(value)]="selectedNurse">
+       <mat-select [(value)]="selectedNurse" (selectionChange)="emitNurseGroup()">
          <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
            {{ nurse }}
          </mat-option>
@@ -45,7 +45,7 @@
    <div *ngIf="possibleContracts.length > 0">
      <mat-form-field appearance="fill">
        <mat-label>Select a contract</mat-label>
-       <mat-select [(value)]="selectedContract">
+       <mat-select [(value)]="selectedContract" (selectionChange)="emitNurseGroup()">
          <mat-option *ngFor="let contract of possibleContracts" [value]="contract">
            {{ contract }}
          </mat-option>

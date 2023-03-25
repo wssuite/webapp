@@ -9,6 +9,19 @@ export class DateUtils {
     "Friday",
     "Saturday",
   ];
+
+  public static weekdays = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+  ]
+
+  public static weekendDays = [
+    "Saturday",
+    "Sunday"
+  ]
   public static nbDaysDifference(endDate: Date, startDate: Date): number {
     return (+endDate - +startDate) / this.dayMultiplicationFactor;
   }

@@ -24,3 +24,11 @@ app-weight{
     float: right;
     margin-right: 2vw;
 }
+
+.additional-items{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: start;
+    float: right;
+}
