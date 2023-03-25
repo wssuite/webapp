@@ -11,7 +11,7 @@
   </div>
   <div class="timetable-table">
     <div class="date-table" *ngFor="let date of timetable">
-      <caption class="date-header"> {{date}}</caption>
+      <caption class="date-header"> {{date.day}}  {{date.date}}</caption>
       <table>
         <tr>
           <th class="shift-header"*ngFor="let shift of shifts">

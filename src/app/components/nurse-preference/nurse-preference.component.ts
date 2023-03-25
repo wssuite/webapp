@@ -15,6 +15,11 @@ interface  SchedulePref
       preference_weight: string,
   }
 
+interface dateDisplay {
+  date: string;
+  day:string;
+}
+
 
 @Component({
     selector: 'app-nurse-preference',
@@ -30,9 +35,9 @@ interface  SchedulePref
   @Input() startDate!: Date;
   @Input() endDate!: Date;
 
-  timetable: string[];
+  timetable: dateDisplay[];
   selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
-  preferences: Map<string, Map<string,Map<string, {pref: string, weight: string}>>>;
+  preferences: Map<dateDisplay, Map<string,Map<string, {pref: string, weight: string}>>>;
   nurseSelectorFormControl = new FormControl();
   scedulePref: SchedulePref[];
 
@@ -62,7 +67,7 @@ interface  SchedulePref
     this.timetable = []
     this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
     for(let i = 0; i <= this.nbColumns; i++) {
-      this.timetable.push(this.getDayString(i) + this.getDateDayStringByIndex(i));
+      this.timetable.push( {date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
     }
     //initiate preferences
     this.preferences = new Map()
@@ -77,7 +82,7 @@ interface  SchedulePref
     }
   }
 
-  updatePreferences(date: string, nurse: string, shift: string) {
+  updatePreferences(date: dateDisplay, nurse: string, shift: string) {
     if (!this.preferences.get(date)?.get(nurse)) {
       this.preferences.get(date)?.set(nurse, new Map());
     }
@@ -103,7 +108,7 @@ interface  SchedulePref
     this.emitSchedulePref();
   }
 
-  showToolTip(date: string,nurse: string, shift: string):string {
+  showToolTip(date: dateDisplay,nurse: string, shift: string):string {
     const preferenceObj = this.preferences.get(date)?.get(nurse)?.get(shift)
     if(preferenceObj === undefined){
       return "";
@@ -111,7 +116,7 @@ interface  SchedulePref
     return "The weight is "+ preferenceObj.weight
   }
 
-  getButtonState(date?: string, nurse?: string, shift?: string): string {
+  getButtonState(date?: dateDisplay, nurse?: string, shift?: string): string {
     if(date !== undefined && nurse !==  undefined && shift !==  undefined) {
     if(this.preferences.get(date)?.get(nurse)?.get(shift)?.pref === 'ON') {
       return "check"
@@ -124,7 +129,7 @@ interface  SchedulePref
   return "check_box_outline_blank";
   }
 
-  getButtonStyle(date: string, nurse: string, shift: string) {
+  getButtonStyle(date: dateDisplay, nurse: string, shift: string) {
     const pref = this.preferences.get(date)?.get(nurse)?.get(shift)?.pref;
     if (pref === 'ON') {
       return {'background-color': 'rgb(228, 241, 226)' };
@@ -164,7 +169,7 @@ interface  SchedulePref
           if( preferenceObj && (preferenceObj.pref === 'OFF' ||
               preferenceObj.pref === 'ON')){
             const schedule = {
-              preference_date: date, 
+              preference_date: date.date, 
               preference_username: nurse.username, 
               preference_pref: preferenceObj.pref,
               preference_shift: shift,
