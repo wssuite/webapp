@@ -1,4 +1,4 @@
-import threading
+import multiprocessing
 import subprocess
 
 from flask import Blueprint, request, Response
@@ -36,6 +36,7 @@ def callback():
 
 @mod.route("/schedule", methods=["POST"])
 def run_schedule():
-    thread = threading.Thread(target=run_scheduler)
+    thread = multiprocessing.Process(target=run_scheduler)
     thread.start()
+
     return Response("In Progress", status=200)
