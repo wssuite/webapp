@@ -1,3 +1,6 @@
+import { EmployeeSchedule } from "./Assignment"
+import { GenerationRequest } from "./GenerationRequest";
+
 export interface Solution {
     startDate: string,
     endDate: string,
@@ -6,4 +9,13 @@ export interface Solution {
     state: string,
 }
 
-// TODO: Implement a detailed schedule interface
+export interface DetailedSchedule {
+    schedule: EmployeeSchedule;
+    problem: GenerationRequest;
+    previousVersions: Solution []; 
+    startDate: string,
+    endDate: string,
+    profile: string,
+    version: string,
+    state: string,  
+}
