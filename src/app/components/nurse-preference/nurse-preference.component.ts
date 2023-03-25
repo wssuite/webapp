@@ -1,5 +1,5 @@
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
 import { NurseInterface } from "src/app/models/Nurse";
@@ -34,18 +34,19 @@ interface dateDisplay {
   @Input() nurses!: NurseInterface[]; 
   @Input() startDate!: Date;
   @Input() endDate!: Date;
+  @Output() schedulePreference: EventEmitter<SchedulePref[]>
 
   timetable: dateDisplay[];
   selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
   preferences: Map<dateDisplay, Map<string,Map<string, {pref: string, weight: string}>>>;
   nurseSelectorFormControl = new FormControl();
-  scedulePref: SchedulePref[];
 
   nbColumns: number | undefined;
   
 
   constructor() {
-    this.scedulePref = [];
+    this.schedulePreference = new EventEmitter();
+
     this.weight = '';
     this.timetable = [];
     this.preferences = new Map();
@@ -65,7 +66,7 @@ interface dateDisplay {
 
   ngOnInit(): void {
     this.timetable = []
-    this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
+    this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate);
     for(let i = 0; i <= this.nbColumns; i++) {
       this.timetable.push( {date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
     }
@@ -144,7 +145,7 @@ interface dateDisplay {
       return "";
     }
     const nextDay = new Date(
-      +this.startDate + (index + 1) * DateUtils.dayMultiplicationFactor
+      +this.startDate + (index) * DateUtils.dayMultiplicationFactor
     );
     const local_string = nextDay.toLocaleDateString().replaceAll("/", "-");
     return DateUtils.arrangeDateString(local_string);
@@ -155,13 +156,13 @@ interface dateDisplay {
       return "";
     }
     const nextDay = new Date(
-      +this.startDate + (index + 1) * DateUtils.dayMultiplicationFactor
+      +this.startDate + (index) * DateUtils.dayMultiplicationFactor
     ).getDay();
     return DateUtils.days[nextDay] + "\n";
   }
 
   emitSchedulePref(){
-    this.scedulePref = [];
+    let scedulePref = [];
     for(const date of this.timetable){
       for (const nurse of this.nurses) {
         for (const shift of this.shifts) {
@@ -175,11 +176,11 @@ interface dateDisplay {
               preference_shift: shift,
               preference_weight: preferenceObj.weight
             }
-            this.scedulePref.push(schedule);
+            scedulePref.push(schedule);
           }
         }
       }
     }
-    console.log("emit schedule", this.scedulePref)
+    this.schedulePreference.emit(scedulePref);
   }
 }
