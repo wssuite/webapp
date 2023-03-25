@@ -59,6 +59,7 @@ interface  SchedulePref
 
 
   ngOnInit(): void {
+    this.timetable = []
     this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
     for(let i = 0; i <= this.nbColumns; i++) {
       this.timetable.push(this.getDayString(i) + this.getDateDayStringByIndex(i));
