@@ -64,7 +64,8 @@ class ProfileHandler(BaseHandler):
         self.nurse_dao.delete_all(name)
         self.nurse_group_dao.delete_all(name)
         self.contract_group_dao.delete_all(name)
-        profile_path = f"{fs.get_dataset_directory_path()}/{name}"
+        self.solution_dao.delete_all(name)
+        profile_path = os.path.join(fs.get_dataset_directory_path(), name)
         fs.delete_dir(profile_path)
 
     """

@@ -5,7 +5,7 @@ from constants import (
     version,
     worker_host,
     previous_versions,
-    state
+    state,
 )
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.solution_dao import SolutionDao
@@ -31,7 +31,7 @@ class TestSolutionDao(TestCase):
             solution1[start_date],
             solution1[end_date],
             solution1[profile],
-            solution1[version]
+            solution1[version],
         )
         self.assertEqual(self.solution1, solution)
 
@@ -51,13 +51,22 @@ class TestSolutionDao(TestCase):
         self.assertEqual(1, len(latest_before))
         self.assertEqual(expected_after, latest_after[0])
 
+    def test_delete_all(self):
+        self.dao.insert_one(self.solution1.copy())
+        self.dao.insert_one(self.solution2.copy())
+        before_delete = self.dao.fetch_all(profile1)
+        self.assertEqual(2, len(before_delete))
+        self.dao.delete_all(profile1)
+        after_delete = self.dao.fetch_all(profile1)
+        self.assertEqual(0, len(after_delete))
+
     def test_update_state(self):
         self.dao.insert_one(self.solution1.copy())
         solution = self.dao.get_solution(
             solution1[start_date],
             solution1[end_date],
             solution1[profile],
-            solution1[version]
+            solution1[version],
         )
         self.assertEqual(solution1, solution)
         self.dao.update_state(
@@ -65,7 +74,7 @@ class TestSolutionDao(TestCase):
             solution1[end_date],
             solution1[profile],
             solution1[version],
-            "Success"
+            "Success",
         )
         expected_after = self.solution1.copy()
         expected_after[state] = "Success"
@@ -73,6 +82,6 @@ class TestSolutionDao(TestCase):
             solution1[start_date],
             solution1[end_date],
             solution1[profile],
-            solution1[version]
+            solution1[version],
         )
         self.assertEqual(expected_after, actual_after)

@@ -8,7 +8,7 @@ from constants import (
     mongo_all_operation,
     previous_versions,
     state,
-    mongo_set_operation
+    mongo_set_operation,
 )
 from src.models.solution import Solution
 from src.dao.abstract_dao import AbstractDao
@@ -34,6 +34,9 @@ class SolutionDao(AbstractDao):
         cursor = self.collection.find({profile: profile_name})
         return get_solution_from_cursor(cursor)
 
+    def delete_all(self, profile_name):
+        self.collection.delete_many({profile: profile_name})
+
     def get_latest_versions(self, profile_name):
         all_solutions = self.fetch_all(profile_name)
         ret = []
@@ -42,7 +45,7 @@ class SolutionDao(AbstractDao):
                 solution[start_date],
                 solution[end_date],
                 solution[profile],
-                solution[version]
+                solution[version],
             )
             if len(next_versions) == 0:
                 ret.append(solution)
@@ -59,8 +62,9 @@ class SolutionDao(AbstractDao):
         )
         return Solution().from_json(ret).db_json()
 
-    def get_next_versions(self, start_date_, end_date_,
-                          profile_name_, version_):
+    def get_next_versions(
+        self, start_date_, end_date_, profile_name_, version_
+    ):
         cursor = self.collection.find(
             {
                 previous_versions: {mongo_all_operation: [version_]},
@@ -71,8 +75,9 @@ class SolutionDao(AbstractDao):
         )
         return get_solution_from_cursor(cursor)
 
-    def update_state(self, start_date_, end_date_, profile_name_,
-                     version_, new_state):
+    def update_state(
+        self, start_date_, end_date_, profile_name_, version_, new_state
+    ):
         self.collection.find_one_and_update(
             {
                 version: version_,
@@ -80,7 +85,5 @@ class SolutionDao(AbstractDao):
                 end_date: end_date_,
                 profile: profile_name_,
             },
-            {
-                mongo_set_operation: {state: new_state}
-            }
+            {mongo_set_operation: {state: new_state}},
         )
