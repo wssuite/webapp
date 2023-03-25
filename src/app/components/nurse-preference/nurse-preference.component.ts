@@ -1,24 +1,10 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
-import { FormControl } from "@angular/forms";
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
+import { dateDisplay } from "src/app/models/DateDisplay";
 import { NurseInterface } from "src/app/models/Nurse";
+import { SchedulePref } from "src/app/models/SchedulePreference";
 import { DateUtils } from "src/app/utils/DateUtils";
-
-
-interface  SchedulePref
-  {
-      preference_date: string,
-      preference_username: string,
-      preference_pref: string,
-      preference_shift: string,
-      preference_weight: string,
-  }
-
-interface dateDisplay {
-  date: string;
-  day:string;
-}
 
 
 @Component({
@@ -39,14 +25,12 @@ interface dateDisplay {
   timetable: dateDisplay[];
   selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
   preferences: Map<dateDisplay, Map<string,Map<string, {pref: string, weight: string}>>>;
-  nurseSelectorFormControl = new FormControl();
 
   nbColumns: number | undefined;
   
 
   constructor() {
     this.schedulePreference = new EventEmitter();
-
     this.weight = '';
     this.timetable = [];
     this.preferences = new Map();
@@ -87,23 +71,22 @@ interface dateDisplay {
     if (!this.preferences.get(date)?.get(nurse)) {
       this.preferences.get(date)?.set(nurse, new Map());
     }
+
     if (!this.preferences.get(date)?.get(nurse)?.get(shift)) {
       this.preferences.get(date)?.get(nurse)?.set(shift,{ pref: '', weight: '' });
     }
     let pref = this.preferences.get(date)?.get(nurse)?.get(shift)?.pref;
     let weight =  this.weight;
+
     if(this.weight ===  this.preferences.get(date)?.get(nurse)?.get(shift)?.weight){
       if(this.preferences.get(date)?.get(nurse)?.get(shift)?.pref === 'ON') {
         pref = 'OFF';
       } else {
         pref = '';
         weight = "";
-      }
-      
-      
-    } else {
-      pref = 'ON';
-    }
+      }    
+    } else { pref = 'ON';}
+    
     this.preferences.get(date)?.get(nurse)?.set(shift, { pref, weight });
     this.emitSchedulePref();
   }
