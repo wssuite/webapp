@@ -105,7 +105,6 @@ interface dateDisplay {
       pref = 'ON';
     }
     this.preferences.get(date)?.get(nurse)?.set(shift, { pref, weight });
-    console.log(this.preferences);
     this.emitSchedulePref();
   }
 
@@ -162,7 +161,7 @@ interface dateDisplay {
   }
 
   emitSchedulePref(){
-    let scedulePref = [];
+    const scedulePref = [];
     for(const date of this.timetable){
       for (const nurse of this.nurses) {
         for (const shift of this.shifts) {
