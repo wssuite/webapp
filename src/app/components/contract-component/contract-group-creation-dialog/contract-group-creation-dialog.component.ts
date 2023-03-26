@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ContractGroupInterface } from 'src/app/models/Contract';
 import { ContractGroupService } from 'src/app/services/contract/contract-group.service';
@@ -13,11 +13,11 @@ import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-me
   styleUrls: ['./contract-group-creation-dialog.component.css']
 })
 export class ContractGroupCreationDialogComponent implements OnInit {
-  @Output() errorState: EventEmitter<boolean>;
   contractGroupErrorState: boolean;
   initContractGroupName: string;
   possibleContracts!: string[];
   possibleNurses!: string[];
+  contractsLoaded: boolean;
   
 
   constructor(public dialogRef: MatDialogRef<ContractGroupCreationDialogComponent >,
@@ -26,9 +26,9 @@ export class ContractGroupCreationDialogComponent implements OnInit {
     private contractService: ContractService,
     private dialog: MatDialog,  
 ) {
-  this.errorState = new EventEmitter();
   this.contractGroupErrorState = true;
   this.initContractGroupName = data.contractGroup.name;
+  this.contractsLoaded = false;
       
 }
   ngOnInit(): void {
@@ -39,6 +39,7 @@ export class ContractGroupCreationDialogComponent implements OnInit {
           contracts.forEach((contract: string)=>{
             this.possibleContracts.push(contract);
           })
+          this.contractsLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);

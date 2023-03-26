@@ -17,7 +17,6 @@ export class ContractGroupCreationComponent implements OnInit {
   @Input() contractGroups!: string[]
 
   nameContractGroupFormCtrl: FormControl;
-  contractSelectorError: boolean;
   inputDisabled: boolean;
   contractsError: boolean;
   contractGroupStartname!: string;
@@ -29,7 +28,6 @@ export class ContractGroupCreationComponent implements OnInit {
     this.errorState = new EventEmitter();
  
     this.nameContractGroupFormCtrl = new FormControl(null, Validators.required);
-    this.contractSelectorError = true;
     this.inputDisabled = false;
     this.contractsError = true;
   }
@@ -39,6 +37,14 @@ export class ContractGroupCreationComponent implements OnInit {
     this.nameContractGroupFormCtrl = new FormControl({value: this.contractGroup.name, disabled: this.inputDisabled},
       Validators.required);
     this.contractGroupStartname = this.contractGroup.name; 
+
+    for(let i=0; i< this.contractGroup.contracts.length; i++) {
+      if(!this.possibleContracts.includes(this.contractGroup.contracts[i])){
+        this.contractGroup.contracts.splice(i, 1);
+      }
+    }
+
+    this.emitContractGroup();
   }
 
   addContract() {
@@ -50,7 +56,6 @@ export class ContractGroupCreationComponent implements OnInit {
     if (this.possibleContracts.length > 0) {
         this.selectedContract= this.possibleContracts[0];
     }
-    this.contractSelectorError = false;
     this.emitContractGroup();
   }
   
@@ -62,9 +67,6 @@ export class ContractGroupCreationComponent implements OnInit {
     if (contract !== undefined && contract !== null) {
       this.possibleContracts.push(contract);
     }
-    if(this.contractGroup.contracts.length === 0){
-      this.contractSelectorError = true;
-    } 
     this.emitContractGroup()
   }
 
@@ -75,7 +77,10 @@ export class ContractGroupCreationComponent implements OnInit {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameContractGroupFormCtrl.hasError('required') || this.nameContractGroupFormCtrl.hasError('required') || (this.nameExist() && this. contractGroupStartname === '') ||this.contractSelectorError ||this.nameContractGroupFormCtrl.hasError('required')|| this.contractSelectorError  );
+    this.errorState.emit( 
+    (this.nameExist() && this. contractGroupStartname === '')  ||
+    this.nameContractGroupFormCtrl.hasError('required')|| 
+    this.contractGroup.contracts.length === 0 );
     console.log("error");
   }
 

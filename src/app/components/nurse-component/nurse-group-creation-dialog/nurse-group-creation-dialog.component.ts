@@ -15,7 +15,7 @@ import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-me
   styleUrls: ['./nurse-group-creation-dialog.component.css']
 })
 export class NurseGroupCreationDialogComponent implements OnInit {
-  @Output() errorState: EventEmitter<boolean> | undefined;
+  @Output() errorState: EventEmitter<boolean>;
   nurseGroupErrorState: boolean;
   initNurseGroupName: string;
   possibleContracts!: string[];

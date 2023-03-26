@@ -1,7 +1,7 @@
 <div class="title" mat-dialog-title>Contract Group</div>
 <div class="dialog-container">
     <div class="contractGroup-container">
-        <app-contract-group-creation [(contractGroup)]="data.contractGroup" [contractGroups]="data.contractGroups" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateContractGroupErrorState($event)"></app-contract-group-creation>
+        <app-contract-group-creation *ngIf="contractsLoaded"  [(contractGroup)]="data.contractGroup" [contractGroups]="data.contractGroups" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateContractGroupErrorState($event)"></app-contract-group-creation>
     </div>
     <div mat-dialog-action class="buttons-container">
         <button [disabled]="contractGroupErrorState"  mat-raised-button color="primary" (click)="add()">

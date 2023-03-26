@@ -34,7 +34,7 @@ export class NurseCreationDialogComponent  implements OnInit{
   this.nurseErrorState = true;
   this.initNurseUsername = data.nurse.username;
   this.contractsLoaded = false;
-  this.contractsGroupLoaded = true;
+  this.contractsGroupLoaded = false;
       
 }
   ngOnInit(): void {
@@ -52,10 +52,7 @@ export class NurseCreationDialogComponent  implements OnInit{
           this.openErrorDialog(error.error);
         }
       })
-    }catch(err){
-      //Do nothing
-    }
-    try{
+
       this.contractGroupService.getAllContractGroupName().subscribe({
         next: (contractsGroup: string[])=>{
           contractsGroup.forEach((contractGroup: string)=>{

@@ -165,7 +165,6 @@ export class NurseGroupCreationComponent implements OnInit {
     this.errorState.emit(this.nameNurseGroupFormCtrl.hasError('required') || 
     this.nameNurseGroupFormCtrl.hasError('required') || 
     (this.nameExist() && this. nurseGroupStartname === '') ||
-    (this.nameExist() && this.nurseGroupStartname === '') || 
     this.nurseGroup.contracts.length === 0 || (this.nurseGroup.contract_groups.length === 0 && this.nurseGroup.nurses.length === 0 ));
     console.log("error");
   }
