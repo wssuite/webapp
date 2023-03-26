@@ -6,8 +6,8 @@ export class UnwantedSkills extends Constraint{
     skills: string[]
     weight: string;
     
-    constructor(id: string, name: string){
-        super(id, name);
+    constructor(id: string, name: string, description?: string){
+        super(id, name, description);
         this.skills = [""];
         this.weight = BASE_VALUE;
     }

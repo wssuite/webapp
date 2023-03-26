@@ -5,8 +5,8 @@ import { Constraint, ConstraintInterface } from "./Constraint";
 export class IntegerConstraint extends Constraint {
   value: string;
   weight: string;
-  constructor(id: string, name: string) {
-    super(id, name);
+  constructor(id: string, name: string, description?: string) {
+    super(id, name, description);
     this.value = BASE_VALUE;
     this.weight = BASE_VALUE;
   }
