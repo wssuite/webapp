@@ -11,7 +11,7 @@ export const UNWANTED_SKILLS_DESCRIPTION="Declare all skills that you might want
 export const MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DESCRIPTION = "Declare the minimum and maximum hours that a nurse can work within four weeks."
 
 
-
+export const BOOLEAN_CONSTRAINT_DISCLAIMER = 'Careful: this constraits affects all weekends within a given planning horizon!'
 
 
 
