@@ -33,3 +33,10 @@
 .icon-box{
     margin: 3vh;
 }
+
+
+.profile-label{
+    font-weight: bolder;
+    font-size: 20px;
+    margin-right: 8px;
+}

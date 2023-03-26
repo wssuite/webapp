@@ -1,6 +1,6 @@
 <div *ngIf="validProfile" class="header-container">
     <div class="start-container">
-        <label>Profile: </label>
+        <label class="profile-label">Profile: </label>
         <mat-form-field appearance="fill">
             <mat-label>Profile</mat-label>
             <mat-select [(value)]="profile" (selectionChange)="handleSelectionChange()">
