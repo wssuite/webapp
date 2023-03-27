@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ADD_CONTRACT_GROUP_URL, FETCH_ALL_CONTRACT_GROUP_NAME, FETCH_CONTRACT_GROUP_BY_NAME, FETCH_CONTRACT_GROUP_URL, REMOVE_CONTRACT_GROUP_URL } from 'src/app/constants/api-constants';
+import { ADD_CONTRACT_GROUP_URL, FETCH_ALL_CONTRACT_GROUP_NAME, FETCH_CONTRACT_GROUP_BY_NAME, FETCH_CONTRACT_GROUP_URL, REMOVE_CONTRACT_GROUP_URL, UPDATE_CONTRACT_GROUP_URL } from 'src/app/constants/api-constants';
 import { ContractGroupInterface } from 'src/app/models/Contract';
 import { NurseGroupInterface } from 'src/app/models/Nurse';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
@@ -45,7 +45,7 @@ export class ContractGroupService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.put<HttpResponse<string>>(ADD_CONTRACT_GROUP_URL, contractGroup, {
+      return this.httpClient.put<HttpResponse<string>>(UPDATE_CONTRACT_GROUP_URL, contractGroup, {
         params: queryParams,
       });
     } catch(err){
