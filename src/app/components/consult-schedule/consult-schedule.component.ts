@@ -29,6 +29,7 @@ export class ConsultScheduleComponent implements OnInit {
   indexes: number[] | undefined;
   displayedColumns: string[];
   dataSource: MatTableDataSource<Solution>
+  preferences: Map<string, string>
 
   constructor(private service: ScheduleService, public dialog: MatDialog, private router: Router) {
     this.employeeAssignmentsMap = new Map();
@@ -36,6 +37,7 @@ export class ConsultScheduleComponent implements OnInit {
     this.validSchedule = false;
     this.dataSource = new MatTableDataSource();
     this.displayedColumns = ["startDate", "endDate", "versionNumber", "state", "actions"]
+    this.preferences = new Map();
   }
 
   ngOnInit(): void {
@@ -53,6 +55,7 @@ export class ConsultScheduleComponent implements OnInit {
 
   getDetailedSchedule(schedule: Solution) {
     this.employeeAssignmentsMap = new Map()
+    this.preferences = new Map()
     this.service.getDetailedSolution(schedule).subscribe({
       next: (data: DetailedSchedule)=>{
         this.schedule = data;
@@ -64,11 +67,16 @@ export class ConsultScheduleComponent implements OnInit {
             this.indexes = this.getIndexes();
           for (const sch of this.schedule.schedule.schedule) {
             this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
+            for(const assignement of sch.assignments){
+              //console.log(assignement.date)
+              this.preferences.set(JSON.stringify({nurse: assignement.employee_name,
+                 shift: assignement.shift, date:assignement.date}),"");
+            }
           }
+          console.log(this.preferences)
         }
         this.dataSource.data = data.previousVersions;
         this.validSchedule = true;
-        console.log(data)
       },
       error: (err: HttpErrorResponse)=>{
         this.openErrorDialog(err.error)
@@ -127,6 +135,73 @@ export class ConsultScheduleComponent implements OnInit {
       }
     }
     return ret;
+  }
+
+  getPreference(name: string, index: number): string|undefined{
+    const date = this.getDateDayStringByIndex(index);
+    const assignments = this.employeeAssignmentsMap.get(name);
+    //console.log(assignments === undefined)
+    if(assignments === undefined){
+      return undefined
+    }
+    let shift = "";
+    for(const assignement of assignments){
+      if(assignement.date === date) {
+        shift = assignement.shift;
+        break;
+      }
+    }
+    const key = JSON.stringify({nurse: name,
+      shift: shift,
+      date: date})
+    return this.preferences.get(key)
+  }
+
+  getButtonStyle(name: string, index: number){
+    const pref = this.getPreference(name, index);
+    if(pref !== undefined){
+      if(pref === "ON"){
+        return {'background-color': 'rgb(228, 241, 226)', "height":"60px"};
+      }
+      else if(pref === "OFF"){
+        return {'background-color': 'rgb(246, 233, 232)', "height":"60px" };
+      }
+      return { 'background-color': 'rgb(235, 234, 234)', "height":"60px" };
+    }
+    return { 'background-color': 'rgb(235, 234, 234)' , "height":"60px"};
+  }
+
+  updatePreference(name: string, index: number): void {
+    const date = this.getDateDayStringByIndex(index);
+    const assignments = this.employeeAssignmentsMap.get(name);
+    //console.log(assignments === undefined)
+    if(assignments === undefined){
+      return undefined
+    }
+    let shift = "";
+    for(const assignement of assignments){
+      if(assignement.date === date) {
+        shift = assignement.shift;
+        break;
+      }
+    }
+    const key = JSON.stringify({nurse: name,
+      shift: shift,
+      date: date})
+
+    const oldPref= this.preferences.get(key)
+    if(oldPref !== undefined){
+      if(oldPref === ""){
+        this.preferences.set(key, "ON")
+      }
+      else if(oldPref === "ON"){
+        this.preferences.set(key,"OFF")
+      }
+      else{
+        this.preferences.set(key, "")
+      }
+    }
+
   }
 
   viewSchedule(schedule: Solution){

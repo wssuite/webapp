@@ -8,24 +8,32 @@
         <!--Modify this block to a table like the preferences table-->
         <div class="schedule-container" *ngIf="schedule.schedule">
             <!-- create a table to hold the column with the employee names-->
-            <table class="employee-names-column" cellspacing="30">
-                <tr>
-                    <th class="employee-name-header"></th>
-                </tr>
-                <tr *ngFor="let sc of schedule.schedule.schedule">
-                    <td class="employee-name-cell">{{sc.employee_name}}</td>
-                </tr>
-            </table>
-            <div class="schedule-table">
-                <table cellspacing="10">
+            <div class="nurse-name-table">
+                <table class="employee-names-column">
                     <tr>
-                        <th *ngFor="let index of indexes">
-                            {{getDateDayStringByIndex(index)}}  {{getDayString(index)}}
+                        <th class="nurse-name-header"></th>
+                    </tr>
+                    <tr class="nurse-name-row" *ngFor="let sc of schedule.schedule.schedule">
+                        <td class="nurse-name-cell">{{sc.employee_name}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="schedule-table">
+                <table>
+                    <tr>
+                        <th *ngFor="let index of indexes" class="date-header">
+                            {{getDayString(index)}} {{getDateDayStringByIndex(index)}}  
                         </th>
                     </tr>
-                    <tr *ngFor="let sc of schedule.schedule.schedule">
-                        <td *ngFor="let index of indexes" class="schedule-cells">
-                            {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                    <tr class="checkbox-row" *ngFor="let sc of schedule.schedule.schedule">
+                        <td class="checkbox-cell" *ngFor="let index of indexes" class="schedule-cells">
+                            <button mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
+                                [ngStyle]="getButtonStyle(sc.employee_name, index)" (click)="updatePreference(sc.employee_name, index)">
+                                <span>
+                                    {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                                </span>
+                            </button>
+                            <ng-template #noPreference></ng-template>
                         </td>
                     </tr>
                 </table>
