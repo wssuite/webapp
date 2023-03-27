@@ -1,11 +1,14 @@
 
-.title {
-    color: black;
-    background-color: lightgray;
-    text-align: left;
-    font-size: 50px;
-    height: 10%;
-    padding: 3%;
+.title-box {
+    background-color: #EFF2F7;
+    padding: 5px;
+}
+
+h1{
+    font-size: 45px;
+    font-weight: bolder;
+    margin-left: 1vw;
+    margin-bottom: 2vh;
 }
 
 
@@ -22,6 +25,9 @@
 button {
     margin-right: 1vw;
     float: right;
+    width: 120px;
+    height: 50px;
+    font-size: large;
 }
 
 
