@@ -5,8 +5,8 @@ import { PatternElement, PatternElementInterface } from "./PatternElement";
 export class UnwantedPatterns extends Constraint{
     patternElements: PatternElement[];
     weight: string;
-    constructor(name:string, displayName: string) {
-        super(name, displayName);
+    constructor(name:string, displayName: string, description?: string) {
+        super(name, displayName, description);
         this.patternElements = [new PatternElement()]
         this.weight = BASE_VALUE;
     }
@@ -51,7 +51,7 @@ export class UnwantedPatterns extends Constraint{
     }
 
     clone(): UnwantedPatterns {
-        const ret = new UnwantedPatterns(this.name, this.displayName);
+        const ret = new UnwantedPatterns(this.name, this.displayName, this.description);
         ret.patternElements = [];
         this.patternElements.forEach((p: PatternElement)=>{
             ret.patternElements.push(p.clone());

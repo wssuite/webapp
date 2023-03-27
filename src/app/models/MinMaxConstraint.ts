@@ -9,8 +9,8 @@ export class MinMaxConstraint extends Constraint {
     minWeight: string;
     maxWeight:string;
     
-    constructor(name:string, displayName: string) {
-        super(name, displayName);
+    constructor(name:string, displayName: string, description?: string) {
+        super(name, displayName, description);
         this.minValue = BASE_VALUE;
         this.maxValue = BASE_VALUE;
         this.minWeight = BASE_VALUE;

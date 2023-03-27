@@ -4,8 +4,8 @@ import { Constraint, ConstraintInterface } from "./Constraint";
 
 export class BooleanConstraint extends Constraint {
   weight: string;
-  constructor(id: string, name: string) {
-    super(id, name);
+  constructor(id: string, name: string, description?: string) {
+    super(id, name, description);
     this.weight = BASE_VALUE;
   }
   

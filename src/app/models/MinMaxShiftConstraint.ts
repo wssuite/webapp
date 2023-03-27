@@ -6,8 +6,8 @@ export class MinMaxShiftConstraint extends MinMaxConstraint{
 
     shiftId: string;
 
-    constructor(name:string, displayName: string) {
-        super(name, displayName);
+    constructor(name:string, displayName: string, description?: string) {
+        super(name, displayName, description);
         this.shiftId = '';
     }
 

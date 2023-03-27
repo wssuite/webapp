@@ -91,6 +91,7 @@ import { MinMaxHopspitalDemandComponent } from './components/min-max-hopspital-d
 import { HopspitalDemandCreationComponent } from './components/hopspital-demand-creation/hopspital-demand-creation.component';
 import { NursePreferenceComponent } from './components/nurse-preference/nurse-preference.component';
 import { ButtonMultiselectComponent } from './components/button-multiselect/button-multiselect.component';
+import { SchedulesGalleryComponent } from './components/schedules-gallery/schedule-view.component';
 
 @NgModule({
   declarations: [
@@ -153,6 +154,7 @@ import { ButtonMultiselectComponent } from './components/button-multiselect/butt
     HopspitalDemandCreationComponent,
     NursePreferenceComponent,
     ButtonMultiselectComponent,
+    SchedulesGalleryComponent,
   ],
   imports: [
     BrowserModule,
