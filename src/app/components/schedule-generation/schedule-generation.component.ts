@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CONSULT_SCHEDULE } from "src/app/constants/app-routes";
-import { HospitalDemand, ScheduleDataInterface } from "src/app/models/hospital-demand"
+import {  ScheduleDataInterface } from "src/app/models/hospital-demand"
 import { NurseInterface } from "src/app/models/Nurse";
 import { NurseService } from "src/app/services/nurse/nurse.service"
 import { ShiftService } from "src/app/services/shift/shift.service";
@@ -49,7 +49,6 @@ export class ScheduleGenerationComponent implements OnInit  {
   selectedSkill: string;
   skills: string[];
 
-  hospitalDemands: HospitalDemand[];
 
   scheduleData!: ScheduleDataInterface;
 
@@ -72,7 +71,6 @@ export class ScheduleGenerationComponent implements OnInit  {
     this.possibleShifts = [];
     this.selectedShift = this.possibleShifts[0];
     this.shifts = [];
-    this.hospitalDemands = [];
 
   }
   ngOnInit(): void {
@@ -82,6 +80,7 @@ export class ScheduleGenerationComponent implements OnInit  {
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
           })
+          this.selectedShift=this.possibleShifts[0];
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -95,6 +94,7 @@ export class ScheduleGenerationComponent implements OnInit  {
             this.possibleNurses.push(nurse);
             this.nursesUsername.push(nurse.username);
           })
+          this.selectedNurse = this.possibleNurses[0];
         },
         error: (error: HttpErrorResponse)=> {
           this.openErrorDialog(error.error);
@@ -107,6 +107,7 @@ export class ScheduleGenerationComponent implements OnInit  {
             skills.forEach((skill: string)=>{
               this.possibleSkills.push(skill);
             })
+            this.selectedSkill = this.possibleSkills[0];
           },
           error: (error: HttpErrorResponse)=>{
             this.openErrorDialog(error.error);
@@ -194,17 +195,6 @@ export class ScheduleGenerationComponent implements OnInit  {
   }
 }
 
-  addDemand(){
-    const newDemand: HospitalDemand = new HospitalDemand();
-    this.hospitalDemands.push(newDemand);
-  }
-
-  removeDemand(pattern:HospitalDemand) {
-    const index = this.hospitalDemands.indexOf(pattern);
-    if(index > -1){
-      this.hospitalDemands.splice(index, 1);
-    }
-  }
 
   updateStartDate(e: MatDatepickerInputEvent<Date>) {
     this.startDate =
