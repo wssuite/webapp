@@ -13,3 +13,4 @@ export const TESTING = "testing";
 export const CONTRACTS="contracts";
 export const SKILL = "skill";
 export const IMPORT = "import";
+export const VIEW_SCHEDULES = "schedules"
