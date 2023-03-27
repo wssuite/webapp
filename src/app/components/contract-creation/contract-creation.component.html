@@ -19,7 +19,7 @@
                         <mat-panel-title>
                             <mat-icon *ngIf="constraintHasErrorState(i)" color="warn">error</mat-icon>
                             {{constraint.displayName}}
-                            <mat-icon class="tool-tip-icon" matTooltip="Info about the action"
+                            <mat-icon class="tool-tip-icon" matTooltip={{constraint.description}}
                             matTooltipPosition="right">help</mat-icon>
                         </mat-panel-title>
                     </mat-expansion-panel-header>

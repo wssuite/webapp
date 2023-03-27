@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { BASE_VALUE, WEIGHT_LABEL } from "src/app/constants/constraints";
+import { BOOLEAN_CONSTRAINT_DISCLAIMER } from "src/app/constants/constraintsDescriptions";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 
 @Component({
@@ -14,6 +15,7 @@ export class BooleanConstraintComponent implements OnInit{
 
   weightErrorState: boolean;
   weightLabel: string;
+  disclaimer: string;
 
   constructor() {
     this.constraintChange = new EventEmitter();
@@ -21,6 +23,7 @@ export class BooleanConstraintComponent implements OnInit{
 
     this.weightErrorState = true;
     this.weightLabel = WEIGHT_LABEL;
+    this.disclaimer = BOOLEAN_CONSTRAINT_DISCLAIMER;
   }
 
   ngOnInit(): void {
