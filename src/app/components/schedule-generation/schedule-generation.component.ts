@@ -11,6 +11,7 @@ import { NurseService } from "src/app/services/nurse/nurse.service"
 import { ShiftService } from "src/app/services/shift/shift.service";
 import { SkillService } from "src/app/services/shift/skill.service";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
+import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 
 
 @Component({
@@ -33,7 +34,6 @@ export class ScheduleGenerationComponent implements OnInit  {
 
   problemNameFormCtrl: FormControl;
   problemName: string;
-
   possibleNurses: NurseInterface[];
   selectedNurse: NurseInterface;
   nurses:NurseInterface[];
@@ -50,6 +50,7 @@ export class ScheduleGenerationComponent implements OnInit  {
   skills: string[];
 
   hospitalDemands: HospitalDemand[];
+  nursesPreference: SchedulePreferenceElement[];
 
   scheduleData!: ScheduleDataInterface;
 
@@ -73,6 +74,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     this.selectedShift = this.possibleShifts[0];
     this.shifts = [];
     this.hospitalDemands = [];
+    this.nursesPreference = [];
 
   }
   ngOnInit(): void {
@@ -223,5 +225,10 @@ export class ScheduleGenerationComponent implements OnInit  {
 
   viewSchedule() {
     this.router.navigate(["/" + CONSULT_SCHEDULE]);
+  }
+
+  updatePreferences(preferences: SchedulePreferenceElement[]) {
+    console.log(preferences);
+    this.nursesPreference = preferences;
   }
 }

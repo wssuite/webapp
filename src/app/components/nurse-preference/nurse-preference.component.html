@@ -4,24 +4,27 @@
       <tr>
         <th class="nurse-name-header">Nurse</th>
       </tr>
-      <tr *ngFor="let nurse of possibleNurses">
-        <td class="nurse-name-cell">{{nurse}}</td>
+      <tr *ngFor="let nurse of nurses">
+        <td class="nurse-name-cell">{{nurse.name}} - {{nurse.username}}</td>
       </tr>
     </table>
   </div>
   <div class="timetable-table">
     <div class="date-table" *ngFor="let date of timetable">
-      <caption class="date-header"> {{date}}</caption>
+      <caption class="date-header"> {{date.day}}  {{date.date}}</caption>
       <table>
         <tr>
-          <th class="shift-header"*ngFor="let shift of possibleShifts">
+          <th class="shift-header"*ngFor="let shift of shifts">
             {{shift}}
           </th>
         </tr>
-        <tr class="checkbox-row"*ngFor="let nurse of possibleNurses">
-          <td  class="checkbox-cell" *ngFor="let shift of possibleShifts" class="schedule-cells">
-            <button class="checkbox" (click)="updatePreferences(date, nurse, shift)" [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" matTooltip="{{showToolTip(date, nurse, shift)}}" [ngStyle]="getButtonStyle(date, nurse, shift)">
-              <mat-icon>{{getButtonState(date, nurse, shift)}}</mat-icon>
+        <tr class="checkbox-row"*ngFor="let nurse of nurses">
+          <td  class="checkbox-cell" *ngFor="let shift of shifts" class="schedule-cells">
+            <button class="checkbox" (click)="updatePreferences(date, nurse.username, shift)" 
+              [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" 
+              matTooltip="{{showToolTip(date, nurse.username, shift)}}" 
+              [ngStyle]="getButtonStyle(date, nurse.username, shift)">
+              <mat-icon>{{getButtonState(date, nurse.username, shift)}}</mat-icon>
             </button>
           </td>
         </tr>
@@ -31,4 +34,3 @@
 </div>
 
 <app-weight class="weight" [(weight)]="weight"></app-weight>
-<div>The schedule preference : {{this.scedulePref}}</div>
