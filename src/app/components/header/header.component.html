@@ -1,4 +1,5 @@
 <div *ngIf="validProfile" class="header-container">
+    <span><h1 routerLink="/main-menu">Nurse scheduler</h1></span>
     <div class="start-container">
         <label class="profile-label">Profile: </label>
         <mat-form-field appearance="fill">
@@ -16,13 +17,15 @@
     </div>
     <div class="end-buttons">
         <div class="icon-box">
-            <button mat-icon-button>
+            <button mat-icon-button class="bell-icon">
                 <mat-icon>notifications</mat-icon>
             </button>
         </div>
         <div class="icon-box">
             <button class="user-icon" mat-icon-button [matMenuTriggerFor]="menu">
-                <img src="../../../assets/user.png">
+                <mat-icon>account_circle</mat-icon>
+
+                <!-- <img src="../../../assets/user.png"> -->
             </button>
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="logout()">
