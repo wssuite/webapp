@@ -45,7 +45,7 @@ export class ContractGroupService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.put<HttpResponse<string>>(REMOVE_CONTRACT_GROUP_URL, contractGroup, {
+      return this.httpClient.put<HttpResponse<string>>(ADD_CONTRACT_GROUP_URL, contractGroup, {
         params: queryParams,
       });
     } catch(err){
