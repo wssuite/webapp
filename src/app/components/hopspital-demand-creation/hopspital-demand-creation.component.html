@@ -1,0 +1,57 @@
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Demand {{index}}
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Date
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
+  </mat-form-field>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-expansion-panel>
+<div class="shift" *ngFor="let shift of shifts">
+<mat-expansion-panel (opened)="panelOpenState = true"(closed)="panelOpenState = false">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+    {{shift}}
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-accordion class="example-headers-align">
+    <div class="skill" *ngFor="let skill of skills; let i = index">
+    <mat-expansion-panel  [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+        {{skill}}
+        </mat-panel-title>
+        <mat-panel-description>
+          skill demands
+          <mat-icon>assignment_ind</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+         <app-min-max-hopspital-demand [skill]="skill"></app-min-max-hopspital-demand>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">End</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    </div>
+  
+  </mat-accordion>
+</mat-expansion-panel>
+</div>
+</mat-expansion-panel>
+
+
+
+
+

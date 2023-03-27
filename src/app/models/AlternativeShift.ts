@@ -5,8 +5,8 @@ import { Constraint, ConstraintInterface } from "./Constraint";
 export class AlternativeShift extends Constraint {
     weight: string;
     shiftId: string;
-    constructor(name: string, displayName: string) {
-        super(name, displayName)
+    constructor(name: string, displayName: string, description?: string) {
+        super(name, displayName, description)
         this.weight= BASE_VALUE;
         this.shiftId = '';
     }
@@ -33,7 +33,7 @@ export class AlternativeShift extends Constraint {
     }
 
     clone(): AlternativeShift {
-        const newConstraint: AlternativeShift = new AlternativeShift(this.name, this.displayName);
+        const newConstraint: AlternativeShift = new AlternativeShift(this.name, this.displayName, this.description);
         newConstraint.shiftId = this.shiftId;
         newConstraint.weight = this.weight;
         return newConstraint;

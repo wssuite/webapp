@@ -1,0 +1,47 @@
+.schedule-container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .nurse-name-table {
+    display: flex;
+    width: 150px;
+  }
+  
+  .nurse-name-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: 20px;
+    height: 5px;
+  }
+  
+  .nurse-name-cell {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: rgb(235, 234, 234);
+  }
+  
+  .timetable-table {
+    display: flex;
+    overflow-x: scroll;
+  }
+  .date-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    width: 335px;
+    background-color: #A7C6EA;
+  }
+  
+  .checkbox-row {
+    background-color: rgb(235, 234, 234);
+  }
+  
+  .checkbox {
+    border-width: 0px;
+    background-color: rgb(235, 234, 234);
+    width: 80px;
+  }
+  

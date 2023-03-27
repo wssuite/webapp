@@ -1,0 +1,42 @@
+<div class="contractGroup-container" (mouseleave)="emitContractGroup()"></div>
+ <div class="nameContractGroupContainer">
+    <label>Name</label>
+    <mat-form-field class = "nameForm" appearance="fill">
+    <mat-label>Enter Contract Group Name</mat-label>
+    <input matInput [(ngModel)]="contractGroup.name" [formControl]="nameContractGroupFormCtrl" (keyup)="emitContractGroup()">
+    </mat-form-field>
+ </div> 
+  <div class="contractSection">
+   <H1 class="contractSectionTitle">Contracts</H1>
+   <div *ngIf="possibleContracts.length > 0">
+     <mat-form-field appearance="fill">
+       <mat-label>Select a contract</mat-label>
+       <mat-select [(value)]="selectedContract">
+         <mat-option *ngFor="let contract of possibleContracts" [value]="contract">
+           {{ contract }}
+         </mat-option>
+       </mat-select>
+     </mat-form-field>
+     <button mat-raised-button class="addContractButton" (click)="addContract()">
+       add contract
+     </button>
+   </div>
+   <table class="contractTable">
+     <tr *ngFor="let contract of contractGroup.contracts">
+       <td class="contractName">
+         <mat-chip>
+         {{ contract }}
+       </mat-chip>
+       </td>
+       <button
+         mat-raised-button
+         class="removeContractButton"
+         (click)="removeContract(contract)"
+         color="accent"
+       >
+         <mat-icon>delete</mat-icon>
+       </button>
+     </tr>
+   </table>
+ </div>
+

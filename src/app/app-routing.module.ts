@@ -2,7 +2,8 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AccountCreationComponent } from "./components/account-creation/account-creation.component";
 import { ConsultScheduleComponent } from "./components/consult-schedule/consult-schedule.component";
-import { ContractsViewComponent } from "./components/contracts-view/contracts-view.component";
+import { ContractsGroupViewComponent } from "./components/contract-component/contracts-group-view/contracts-group-view.component";
+import { ContractsViewComponent } from "./components/contract-component/contracts-view/contracts-view.component";
 import { ImportProfileComponent } from "./components/create-profile-dialog/import-profile-dialog/import-profile-dialog.component";
 import { LoginComponent } from "./components/login/login.component";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
@@ -30,6 +31,7 @@ import {
   LOGIN,
   SKILL,
   IMPORT,
+  CONTRACT_GROUP,
   VIEW_SCHEDULES,
 } from "./constants/app-routes";
 
@@ -46,6 +48,7 @@ const routes: Routes = [
   { path: SHIFT_TYPE, component: ShiftsTypeViewComponent},
   { path: SHIFT_GROUP, component: ShiftGroupViewComponent},
   { path: CONTRACTS, component: ContractsViewComponent},
+  { path: CONTRACT_GROUP, component: ContractsGroupViewComponent},
   { path: CREATE_ACCOUNT, component: AccountCreationComponent },
   { path: SKILL, component: SkillViewComponent},
   { path: IMPORT, component: ImportProfileComponent},

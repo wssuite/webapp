@@ -27,7 +27,6 @@ export class NurseGroupService {
 
   removeNurseGroup(nurseGroup_name: string):Observable<HttpResponse<string>>{
     try{
-      console.log("removeShift");
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append("name", nurseGroup_name);

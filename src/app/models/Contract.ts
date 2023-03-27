@@ -30,3 +30,9 @@ export interface ContractInterface {
     constraints:any[];
     profile: string;
 }
+
+export interface ContractGroupInterface {
+    name: string;
+    contracts:string[];
+    profile: string;
+}

@@ -1,19 +1,28 @@
-import { Component } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { Component,OnInit,} from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CONSULT_SCHEDULE } from "src/app/constants/app-routes";
-import { nurses_example } from "src/app/constants/nurses";
+import { HospitalDemand, ScheduleDataInterface } from "src/app/models/hospital-demand"
 import { NurseInterface } from "src/app/models/Nurse";
+import { NurseService } from "src/app/services/nurse/nurse.service"
+import { ShiftService } from "src/app/services/shift/shift.service";
+import { SkillService } from "src/app/services/shift/skill.service";
+import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
+import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+
 
 @Component({
   selector: "app-schedule-generation",
   templateUrl: "./schedule-generation.component.html",
   styleUrls: ["./schedule-generation.component.css"],
 })
-export class ScheduleGenerationComponent {
+export class ScheduleGenerationComponent implements OnInit  {
   startDate: Date;
-  todayDate: Date;
+  endDate: Date;
+
   range = new FormGroup({
     start: new FormControl(null, Validators.required),
     end: new FormControl(null, Validators.required),
@@ -21,26 +30,182 @@ export class ScheduleGenerationComponent {
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
   });
-  endDate: Date;
 
+
+  problemNameFormCtrl: FormControl;
   problemName: string;
-  availableNurses: NurseInterface[];
-  nurses: NurseInterface[];
+  possibleNurses: NurseInterface[];
   selectedNurse: NurseInterface;
-  nursesMap: Map<string, NurseInterface>;
+  nurses:NurseInterface[];
+  nursesUsername: string[];
 
-  constructor(private router: Router) {
+
+  possibleShifts: string[];
+  selectedShift: string;
+  shifts: string[];
+
+  selectSkillFormCtrl: FormControl;
+  possibleSkills: string[];
+  selectedSkill: string;
+  skills: string[];
+
+  hospitalDemands: HospitalDemand[];
+  nursesPreference: SchedulePreferenceElement[];
+
+  scheduleData!: ScheduleDataInterface;
+
+  constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService, 
+    private nurseService: NurseService, private dialog: MatDialog
+  ){
     this.startDate = new Date();
-    this.problemName = "";
     this.endDate = new Date();
-    this.todayDate = new Date();
-    this.availableNurses = nurses_example;
-    this.nurses = [];
-    this.selectedNurse = this.availableNurses[0];
-    this.nursesMap = new Map();
-    this.availableNurses.forEach((nurse: NurseInterface) => {
-      this.nursesMap.set(nurse.username, nurse);
-    });
+    this.possibleSkills = [];
+    this.selectedSkill = this.possibleSkills[0];
+    this.skills = [];
+    this.selectSkillFormCtrl = new FormControl(null, Validators.required);
+
+    this.problemNameFormCtrl = new FormControl(null, Validators.required);
+    this.problemName = "";
+    this.possibleNurses = [];
+    this.selectedNurse = this.possibleNurses[0];
+    this.nurses  = [];
+    this.nursesUsername = [];
+    this.possibleShifts = [];
+    this.selectedShift = this.possibleShifts[0];
+    this.shifts = [];
+    this.hospitalDemands = [];
+    this.nursesPreference = [];
+
+  }
+  ngOnInit(): void {
+    try{
+      this.shiftService.getShiftNames().subscribe({
+        next: (shifts: string[])=>{
+          shifts.forEach((shift: string)=>{
+            this.possibleShifts.push(shift);
+          })
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+
+      
+      this.nurseService.getAllNurse().subscribe({
+        next: (nurses: NurseInterface[])=> {
+          nurses.forEach((nurse: NurseInterface)=>{
+            this.possibleNurses.push(nurse);
+            this.nursesUsername.push(nurse.username);
+          })
+        },
+        error: (error: HttpErrorResponse)=> {
+          this.openErrorDialog(error.error);
+        }
+      })
+
+      try{
+        this.skillService.getAllSkills().subscribe({
+          next:(skills: string[])=>{
+            skills.forEach((skill: string)=>{
+              this.possibleSkills.push(skill);
+            })
+          },
+          error: (error: HttpErrorResponse)=>{
+            this.openErrorDialog(error.error);
+          }
+        })
+  
+      }catch(err){
+        //Do nothing
+      }
+
+      
+    }catch(err){
+      //Do nothing
+    }
+  }
+
+  openErrorDialog(message: string) {
+    this.dialog.open(ErrorMessageDialogComponent, {
+      data: {message: message},
+    })
+  }
+
+
+  addNurse() {
+    const index = this.possibleNurses.indexOf(this.selectedNurse);
+    if (index > -1) {
+      this.possibleNurses.splice(index, 1);
+    }
+    this.nurses.push(this.selectedNurse);
+    if (this.possibleNurses.length > 0) {
+        this.selectedNurse = this.possibleNurses[0];
+    }
+  }
+  
+  removeNurse(nurse: NurseInterface) {
+    const index = this.nurses.indexOf(nurse);
+    if (index > -1) {
+      this.nurses.splice(index, 1);
+    }
+    if (nurse !== undefined && nurse !== null) {
+      this.possibleNurses.push(nurse);
+    }
+  }
+
+  addShift() {
+    const index = this.possibleShifts.indexOf(this.selectedShift);
+    if (index > -1) {
+      this.possibleShifts.splice(index, 1);
+    }
+    this.shifts.push(this.selectedShift);
+    if (this.possibleShifts.length > 0) {
+        this.selectedShift = this.possibleShifts[0];
+    }
+  }
+  
+  removeShift(shift: string) {
+    const index = this.shifts.indexOf(shift);
+    if (index > -1) {
+      this.shifts.splice(index,1);
+    }
+    if (shift !== undefined && shift !== null) {
+      this.possibleShifts.push(shift);
+    }
+  }
+
+  
+  addSkill() {
+    const index = this.possibleSkills.indexOf(this.selectedSkill);
+    if (index > -1) {
+      this.possibleSkills.splice(index, 1);
+    }
+    this.skills.push(this.selectedSkill);
+    if (this.possibleSkills.length > 0) {
+        this.selectedSkill = this.possibleSkills[0];
+    }
+  }
+  
+  removeSkill(skill: string) {
+    const index = this.skills.indexOf(skill);
+    if (index > -1) {
+      this.skills.splice(index,1);
+    if (skill !== undefined && skill !== null) {
+      this.possibleSkills.push(skill);
+    }
+  }
+}
+
+  addDemand(){
+    const newDemand: HospitalDemand = new HospitalDemand();
+    this.hospitalDemands.push(newDemand);
+  }
+
+  removeDemand(pattern:HospitalDemand) {
+    const index = this.hospitalDemands.indexOf(pattern);
+    if(index > -1){
+      this.hospitalDemands.splice(index, 1);
+    }
   }
 
   updateStartDate(e: MatDatepickerInputEvent<Date>) {
@@ -57,39 +222,13 @@ export class ScheduleGenerationComponent {
         : (this.endDate = new Date());
   }
 
-  addNurse() {
-    console.log(this.selectedNurse);
-    const index = this.availableNurses.indexOf(this.selectedNurse);
-    if (index > -1) {
-      this.availableNurses.splice(index, 1);
-    }
-    this.nurses.push(this.selectedNurse);
-    if (this.availableNurses.length > 0) {
-      this.selectedNurse = this.availableNurses[0];
-    }
-  }
 
-  removeNurse(nurse: NurseInterface) {
-    const index = this.nurses.indexOf(nurse);
-    if (index > -1) {
-      this.nurses.splice(index, 1);
-    }
-    const n = this.nursesMap.get(nurse.username);
-    if (n !== undefined && n !== null) {
-      this.availableNurses.push(n);
-    }
-  }
-  
-  removeContract(nurse: NurseInterface, contract: string) {
-    const index = this.nurses.indexOf(nurse);
-    if (index > -1) {
-      const contractIndex = this.nurses[index].contracts.indexOf(contract);
-      if (contractIndex > -1) {
-        this.nurses[index].contracts.splice(contractIndex, 1);
-      }
-    }
-  }
   viewSchedule() {
     this.router.navigate(["/" + CONSULT_SCHEDULE]);
+  }
+
+  updatePreferences(preferences: SchedulePreferenceElement[]) {
+    console.log(preferences);
+    this.nursesPreference = preferences;
   }
 }

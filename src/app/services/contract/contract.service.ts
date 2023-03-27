@@ -12,8 +12,9 @@ import { UnwantedPatterns, UnwantedPatternsInterface} from 'src/app/models/Unwan
 import { UnwantedSkills } from 'src/app/models/UnwantedSkills';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ADD_CONTRACT_URL, DELETE_CONTRACT, FETCH_CONTRACT_BY_NAME, FETCH_CONTRACT_NAMES, UPDATE_CONTRACT_URL } from 'src/app/constants/api-constants';
+import { ADD_CONTRACT_URL, DELETE_CONTRACT, FETCH_CONTRACT_BY_NAME, FETCH_CONTRACT_NAMES, FETCH_CONTRACT_URL, UPDATE_CONTRACT_URL } from 'src/app/constants/api-constants';
 import { Exception } from 'src/app/utils/Exception';
+import { ALTERNATIVE_SHIFT_DESCRIPTION, FREE_DAYS_AFTER_SHIFT_DESCRIPTION, IDENTICAL_WEEKEND_DESCRIPTION, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DESCRIPTION, UNWANTED_PATTERNS_DESCRIPTION } from 'src/app/constants/constraintsDescriptions';
 
 @Injectable({
   providedIn: 'root'
@@ -50,27 +51,27 @@ export class ContractService {
       let constraint;
       switch(c.name) {
         case UNWANTED_PATTERNS_ID:
-          constraint = new UnwantedPatterns(c.name, UNWANTED_PATTERNS_DISPLAY_NAME);
+          constraint = new UnwantedPatterns(c.name, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_DESCRIPTION);
           constraint.fromJson(c as UnwantedPatternsInterface);
           break;
 
         case ALTERNATIVE_SHIFT_ID:
-          constraint = new AlternativeShift(c.name, ALTERNATIVE_SHIFT_DISPLAY_NAME);
+          constraint = new AlternativeShift(c.name, ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_DESCRIPTION);
           constraint.fromJson(c as AlternativeShiftInterface);
           break;
 
         case FREE_DAYS_AFTER_SHIFT_ID:
-          constraint = new ShiftConstraint(c.name, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME);
+          constraint = new ShiftConstraint(c.name, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_DESCRIPTION);
           constraint.fromJson(c as ShiftConstraintInterface);
           break;
         
         case MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID:
-          constraint = new MinMaxShiftConstraint(c.name, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME);
+          constraint = new MinMaxShiftConstraint(c.name, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DESCRIPTION);
           constraint.fromJson(c as MinMaxShiftConstraintInterface);
           break;
         
         case IDENTICAL_WEEKEND_ID:
-          constraint = new BooleanConstraint(c.name, IDENTICAL_WEEKEND_DISPLAY_NAME);
+          constraint = new BooleanConstraint(c.name, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_DESCRIPTION);
           constraint.fromJson(c as BooleanConstraint);
           break;
 
@@ -136,6 +137,22 @@ export class ContractService {
       throw new Exception("user not logged in");
     }
   }
+
+  
+  getContracts():Observable<ContractInterface[]> {
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      return this.httpClient.get<ContractInterface[]>(FETCH_CONTRACT_URL, {
+        params: queryParams,
+      });
+    }catch(err){
+      throw new Exception("user not logged in");
+    }
+  }
+
+  
 
   getContractByName(name:string):Observable<ContractInterface> {
     try{

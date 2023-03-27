@@ -1,6 +1,6 @@
 <div class="shift-container" (mouseleave)="emitShift()"></div>
     <div class="name-section" >
-    <label>Shift Name</label>
+    <label class="label">Shift Name</label>
     <div><mat-form-field class = "nameForm" appearance="fill">
       <mat-label>Enter shift name</mat-label>
       <input matInput [(ngModel)]="shift.name" [formControl]="nameShiftFormCtrl" (keyup)="emitShift()">
@@ -8,10 +8,9 @@
     </div>
     </div>
     <div class = "duration-section">
-    <label>Duration</label>
     <div class="startTime-section" (mouseleave)="emitShift()" (mouseleave)="setEndTime()">
         <div class="label" mat-label>Start Time</div>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Start Time</mat-label>
                 <input (mouseleave)="setEndTime()"
                   type="text"
@@ -49,7 +48,7 @@
     </div>
     <div class="endTime-section"  (mouseleave)="emitShift()">
         <div class="label" mat-label>End Time</div>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>End Time</mat-label>
                 <input
                   type="text"
@@ -85,3 +84,4 @@
     </div>
  
 </div>
+<div class="hover-div" (mouseover)="changeEndTimeOnHover()" (mouseover)="emitShift()" ></div>

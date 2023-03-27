@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NurseGroupInterface} from 'src/app/models/Nurse';
+import { ContractGroupService } from 'src/app/services/contract/contract-group.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { NurseGroupService } from 'src/app/services/nurse/nurse-group.service';
 import { NurseService } from 'src/app/services/nurse/nurse.service';
@@ -18,15 +19,18 @@ export class NurseGroupCreationDialogComponent implements OnInit {
   nurseGroupErrorState: boolean;
   initNurseGroupName: string;
   possibleContracts!: string[];
+  possibleContractsGroup!: string[];
   possibleNurses!: string[];
   nursesLoaded: boolean;
   contractsLoaded: boolean;
+  contractsGroupLoaded: boolean;
   
 
   constructor(public dialogRef: MatDialogRef<NurseGroupCreationDialogComponent >,
     @Inject(MAT_DIALOG_DATA) public data:  {nurseGroup: NurseGroupInterface, nurseGroups: string[]},
     private api: NurseGroupService, private nurseService: NurseService,
     private contractService: ContractService,
+    private contractGroupService: ContractGroupService,
     private dialog: MatDialog,  
 ) {
   this.errorState = new EventEmitter();
@@ -34,10 +38,12 @@ export class NurseGroupCreationDialogComponent implements OnInit {
   this.initNurseGroupName = data.nurseGroup.name;
   this.nursesLoaded = false;
   this.contractsLoaded = false;
+  this.contractsGroupLoaded = false;
       
 }
   ngOnInit(): void {
     this.possibleContracts = [];
+    this.possibleContractsGroup = [];
     this.possibleNurses = [];
     try{
       this.contractService.getContractNames().subscribe({
@@ -70,6 +76,21 @@ export class NurseGroupCreationDialogComponent implements OnInit {
     }catch(err){
       //Do nothing
     }
+  try{
+    this.contractGroupService.getAllContractGroupName().subscribe({
+      next: (contractsGroup: string[])=>{
+        contractsGroup.forEach((contractGroup: string)=>{
+          this.possibleContractsGroup.push(contractGroup);
+        })
+        this.contractsGroupLoaded = true;
+      },
+      error: (error: HttpErrorResponse)=>{
+        this.openErrorDialog(error.error);
+      }
+    })
+  }catch(err){
+    //Do nothing
+  }
 
   }
 

@@ -6,12 +6,7 @@
       [formGroup]="inputControlForm"
     >
       <mat-label>Enter problem's name</mat-label>
-      <input
-        matInput
-        placeholder="name"
-        formControlName="name"
-        [(ngModel)]="problemName"
-      />
+      <input matInput [(ngModel)]="problemName" [formControl]="problemNameFormCtrl">
     </mat-form-field>
   </div>
   <div class="PlanningHorizonContainer">
@@ -48,14 +43,14 @@
       >
     </mat-form-field>
   </div>
-  <div class="employeeSection">
+  <div class="scheduleDataSection">
     <H1 class="employeeSectionTitle">Nurses</H1>
-    <div *ngIf="availableNurses.length > 0">
+    <div *ngIf="possibleNurses.length > 0">
       <mat-form-field appearance="fill">
         <mat-label>select a nurse</mat-label>
         <mat-select [(value)]="selectedNurse">
-          <mat-option *ngFor="let nurse of availableNurses" [value]="nurse">
-            {{ nurse.username }} - {{ nurse.name }}
+          <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
+            {{ nurse.name}} - {{nurse.username}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -64,20 +59,10 @@
       </button>
     </div>
     <table class="nursesTable">
-      <tr *ngFor="let nurse of nurses">
+      <tr *ngFor="let nurse of  nurses">
         <td class="nurseNameUsername">
-          {{ nurse.username }} - {{ nurse.name }}
+          {{nurse.name}} - {{nurse.username}}
         </td>
-        <mat-chip-row
-          class="chips"
-          *ngFor="let contract of nurse.contracts"
-          (removed)="removeContract(nurse, contract)"
-        >
-          {{ contract }}
-          <button matChipRemove aria-label="'remove ' + nurse + contract">
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-chip-row>
         <button
           mat-raised-button
           class="removeNurseButton"
@@ -88,6 +73,92 @@
         </button>
       </tr>
     </table>
+  <div class="shiftSection">
+    <H1 class="shiftSectionTitle">Shifts</H1>
+    <div *ngIf="possibleShifts.length > 0">
+      <mat-form-field appearance="fill">
+        <mat-label>select a shift</mat-label>
+        <mat-select [(value)]="selectedShift">
+          <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
+            {{shift}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button class="addShiftButton" (click)="addShift()">
+        add Shift
+      </button>
+    </div>
+    <table class="shiftsTable">
+      <tr *ngFor="let shift of shifts">
+        <td class="shiftName">
+          {{ shift }}
+        </td>
+        <button
+          mat-raised-button
+          class="removeShiftButton"
+          (click)="removeShift(shift)"
+          color="accent"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </tr>
+    </table>
+  </div>
+
+  <div class="skillSection">
+  <H1 class="shiftSectionTitle">Skills</H1>
+  <div *ngIf="possibleSkills.length > 0">
+    <mat-form-field appearance="fill">
+      <mat-label>select a skill</mat-label>
+      <mat-select [(value)]="selectedSkill">
+        <mat-option *ngFor="let skill of possibleSkills" [value]="skill">
+          {{skill}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button class="addSkillButton" (click)="addSkill()">
+      add Skill
+    </button>
+  </div>
+  <table class="skillsTable">
+    <tr *ngFor="let skill of skills">
+      <td class="skillName">
+        {{ skill }}
+      </td>
+      <button
+        mat-raised-button
+        class="removeSkillButton"
+        (click)="removeSkill(skill)"
+        color="accent"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </tr>
+  </table>
+</div>
+<div *ngIf= "shifts.length > 0" class="nursePreferenceSection">
+  <H1 class="HospitalDemandSectionTitle">Nurse Preferences</H1>  
+  <app-nurse-preference [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)"></app-nurse-preference>
+</div>
+
+  <div  class="HospitalDemandSection">
+    <H1 class="HospitalDemandSectionTitle">Hospital Demand</H1>  
+    <button mat-mini-fab (click)="addDemand()" color="primary" matTooltip="Add another demand" class="add-button">
+      <mat-icon>add</mat-icon>
+  </button>
+  <table cellspacing="5">
+    <tr *ngFor="let demand of hospitalDemands ; let i= index">
+        <td>
+          <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [index]="i+1"></app-hopspital-demand-creation>
+        </td>
+        <td>
+            <button *ngIf="hospitalDemands.length > 1" mat-raised-button (click)="removeDemand(demand)" color="accent">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </tr>
+</table>
+</div>
   </div>
   <button
     mat-raised-button
@@ -95,9 +166,10 @@
     class="generateScheduleButton"
     (click)="viewSchedule()"
     [disabled]="
-      range.invalid || inputControlForm.invalid || nurses.length === 0
+      range.invalid || inputControlForm.invalid || nurses.length === 0 || shifts.length === 0
     "
   >
     Generate schedule
   </button>
 </div>
+

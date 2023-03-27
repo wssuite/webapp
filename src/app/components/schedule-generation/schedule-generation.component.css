@@ -12,10 +12,7 @@ div {
 .addNurseButton, .removeNurseButton{
     margin-left: 5vw;
 }
-.chips {
-    width:fit-content;
-    margin: 5px;
-}
+
 .generateScheduleButton{
     position: absolute;
     height:75px;
@@ -26,3 +23,22 @@ div {
     overflow-x: scroll;
     overflow-y: scroll;
 }
+
+.addSkillButton, .removeSkillButton{
+    margin-left: 5vw;
+}
+
+.skillsTable {
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+.addShiftButton, .removeShiftButton{
+    margin-left: 5vw;
+}
+
+.shiftsdTable {
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
