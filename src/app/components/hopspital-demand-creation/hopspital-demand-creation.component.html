@@ -22,9 +22,9 @@
           <td  class="min-max-cell" *ngFor="let shift of shifts" class="schedule-cells">
             <button class="min-max" (click)="updateDemands(date, skill, shift)" 
               [disabled]="skillDemandErrorState" 
-              matTooltip="{{showToolTip(date, skill, shift)}}">
-              Max: {{skillDemand.maxValue}} <br> 
-              Min: {{skillDemand.minValue}}
+              matTooltip="{{showToolTip(date, skill, shift)}}"
+              [ngStyle]="getButtonStyle(date, skill, shift)">
+             {{buttonMinLabel}}<br> {{buttonMaxLabel}}
             </button>
           </td>
         </tr>

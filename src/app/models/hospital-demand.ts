@@ -2,10 +2,10 @@ export interface HospitalDemandInterface {
     date: string;
     shift: string;
     skill: string;
-    max_value: string;
-    max_weight: string;
-    min_value: string;
-    min_weight: string;
+    minValue: string;
+    maxValue: string;
+    minWeight: string;
+    maxWeight: string;
 }
 
 export interface SkillDemandInterface{

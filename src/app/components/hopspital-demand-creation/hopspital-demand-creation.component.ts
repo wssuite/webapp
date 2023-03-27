@@ -20,6 +20,8 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
   @Output() hospitalDemand: EventEmitter<HospitalDemandInterface[]>
   
   skillDemand: SkillDemandInterface;
+  buttonMaxLabel: string;
+  buttonMinLabel: string;
   skillDemandErrorState: boolean;
   timetable: dateDisplay[];
   hospitalDemands: Map<dateDisplay, Map<string,Map<string, {demand: SkillDemandInterface}>>>;
@@ -32,6 +34,8 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     this.hospitalDemands = new Map();
     this.skillDemand = {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
     this.skillDemandErrorState = true;
+    this.buttonMaxLabel = "Max: 0";
+    this.buttonMinLabel = "Min: 0";
 
   }
 
@@ -70,11 +74,17 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     if (!this.hospitalDemands.get(date)?.get(skill)) {
       this.hospitalDemands.get(date)?.set(skill, new Map());
     }
+    const initHospitalDemand = {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
 
     if (!this.hospitalDemands.get(date)?.get(skill)?.get(shift)) {
-      this.hospitalDemands.get(date)?.get(skill)?.set(shift,{ demand: {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0' }});
+      this.hospitalDemands.get(date)?.get(skill)?.set(shift, {demand: initHospitalDemand});
     }
 
+  const preferenceObj = this.hospitalDemands.get(date)?.get(skill)?.get(shift)
+    if(preferenceObj != undefined){
+      this.buttonMaxLabel = "Max: "+ preferenceObj?.demand.maxValue;
+      this.buttonMinLabel = "Min: "+ preferenceObj?.demand.minValue;
+    }
     this.hospitalDemands.get(date)?.get(skill)?.set(shift, { demand: this.skillDemand});
     this.emitScheduleDemand();
   }
@@ -85,6 +95,14 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
       return "";
     }
     return "The Max weight is "+ preferenceObj.demand.maxWeight + " and the min weight is " + preferenceObj.demand.minWeight;
+  }
+
+  getButtonStyle(date: dateDisplay, skill: string, shift: string) {
+    const demand = this.hospitalDemands.get(date)?.get(skill)?.get(shift)?.demand;
+    if (demand?.maxValue === '0' &&  demand?.maxValue === '0') {
+      return {'background-color': 'rgb(255, 0, 0, 0.4)' };
+    } 
+    return { 'background-color': 'rgb(0, 128, 0, 0.4)' };
   }
 
 
@@ -120,10 +138,10 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
               date: date.date,
               shift: shift,
               skill: skill,
-              max_value: preferenceObj.demand.maxValue,
-              max_weight: preferenceObj.demand.maxWeight,
-              min_value: preferenceObj.demand.minValue,
-              min_weight: preferenceObj.demand.minWeight,
+              maxValue: preferenceObj.demand.maxValue,
+              maxWeight: preferenceObj.demand.maxWeight,
+              minValue: preferenceObj.demand.minValue,
+              minWeight: preferenceObj.demand.minWeight,
             }
             scheduleDemand.push(schedule);
           }
