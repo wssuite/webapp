@@ -1,6 +1,6 @@
 <div *ngIf="validProfile" class="header-container">
     <div class="start-container">
-        <label>Profile: </label>
+        <label class="profile-label">Profile: </label>
         <mat-form-field appearance="fill">
             <mat-label>Profile</mat-label>
             <mat-select [(value)]="profile" (selectionChange)="handleSelectionChange()">
@@ -27,13 +27,14 @@
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="logout()">
                     <mat-icon>logout</mat-icon>
-                    <span>logout</span>
+                    <span>Logout</span>
                 </button>
                 <button *ngIf="isAdmin" mat-menu-item (click)="goToCreateAccount()">
-                    <img class="add-user" src="../../assets/add-user.png">
+                    <mat-icon>person_add</mat-icon>
                     <span> Create new user</span>
                 </button>
                 <button mat-menu-item (click)="openCreateProfileDialog(true)">
+                    <mat-icon>library_add</mat-icon>
                     <span> Create new profile</span>
                 </button>
             </mat-menu>

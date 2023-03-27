@@ -1,45 +1,38 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { NurseInterface } from 'src/app/models/Nurse';
+import { ContractGroupInterface } from 'src/app/models/Contract';
 import { ContractGroupService } from 'src/app/services/contract/contract-group.service';
 import { ContractService } from 'src/app/services/contract/contract.service';
-import { NurseService } from 'src/app/services/nurse/nurse.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
 @Component({
-  selector: 'app-nurse-creation-dialog',
-  templateUrl: './nurse-creation-dialog.component.html',
-  styleUrls: ['./nurse-creation-dialog.component.css']
+  selector: 'app-contract-group-creation-dialog',
+  templateUrl: './contract-group-creation-dialog.component.html',
+  styleUrls: ['./contract-group-creation-dialog.component.css']
 })
-export class NurseCreationDialogComponent  implements OnInit{
-  @Output() errorState: EventEmitter<boolean>;
-  nurseErrorState: boolean;
-  initNurseUsername: string;
+export class ContractGroupCreationDialogComponent implements OnInit {
+  contractGroupErrorState: boolean;
+  initContractGroupName: string;
   possibleContracts!: string[];
-  possibleContractsGroup!: string[];
+  possibleNurses!: string[];
   contractsLoaded: boolean;
-  contractsGroupLoaded: boolean;
   
 
-  constructor(public dialogRef: MatDialogRef<NurseCreationDialogComponent >,
-    @Inject(MAT_DIALOG_DATA) public data:  {nurse: NurseInterface, nurses: string[]},
-    private api: NurseService,
+  constructor(public dialogRef: MatDialogRef<ContractGroupCreationDialogComponent >,
+    @Inject(MAT_DIALOG_DATA) public data:  {contractGroup: ContractGroupInterface, contractGroups: string[]},
+    private api: ContractGroupService,
     private contractService: ContractService,
-    private contractGroupService: ContractGroupService,
     private dialog: MatDialog,  
 ) {
-  this.errorState = new EventEmitter();
-  this.nurseErrorState = true;
-  this.initNurseUsername = data.nurse.username;
+  this.contractGroupErrorState = true;
+  this.initContractGroupName = data.contractGroup.name;
   this.contractsLoaded = false;
-  this.contractsGroupLoaded = false;
       
 }
   ngOnInit(): void {
     this.possibleContracts = [];
-    this.possibleContractsGroup = [];
     try{
       this.contractService.getContractNames().subscribe({
         next: (contracts: string[])=>{
@@ -47,18 +40,6 @@ export class NurseCreationDialogComponent  implements OnInit{
             this.possibleContracts.push(contract);
           })
           this.contractsLoaded = true;
-        },
-        error: (error: HttpErrorResponse)=>{
-          this.openErrorDialog(error.error);
-        }
-      })
-
-      this.contractGroupService.getAllContractGroupName().subscribe({
-        next: (contractsGroup: string[])=>{
-          contractsGroup.forEach((contractGroup: string)=>{
-            this.possibleContractsGroup.push(contractGroup);
-          })
-          this.contractsGroupLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -73,9 +54,8 @@ export class NurseCreationDialogComponent  implements OnInit{
   add() {
     try
     { 
-      console.log(this.data.nurse);
-      if(this.initNurseUsername == ""){
-      this.api.addNurse(this.data.nurse).subscribe({
+      if(this.initContractGroupName == ""){
+      this.api.addContractGroup(this.data.contractGroup).subscribe({
         error: (err: HttpErrorResponse)=> {
           if(err.status === HttpStatusCode.Ok) {
             this.close();
@@ -87,7 +67,7 @@ export class NurseCreationDialogComponent  implements OnInit{
       })
     }
     else {
-      this.api.updateNurse(this.data.nurse).subscribe({
+      this.api.updateContractGroup(this.data.contractGroup).subscribe({
         error: (err: HttpErrorResponse)=> {
           if(err.status === HttpStatusCode.Ok) {
             this.close();
@@ -116,10 +96,8 @@ close(){
 
 }
 
-updateNurseErrorState(e: boolean) {
+updateContractGroupErrorState(e: boolean) {
   console.log("update")
-  this.nurseErrorState = e;
+  this.contractGroupErrorState = e;
 }
-
 }
-

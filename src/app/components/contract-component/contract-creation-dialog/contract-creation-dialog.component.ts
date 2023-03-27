@@ -8,7 +8,7 @@ import { ShiftTypeService } from 'src/app/services/shift/shift-type.service';
 import { ShiftService } from 'src/app/services/shift/shift.service';
 import { SkillService } from 'src/app/services/shift/skill.service';
 import { Exception } from 'src/app/utils/Exception';
-import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
+import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
 @Component({
   selector: 'app-contract-creation-dialog',

@@ -1,0 +1,28 @@
+.buttonCreate{
+    margin-right: 2vw;
+    margin-top: 1vh;
+    height: 50px;
+    width: 240px;
+    font-size: large;
+}
+
+.button-container{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.filter{
+    margin-right: 15px;
+}
+
+mat-paginator{
+    margin-top: 10%;
+}
+
+::ng-deep #nurse-button {
+    background-color: white;
+}
+
+::ng-deep #nurse-group-nav-bar #nurse-group-button {
+    background-color: #F6F6F6;
+}

@@ -12,17 +12,19 @@ export class NurseCreationComponent implements OnInit {
   @Output() nurseChange: EventEmitter<NurseInterface>;
   @Output() errorState: EventEmitter<boolean>;
   @Input() possibleContracts!: string[];
+  @Input() possibleContractsGroup!: string[];
   @Input() selectedContract!: string;
+  @Input() selectedContractGroup!: string;
   @Input() nurses!: string[]
 
   usernameNurseFormCtrl: FormControl;
   nameNurseFormCtrl: FormControl;
   contractSelectorError: boolean;
+  contractGroupSelectorError: boolean;
   inputDisabled: boolean;
   contractsError: boolean;
+  contractsGroupError: boolean;
   nurseStartUsername!: string;
-
-
 
   constructor(){
     this.nurseChange = new EventEmitter();
@@ -31,8 +33,10 @@ export class NurseCreationComponent implements OnInit {
     this.usernameNurseFormCtrl = new FormControl(null, Validators.required);
     this.nameNurseFormCtrl = new FormControl(null, Validators.required);
     this.contractSelectorError = true;
+    this.contractGroupSelectorError= true;
     this.inputDisabled = false;
     this.contractsError = true;
+    this.contractsGroupError = true;
   }
 
   ngOnInit(): void {
@@ -47,6 +51,12 @@ export class NurseCreationComponent implements OnInit {
     for(let i=0; i< this.nurse.contracts.length; i++) {
       if(!this.possibleContracts.includes(this.nurse.contracts[i])){
         this.nurse.contracts.splice(i, 1);
+      }
+    }
+
+    for(let i=0; i< this.nurse.contract_groups.length; i++) {
+      if(!this.possibleContractsGroup.includes(this.nurse.contract_groups[i])){
+        this.nurse.contract_groups.splice(i, 1);
       }
     }
 
@@ -80,6 +90,33 @@ export class NurseCreationComponent implements OnInit {
     this.emitNurse()
   }
 
+  addContractGroup() {
+    const index = this.possibleContractsGroup.indexOf(this.selectedContractGroup);
+    if (index > -1) {
+      this.possibleContractsGroup.splice(index, 1);
+    }
+    this.nurse.contract_groups.push(this.selectedContractGroup);
+    if (this.possibleContractsGroup.length > 0) {
+        this.selectedContractGroup= this.possibleContractsGroup[0];
+    }
+    this.contractGroupSelectorError = false;
+    this.emitNurse();
+  }
+  
+  removeContractGroup(contractGroup: string) {
+    const index = this.nurse.contract_groups.indexOf(contractGroup);
+    if (index > -1) {
+      this.nurse.contract_groups.splice(index, 1);
+    }
+    if (contractGroup !== undefined && contractGroup !== null) {
+      this.possibleContracts.push(contractGroup);
+    }
+    if(this.nurse.contract_groups.length === 0){
+      this.contractGroupSelectorError = true;
+    } 
+    this.emitNurse()
+  }
+
 
   emitNurse(){
     this.nurseChange.emit(this.nurse);
@@ -87,7 +124,10 @@ export class NurseCreationComponent implements OnInit {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameNurseFormCtrl.hasError('required') || this.usernameNurseFormCtrl.hasError('required') || (this.usernameExist() && this.nurseStartUsername === '') ||this.nurse.contracts.length === 0 );
+    this.errorState.emit(this.nameNurseFormCtrl.hasError('required') ||
+     this.usernameNurseFormCtrl.hasError('required') || 
+     (this.usernameExist() && this.nurseStartUsername === '') 
+     ||(this.nurse.contracts.length === 0  && this.nurse.contract_groups.length === 0) );
     console.log("error");
   }
 

@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import {MatSort} from '@angular/material/sort';
@@ -25,21 +25,25 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
   displayedColumns: string[]; 
   dataSource: MatTableDataSource<NurseInterface>;
 
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
-
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    if (this.dataSource){
+      this.dataSource.paginator = value;
+    }
+  }
+  @ViewChild(MatSort, {static: false})
+  set sort(value: MatSort) {
+    if (this.dataSource){
+      this.dataSource.sort = value;
+    }
+  }
 
   constructor(public dialog: MatDialog, private nurseService: NurseService, private profileService: ProfileService) {
     this.nurses_username = [];
-    this.displayedColumns =  ['name', 'username', 'contracts','actions'];
+    this.displayedColumns =  ['name', 'username', 'contracts','contract_groups','actions'];
     this.dataSource = new MatTableDataSource();
-
-
-
-    
   }
+
   ngOnInit(): void {
     try{
       this.getNurses();
@@ -53,8 +57,6 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
     this.profileService.profileChanged.subscribe(()=>{
       this.getNurses();
     })  
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
 
   }
 
@@ -100,7 +102,7 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
 
 
   createNewNurse(){
-    const newNnurse = {name: '',username: '', contracts:[], profile: CacheUtils.getProfile()};
+    const newNnurse = {name: '',username: '', contracts:[], contract_groups:[], profile: CacheUtils.getProfile()};
     this.openNurseCreationDialog(newNnurse); 
   }
 

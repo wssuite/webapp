@@ -130,6 +130,32 @@
                 </mat-expansion-panel>
             </mat-expansion-panel>
 
+            <mat-expansion-panel class="contractGroup-section">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon *ngIf="contractGroupSectionHasError()" color="warn">error</mat-icon>
+                        <h1>Contracts group</h1>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-action-row>
+                    <button mat-fab class="add-button" color="primary" (click)="addContractGroup()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </mat-action-row>
+                <mat-expansion-panel *ngFor="let c of profile.contractGroups; let i=index" class="contractGroup-element">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon *ngIf="contractGroupHasError(i)" color="warn">error</mat-icon>
+                            {{c.name}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-contract-group-creation [(contractGroup)]="profile.contractGroups[i]" [contractGroups]="contractsGroup" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateContractGroupErrorState(i,$event)"></app-contract-group-creation>
+                    <button mat-raised-button color="accent" (click)="removeContractGroup(i)">
+                        Remove
+                    </button>
+                </mat-expansion-panel>
+            </mat-expansion-panel>
+
             <mat-expansion-panel class="nurses-section">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -149,7 +175,7 @@
                             {{n.username}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-nurse-creation [(nurse)]="profile.nurses[i]" [possibleContracts]="contractNames" [selectedContract]="contractNames[0]" [nurses]="nurses" (errorState)="updateNurseErrorState(i, $event)"></app-nurse-creation>
+                    <app-nurse-creation [(nurse)]="profile.nurses[i]" [possibleContracts]="contractNames" [possibleContractsGroup]="contractsGroup" [selectedContract]="contractNames[0]" [selectedContractGroup]="contractsGroup[0]"  [nurses]="nurses" (errorState)="updateNurseErrorState(i, $event)"></app-nurse-creation>
                     <button mat-raised-button color="accent" (click)="removeNurse(i)">
                         Remove
                     </button>
@@ -175,7 +201,7 @@
                             {{n.name}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-nurse-group-creation [(nurseGroup)]="profile.nurseGroups[i]" [possibleContracts]="contractNames" [selectedContract]="contractNames[0]" [possibleNurses]="nurses" [selectedNurse]="nurses[0]" [nurseGroups]="nurseGroups" (errorState)="updateNurseGroupErrorState(i, $event)"></app-nurse-group-creation>
+                    <app-nurse-group-creation [(nurseGroup)]="profile.nurseGroups[i]" [possibleContracts]="contractNames" [possibleContractsGroup]="contractsGroup" [selectedContract]="contractNames[0]" [selectedContractGroup]="contractsGroup[0]" [possibleNurses]="nurses" [selectedNurse]="nurses[0]" [nurseGroups]="nurseGroups" (errorState)="updateNurseGroupErrorState(i, $event)"></app-nurse-group-creation>
                     <button mat-raised-button color="accent" (click)="removeNurseGroup(i)">
                         Remove
                     </button>

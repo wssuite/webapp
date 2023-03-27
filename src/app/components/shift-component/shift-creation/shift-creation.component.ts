@@ -58,6 +58,12 @@ export class ShiftCreationComponent implements OnInit{
 
   }
 
+  changeEndTimeOnHover(){
+    if (this.shift.endTime === undefined || this.shift.endTime === ''){
+      this.setEndTime();
+    }
+  }
+
   setEndTime(){
     if (this.shift.startTime === undefined || this.shift.startTime === '') {
       return;
