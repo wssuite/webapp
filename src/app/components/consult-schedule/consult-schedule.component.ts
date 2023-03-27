@@ -6,11 +6,18 @@ import { Router } from "@angular/router";
 import * as saveAs from "file-saver";
 import { MAIN_MENU } from "src/app/constants/app-routes";
 import { Assignment } from "src/app/models/Assignment";
+import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { DetailedSchedule, Solution } from "src/app/models/Schedule";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
+
+interface PreferenceKeyInterface{
+  nurse: string,
+  shift: string,
+  date: string
+}
 
 @Component({
   selector: "app-consult-schedule",
@@ -161,10 +168,10 @@ export class ConsultScheduleComponent implements OnInit {
     const pref = this.getPreference(name, index);
     if(pref !== undefined){
       if(pref === "ON"){
-        return {'background-color': 'rgb(228, 241, 226)', "height":"60px"};
+        return {'background-color': 'green', "height":"60px"};
       }
       else if(pref === "OFF"){
-        return {'background-color': 'rgb(246, 233, 232)', "height":"60px" };
+        return {'background-color': 'red', "height":"60px" };
       }
       return { 'background-color': 'rgb(235, 234, 234)', "height":"60px" };
     }
@@ -227,6 +234,20 @@ export class ConsultScheduleComponent implements OnInit {
   }
 
   regenerateSchedule() {
+    for(const pref of this.preferences){
+      if(pref[1]!== ""){
+        const keyInterface = JSON.parse(pref[0]) as PreferenceKeyInterface
+        const newPreference: SchedulePreferenceElement = {
+          username: keyInterface.nurse,
+          date: keyInterface.date,
+          preference: pref[1],
+          shift: keyInterface.shift,
+          weight: "hard"
+        }
+        this.schedule.problem.preferences.push(newPreference)
+      }
+    }
+    console.log(this.schedule.problem.preferences)
     this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
       next: ()=> this.router.navigate(["/" + MAIN_MENU]),
       error: (err: HttpErrorResponse)=>{
