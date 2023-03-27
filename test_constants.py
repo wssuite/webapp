@@ -47,6 +47,12 @@ from constants import (
     demand_min_weight,
     demand_min_value,
     demand_skill,
+    worker_host,
+    previous_versions,
+    state,
+    version,
+    end_date,
+    start_date,
 )
 
 profile1 = "profile1"
@@ -307,4 +313,24 @@ hospital_demand_element = {
     demand_max_value: "5.0",
     demand_min_weight: "6.0",
     demand_max_weight: "hard",
+}
+
+solution1 = {
+    start_date: "2023-06-01",
+    end_date: "2023-06-02",
+    profile: profile1,
+    version: "1",
+    state: "Running",
+    previous_versions: [],
+    worker_host: "192.256.22.0"
+}
+
+solution2 = {
+    start_date: "2023-06-01",
+    end_date: "2023-06-02",
+    profile: profile1,
+    version: "2",
+    state: "Running",
+    previous_versions: ["1"],
+    worker_host: "192.256.22.0"
 }

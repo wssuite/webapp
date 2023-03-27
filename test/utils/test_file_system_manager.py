@@ -4,8 +4,6 @@ from src.utils.file_system_manager import (
     FileSystemManager,
     dataset_directory,
     base_directory,
-    NoSolutionFoundException,
-    NoVersionFoundException,
 )
 from pyfakefs.fake_filesystem_unittest import TestCase, patchfs
 from unittest.mock import patch
@@ -37,35 +35,3 @@ class TestFileSystemManager(TestCase):
         dir_name = f"{base_directory}/{dataset_directory}/prototype"
         fake_fs.create_dir(dir_name)
         self.assertEqual(FileSystemManager.current_version(dir_name), 0)
-
-    @patchfs
-    def test_get_solution_if_directory_not_exist_throws_error(
-        self, fake_fs: FakeFilesystem
-    ):
-        dir_name = f"{base_directory}/{dataset_directory}/prototype"
-        fake_fs.create_dir(dir_name)
-        fsm = FileSystemManager()
-        with self.assertRaises(NoVersionFoundException):
-            fsm.get_solution_path("prototype", 1)
-
-    @patchfs
-    def test_get_solution_if_solution_file_not_exist_throws_exception(
-        self, fake_fs: FakeFilesystem
-    ):
-        dir_name = f"{base_directory}/{dataset_directory}/prototype/1"
-        fake_fs.create_dir(dir_name)
-        fsm = FileSystemManager()
-        with self.assertRaises(NoSolutionFoundException):
-            fsm.get_solution_path("prototype", 1)
-
-    @patchfs
-    def test_get_solution_if_solution_exist_return_path(
-        self, fake_fs: FakeFilesystem
-    ):
-        file_path = f"{base_directory}/{dataset_directory}/prototype/1/Sol"
-        dir_name = f"{base_directory}/{dataset_directory}/prototype/1/"
-        fake_fs.create_dir(dir_name)
-        assert fake_fs.exists(dir_name)
-        fake_fs.create_file(file_path)
-        fsm = FileSystemManager()
-        self.assertEqual(fsm.get_solution_path("prototype", 1), file_path)

@@ -37,7 +37,7 @@ class ProfileHandler(BaseHandler):
         profile_object.creator = user[user_username]
         profile_object.access = [user[user_username]]
         self.profile_dao.insert_if_not_exist(profile_object.db_json())
-        profile_path = f"{fs.get_dataset_directory_path()}/{profile_}"
+        profile_path = os.path.join(fs.get_dataset_directory_path(), profile_)
         fs.create_dir_if_not_exist(profile_path)
         w_group_dict = work_shift_group.copy()
         w_group_dict[profile] = profile_
@@ -64,7 +64,8 @@ class ProfileHandler(BaseHandler):
         self.nurse_dao.delete_all(name)
         self.nurse_group_dao.delete_all(name)
         self.contract_group_dao.delete_all(name)
-        profile_path = f"{fs.get_dataset_directory_path()}/{name}"
+        self.solution_dao.delete_all(name)
+        profile_path = os.path.join(fs.get_dataset_directory_path(), name)
         fs.delete_dir(profile_path)
 
     """

@@ -1,8 +1,4 @@
 import os
-from src.exceptions.file_system_exceptions import (
-    NoSolutionFoundException,
-    NoVersionFoundException,
-)
 import shutil
 
 dataset_directory = "dataset"
@@ -18,25 +14,16 @@ class FileSystemManager:
     """Here we make the assumption that there is only one solution file"""
 
     @staticmethod
-    def get_solution_path(instance_name, version) -> str:
-        os.chdir(base_directory)
-        target_dir = f"{dataset_directory}/{instance_name}/{version}"
-        try:
-            os.chdir(target_dir)
-            target_file = os.getcwd()
-            target_file_found = False
-            cur_dir = os.getcwd()
-            for file in os.listdir(cur_dir):
-                if file.lower().startswith(solution_prefix):
-                    target_file += f"/{file}"
-                    target_file_found = True
-                    break
-            if target_file_found is True:
-                return target_file
-            else:
-                raise NoSolutionFoundException()
-        except OSError:
-            raise NoVersionFoundException()
+    def get_solution_dir_path(
+        instance_name, start_date, end_date, version
+    ) -> str:
+        target_dir = os.path.join(
+            FileSystemManager.get_dataset_directory_path(),
+            instance_name,
+            f"{start_date}_{end_date}",
+            version,
+        )
+        return target_dir
 
     @staticmethod
     def create_dir_if_not_exist(name):
