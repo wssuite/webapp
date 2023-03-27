@@ -1,9 +1,11 @@
 export abstract class Constraint {
   name: string;
   displayName: string;
-  constructor(id: string, name: string) {
+  description?: string;
+  constructor(id: string, name: string, description?: string) {
     this.name = id;
     this.displayName = name;
+    this.description = description;
   }
   abstract validateConstraint(c: Constraint):void;
 

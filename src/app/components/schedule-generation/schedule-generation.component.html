@@ -138,7 +138,7 @@
 </div>
 <div *ngIf= "shifts.length > 0  && nurses.length > 0" class="nursePreferenceSection">
   <H1 class="HospitalDemandSectionTitle">Nurse Preferences</H1>  
-  <app-nurse-preference [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate"></app-nurse-preference>
+  <app-nurse-preference [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)"></app-nurse-preference>
 </div>
 
   <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">

@@ -1,6 +1,13 @@
 export const BASE_URL = "http://localhost:5000";
 export const TEST_URL = BASE_URL + "/index/";
 export const SCHEDULE_URL = BASE_URL + "/schedule";
+export const GENERATE_SCHEDULE = SCHEDULE_URL + "/generate";
+export const EXPORT_PROBLEM_URL = SCHEDULE_URL + "/exportProblem";
+export const REGENERATE_SCHEDULE_URL = SCHEDULE_URL + "/regenerate";
+export const DETAILED_SOLUTION_URL = SCHEDULE_URL + "/getDetailedSolution";
+export const ALL_SOLUTIONS = SCHEDULE_URL + "/getAllSolutions";
+export const LATEST_SOLUTIONS = SCHEDULE_URL + "getLatestSolutions";
+
 export const NAME_FILTER_SCHEDULE_URL = SCHEDULE_URL + "/nameFilter";
 export const PROTOTYPE_SCHEDULE_URL = NAME_FILTER_SCHEDULE_URL + "/prototype";
 export const CONTRACT_URL= BASE_URL + "/contract";
@@ -23,6 +30,7 @@ const UPDATE= "/update"
 export const ADD_CONTRACT_URL = CONTRACT_URL + ADD_STRING;
 export const FETCH_CONTRACT_NAMES = CONTRACT_URL + FETCH_NAMES;
 
+
 export const USER_URL = BASE_URL + "/user";
 export const LOGIN_URL = USER_URL + "/login";
 export const ADD_ACCOUNT_URL = USER_URL + ADD_STRING;
@@ -32,6 +40,7 @@ const FETCH_USERNAMES="/fetchAllUsernames";
 const FETCH_ALL = "/fetchAll"
 export const GET_USERNAMES = USER_URL + FETCH_USERNAMES;
 export const LOGOUT_URL = USER_URL + "/logout"
+export const FETCH_CONTRACT_URL = CONTRACT_URL + FETCH_ALL;
 
 
 
@@ -102,3 +111,12 @@ export const FETCH_NURSE_BY_USERNAME = NURSE_URL + FETCH_BY_USERNAME;
 export const REMOVE_NURSE_URL = NURSE_URL + REMOVE_STRING;
 export const FETCH_ALL_NURSE_USERNAME = NURSE_URL + FETCH_USERNAMES;
 export const UPDATE_NURSE_URL = NURSE_URL + UPDATE;
+
+
+export const CONTRACT_GROUP_URL = BASE_URL + "/contractGroup"
+export const ADD_CONTRACT_GROUP_URL = CONTRACT_GROUP_URL + ADD_STRING;
+export const FETCH_CONTRACT_GROUP_URL = CONTRACT_GROUP_URL + FETCH_ALL;
+export const FETCH_CONTRACT_GROUP_BY_NAME = CONTRACT_GROUP_URL + FETCH_BY_NAMES;
+export const REMOVE_CONTRACT_GROUP_URL = CONTRACT_GROUP_URL + REMOVE_STRING;
+export const FETCH_ALL_CONTRACT_GROUP_NAME = CONTRACT_GROUP_URL + FETCH_NAMES;
+export const UPDATE_CONTRACT_GROUP_URL = CONTRACT_GROUP_URL + UPDATE;

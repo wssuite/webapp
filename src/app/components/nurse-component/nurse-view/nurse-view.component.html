@@ -32,6 +32,12 @@
     <td mat-cell *matCellDef="let element"> {{element.contracts}} </td>
   </ng-container>
 
+  <!-- contracts group Column -->
+<ng-container matColumnDef="contract_groups">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header> Group Contracts </th>
+  <td mat-cell *matCellDef="let element"> {{element.contract_groups}} </td>
+</ng-container>
+
   <!-- Action Column -->
   <ng-container matColumnDef="actions" justify="end">
     <th mat-header-cell *matHeaderCellDef aria-label="row actions">Actions &nbsp;</th>

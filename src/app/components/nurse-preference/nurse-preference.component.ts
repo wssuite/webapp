@@ -2,8 +2,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
 import { dateDisplay } from "src/app/models/DateDisplay";
+import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { NurseInterface } from "src/app/models/Nurse";
-import { SchedulePref } from "src/app/models/SchedulePreference";
 import { DateUtils } from "src/app/utils/DateUtils";
 
 
@@ -20,7 +20,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   @Input() nurses!: NurseInterface[]; 
   @Input() startDate!: Date;
   @Input() endDate!: Date;
-  @Output() schedulePreference: EventEmitter<SchedulePref[]>
+  @Output() schedulePreference: EventEmitter<SchedulePreferenceElement[]>
 
   timetable: dateDisplay[];
   selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
@@ -152,11 +152,11 @@ import { DateUtils } from "src/app/utils/DateUtils";
           if( preferenceObj && (preferenceObj.pref === 'OFF' ||
               preferenceObj.pref === 'ON')){
             const schedule = {
-              preference_date: date.date, 
-              preference_username: nurse.username, 
-              preference_pref: preferenceObj.pref,
-              preference_shift: shift,
-              preference_weight: preferenceObj.weight
+              date: date.date, 
+              username: nurse.username, 
+              preference: preferenceObj.pref,
+              shift: shift,
+              weight: preferenceObj.weight
             }
             scedulePref.push(schedule);
           }
