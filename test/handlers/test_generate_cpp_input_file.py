@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from src.handlers.schedule_handler import ScheduleHandler
 from src.dao.abstract_dao import connect_to_fake_db
 from constants import (
@@ -25,6 +27,10 @@ from constants import (
 from test.db_test_constants import build_db, random_hex, profile1
 from pyfakefs.fake_filesystem_unittest import TestCase
 from src.utils.file_system_manager import base_directory, dataset_directory
+from test.handlers.test_schedule_handler import (
+    mock_succeed_response,
+    create_config_file,
+)
 
 hospital_demand_dict = {
     start_date: "2023-06-01",
@@ -156,11 +162,13 @@ class TestGenerateCppInputFile(TestCase):
         path = self.fs.joinpaths(base_directory, dataset_directory, profile1)
         self.fs.create_dir(path)
         build_db(self.handler)
+        create_config_file(self.fs)
 
     def tearDown(self) -> None:
         self.tearDownPyfakefs()
 
-    def test_generate_schedule(self):
+    @patch("requests.post", return_value=mock_succeed_response())
+    def test_generate_schedule(self, mock_post):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
         full_path = self.fs.joinpaths(
             base_directory,

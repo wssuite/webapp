@@ -1,3 +1,9 @@
+import json
+from unittest.mock import patch
+
+from pyfakefs.fake_filesystem import FakeFilesystem
+from requests import Response
+
 from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.schedule_handler import ScheduleHandler
 from src.dao.abstract_dao import connect_to_fake_db
@@ -78,18 +84,38 @@ hospital_demand_dict = {
 }
 
 
+def create_config_file(fs: FakeFilesystem):
+    fs.create_file(
+        "config.json", contents=json.dumps({"haproxy_address": "192.168.5.5"})
+    )
+
+
+def mock_failed_response():
+    response = Response()
+    response.status_code = 404
+    return response
+
+
+def mock_succeed_response():
+    response = Response()
+    response.status_code = 200
+    return response
+
+
 class TestScheduleHandler(TestCase):
     def setUp(self):
         self.handler = ScheduleHandler(connect_to_fake_db())
         self.setUpPyfakefs()
         path = self.fs.joinpaths(base_directory, dataset_directory, profile1)
         self.fs.create_dir(path)
+        create_config_file(self.fs)
         build_db(self.handler)
 
     def tearDown(self) -> None:
         self.tearDownPyfakefs()
 
-    def test_get_input_file_path_if_exist_succeed(self):
+    @patch("requests.post", return_value=mock_succeed_response())
+    def test_get_input_file_path_if_exist_succeed(self, mock_post):
         solution = self.handler.generate_schedule(
             random_hex, hospital_demand_dict
         )
@@ -133,8 +159,9 @@ class TestScheduleHandler(TestCase):
                 random_hex, profile1, "2023-06-01", "2023-06-02", "1"
             )
 
+    @patch("requests.post", return_value=mock_succeed_response())
     def test_regenerate_schedule_and_get_solution_detail_without_schedule(
-        self,
+        self, mock_post
     ):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
         solution = self.handler.regenerate_schedule(
@@ -164,7 +191,10 @@ class TestScheduleHandler(TestCase):
         expected_detailed[problem] = hospital_demand_dict
         self.assertEqual(expected_detailed, solution_detailed)
 
-    def test_generate_schedule_and_get_solution_detail_with_schedule(self):
+    @patch("requests.post", return_value=mock_succeed_response())
+    def test_generate_schedule_and_get_solution_detail_with_schedule(
+        self, mock_post
+    ):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
         text = """
         HEADERS
@@ -215,7 +245,13 @@ class TestScheduleHandler(TestCase):
         }
         self.assertEqual(expected_detailed, solution_detailed)
 
-    def test_get_latest_solutions(self):
+    @patch("requests.post", return_value=mock_failed_response())
+    def test_generate_schedule_raise_error_if_request_error(self, mock_post):
+        with self.assertRaises(ProjectBaseException):
+            self.handler.generate_schedule(random_hex, hospital_demand_dict)
+
+    @patch("requests.post", return_value=mock_succeed_response())
+    def test_get_latest_solutions(self, mock_post):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
         self.handler.regenerate_schedule(random_hex, hospital_demand_dict, "1")
         actual = self.handler.get_latest_solutions_versions(
@@ -230,7 +266,8 @@ class TestScheduleHandler(TestCase):
         }
         self.assertEqual([expected_solution], actual)
 
-    def test_get_all_solutions(self):
+    @patch("requests.post", return_value=mock_succeed_response())
+    def test_get_all_solutions(self, mock_post):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
         self.handler.regenerate_schedule(random_hex, hospital_demand_dict, "1")
         actual = self.handler.get_all_solutions(random_hex, profile1)

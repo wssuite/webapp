@@ -2,6 +2,8 @@ import json
 import os.path
 from typing import Type
 
+import requests
+
 from src.models.schedule import Schedule
 from src.models.solution import Solution
 from src.exceptions.project_base_exception import ProjectBaseException
@@ -24,12 +26,11 @@ from constants import (
     start_date,
     end_date,
     version,
-    state,
     previous_versions,
     problem,
     schedule,
 )
-from src.utils.file_system_manager import FileSystemManager
+from src.utils.file_system_manager import FileSystemManager, base_directory
 
 
 class ScheduleHandler(BaseHandler):
@@ -39,6 +40,11 @@ class ScheduleHandler(BaseHandler):
     def __generate_schedule(self, token, demand_json, v):
         demand = ScheduleDemand().from_json(demand_json)
         self.verify_profile_accessors_access(token, demand.profile)
+
+        config = open("config.json")
+        data = json.load(config)
+        config.close()
+        generate_url = f"http://{data['haproxy_address']}/solver/schedule"
 
         """Get th path for next version"""
         (
@@ -69,7 +75,6 @@ class ScheduleHandler(BaseHandler):
             end_date: demand.end_date,
             profile: demand.profile,
             version: str(next_version),
-            state: "In Progress",
         }
         """This will be the case of a schedule regeneration"""
         if v is not None:
@@ -81,7 +86,18 @@ class ScheduleHandler(BaseHandler):
             solution_json[previous_versions] = previous_version_array
 
         solution_object = Solution().from_json(solution_json)
-        self.solution_dao.insert_one(solution_object.db_json())
+        relative_path = full_path.replace(base_directory, "")
+        response = requests.post(generate_url, params={"path": relative_path})
+        if response.status_code == 200:
+            solution_object.worker_host = response.text
+            solution_object.state = "In Progress"
+            self.solution_dao.insert_one(solution_object.db_json())
+        else:
+            solution_object.state = "Fail"
+            self.solution_dao.insert_one(solution_object.db_json())
+            raise ProjectBaseException(
+                "Try later an error occurred during processing"
+            )
         return solution_object.to_json()
 
     def generate_schedule(self, token, demand_json):
