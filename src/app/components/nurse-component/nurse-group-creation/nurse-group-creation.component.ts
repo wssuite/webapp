@@ -15,14 +15,18 @@ export class NurseGroupCreationComponent implements OnInit {
   @Input() selectedNurse!: string;
   @Input() possibleContracts!: string[];
   @Input() selectedContract!: string;
+  @Input() possibleContractsGroup!: string[];
+  @Input() selectedContractGroup!: string;
   @Input() nurseGroups!: string[]
 
   nameNurseGroupFormCtrl: FormControl;
   contractSelectorError: boolean;
+  contractGroupSelectorError: boolean;
   nurseSelectorError: boolean;
   inputDisabled: boolean;
   nursesError: boolean;
   contractsError: boolean;
+  contractsGroupError: boolean;
   nurseGroupStartname!: string;
 
 
@@ -33,9 +37,11 @@ export class NurseGroupCreationComponent implements OnInit {
  
     this.nameNurseGroupFormCtrl = new FormControl(null, Validators.required);
     this.contractSelectorError = true;
+    this.contractGroupSelectorError = true;
     this.nurseSelectorError = true;
     this.inputDisabled = false;
     this.contractsError = true;
+    this.contractsGroupError = true;
     this.nursesError = true;
   }
 
@@ -51,11 +57,19 @@ export class NurseGroupCreationComponent implements OnInit {
       }
     }
 
+    for(let i=0; i< this.nurseGroup.contract_groups.length; i++) {
+      if(!this.possibleContractsGroup.includes(this.nurseGroup.contract_groups[i])){
+        this.nurseGroup.contract_groups.splice(i, 1);
+      }
+    }
+
     for(let i=0; i< this.nurseGroup.nurses.length; i++) {
       if(!this.possibleNurses.includes(this.nurseGroup.nurses[i])){
         this.nurseGroup.nurses.splice(i, 1);
       }
     }
+
+    
 
     this.emitNurseGroup();
   }
@@ -83,6 +97,33 @@ export class NurseGroupCreationComponent implements OnInit {
     }
     if(this.nurseGroup.contracts.length === 0){
       this.contractSelectorError = true;
+    } 
+    this.emitNurseGroup()
+  }
+
+  addContractGroup() {
+    const index = this.possibleContractsGroup.indexOf(this.selectedContractGroup);
+    if (index > -1) {
+      this.possibleContractsGroup.splice(index, 1);
+    }
+    this.nurseGroup.contract_groups.push(this.selectedContractGroup);
+    if (this.possibleContractsGroup.length > 0) {
+        this.selectedContractGroup= this.possibleContractsGroup[0];
+    }
+    this.contractGroupSelectorError = false;
+    this.emitNurseGroup();
+  }
+  
+  removeContractGroup(contractGroup: string) {
+    const index = this.nurseGroup.contract_groups.indexOf(contractGroup);
+    if (index > -1) {
+      this.nurseGroup.contract_groups.splice(index, 1);
+    }
+    if (contractGroup !== undefined && contractGroup !== null) {
+      this.possibleContracts.push(contractGroup);
+    }
+    if(this.nurseGroup.contract_groups.length === 0){
+      this.contractGroupSelectorError = true;
     } 
     this.emitNurseGroup()
   }
@@ -121,7 +162,10 @@ export class NurseGroupCreationComponent implements OnInit {
   }
 
   emitErrorState() {
-    this.errorState.emit(this.nameNurseGroupFormCtrl.hasError('required') || this.nameNurseGroupFormCtrl.hasError('required') || (this.nameExist() && this. nurseGroupStartname === '') ||this.nameNurseGroupFormCtrl.hasError('required') || (this.nameExist() && this.nurseGroupStartname === '') || this.nurseGroup.contracts.length === 0 || this.nurseGroup.nurses.length === 0 );
+    this.errorState.emit(this.nameNurseGroupFormCtrl.hasError('required') || 
+    this.nameNurseGroupFormCtrl.hasError('required') || 
+    (this.nameExist() && this. nurseGroupStartname === '') ||
+    this.nurseGroup.contracts.length === 0 || (this.nurseGroup.contract_groups.length === 0 && this.nurseGroup.nurses.length === 0 ));
     console.log("error");
   }
 

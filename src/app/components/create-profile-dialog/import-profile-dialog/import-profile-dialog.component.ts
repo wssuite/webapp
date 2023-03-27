@@ -30,6 +30,8 @@ export class ImportProfileComponent implements OnInit{
   connectedUser: boolean;
   profileNameCtrl: FormControl;
   contracts: Contract[];
+  contractsGroup: string[];
+  possibleContracts: string[];
   possibleShifts: string[];
   possibleShiftTypes: string[];
   possibleShiftGroups: string[]
@@ -43,6 +45,7 @@ export class ImportProfileComponent implements OnInit{
   shiftTypesErrorState: boolean[];
   shiftGroupsErrorState: boolean[];
   contractsErrorState: boolean[];
+  contractsGroupErrorState: boolean[];
   nursesErrorState: boolean[];
   nurseGroupsErrorState: boolean[];
   skillsErrorState: boolean[]
@@ -56,6 +59,8 @@ export class ImportProfileComponent implements OnInit{
       this.connectedUser = false;
       this.profileNameCtrl = new FormControl(null, Validators.required)
       this.contracts = [];
+      this.contractsGroup = [];
+      this.possibleContracts = [];
       this.possibleShifts = []
       this.possibleShiftTypes = []
       this.contractShifts = []
@@ -72,6 +77,7 @@ export class ImportProfileComponent implements OnInit{
       this.nursesErrorState = []
       this.nurseGroupsErrorState = []
       this.skillsErrorState = []
+      this.contractsGroupErrorState =[]
     }
 
   ngOnInit(): void {
@@ -135,7 +141,12 @@ export class ImportProfileComponent implements OnInit{
     this.profile.contracts.forEach((c:ContractInterface)=>{
       this.contracts.push(this.contractService.fromJson(c))
       this.contractNames.push(c.name);
+      this.possibleContracts.push(c.name);
       this.contractsErrorState.push(true);
+    })
+    this.profile.contractGroups.forEach((contractGroups:ContractGroupInterface)=>{
+      this.contractsGroup.push(contractGroups.name)
+      this.contractsGroupErrorState.push(true);
     })
     this.profile.shifts.forEach((shift:ShiftInterface)=>{
       this.possibleShifts.push(shift.name)
@@ -205,11 +216,22 @@ export class ImportProfileComponent implements OnInit{
     this.contractsErrorState.push(true);
   }
 
+  addContractGroup() {
+    const newCG: ContractGroupInterface = {
+      name:'',
+      contracts: [],
+      profile: this.profile.profile
+    }
+    this.profile.contractGroups.push(newCG)
+    this.contractsGroupErrorState.push(true);
+  }
+
   addNurse() {
     const newNurse: NurseInterface = {
       name:'',
       username:'',
       contracts:[],
+      contract_groups:[],
       profile: this.profile.profile
     }
     this.profile.nurses.push(newNurse)
@@ -220,6 +242,7 @@ export class ImportProfileComponent implements OnInit{
     const ng: NurseGroupInterface = {
       name:'',
       contracts:[],
+      contract_groups:[],
       nurses:[],
       profile: this.profile.profile
     }
@@ -271,6 +294,12 @@ export class ImportProfileComponent implements OnInit{
     this.contractsErrorState.splice(index,1)
   }
 
+  removeContractGroup(index:number) {
+    this.profile.contractGroups.splice(index,1);
+    this.contractsGroupErrorState.splice(index,1)
+  }
+
+
   cancel(){
     this.profileService.editionFinished = true;
     this.profileService.newProfileCreated = false;
@@ -307,6 +336,14 @@ export class ImportProfileComponent implements OnInit{
     return this.contractsErrorState[index]
   }
 
+  contractGroupSectionHasError(){
+    return this.contractsGroupErrorState.includes(true)
+  }
+
+  contractGroupHasError(index:number){
+    return this.contractsGroupErrorState[index]
+  }
+
   nurseSectionHasError(){
     return this.nursesErrorState.includes(true)
   }
@@ -332,7 +369,7 @@ export class ImportProfileComponent implements OnInit{
   }
 
   formHasError(){
-    return this.skillSectionHasError() ||
+    return this.skillSectionHasError() || this.contractGroupSectionHasError() ||
      this.nurseSectionHasError() || this.nurseGroupSectionHasError()
       || this.contractSectionHasError() || this.shiftGroupSectionHasError()
       || this.shiftSectionHasError() || this.shiftTypeSectionHasError() ||
@@ -355,6 +392,10 @@ export class ImportProfileComponent implements OnInit{
     this.contractsErrorState[index] = e;
   }
 
+  updateContractGroupErrorState(index:number, e:boolean){
+    this.contractsGroupErrorState[index] = e;
+  }
+
   updateNurseErrorState(index:number, e:boolean){
     this.nursesErrorState[index] = e;
   }
@@ -371,6 +412,9 @@ export class ImportProfileComponent implements OnInit{
     const profileContracts: ContractInterface[] = [];
     this.contracts.forEach((contract: Contract)=>{
       profileContracts.push(contract.toJson(this.profile.profile))
+    })
+    this.profile.contractGroups.forEach((contract_groups:ContractGroupInterface)=>{
+      contract_groups.profile = this.profile.profile;
     })
     this.profile.shifts.forEach((shift:ShiftInterface)=>{
       shift.profile = this.profile.profile;

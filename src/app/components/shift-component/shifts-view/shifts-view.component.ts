@@ -25,15 +25,24 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
   displayedColumns: string[]; 
   dataSource: MatTableDataSource<ShiftInterface>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    if (this.dataSource){
+      this.dataSource.paginator = value;
+    }
+  }
+  @ViewChild(MatSort, {static: false})
+  set sort(value: MatSort) {
+    if (this.dataSource){
+      this.dataSource.sort = value;
+    }
+  }
 
   constructor(public dialog: MatDialog, private apiService: ShiftService, private profileService: ProfileService) {
     this.shifts = [];
     this.displayedColumns =  ['name', 'startTime', 'endTime','actions'];
     this.dataSource = new MatTableDataSource();
 
-  
   }
 
   ngOnInit(): void {
@@ -49,8 +58,6 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
       this.profileService.profileChanged.subscribe(()=>{
         this.getShifts();
       })
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
   }
 
 

@@ -23,8 +23,18 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
   displayedColumns: string[]; 
   dataSource: MatTableDataSource<string>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    if (this.dataSource){
+      this.dataSource.paginator = value;
+    }
+  }
+  @ViewChild(MatSort, {static: false})
+  set sort(value: MatSort) {
+    if (this.dataSource){
+      this.dataSource.sort = value;
+    }
+  }
 
   constructor(public dialog: MatDialog, private skillService: SkillService, private profileService: ProfileService) {
   this.skills = [];
@@ -45,8 +55,6 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
     this.profileService.profileChanged.subscribe(()=>{
       this.getSkills()
     })
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   getSkills(){

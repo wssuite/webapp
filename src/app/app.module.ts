@@ -20,9 +20,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatTableModule} from '@angular/material/table';
+
 
 
 
@@ -32,7 +33,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./components/app-component/app.component";
 import { MainMenuComponent } from "./components/main-menu/main-menu.component";
 import { ConsultScheduleComponent } from "./components/consult-schedule/consult-schedule.component";
-import { ContractCreationComponent } from "./components/contract-creation/contract-creation.component";
+import { ContractCreationComponent } from "./components/contract-component/contract-creation/contract-creation.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
 import { NurseViewComponent } from "./components/nurse-component/nurse-view/nurse-view.component";
 import { HttpClientModule } from "@angular/common/http";
@@ -64,9 +65,9 @@ import { MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 
 
-import { ContractCreationDialogComponent } from './components/contract-creation-dialog/contract-creation-dialog.component';
+import { ContractCreationDialogComponent } from './components/contract-component/contract-creation-dialog/contract-creation-dialog.component';
 import { MinMaxConstraintComponent } from './components/min-max-constraint/min-max-constraint.component';
-import { ContractsViewComponent } from './components/contracts-view/contracts-view.component';
+import { ContractsViewComponent } from './components/contract-component/contracts-view/contracts-view.component';
 import { LoginComponent } from './components/login/login.component';
 import { AccountCreationComponent } from './components/account-creation/account-creation.component';
 import { AccountCreationDialogComponent } from './components/account-creation/account-creation-dialog/account-creation-dialog.component';
@@ -86,7 +87,14 @@ import { SkillCreationDialogComponent } from './components/skill-creation-dialog
 import { SkillCreationComponent } from './components/skill-creation/skill-creation.component';
 import { NurseCreationComponent } from './components/nurse-component/nurse-creation/nurse-creation.component';
 import { NurseGroupCreationComponent } from './components/nurse-component/nurse-group-creation/nurse-group-creation.component';
+import { MinMaxHopspitalDemandComponent } from './components/min-max-hopspital-demand/min-max-hopspital-demand.component';
+import { HopspitalDemandCreationComponent } from './components/hopspital-demand-creation/hopspital-demand-creation.component';
+import { NursePreferenceComponent } from './components/nurse-preference/nurse-preference.component';
+import { ContractGroupCreationComponent } from './components/contract-component/contract-group-creation/contract-group-creation.component';
+import { ContractGroupCreationDialogComponent } from './components/contract-component/contract-group-creation-dialog/contract-group-creation-dialog.component';
 import { ButtonMultiselectComponent } from './components/button-multiselect/button-multiselect.component';
+import { SidenavContractComponent } from './components/contract-component/sidenav-contract/sidenav-contract.component';
+import { ContractsGroupViewComponent } from './components/contract-component/contracts-group-view/contracts-group-view.component';
 import { SchedulesGalleryComponent } from './components/schedules-gallery/schedule-view.component';
 
 @NgModule({
@@ -146,7 +154,14 @@ import { SchedulesGalleryComponent } from './components/schedules-gallery/schedu
     SkillCreationComponent,
     NurseCreationComponent,
     NurseGroupCreationComponent,
+    MinMaxHopspitalDemandComponent,
+    HopspitalDemandCreationComponent,
+    NursePreferenceComponent,
+    ContractGroupCreationComponent,
+    ContractGroupCreationDialogComponent,
     ButtonMultiselectComponent,
+    SidenavContractComponent,
+    ContractsGroupViewComponent,
     SchedulesGalleryComponent,
   ],
   imports: [

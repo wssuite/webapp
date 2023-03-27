@@ -23,9 +23,19 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
   displayedColumns: string[]; 
   dataSource: MatTableDataSource<ShiftGroupInterface>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    if (this.dataSource){
+      this.dataSource.paginator = value;
+    }
+  }
+  @ViewChild(MatSort, {static: false})
+  set sort(value: MatSort) {
+    if (this.dataSource){
+      this.dataSource.sort = value;
+    }
+  }
+
   constructor(public dialog: MatDialog, private shiftGroupService: ShiftGroupService, private profileService: ProfileService) {
     this.shiftsGroup = [];
     this.displayedColumns =  ['name', 'shifts', 'shiftTypes', 'actions'];
@@ -44,8 +54,6 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
     this.profileService.profileChanged.subscribe(()=>{
       this.getShiftsGroup();
     })
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   getShiftsGroup(){
