@@ -14,3 +14,4 @@ export const CONTRACTS="contracts";
 export const CONTRACT_GROUP ="contracts-group";
 export const SKILL = "skill";
 export const IMPORT = "import";
+export const VIEW_SCHEDULES = "schedules"

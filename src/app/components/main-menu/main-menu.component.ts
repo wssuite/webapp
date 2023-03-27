@@ -1,4 +1,4 @@
-import { CONTRACTS, SCHEDULE_GENERATION, SHIFT, CREATE_ACCOUNT, NURSE } from "src/app/constants/app-routes";
+import { CONTRACTS, SHIFT, CREATE_ACCOUNT, NURSE, VIEW_SCHEDULES } from "src/app/constants/app-routes";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
@@ -41,7 +41,7 @@ export class MainMenuComponent implements OnInit{
   redirect(button: MainMenuButton) {
     switch (button.title) {
       case "Schedule":
-        this.router.navigate(["/" + SCHEDULE_GENERATION]);
+        this.router.navigate(["/" + VIEW_SCHEDULES]);
         break;
       case "Nurse":
         this.router.navigate(["/" + NURSE]);

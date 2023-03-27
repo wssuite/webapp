@@ -95,6 +95,7 @@ import { ContractGroupCreationDialogComponent } from './components/contract-comp
 import { ButtonMultiselectComponent } from './components/button-multiselect/button-multiselect.component';
 import { SidenavContractComponent } from './components/contract-component/sidenav-contract/sidenav-contract.component';
 import { ContractsGroupViewComponent } from './components/contract-component/contracts-group-view/contracts-group-view.component';
+import { SchedulesGalleryComponent } from './components/schedules-gallery/schedule-view.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +162,7 @@ import { ContractsGroupViewComponent } from './components/contract-component/con
     ButtonMultiselectComponent,
     SidenavContractComponent,
     ContractsGroupViewComponent,
+    SchedulesGalleryComponent,
   ],
   imports: [
     BrowserModule,

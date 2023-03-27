@@ -10,6 +10,7 @@ import { MainMenuComponent } from "./components/main-menu/main-menu.component";
 import { NurseGroupViewComponent } from "./components/nurse-component/nurse-group-view/nurse-group-view.component";
 import { NurseViewComponent } from "./components/nurse-component/nurse-view/nurse-view.component";
 import { ScheduleGenerationComponent } from "./components/schedule-generation/schedule-generation.component";
+import { SchedulesGalleryComponent } from "./components/schedules-gallery/schedule-view.component";
 import { ShiftGroupViewComponent } from "./components/shift-component/shifts-group-view/shifts-group-view.component";
 import { ShiftsTypeViewComponent } from "./components/shift-component/shifts-type-view/shifts-type-view.component";
 import { ShiftsViewComponent } from "./components/shift-component/shifts-view/shifts-view.component";
@@ -31,6 +32,7 @@ import {
   SKILL,
   IMPORT,
   CONTRACT_GROUP,
+  VIEW_SCHEDULES,
 } from "./constants/app-routes";
 
 const routes: Routes = [
@@ -49,7 +51,8 @@ const routes: Routes = [
   { path: CONTRACT_GROUP, component: ContractsGroupViewComponent},
   { path: CREATE_ACCOUNT, component: AccountCreationComponent },
   { path: SKILL, component: SkillViewComponent},
-  { path: IMPORT, component: ImportProfileComponent}
+  { path: IMPORT, component: ImportProfileComponent},
+  {path: VIEW_SCHEDULES, component: SchedulesGalleryComponent}
 ];
 
 @NgModule({
