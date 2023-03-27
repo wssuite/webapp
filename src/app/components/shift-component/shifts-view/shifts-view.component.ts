@@ -78,7 +78,7 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
   openShiftCreationDialog(shift: ShiftInterface) {
     const dialog = this.dialog.open(ShiftCreationDialogComponent,  
       { disableClose: true,  
-        height: '85%',
+        height: '80%',
         width: '55%', 
         position: {top:'5vh',left: '25%', right: '25%'},
         data: {shift:shift,shifts:this.shifts},
