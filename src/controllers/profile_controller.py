@@ -1,7 +1,7 @@
 from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.profile_handler import ProfileHandler
 from src.dao.abstract_dao import DBConnection
-from flask import Blueprint, Response, request
+from flask import Response, request
 from constants import (
     ok_message,
     user_token,
@@ -9,8 +9,7 @@ from constants import (
     user_username,
     duplicate_name,
 )
-
-mod = Blueprint("profile_controller", __name__, url_prefix="/profile")
+from . import profile_mod as mod
 
 profile_handler = ProfileHandler(DBConnection.get_connection())
 
@@ -119,7 +118,7 @@ def export_profile():
         token = request.args[user_token]
         profile_name = request.args[profile]
         export_str = profile_handler.export_profile(token, profile_name)
-        return {'content': export_str}
+        return {"content": export_str}
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
@@ -134,6 +133,6 @@ def download_template():
             for line in file.readlines():
                 template_str += line
 
-        return {'content': template_str}
+        return {"content": template_str}
     except ProjectBaseException as e:
         return Response(e.args, 500)

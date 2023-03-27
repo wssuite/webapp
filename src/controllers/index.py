@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template
-
-mod = Blueprint("index", __name__, url_prefix="/index")
+from flask import render_template
+from . import index_mod as mod
+from .. import socketio
 
 
 @mod.route("/", methods=["GET"])
 def index():
-    return render_template('socketio.html')
+    socketio.emit("index", "triggered index controller")
+    return render_template("socketio.html")

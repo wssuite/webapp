@@ -27,7 +27,7 @@ class Solution(Jsonify, DBDocument):
             end_date: self.end_date,
             profile: self.profile,
             version: self.version,
-            state: self.state
+            state: self.state,
         }
 
     def db_json(self) -> dict:

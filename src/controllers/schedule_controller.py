@@ -1,5 +1,5 @@
-from flask import Blueprint, Response
-
+from flask import Response
+from . import schedule_mod as mod
 from flask import request
 from src.exceptions.project_base_exception import ProjectBaseException
 from constants import user_token, profile, start_date, end_date, version
@@ -22,7 +22,6 @@ from src.handlers.schedule_handler import ScheduleHandler
     with the client, please consult the following link:
     https://gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/LOG89XX-10/-/blob/dataset/file-format/dataset/examples/sol-instance1.txt
 """
-mod = Blueprint("schedule_controller", __name__, url_prefix="/schedule")
 
 schedule_handler = ScheduleHandler(DBConnection.get_connection())
 

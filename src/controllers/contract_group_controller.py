@@ -1,12 +1,9 @@
-from flask import Blueprint, request, Response
+from flask import request, Response
 from src.handlers.contract_group_handler import ContractGroupHandler
 from src.dao.abstract_dao import DBConnection
 from constants import ok_message, contract_group_name, user_token, profile
 from src.exceptions.project_base_exception import ProjectBaseException
-
-mod = Blueprint(
-    "contract_group_controller", __name__, url_prefix="/contractGroup"
-)
+from . import contract_group_mod as mod
 
 contract_group_handler = ContractGroupHandler(DBConnection.get_connection())
 

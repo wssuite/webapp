@@ -322,7 +322,7 @@ solution1 = {
     version: "1",
     state: "Running",
     previous_versions: [],
-    worker_host: "192.256.22.0"
+    worker_host: "192.256.22.0",
 }
 
 solution2 = {
@@ -332,5 +332,5 @@ solution2 = {
     version: "2",
     state: "Running",
     previous_versions: ["1"],
-    worker_host: "192.256.22.0"
+    worker_host: "192.256.22.0",
 }

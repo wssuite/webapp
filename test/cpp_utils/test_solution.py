@@ -6,7 +6,6 @@ from test_constants import solution1
 
 
 class TestSolution(TestCase):
-
     def setUp(self) -> None:
         self.solution_dict = solution1.copy()
 
