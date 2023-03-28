@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
@@ -24,7 +24,7 @@ interface PreferenceKeyInterface{
   templateUrl: "./consult-schedule.component.html",
   styleUrls: ["./consult-schedule.component.css"],
 })
-export class ConsultScheduleComponent implements OnInit {
+export class ConsultScheduleComponent implements OnInit, OnDestroy {
 
   schedule!: DetailedSchedule;
   connectedUser: boolean;
@@ -48,11 +48,16 @@ export class ConsultScheduleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.service.selectedScheduleToView === undefined){
-      return
-    }
     try{
-      this.getDetailedSchedule(this.service.selectedScheduleToView);
+      if(this.service.selectedScheduleToView){
+        this.getDetailedSchedule(this.service.selectedScheduleToView);
+      }
+      else{
+        const currentSchedule = CacheUtils.getCurrentSchedule()
+        if(currentSchedule){
+          this.getDetailedSchedule(currentSchedule);
+        }
+      }
       this.connectedUser = true;
     }
     catch(err){
@@ -60,9 +65,14 @@ export class ConsultScheduleComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.savePreferences()    
+  }
+
   getDetailedSchedule(schedule: Solution) {
     this.employeeAssignmentsMap = new Map()
     this.preferences = new Map()
+    CacheUtils.setCurrentSchedule(schedule);
     this.service.getDetailedSolution(schedule).subscribe({
       next: (data: DetailedSchedule)=>{
         this.schedule = data;
@@ -80,7 +90,12 @@ export class ConsultScheduleComponent implements OnInit {
                  shift: assignement.shift, date:assignement.date}),"");
             }
           }
-          console.log(this.preferences)
+          const savedPrefrences = CacheUtils.getPreferences(schedule);
+          if(savedPrefrences){
+            for(const pref of savedPrefrences){
+              this.preferences.set(JSON.stringify({nurse: pref.username, shift: pref.shift, date: pref.date}), pref.preference)
+            }
+          }
         }
         this.dataSource.data = data.previousVersions;
         this.validSchedule = true;
@@ -211,7 +226,48 @@ export class ConsultScheduleComponent implements OnInit {
 
   }
 
+  @HostListener("window:beforeunload")
+  savePreferences(){
+    const localPreferences: SchedulePreferenceElement[] = []
+    for(const pref of this.preferences){
+      if(pref[1]!== ""){
+        const keyInterface = JSON.parse(pref[0]) as PreferenceKeyInterface
+        const newPreference: SchedulePreferenceElement = {
+          username: keyInterface.nurse,
+          date: keyInterface.date,
+          preference: pref[1],
+          shift: keyInterface.shift,
+          weight: "hard"
+        }
+        localPreferences.push(newPreference)
+      }
+    }
+    const currentSchedule = CacheUtils.getCurrentSchedule();
+    if(currentSchedule){
+      CacheUtils.savePreferences(currentSchedule, localPreferences);
+    }
+  }
+
   viewSchedule(schedule: Solution){
+    const localPreferences: SchedulePreferenceElement[] = []
+    for(const pref of this.preferences){
+      if(pref[1]!== ""){
+        const keyInterface = JSON.parse(pref[0]) as PreferenceKeyInterface
+        const newPreference: SchedulePreferenceElement = {
+          username: keyInterface.nurse,
+          date: keyInterface.date,
+          preference: pref[1],
+          shift: keyInterface.shift,
+          weight: "hard"
+        }
+        localPreferences.push(newPreference)
+      }
+    }
+    const currentSchedule = CacheUtils.getCurrentSchedule();
+    if(currentSchedule){
+      CacheUtils.savePreferences(currentSchedule, localPreferences);
+    }
+
     this.getDetailedSchedule(schedule);
   }
 
