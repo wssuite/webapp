@@ -29,6 +29,7 @@ from constants import (
     previous_versions,
     problem,
     schedule,
+    state,
 )
 from src.utils.file_system_manager import FileSystemManager, base_directory
 
@@ -90,7 +91,7 @@ class ScheduleHandler(BaseHandler):
         response = requests.post(generate_url, params={"path": relative_path})
         if response.status_code == 200:
             solution_object.worker_host = response.text
-            solution_object.state = "In Progress"
+            solution_object.state = "Waiting"
             self.solution_dao.insert_one(solution_object.db_json())
         else:
             solution_object.state = "Fail"
@@ -235,3 +236,17 @@ class ScheduleHandler(BaseHandler):
         for element in array:
             t = object_type().from_json(element)
             destination.append(t)
+
+    def update_solution_state(self, solution_json):
+        self.solution_dao.update_state(
+            solution_json[start_date],
+            solution_json[end_date],
+            solution_json[profile],
+            solution_json[version],
+            solution_json[state],
+        )
+        return os.path.join(
+            solution_json[profile],
+            f"{solution_json[start_date]}_{solution_json[end_date]}",
+            solution_json[version],
+        )

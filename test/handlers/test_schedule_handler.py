@@ -131,7 +131,7 @@ class TestScheduleHandler(TestCase):
             end_date: "2023-06-02",
             profile: profile1,
             version: "1",
-            state: "In Progress",
+            state: "Waiting",
         }
         self.assertEqual(expected_solution, solution)
         folder_exist = self.fs.exists(full_path)
@@ -172,7 +172,7 @@ class TestScheduleHandler(TestCase):
             end_date: "2023-06-02",
             profile: profile1,
             version: "2",
-            state: "In Progress",
+            state: "Waiting",
         }
         self.assertEqual(expected_solution, solution)
         solution_detailed = self.handler.get_detailed_solution(
@@ -185,7 +185,7 @@ class TestScheduleHandler(TestCase):
                 end_date: "2023-06-02",
                 profile: profile1,
                 version: "1",
-                state: "In Progress",
+                state: "Waiting",
             }
         ]
         expected_detailed[problem] = hospital_demand_dict
@@ -238,7 +238,7 @@ class TestScheduleHandler(TestCase):
             end_date: "2023-06-02",
             profile: profile1,
             version: "1",
-            state: "In Progress",
+            state: "Waiting",
             previous_versions: [],
             problem: hospital_demand_dict,
             schedule: expected_solution,
@@ -262,7 +262,7 @@ class TestScheduleHandler(TestCase):
             end_date: "2023-06-02",
             profile: profile1,
             version: "2",
-            state: "In Progress",
+            state: "Waiting",
         }
         self.assertEqual([expected_solution], actual)
 
@@ -277,14 +277,14 @@ class TestScheduleHandler(TestCase):
                 end_date: "2023-06-02",
                 profile: profile1,
                 version: "1",
-                state: "In Progress",
+                state: "Waiting",
             },
             {
                 start_date: "2023-06-01",
                 end_date: "2023-06-02",
                 profile: profile1,
                 version: "2",
-                state: "In Progress",
+                state: "Waiting",
             },
         ]
         self.assertEqual(expected_solution, actual)

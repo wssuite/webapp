@@ -2,9 +2,17 @@ from flask import Response
 from . import schedule_mod as mod
 from flask import request
 from src.exceptions.project_base_exception import ProjectBaseException
-from constants import user_token, profile, start_date, end_date, version
+from constants import (
+    user_token,
+    profile,
+    start_date,
+    end_date,
+    version,
+    ok_message,
+)
 from src.dao.abstract_dao import DBConnection
 from src.handlers.schedule_handler import ScheduleHandler
+from .. import socketio
 
 """
     To manually test these endpoints, in the project's root, please create
@@ -104,3 +112,17 @@ def get_latest_solutions():
         )
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+"""
+    This endpoint will only be called by the worker
+     generating the schedule
+"""
+
+
+@mod.route("/updateStatus", methods=["POST"])
+def update_solution_satus():
+    json = request.json
+    room = schedule_handler.update_solution_state(json)
+    socketio.emit("notification_update", json, room=f"notification_{room}")
+    return Response(ok_message, 200)
