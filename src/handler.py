@@ -30,11 +30,11 @@ def run_scheduler(path, counter):
             to In progress
         """
     json = extract_version_info_from_path(path)
+    json["state"] = "In Progress"
     requests.post(
         f"http://{sys.argv[3]}/schedule/updateStatus",
         json=json
     )
-    json["state"] = "In Progress"
     running_fm.add_item(path, counter)
     input_file_path = os.path.join(path, "input.json")
     proc = subprocess.Popen(["sleep", "2m"])
