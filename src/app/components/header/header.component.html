@@ -1,19 +1,27 @@
 <div *ngIf="validProfile" class="header-container">
-    <span><h1 routerLink="/main-menu">Nurse scheduler</h1></span>
-    <div class="start-container">
-        <label class="profile-label">Profile: </label>
-        <mat-form-field appearance="fill">
-            <mat-label>Profile</mat-label>
-            <mat-select [(value)]="profile" (selectionChange)="handleSelectionChange()">
+    <div class="navigation-container">
+        <mat-icon class="menu-icon">menu</mat-icon>
+        <span><h1 routerLink="/main-menu">Nurse scheduler</h1></span>
+    </div>
+    <div class="profile-container">
+        <!-- <label class="profile-label">Profile: </label> -->
+        <mat-form-field class="profile-dropdown" appearance="fill">
+            <mat-label>Hospital Profile</mat-label>
+            <mat-select  [(value)]="profile" (selectionChange)="handleSelectionChange()">
                 <mat-option *ngFor="let profile of profiles" [value]="profile">
                     {{profile.profile}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button class="duplicate-button" mat-raised-button (click)="duplicate()">Duplicate</button>
-        <button class="delete-button" *ngIf="profile.creator === username" mat-raised-button (click)="deleteProfile()">Remove</button>
-        <button class="share-button" mat-raised-button (click)="share()">Share</button>
-        <button class="export-button" mat-raised-button (click)="export()">Export</button>
+        <button mat-icon-button [matMenuTriggerFor]="profileMenu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #profileMenu="matMenu">
+              <button mat-menu-item (click)="duplicate()"><mat-icon>file_copy</mat-icon><span>Duplicate</span></button>
+              <button mat-menu-item *ngIf="profile.creator === username" (click)="deleteProfile()"><mat-icon>delete</mat-icon><span>Remove</span></button>
+              <button mat-menu-item (click)="share()"><mat-icon>share</mat-icon><span>Share</span></button>
+              <button mat-menu-item (click)="export()"><mat-icon>cloud_download</mat-icon><span>Export</span>                </button>
+          </mat-menu>
     </div>
     <div class="end-buttons">
         <div class="icon-box">
@@ -25,7 +33,7 @@
             <button class="user-icon" mat-icon-button [matMenuTriggerFor]="menu">
                 <mat-icon>account_circle</mat-icon>
             </button>
-            <mat-menu #menu="matMenu">
+            <mat-menu #menu="matMenu" class="account-dropdown">
                 <button mat-menu-item (click)="logout()">
                     <mat-icon>logout</mat-icon>
                     <span>Logout</span>
