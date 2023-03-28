@@ -24,7 +24,6 @@ services:
     build:  .
     ports: 
       - 443:443
-      - 80:443
       - 5000:5000
       - 4200
     command: >
@@ -93,7 +92,7 @@ services:
       - worker2
       - worker3
     ports:
-      - 80
+      - 80:80
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
   
