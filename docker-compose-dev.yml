@@ -37,7 +37,7 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - dataset:/app/dataset
+      - dataset:/ffs/dataset
     restart: on-failure
   
   worker1:
@@ -47,8 +47,11 @@ services:
         ipv4_address: 192.168.5.6
     ports:
       - 5000
-    command: >
-      bash -c "cd /invoker && /venv/bin/python app.py 192.168.5.6:5000"
+    entrypoint: >
+      bash -c "cd /invoker && /venv/bin/python app.py 192.168.5.6:5000 2 192.168.5.2:5000"
+    volumes:
+      - dataset:/invoker/dataset
+      - running-worker1:/invoker/running
     restart: on-failure
 
   worker2:
@@ -58,8 +61,11 @@ services:
         ipv4_address: 192.168.5.7
     ports:
       - 5000
-    command: >
-      bash -c "cd /invoker && /venv/bin/python app.py 192.168.5.7:5000"
+    entrypoint: >
+      bash -c "cd /invoker && /venv/bin/python app.py 192.168.5.7:5000 2 192.168.5.2:5000"
+    volumes:
+      - dataset:/invoker/dataset
+      - running-worker2:/invoker/running
     restart: on-failure
     
   worker3:
@@ -69,8 +75,11 @@ services:
         ipv4_address: 192.168.5.8
     ports:
       - 5000
-    command: >
-      bash -c "cd /invoker && /venv/bin/python app.py 192.168.5.8:5000"
+    entrypoint: >
+      bash -c "cd /invoker && /venv/bin/python app.py 192.168.5.8:5000 2 192.168.5.2:5000"
+    volumes:
+      - dataset:/invoker/dataset
+      - running-worker3:/invoker/running
     restart: on-failure
 
   haproxy:
@@ -91,3 +100,6 @@ services:
 volumes:
   dataset:
   mongo_data:
+  running-worker1:
+  running-worker2:
+  running-worker3:
