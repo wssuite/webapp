@@ -20,11 +20,11 @@
         </tr>
         <tr class="min-max-row"*ngFor="let skill of skills">
           <td  class="min-max-cell" *ngFor="let shift of shifts" class="schedule-cells">
-            <button class="min-max" (click)="updateDemands(date, skill, shift)" 
-              [disabled]="skillDemandErrorState" 
-              matTooltip="{{showToolTip(date, skill, shift)}}"
-              [ngStyle]="getButtonStyle(date, skill, shift)">
-             {{buttonMinLabel}}<br> {{buttonMaxLabel}}
+            <button  class="min-max" 
+              [disabled]="isdDisabled" 
+              [ngStyle]="getButtonStyle(date, skill, shift)"
+              matTooltip="{{showToolTip(date, skill, shift)}}" 
+              (click)="setSelection(date, skill, shift)" >
             </button>
           </td>
         </tr>
@@ -32,6 +32,14 @@
     </div>
   </div>
 </div>
-<div class="min-max-value"><app-min-max-hopspital-demand  [(demand)]="skillDemand" (errorState)="updateSkillDemandErrorState($event)"></app-min-max-hopspital-demand></div>
+
+<div *ngIf="editOn" class="min-max-value">
+  <app-min-max-hopspital-demand   [(demand)]="demand" (errorState)="updateSkillDemandErrorState($event)"></app-min-max-hopspital-demand>
+  <div *ngIf="!skillDemandErrorState"> 
+    <button (click)="setEdition()">Edit</button>
+    <button (click)="save()">Save</button>
+  </div>
+  <button (click)="cancel()">Cancel</button>
+</div>
 
 

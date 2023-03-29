@@ -52,6 +52,17 @@
 
 }
 
+button{
+  width: 90px;
+  height: 40px;
+}
+
 button:hover{
   cursor: pointer;
+
 }
+
+
+ 
+
+

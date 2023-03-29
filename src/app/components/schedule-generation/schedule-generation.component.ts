@@ -140,7 +140,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     if (index > -1) {
       this.possibleNurses.splice(index, 1);
     }
-    this.nurses.push(this.selectedNurse);
+    this.nurses = [...this.nurses,this.selectedNurse];
     if (this.possibleNurses.length > 0) {
         this.selectedNurse = this.possibleNurses[0];
     }
@@ -150,6 +150,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     const index = this.nurses.indexOf(nurse);
     if (index > -1) {
       this.nurses.splice(index, 1);
+      this.nurses = [...this.nurses];
     }
     if (nurse !== undefined && nurse !== null) {
       this.possibleNurses.push(nurse);
@@ -161,7 +162,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     if (index > -1) {
       this.possibleShifts.splice(index, 1);
     }
-    this.shifts.push(this.selectedShift);
+    this.shifts = [...this.shifts,this.selectedShift]
     if (this.possibleShifts.length > 0) {
         this.selectedShift = this.possibleShifts[0];
     }
@@ -171,6 +172,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     const index = this.shifts.indexOf(shift);
     if (index > -1) {
       this.shifts.splice(index,1);
+      this.shifts = [...this.shifts];
     }
     if (shift !== undefined && shift !== null) {
       this.possibleShifts.push(shift);
@@ -183,7 +185,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     if (index > -1) {
       this.possibleSkills.splice(index, 1);
     }
-    this.skills.push(this.selectedSkill);
+    this.skills = [...this.skills,this.selectedSkill];
     if (this.possibleSkills.length > 0) {
         this.selectedSkill = this.possibleSkills[0];
     }
@@ -193,6 +195,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     const index = this.skills.indexOf(skill);
     if (index > -1) {
       this.skills.splice(index,1);
+      this.skills = [...this.skills];
     if (skill !== undefined && skill !== null) {
       this.possibleSkills.push(skill);
     }
