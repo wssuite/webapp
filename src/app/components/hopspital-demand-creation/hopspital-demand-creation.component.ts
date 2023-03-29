@@ -84,13 +84,12 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     }
   }
 
- /* displayValue(date: dateDisplay, skill: string, shift: string){
+ displayValue(date: dateDisplay, skill: string, shift: string){
     const key = JSON.stringify({date:date,skill:skill,shift:shift});
     const min = this.hospitalDemands.get(key)?.minValue;
     const max = this.hospitalDemands.get(key)?.maxValue;
     return "Min: " + min + '\n' + "Max: " + max;
- 
-  }*/
+  }
 
   setSelection(date: dateDisplay, skill: string, shift: string){
     const key = JSON.stringify({date:date,skill:skill,shift:shift});

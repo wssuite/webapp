@@ -24,7 +24,8 @@
               [disabled]="isdDisabled" 
               [ngStyle]="getButtonStyle(date, skill, shift)"
               matTooltip="{{showToolTip(date, skill, shift)}}" 
-              (click)="setSelection(date, skill, shift)" >
+              (click)="setSelection(date, skill, shift)"
+              >{{displayValue(date, skill, shift)}} 
             </button>
           </td>
         </tr>
