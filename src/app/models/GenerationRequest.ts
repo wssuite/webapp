@@ -7,7 +7,6 @@ export interface SchedulePreferenceElement {
 }
 
 export interface HospitalDemandElement {
-    day: string;
     date: string;
     shift: string;
     skill: string;

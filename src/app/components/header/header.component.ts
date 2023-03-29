@@ -4,9 +4,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
 import { CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
+import { SUCCESS } from 'src/app/constants/schedule_states';
+import { NOTIFICATION_UPDATE } from 'src/app/constants/socket-events';
 import { BaseProfile } from 'src/app/models/Profile';
+import { Solution } from 'src/app/models/Schedule';
 import { AccountService } from 'src/app/services/account/account.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { ScheduleService } from 'src/app/services/schedule/schedule-service.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { CreateProfileDialogComponent } from '../create-profile-dialog/create-profile-dialog.component';
 import { DuplicateProfileComponent } from '../create-profile-dialog/duplicate-profile/duplicate-profile.component';
@@ -28,7 +32,8 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   connectedUser!: boolean
   
   constructor(private accountService: AccountService, private router: Router,
-    private dialog: MatDialog, private profileService: ProfileService){
+    private dialog: MatDialog, private profileService: ProfileService, 
+    private scheduleService: ScheduleService){
       this.profiles = [];
       this.validProfile = false;
     }
@@ -39,6 +44,9 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       this.isAdmin = CacheUtils.getIsAdmin();
       this.username = CacheUtils.getUsername();
       this.connectedUser= true; 
+      if(this.scheduleService.socket === undefined){
+        this.scheduleService.connectSocket()
+      }
     } catch(err){
       this.connectedUser = false;
     }
@@ -47,6 +55,12 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   ngAfterViewInit(): void {
       this.profileService.newImportedProfileCreated.subscribe((created: boolean)=>{
         this.getProfiles(created);
+      })
+      this.scheduleService.socket.on(NOTIFICATION_UPDATE, (solution: Solution)=>{
+        if(solution.state === SUCCESS){
+          this.scheduleService.notificationUnsubscribe(solution);
+        }
+        console.log(solution);
       })
   }
   

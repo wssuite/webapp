@@ -164,9 +164,9 @@
     mat-raised-button
     color="primary"
     class="generateScheduleButton"
-    (click)="viewSchedule()"
+    (click)="generateSchedule()"
     [disabled]="
-      range.invalid || inputControlForm.invalid || nurses.length === 0 || shifts.length === 0
+      range.invalid || inputControlForm.hasError('required') || nurses.length === 0 || shifts.length === 0
     "
   >
     Generate schedule

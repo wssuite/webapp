@@ -4,14 +4,19 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-import { CONSULT_SCHEDULE } from "src/app/constants/app-routes";
+import { CONSULT_SCHEDULE, VIEW_SCHEDULES } from "src/app/constants/app-routes";
 import { HospitalDemand, ScheduleDataInterface } from "src/app/models/hospital-demand"
 import { NurseInterface } from "src/app/models/Nurse";
 import { NurseService } from "src/app/services/nurse/nurse.service"
 import { ShiftService } from "src/app/services/shift/shift.service";
 import { SkillService } from "src/app/services/shift/skill.service";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
-import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+import { GenerationRequest, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+import { DateUtils } from "src/app/utils/DateUtils";
+import { CacheUtils } from "src/app/utils/CacheUtils";
+import { hospitalDemandExample } from "src/app/constants/hospital-demand-example";
+import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
+import { Solution } from "src/app/models/Schedule";
 
 
 @Component({
@@ -19,7 +24,7 @@ import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
   templateUrl: "./schedule-generation.component.html",
   styleUrls: ["./schedule-generation.component.css"],
 })
-export class ScheduleGenerationComponent implements OnInit  {
+export class ScheduleGenerationComponent implements OnInit {
   startDate: Date;
   endDate: Date;
 
@@ -55,7 +60,7 @@ export class ScheduleGenerationComponent implements OnInit  {
   scheduleData!: ScheduleDataInterface;
 
   constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService, 
-    private nurseService: NurseService, private dialog: MatDialog
+    private nurseService: NurseService, private dialog: MatDialog, private scheduleService: ScheduleService
   ){
     this.startDate = new Date();
     this.endDate = new Date();
@@ -90,7 +95,9 @@ export class ScheduleGenerationComponent implements OnInit  {
         }
       })
 
-      
+      if(this.scheduleService.socket === undefined){
+        this.scheduleService.connectSocket()
+      }
       this.nurseService.getAllNurse().subscribe({
         next: (nurses: NurseInterface[])=> {
           nurses.forEach((nurse: NurseInterface)=>{
@@ -222,7 +229,34 @@ export class ScheduleGenerationComponent implements OnInit  {
         : (this.endDate = new Date());
   }
 
-
+  generateSchedule(){
+    const sd = DateUtils.arrangeDateString(this.startDate.toLocaleDateString().replaceAll("/", "-"))
+    const ed = DateUtils.arrangeDateString(this.endDate.toLocaleDateString().replaceAll("/", "-"))
+    const requestNurses: string[] = []
+    this.nurses.forEach((nurse: NurseInterface)=>{
+      requestNurses.push(nurse.username)
+    })
+    const request: GenerationRequest= {
+      startDate: sd,
+      endDate: ed,
+      profile: CacheUtils.getProfile(),
+      preferences: this.nursesPreference,
+      nurses: requestNurses,
+      skills: this.skills,
+      shifts: this.shifts,
+      hospitalDemand: hospitalDemandExample
+    }
+    this.scheduleService.generateSchedule(request).subscribe({
+      next: (sol: Solution)=>{
+        this.scheduleService.notificationSubscribe(sol);
+        this.router.navigate(["/" + VIEW_SCHEDULES])
+      },
+      error: (err: HttpErrorResponse)=>{
+        this.openErrorDialog(err.error);
+      }
+      
+    })
+  }
   viewSchedule() {
     this.router.navigate(["/" + CONSULT_SCHEDULE]);
   }

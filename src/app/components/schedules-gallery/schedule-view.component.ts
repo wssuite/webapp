@@ -11,6 +11,7 @@ import { saveAs } from 'file-saver';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Router } from '@angular/router';
 import { CONSULT_SCHEDULE, SCHEDULE_GENERATION } from 'src/app/constants/app-routes';
+import { NOTIFICATION_UPDATE } from 'src/app/constants/socket-events';
 
 @Component({
   selector: 'app-schedule-view',
@@ -38,6 +39,9 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
     try{
       this.getSchedules();
       this.connectedUser = true;
+      if(this.service.socket === undefined){
+        this.service.connectSocket()
+      }
     } catch(err) {
       this.connectedUser = false;
     }
@@ -48,6 +52,9 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
       this.getSchedules();
     })
     this.dataSource.paginator = this.paginator;
+    this.service.socket.on(NOTIFICATION_UPDATE, ()=>{
+      this.getSchedules()
+    })
   }
 
   getSchedules(){

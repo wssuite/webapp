@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MAIN_MENU } from 'src/app/constants/app-routes';
 import { Credentials, UserInfo } from 'src/app/models/Credentials';
 import { AccountService } from 'src/app/services/account/account.service';
+import { ScheduleService } from 'src/app/services/schedule/schedule-service.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 
@@ -20,7 +21,8 @@ export class LoginComponent {
   usernameControlForm: FormControl;
   passwordControlForm: FormControl;
 
-  constructor(private router: Router, private apiService: AccountService, private dialog: MatDialog) {
+  constructor(private router: Router, private apiService: AccountService, private dialog: MatDialog, 
+    private scheduleService: ScheduleService) {
     this.username = "";
     this.password = "";
     this.usernameControlForm = new FormControl(null, Validators.required);
@@ -42,6 +44,7 @@ export class LoginComponent {
     this.apiService.login(credentials).subscribe({
       next: (value: UserInfo)=>{
         CacheUtils.pushUserInfo(value);
+        this.scheduleService.connectSocket()
         this.router.navigate(["/" + MAIN_MENU]);
       },
       error: (err: HttpErrorResponse)=> {

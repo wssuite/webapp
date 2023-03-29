@@ -4,7 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import * as saveAs from "file-saver";
-import { MAIN_MENU } from "src/app/constants/app-routes";
+import { MAIN_MENU, VIEW_SCHEDULES } from "src/app/constants/app-routes";
 import { Assignment } from "src/app/models/Assignment";
 import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { DetailedSchedule, Solution } from "src/app/models/Schedule";
@@ -59,6 +59,9 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
         }
       }
       this.connectedUser = true;
+      if(this.service.socket === undefined){
+        this.service.connectSocket()
+      }
     }
     catch(err){
       // Do noting
@@ -305,7 +308,10 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
     }
     console.log(this.schedule.problem.preferences)
     this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
-      next: ()=> this.router.navigate(["/" + MAIN_MENU]),
+      next: (sol: Solution)=> {
+        this.service.notificationSubscribe(sol);
+        this.router.navigate(["/" + VIEW_SCHEDULES])
+      },
       error: (err: HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
           this.router.navigate(["/" + MAIN_MENU]);

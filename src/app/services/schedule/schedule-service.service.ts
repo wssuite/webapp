@@ -1,10 +1,12 @@
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ALL_SOLUTIONS, DETAILED_SOLUTION_URL,
+import {Socket, io} from "socket.io-client";
+import { ALL_SOLUTIONS, BASE_URL, DETAILED_SOLUTION_URL,
   EXPORT_PROBLEM_URL, GENERATE_SCHEDULE,
   LATEST_SOLUTIONS, 
   REGENERATE_SCHEDULE_URL} from 'src/app/constants/api-constants';
+import { SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS } from 'src/app/constants/socket-events';
 import { GenerationRequest } from 'src/app/models/GenerationRequest';
 import { DetailedSchedule, Solution } from 'src/app/models/Schedule';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
@@ -15,15 +17,16 @@ import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUti
 export class ScheduleService {
   
   selectedScheduleToView!: Solution
+  socket!: Socket;
 
   constructor(private httpClient: HttpClient) { }
 
   
-  generateSchedule(request: GenerationRequest): Observable<HttpResponse<string>>{
+  generateSchedule(request: GenerationRequest): Observable<Solution>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
-      return this.httpClient.post<HttpResponse<string>>(GENERATE_SCHEDULE, request, {
+      return this.httpClient.post<Solution>(GENERATE_SCHEDULE, request, {
         params: queryParams,
       })
     }
@@ -32,12 +35,12 @@ export class ScheduleService {
     }
   }
 
-  regenerateSchedule(oldVersion: string,request: GenerationRequest): Observable<HttpResponse<string>>{
+  regenerateSchedule(oldVersion: string,request: GenerationRequest): Observable<Solution>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
       queryParams = queryParams.append("version", oldVersion);
-      return this.httpClient.post<HttpResponse<string>>(REGENERATE_SCHEDULE_URL, request, {
+      return this.httpClient.post<Solution>(REGENERATE_SCHEDULE_URL, request, {
         params: queryParams,
       })
     }
@@ -123,5 +126,18 @@ export class ScheduleService {
     catch(err){
       throw new Error("user not logged in")
     }
+  }
+
+  connectSocket(){
+    this.socket = io(BASE_URL)
+    console.log(this.socket)
+  }
+
+  notificationUnsubscribe(solution: Solution){
+    this.socket.emit(UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution)
+  }
+
+  notificationSubscribe(solution: Solution) {
+    this.socket.emit(SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution)
   }
 }
