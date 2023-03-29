@@ -12,7 +12,8 @@
 
         
         <div class="mat-elevation-z8">
-      
+
+        <div id="table-wrapper">
         <table mat-table [dataSource]="dataSource" matSort> 
       
       <!-- Name Column -->
@@ -46,6 +47,7 @@
           <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
         </tr>
       </table>
+    </div>
       <mat-paginator [pageSizeOptions]="[5, 10, 15,20]"></mat-paginator>
       </div></div> 
       <ng-template #noSkills>

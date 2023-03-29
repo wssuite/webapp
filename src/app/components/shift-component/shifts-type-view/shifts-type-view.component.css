@@ -15,21 +15,26 @@
     margin-right: 15px;
 }
 
-mat-paginator{
-    margin-top: 10%;
+#table-wrapper{
+    height: calc(100vh - 305px);
+    max-height: calc(100vh - 305px);
+    overflow: auto;
 }
 
-::ng-deep #skill-button {
-    background-color: white;
-}
-
-::ng-deep #shift-button {
-    background-color: white;
-}
 ::ng-deep #shifts-type-nav-bar #shift-type-button {
-    background-color: #F6F6F6;
+    background-color: #d3dde9;
+    color: #1a3d66;
+    padding: 35px;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
-::ng-deep #shift-group-button {
+::ng-deep #skill-button, ::ng-deep #shift-button, ::ng-deep #shift-group-button {
     background-color: white;
+    color: #1a3d66;
+    padding: 35px;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
 }
