@@ -1,7 +1,6 @@
 .buttonCreate{
     margin-right: 2vw;
-    margin-top: 1vh;
-    height: 50px;
+    height: 56px;
     width: 240px;
     font-size: large;
 }
@@ -9,6 +8,7 @@
 .button-container{
     display: flex;
     justify-content: flex-end;
+    margin-top: 2vh;
 }
 
 .filter{
@@ -16,10 +16,9 @@
 }
 
 #table-wrapper{
-    height: calc(100vh - 305px);
-    max-height: calc(100vh - 305px);
+    height: calc(100vh - 353px);
+    max-height: calc(100vh - 353px);
     overflow: auto;
-
 }
 
 ::ng-deep #skill-nav-bar #skill-button {
