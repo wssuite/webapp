@@ -42,13 +42,11 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (changes["skills"] && changes["skills"].currentValue) {
       this.skills = changes["skills"].currentValue;
     }
     if (changes["shifts"] && changes["shifts"].currentValue) {
       this.shifts = changes["shifts"].currentValue;
-      console.log("changes");
     }
     if (changes["startDate"] && changes["startDate"].currentValue) {
       this.startDate = changes["startDate"].currentValue;
@@ -69,7 +67,6 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     for(let i = 0; i <= this.nbColumns; i++) {
       this.timetable.push( {date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
     }
-    console.log("init");
     //initiate demands
     this.hospitalDemands = new Map();
     this.selectedShift = new Map();

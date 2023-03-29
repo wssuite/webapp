@@ -42,10 +42,16 @@
         >Invalid end date</mat-error
       >
     </mat-form-field>
+    <div><button mat-raised-button class="addAllButton" (click)="addAll()">
+      add all Nurses, Skills & Shifts
+    </button></div>
   </div>
   <div class="scheduleDataSection">
     <H1 class="employeeSectionTitle">Nurses</H1>
     <div *ngIf="possibleNurses.length > 0">
+      <button mat-raised-button class="addAllNurseButton" (click)="addAllNurse()">
+        add all Nurses
+      </button><br>
       <mat-form-field appearance="fill">
         <mat-label>select a nurse</mat-label>
         <mat-select [(ngModel)]="selectedNurse">
@@ -76,6 +82,9 @@
   <div class="shiftSection">
     <H1 class="shiftSectionTitle">Shifts</H1>
     <div *ngIf="possibleShifts.length > 0">
+      <button mat-raised-button class="addAllShiftButton" (click)="addAllShift()">
+        add all Shifts
+      </button><br>
       <mat-form-field appearance="fill">
         <mat-label>select a shift</mat-label>
         <mat-select [(ngModel)]="selectedShift">
@@ -108,6 +117,9 @@
   <div class="skillSection">
   <H1 class="shiftSectionTitle">Skills</H1>
   <div *ngIf="possibleSkills.length > 0">
+    <button mat-raised-button class="addAllSkillButton" (click)="addAllSkill()">
+      add all Skills
+    </button><br>
     <mat-form-field appearance="fill">
       <mat-label>select a skill</mat-label>
       <mat-select [(ngModel)]="selectedSkill">

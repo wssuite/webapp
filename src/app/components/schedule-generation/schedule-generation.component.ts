@@ -134,6 +134,33 @@ export class ScheduleGenerationComponent implements OnInit  {
     })
   }
 
+  addAllNurse(){
+    for(const nurse of this.possibleNurses){
+      this.nurses = [...this.nurses,nurse];
+    }
+    this.possibleNurses = [];
+  }
+
+  addAllShift(){
+    for(const shift of this.possibleShifts){
+      this.shifts = [...this.shifts,shift];
+    }
+    this.possibleShifts = [];
+  }
+
+  addAllSkill(){
+    for(const skill of this.possibleSkills){
+      this.skills = [...this.skills,skill];
+    }
+    this.possibleSkills = [];
+  }
+
+  addAll(){
+    this.addAllNurse();
+    this.addAllShift();
+    this.addAllSkill();
+  }
+
 
   addNurse() {
     const index = this.possibleNurses.indexOf(this.selectedNurse);
