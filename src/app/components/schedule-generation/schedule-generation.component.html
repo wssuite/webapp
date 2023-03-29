@@ -155,7 +155,7 @@
 
   <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
     <H1 class="HospitalDemandSectionTitle">Hospital Demand</H1>  
-    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate"></app-hopspital-demand-creation>
+    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)"></app-hopspital-demand-creation>
 
 
   </div>

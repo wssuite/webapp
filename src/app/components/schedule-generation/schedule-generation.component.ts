@@ -253,4 +253,8 @@ export class ScheduleGenerationComponent implements OnInit  {
     console.log(preferences);
     this.nursesPreference = preferences;
   }
+
+  updateDemands(demand: HospitalDemandElement[]){
+    this.hospitalDemands = demand;
+  }
 }
