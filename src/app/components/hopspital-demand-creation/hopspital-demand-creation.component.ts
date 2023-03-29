@@ -1,7 +1,8 @@
 import { Component,EventEmitter,Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { WEIGHT_ALLOWED_INTEGERS } from 'src/app/constants/regex';
 import { dateDisplay } from 'src/app/models/DateDisplay';
-import { HospitalDemandInterface, SkillDemandInterface } from 'src/app/models/hospital-demand';
+import { HospitalDemandElement } from 'src/app/models/GenerationRequest';
+import { SkillDemandInterface } from 'src/app/models/hospital-demand';
 import { DateUtils } from 'src/app/utils/DateUtils';
 
 
@@ -17,7 +18,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
   @Input() skills!: string[]; 
   @Input() startDate!: Date;
   @Input() endDate!: Date;
-  @Output() hospitalDemand: EventEmitter<HospitalDemandInterface[]>
+  @Output() hospitalDemand: EventEmitter<HospitalDemandElement[]>
   
   demand: SkillDemandInterface;
   skillDemandErrorState: boolean;
