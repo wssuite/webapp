@@ -39,4 +39,5 @@ from . import (
     user_controller,
     skill_controller,
     schedule_controller,
+    socket_actions,
 )
