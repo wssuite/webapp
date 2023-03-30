@@ -129,7 +129,7 @@ class ScheduleHandler(BaseHandler):
             db_solution.version,
         )
         relative_path = full_path.replace(base_directory, "")
-        requests.post(stop_url, relative_path)
+        requests.post(stop_url, params={"path": relative_path})
 
     def get_detailed_solution(self, token, start, end, profile_name, v):
         self.verify_profile_accessors_access(token, profile_name)
