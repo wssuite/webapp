@@ -43,10 +43,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       this.getProfiles(false);
       this.isAdmin = CacheUtils.getIsAdmin();
       this.username = CacheUtils.getUsername();
-      this.connectedUser= true; 
-      if(this.scheduleService.socket === undefined){
-        this.scheduleService.connectSocket()
-      }
+      this.connectedUser= true;
     } catch(err){
       this.connectedUser = false;
     }
@@ -60,7 +57,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
         if(solution.state === SUCCESS){
           this.scheduleService.notificationUnsubscribe(solution);
         }
-        console.log(solution);
+        console.log(solution.state);
       })
   }
   

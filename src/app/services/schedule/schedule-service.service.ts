@@ -19,7 +19,10 @@ export class ScheduleService {
   selectedScheduleToView!: Solution
   socket!: Socket;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { 
+    this.socket = io(BASE_URL)
+    console.log(this.socket)
+  }
 
   
   generateSchedule(request: GenerationRequest): Observable<Solution>{

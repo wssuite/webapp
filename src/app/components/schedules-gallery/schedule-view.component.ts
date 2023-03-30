@@ -39,9 +39,6 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
     try{
       this.getSchedules();
       this.connectedUser = true;
-      if(this.service.socket === undefined){
-        this.service.connectSocket()
-      }
     } catch(err) {
       this.connectedUser = false;
     }
@@ -63,7 +60,6 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
         this.schedules = schedules.reverse();
         this.dataSource.data= schedules;
         this.dataSource.paginator = this.paginator;
-        console.log(this.schedules)
       },
       error: (err: HttpErrorResponse)=> {
         this.openErrorDialog(err.error)
