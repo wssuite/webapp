@@ -43,6 +43,10 @@ def run_scheduler(path, counter):
     input_folder = os.path.join(path, "sol")
     os.mkdir(input_folder)
     shutil.copy(input_file_path, os.path.join(input_folder, "sol.txt"))
+    requests.post(
+        f"http://{data['main_server_address']}/schedule/updateStatus",
+        json=info_json
+    )
     proc = subprocess.Popen(
         [
             "./bin/staticscheduler",
@@ -53,11 +57,6 @@ def run_scheduler(path, counter):
             f"--timeout {data['timeout']}",
             "--origin ui"
         ]
-    )
-
-    requests.post(
-        f"http://{data['main_server_address']}/schedule/updateStatus",
-        json=info_json
     )
     proc.wait()
     print(proc.returncode)
