@@ -106,8 +106,8 @@ def pop_from_waiting():
 
 
 def schedule_waiting():
-    data = running_fm.read()
-    if len(data.keys()) < int(data["max_nb_processor"]):
+    running_data = running_fm.read()
+    if len(running_data.keys()) < int(data["max_nb_processor"]):
         item = pop_from_waiting()
         if item is not None:
             print("new item scheduled")
