@@ -23,9 +23,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   @Output() schedulePreference: EventEmitter<SchedulePreferenceElement[]>
 
   timetable: dateDisplay[];
-  selectedShifts: { nurse: string, shift: string, weight: string }[] = [];
   preferences: Map<dateDisplay, Map<string,Map<string, {pref: string, weight: string}>>>;
-
   nbColumns: number | undefined;
   
 
@@ -42,6 +40,12 @@ import { DateUtils } from "src/app/utils/DateUtils";
     }
     if (changes["shifts"] && changes["shifts"].currentValue) {
       this.shifts = changes["shifts"].currentValue;
+    }
+    if (changes["startDate"] && changes["startDate"].currentValue) {
+      this.startDate = changes["startDate"].currentValue; 
+    }
+    if (changes["endDate"] && changes["endDate"].currentValue) {
+      this.endDate = changes["endDate"].currentValue;
     }
     this.ngOnInit()
     this.getButtonState();

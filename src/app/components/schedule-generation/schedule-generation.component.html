@@ -42,13 +42,19 @@
         >Invalid end date</mat-error
       >
     </mat-form-field>
+    <div *ngIf="possibleSkills.length > 0 || possibleShifts.length > 0 || possibleNurses.length > 0" ><button mat-raised-button class="addAllButton" (click)="addAll()">
+      add all Nurses, Skills & Shifts
+    </button></div>
   </div>
   <div class="scheduleDataSection">
     <H1 class="employeeSectionTitle">Nurses</H1>
     <div *ngIf="possibleNurses.length > 0">
+      <button mat-raised-button class="addAllNurseButton" (click)="addAllNurse()">
+        add all Nurses
+      </button><br>
       <mat-form-field appearance="fill">
         <mat-label>select a nurse</mat-label>
-        <mat-select [(value)]="selectedNurse">
+        <mat-select [(ngModel)]="selectedNurse">
           <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
             {{ nurse.name}} - {{nurse.username}}
           </mat-option>
@@ -76,9 +82,12 @@
   <div class="shiftSection">
     <H1 class="shiftSectionTitle">Shifts</H1>
     <div *ngIf="possibleShifts.length > 0">
+      <button mat-raised-button class="addAllShiftButton" (click)="addAllShift()">
+        add all Shifts
+      </button><br>
       <mat-form-field appearance="fill">
         <mat-label>select a shift</mat-label>
-        <mat-select [(value)]="selectedShift">
+        <mat-select [(ngModel)]="selectedShift">
           <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
             {{shift}}
           </mat-option>
@@ -108,9 +117,12 @@
   <div class="skillSection">
   <H1 class="shiftSectionTitle">Skills</H1>
   <div *ngIf="possibleSkills.length > 0">
+    <button mat-raised-button class="addAllSkillButton" (click)="addAllSkill()">
+      add all Skills
+    </button><br>
     <mat-form-field appearance="fill">
       <mat-label>select a skill</mat-label>
-      <mat-select [(value)]="selectedSkill">
+      <mat-select [(ngModel)]="selectedSkill">
         <mat-option *ngFor="let skill of possibleSkills" [value]="skill">
           {{skill}}
         </mat-option>
@@ -136,37 +148,23 @@
     </tr>
   </table>
 </div>
-<div *ngIf= "shifts.length > 0" class="nursePreferenceSection">
+<div *ngIf= "shifts.length > 0  && nurses.length > 0" class="nursePreferenceSection">
   <H1 class="HospitalDemandSectionTitle">Nurse Preferences</H1>  
   <app-nurse-preference [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)"></app-nurse-preference>
 </div>
 
-  <div  class="HospitalDemandSection">
+  <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
     <H1 class="HospitalDemandSectionTitle">Hospital Demand</H1>  
-    <button mat-mini-fab (click)="addDemand()" color="primary" matTooltip="Add another demand" class="add-button">
-      <mat-icon>add</mat-icon>
-  </button>
-  <table cellspacing="5">
-    <tr *ngFor="let demand of hospitalDemands ; let i= index">
-        <td>
-          <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [index]="i+1"></app-hopspital-demand-creation>
-        </td>
-        <td>
-            <button *ngIf="hospitalDemands.length > 1" mat-raised-button (click)="removeDemand(demand)" color="accent">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </td>
-    </tr>
-</table>
-</div>
+    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
+
+
   </div>
   <button
     mat-raised-button
     color="primary"
     class="generateScheduleButton"
     (click)="viewSchedule()"
-    [disabled]="
-      range.invalid || inputControlForm.invalid || nurses.length === 0 || shifts.length === 0
+    [disabled]=" nurses.length === 0 || shifts.length === 0 || demandsError
     "
   >
     Generate schedule

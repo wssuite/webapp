@@ -10,9 +10,10 @@ import { SkillDemandInterface } from 'src/app/models/hospital-demand';
   styleUrls: ['./min-max-hopspital-demand.component.css']
 })
 export class MinMaxHopspitalDemandComponent implements OnInit{
+  @Input() demand!: SkillDemandInterface;
   @Output() demandChange: EventEmitter<SkillDemandInterface>;
-  @Input() skill!: string;
   @Output() errorState: EventEmitter<boolean>;
+
   
   minValueErrorState: boolean;
   maxValueErrorState: boolean;
@@ -20,7 +21,7 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
   minWeightErrorState: boolean;
   minWeightLabel: string;
   maxWeightLabel: string;
-  skillDemand: SkillDemandInterface;
+
   
   constructor() {
     this.demandChange = new EventEmitter();
@@ -31,8 +32,7 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
     this.minWeightErrorState = true;
     this.maxWeightLabel = " Max weight";
     this.minWeightLabel = "Min weight"
-    this.skillDemand = {
-      skillId: this.skill,
+    this.demand = {
       maxValue: "0",
       maxWeight: "0",
       minValue: "0",
@@ -40,11 +40,10 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
   }
 
   ngOnInit(): void {
-      this.minValueErrorState = this.skillDemand.minValue === BASE_VALUE;
-      this.maxValueErrorState = this.skillDemand.maxValue === BASE_VALUE;
-      this.maxWeightErrorState = this.skillDemand.maxWeight === BASE_VALUE;
-      this.minWeightErrorState = this.skillDemand.minWeight === BASE_VALUE;
-      this.skillDemand.skillId = this.skill;
+      this.minValueErrorState = this.demand.minValue === BASE_VALUE;
+      this.maxValueErrorState = this.demand.maxValue === BASE_VALUE;
+      this.maxWeightErrorState = this.demand.maxWeight === BASE_VALUE;
+      this.minWeightErrorState = this.demand.minWeight === BASE_VALUE;
   }
 
   emitErrorState(){
@@ -53,7 +52,7 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
   }
 
   emitSkillDemand() {
-    this.demandChange.emit(this.skillDemand);
+    this.demandChange.emit(this.demand);
     this.emitErrorState();
   }
 
@@ -77,20 +76,5 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
     this.emitSkillDemand();
   }
 
-  /*isSelected = (event: any) => {
-    const date = event as moment.Moment
-    
-    return (this.dates.find(x => x.isSame(date))) ? "selected" : null;
-  };
-  
-  select(event: any, calendar: any) {
-    const date: moment.Moment = event
-
-    const index = this.dates.findIndex(x => x.isSame(date));
-    if (index < 0) this.dates.push(date);
-    else this.dates.splice(index, 1);
-
-    calendar.updateTodaysDate();
-  }*/
 }
 

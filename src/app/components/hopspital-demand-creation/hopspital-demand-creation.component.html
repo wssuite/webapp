@@ -1,57 +1,50 @@
-<mat-expansion-panel hideToggle>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      Demand {{index}}
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-<mat-expansion-panel hideToggle>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      Date
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Date</mat-label>
-    <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
-  </mat-form-field>
-  <mat-datepicker #picker></mat-datepicker>
-</mat-expansion-panel>
-<div class="shift" *ngFor="let shift of shifts">
-<mat-expansion-panel (opened)="panelOpenState = true"(closed)="panelOpenState = false">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-    {{shift}}
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-  <mat-accordion class="example-headers-align">
-    <div class="skill" *ngFor="let skill of skills; let i = index">
-    <mat-expansion-panel  [expanded]="step === i" (opened)="setStep(i)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-        {{skill}}
-        </mat-panel-title>
-        <mat-panel-description>
-          skill demands
-          <mat-icon>assignment_ind</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-         <app-min-max-hopspital-demand [skill]="skill"></app-min-max-hopspital-demand>
-
-      <mat-action-row>
-        <button mat-button color="warn" (click)="prevStep()">Previous</button>
-        <button mat-button color="primary" (click)="nextStep()">End</button>
-      </mat-action-row>
-    </mat-expansion-panel>
+<div class="schedule-container">
+  <div class="skill-name-table">
+    <table>
+      <tr>
+        <th class="skill-name-header">Skill</th>
+      </tr>
+      <tr *ngFor="let skill of skills">
+        <td class="skill-name-cell">{{skill}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="timetable-table">
+    <div class="date-table" *ngFor="let date of timetable">
+      <caption class="date-header"> {{date.day}}  {{date.date}}</caption>
+      <table>
+        <tr>
+          <th class="shift-header"*ngFor="let shift of shifts">
+            {{shift}}
+          </th>
+        </tr>
+        <tr class="min-max-row"*ngFor="let skill of skills">
+          <td  class="min-max-cell" *ngFor="let shift of shifts" class="schedule-cells">
+            <button  class="min-max" 
+              [disabled]="isdDisabled" 
+              [ngStyle]="getButtonStyle(date, skill, shift)"
+              matTooltip="{{showToolTip(date, skill, shift)}}" 
+              (click)="setSelection(date, skill, shift)"
+              >{{displayValue(date, skill, shift)}} 
+            </button>
+          </td>
+        </tr>
+      </table>
     </div>
-  
-  </mat-accordion>
-</mat-expansion-panel>
+  </div>
 </div>
-</mat-expansion-panel>
 
-
-
+<div *ngIf="editOn" class="min-max-value">
+  <app-min-max-hopspital-demand   [(demand)]="demand" (errorState)="updateSkillDemandErrorState($event)"></app-min-max-hopspital-demand>
+  <div *ngIf="!skillDemandErrorState"> 
+    <button (click)="setEdition()">Edit</button>
+    <button (click)="save()">Save</button>
+    <div *ngIf="saveDemandError" >
+      <mat-icon color="warn">error</mat-icon>
+      <label>Preferences must be saved</label>
+    </div>
+  </div>
+  <button (click)="cancel()">Cancel</button>
+</div>
 
 

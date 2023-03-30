@@ -1,17 +1,17 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component,OnInit,} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CONSULT_SCHEDULE } from "src/app/constants/app-routes";
-import { HospitalDemand, ScheduleDataInterface } from "src/app/models/hospital-demand"
+import {  ScheduleDataInterface } from "src/app/models/hospital-demand"
 import { NurseInterface } from "src/app/models/Nurse";
 import { NurseService } from "src/app/services/nurse/nurse.service"
 import { ShiftService } from "src/app/services/shift/shift.service";
 import { SkillService } from "src/app/services/shift/skill.service";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
-import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+import { HospitalDemandElement, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 
 
 @Component({
@@ -49,7 +49,8 @@ export class ScheduleGenerationComponent implements OnInit  {
   selectedSkill: string;
   skills: string[];
 
-  hospitalDemands: HospitalDemand[];
+  hospitalDemands: HospitalDemandElement[];
+  demandsError: boolean;
   nursesPreference: SchedulePreferenceElement[];
 
   scheduleData!: ScheduleDataInterface;
@@ -75,6 +76,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     this.shifts = [];
     this.hospitalDemands = [];
     this.nursesPreference = [];
+    this.demandsError = true;
 
   }
   ngOnInit(): void {
@@ -84,6 +86,7 @@ export class ScheduleGenerationComponent implements OnInit  {
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
           })
+          this.selectedShift=this.possibleShifts[0];
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -97,6 +100,7 @@ export class ScheduleGenerationComponent implements OnInit  {
             this.possibleNurses.push(nurse);
             this.nursesUsername.push(nurse.username);
           })
+          this.selectedNurse = this.possibleNurses[0];
         },
         error: (error: HttpErrorResponse)=> {
           this.openErrorDialog(error.error);
@@ -109,6 +113,7 @@ export class ScheduleGenerationComponent implements OnInit  {
             skills.forEach((skill: string)=>{
               this.possibleSkills.push(skill);
             })
+            this.selectedSkill = this.possibleSkills[0];
           },
           error: (error: HttpErrorResponse)=>{
             this.openErrorDialog(error.error);
@@ -131,13 +136,40 @@ export class ScheduleGenerationComponent implements OnInit  {
     })
   }
 
+  addAllNurse(){
+    for(const nurse of this.possibleNurses){
+      this.nurses = [...this.nurses,nurse];
+    }
+    this.possibleNurses = [];
+  }
+
+  addAllShift(){
+    for(const shift of this.possibleShifts){
+      this.shifts = [...this.shifts,shift];
+    }
+    this.possibleShifts = [];
+  }
+
+  addAllSkill(){
+    for(const skill of this.possibleSkills){
+      this.skills = [...this.skills,skill];
+    }
+    this.possibleSkills = [];
+  }
+
+  addAll(){
+    this.addAllNurse();
+    this.addAllShift();
+    this.addAllSkill();
+  }
+
 
   addNurse() {
     const index = this.possibleNurses.indexOf(this.selectedNurse);
     if (index > -1) {
       this.possibleNurses.splice(index, 1);
     }
-    this.nurses.push(this.selectedNurse);
+    this.nurses = [...this.nurses,this.selectedNurse];
     if (this.possibleNurses.length > 0) {
         this.selectedNurse = this.possibleNurses[0];
     }
@@ -147,6 +179,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     const index = this.nurses.indexOf(nurse);
     if (index > -1) {
       this.nurses.splice(index, 1);
+      this.nurses = [...this.nurses];
     }
     if (nurse !== undefined && nurse !== null) {
       this.possibleNurses.push(nurse);
@@ -158,7 +191,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     if (index > -1) {
       this.possibleShifts.splice(index, 1);
     }
-    this.shifts.push(this.selectedShift);
+    this.shifts = [...this.shifts,this.selectedShift]
     if (this.possibleShifts.length > 0) {
         this.selectedShift = this.possibleShifts[0];
     }
@@ -168,6 +201,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     const index = this.shifts.indexOf(shift);
     if (index > -1) {
       this.shifts.splice(index,1);
+      this.shifts = [...this.shifts];
     }
     if (shift !== undefined && shift !== null) {
       this.possibleShifts.push(shift);
@@ -180,7 +214,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     if (index > -1) {
       this.possibleSkills.splice(index, 1);
     }
-    this.skills.push(this.selectedSkill);
+    this.skills = [...this.skills,this.selectedSkill];
     if (this.possibleSkills.length > 0) {
         this.selectedSkill = this.possibleSkills[0];
     }
@@ -190,23 +224,13 @@ export class ScheduleGenerationComponent implements OnInit  {
     const index = this.skills.indexOf(skill);
     if (index > -1) {
       this.skills.splice(index,1);
+      this.skills = [...this.skills];
     if (skill !== undefined && skill !== null) {
       this.possibleSkills.push(skill);
     }
   }
 }
 
-  addDemand(){
-    const newDemand: HospitalDemand = new HospitalDemand();
-    this.hospitalDemands.push(newDemand);
-  }
-
-  removeDemand(pattern:HospitalDemand) {
-    const index = this.hospitalDemands.indexOf(pattern);
-    if(index > -1){
-      this.hospitalDemands.splice(index, 1);
-    }
-  }
 
   updateStartDate(e: MatDatepickerInputEvent<Date>) {
     this.startDate =
@@ -231,4 +255,13 @@ export class ScheduleGenerationComponent implements OnInit  {
     console.log(preferences);
     this.nursesPreference = preferences;
   }
+
+  updateDemands(demand: HospitalDemandElement[]){
+    this.hospitalDemands = demand;
+  }
+
+  updateDemandsErrorState(e: boolean){
+    this.demandsError = e;
+  }
+
 }
