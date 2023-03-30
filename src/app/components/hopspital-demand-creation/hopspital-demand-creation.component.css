@@ -1,21 +1,68 @@
-.example-headers-align .mat-expansion-panel-header-description {
-  justify-content: space-between;
-  align-items: center;
+.schedule-container {
+  display: flex;
+  flex-direction: row;
 }
 
-.example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
-  margin-left: 8px;
+.skill-name-table {
+  display: flex;
+  width: 150px;
 }
 
-.addSkillButton{
-  margin-left: 5vw;
+.skill-name-header {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 20px;
+  height: 5px;
 }
 
-.removeSkillButton{
-  margin-top: 1vw;
+.nurse-name-cell {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: rgb(235, 234, 234);
 }
 
-.selected {
-  background-color: steelblue;
-  border-radius: 50%;
+.timetable-table {
+  display: flex;
+  overflow-x: scroll;
 }
+.date-header {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  width: 335px;
+  background-color: #A7C6EA;
+}
+
+.min-max-row {
+  background-color: rgb(235, 234, 234);
+}
+
+.min-max {
+  border-width: 0px;
+  background-color: rgb(235, 234, 234);
+  width: 80px;
+}
+
+.min-max-value{
+  background-color: lightgray;
+  border-radius: 30px;
+  padding: 10px;
+
+}
+
+button{
+  width: 90px;
+  height: 40px;
+}
+
+button:hover{
+  cursor: pointer;
+
+}
+
+
+ 
+
+

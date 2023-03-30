@@ -3,7 +3,7 @@ app-weight {
     top:0%;
     float: right;
     margin-right: 2vw;
-    margin-left: 20vw;;
+    margin-left: 10vw;;
 }
 
 .weight-container {
@@ -17,7 +17,7 @@ app-weight {
 }
 
 label{
-    margin-right: 1vw;;
+    margin-right: 2vw;
 }
 
 
