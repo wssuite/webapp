@@ -1,31 +1,103 @@
-<div *ngIf="validSchedule === true else elseBlock">
-    <h1>Your schedule is ready</h1>
-    <div class="schedule-container">
-        <!-- create a table to hold the column with the employee names-->
-        <table class="employee-names-column" cellspacing="30">
-            <tr>
-                <th class="employee-name-header"></th>
-            </tr>
-            <tr *ngFor="let sc of employeeSchedule.schedule">
-                <td class="employee-name-cell">{{sc.employee_name}}</td>
-            </tr>
-        </table>
-        <div class="schedule-table">
-            <table cellspacing="10">
-                <tr>
-                    <th *ngFor="let index of indexes">
-                        {{getDateDayStringByIndex(index)}}  {{getDayString(index)}}
-                    </th>
-                </tr>
-                <tr *ngFor="let sc of employeeSchedule.schedule">
-                    <td *ngFor="let index of indexes" class="schedule-cells">
-                        {{getEmployeeShiftSkill(sc.employee_name, index)}}
+<div *ngIf="connectedUser; else notConnected">
+    <div *ngIf="validSchedule === true else elseBlock">
+        <div class="btn-section">
+            <button mat-raised-button (click)="exportCurrentScheduleProblem()">Download problem</button>
+            <button mat-raised-button (click)="regenerateSchedule()">Regenerate Schedule</button>
+        </div>
+        <h1>Your schedule is ready! Start date: {{schedule.startDate}}- end date: {{schedule.endDate}}- Version: {{schedule.version}}</h1>
+        <!--Modify this block to a table like the preferences table-->
+        <div class="schedule-container" *ngIf="schedule.schedule">
+            <!-- create a table to hold the column with the employee names-->
+            <div class="nurse-name-table">
+                <table class="employee-names-column">
+                    <tr>
+                        <th class="nurse-name-header"></th>
+                    </tr>
+                    <tr class="nurse-name-row" *ngFor="let sc of schedule.schedule.schedule">
+                        <td class="nurse-name-cell">{{sc.employee_name}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="schedule-table">
+                <table>
+                    <tr>
+                        <th *ngFor="let index of indexes" class="date-header">
+                            {{getDayString(index)}} {{getDateDayStringByIndex(index)}}  
+                        </th>
+                    </tr>
+                    <tr class="checkbox-row" *ngFor="let sc of schedule.schedule.schedule">
+                        <td class="checkbox-cell" *ngFor="let index of indexes" class="schedule-cells">
+                            <button mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
+                                [ngStyle]="getButtonStyle(sc.employee_name, index)" (click)="updatePreference(sc.employee_name, index)">
+                                <span>
+                                    {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                                </span>
+                            </button>
+                            <ng-template #noPreference></ng-template>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br>
+        <!-- history section-->
+        <h1>Previous Versions</h1>
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="startDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.startDate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="endDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.endDate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="versionNumber">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Version number </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.version}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="state">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.state}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions" justify="end">
+                    <th mat-header-cell *matHeaderCellDef aria-label="row actions"> Actions &nbsp;</th>
+                    <td mat-cell *matCellDef="let schedule">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                        <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="viewSchedule(schedule)">
+                            <mat-icon>visibility</mat-icon>
+                            <span>View Schedule</span>
+                        </button>
+                        <button mat-menu-item (click)="exportProblem(schedule)">
+                            <mat-icon>download</mat-icon>
+                            <span>Download Problem</span>
+                        </button>
+                        </mat-menu>
                     </td>
-                </tr>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+                <!-- Row shown when there is no matching data. 
+                <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                </tr> -->
             </table>
+            <mat-paginator #paginator pageSize="5" aria-label="Select page of users" [length]="this.schedule.previousVersions.length"></mat-paginator>
         </div>
     </div>
+    <ng-template #elseBlock>
+        <mat-spinner mode="indeterminate" color="primary"></mat-spinner>
+    </ng-template>
 </div>
-<ng-template #elseBlock>
-    <mat-spinner mode="indeterminate" color="primary"></mat-spinner>
+<ng-template #notConnected>
+    <app-not-connected></app-not-connected>
 </ng-template>
