@@ -1,4 +1,4 @@
-FROM legraina/nurse-scheduler
+FROM legraina/nurse-scheduler:ui
 USER root
 RUN apt-get --allow-releaseinfo-change update
 RUN apt-get update
@@ -8,4 +8,5 @@ RUN /venv/bin/pip install Flask
 RUN /venv/bin/pip install requests
 RUN mkdir /invoker
 COPY . /invoker/.
+RUN cp -r /home/dantzig/ns/bin /invoker/.
 EXPOSE 5000
