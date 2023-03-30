@@ -55,34 +55,34 @@ export class ShiftTypeCreationDialogComponent implements OnInit{
     try
     { 
       console.log(this.data.shiftType);
-      if(this.initShiftTypeName == ""){
-      this.api.addShiftType(this.data.shiftType).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
+      if(this.initShiftTypeName === ""){
+        this.api.addShiftType(this.data.shiftType).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          } 
+        })
+      }
+      else {
+        this.api.updateShiftType(this.data.shiftType).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
           }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
-      })
+        })
+      } 
     }
-    else {
-      this.api.updateShiftType(this.data.shiftType).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
-          }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        }
-      })
-    } 
-  }
-  catch(e){
-    this.openErrorDialog((e as Exception).getMessage())
-  }
+    catch(e){
+      this.openErrorDialog((e as Exception).getMessage())
+    }
   }
 
 

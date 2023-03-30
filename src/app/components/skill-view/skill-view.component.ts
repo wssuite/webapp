@@ -101,10 +101,7 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
     this.skillService.deleteSkill(skillName).subscribe({
       error: (err: HttpErrorResponse)=> {
         if(err.status === HttpStatusCode.Ok) {
-          const index = this.skills.indexOf(skillName);
-          if (index > -1) {
-            this.skills.splice(index, 1);
-          }
+          this.getSkills();
         }
         else{
           this.openErrorDialog(err.error)

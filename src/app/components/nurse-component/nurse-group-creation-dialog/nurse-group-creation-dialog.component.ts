@@ -98,34 +98,34 @@ export class NurseGroupCreationDialogComponent implements OnInit {
     try
     { 
       console.log(this.data.nurseGroup);
-      if(this.initNurseGroupName == ""){
-      this.api.addNurseGroup(this.data.nurseGroup).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
+      if(this.initNurseGroupName === ""){
+        this.api.addNurseGroup(this.data.nurseGroup).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          } 
+        })
+      }
+      else {
+        this.api.updateNurseGroup(this.data.nurseGroup).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }          
+            else{
+              this.openErrorDialog(err.error)
+            }
           }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
-      })
+        })
+      } 
     }
-    else {
-      this.api.updateNurseGroup(this.data.nurseGroup).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
-          }          
-          else{
-            this.openErrorDialog(err.error)
-          }
-        }
-      })
-    } 
-  }
-  catch(e){
-    this.openErrorDialog((e as Exception).getMessage())
-  }
+    catch(e){
+      this.openErrorDialog((e as Exception).getMessage())
+    }
   }
 
 
