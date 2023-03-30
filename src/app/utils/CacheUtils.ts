@@ -1,11 +1,16 @@
 import { UserInfo } from "../models/Credentials";
+import { SchedulePreferenceElement } from "../models/GenerationRequest";
+import { Solution } from "../models/Schedule";
 
 export const TOKEN_STRING = "token";
 const IS_ADMIN_STRING = "isAdmin";
 export const USERNAME_STRING = "username";
 export const PROFILE_STRING = "profile";
+export const CURRENT_SCHEDULE = "schedule";
 
 export class CacheUtils {
+
+    static savedPreferencesKeys: string[] = []
 
     public static getUserInfo(): UserInfo{
         const token = localStorage.getItem(TOKEN_STRING);
@@ -49,6 +54,9 @@ export class CacheUtils {
         localStorage.removeItem(IS_ADMIN_STRING);
         localStorage.removeItem(USERNAME_STRING);
         localStorage.removeItem(PROFILE_STRING);
+        for(const key of this.savedPreferencesKeys){
+            localStorage.removeItem(key)
+        }
     }
 
     public static getUsername(): string{
@@ -69,5 +77,33 @@ export class CacheUtils {
             throw new Error("");
         }
         return ret;
+    }
+
+    public static setCurrentSchedule(schedule: Solution){
+        localStorage.setItem(CURRENT_SCHEDULE, JSON.stringify(schedule));
+    }
+
+    public static getCurrentSchedule(): Solution | undefined {
+        const savedSolution = localStorage.getItem(CURRENT_SCHEDULE);
+        if(!savedSolution){
+            return undefined
+        }
+        return JSON.parse(savedSolution) as Solution;
+    }
+
+    public static savePreferences(solution: Solution, preferences: SchedulePreferenceElement[]){
+        const cacheKey = JSON.stringify(solution)
+        localStorage.setItem(cacheKey, JSON.stringify(preferences))
+        if(!this.savedPreferencesKeys.includes(cacheKey)){
+            this.savedPreferencesKeys.push(cacheKey)
+        }
+    }
+
+    public static getPreferences(solution: Solution): undefined | SchedulePreferenceElement[]{
+        const savedPrefrences = localStorage.getItem(JSON.stringify(solution))
+        if(!savedPrefrences){
+            return undefined
+        }
+        return JSON.parse(savedPrefrences) as SchedulePreferenceElement[]
     }
 }
