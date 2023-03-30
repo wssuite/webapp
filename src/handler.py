@@ -38,14 +38,14 @@ def run_scheduler(path, counter):
     info_json["state"] = "In Progress"
     running_fm.add_item(path, counter)
     input_file_path = os.path.join(path, "input.txt")
-    input_folder = os.path.join(base_directory, "input")
+    input_folder = os.path.join(path, "sol")
     os.mkdir(input_folder)
-    shutil.move(input_file_path, os.path.join(input_folder, "input.txt"))
+    shutil.copy(input_file_path, os.path.join(input_folder, "sol.txt"))
     proc = subprocess.Popen(
         [
             "./bin/staticscheduler",
             f"--dir {path}",
-            "--instance input",
+            "--instance sol",
             "--param default.txt",
             f"--sol {path}",
             f"--timeout {data['timeout']}",
