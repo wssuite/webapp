@@ -107,6 +107,30 @@ class ScheduleHandler(BaseHandler):
     def regenerate_schedule(self, token, demand_json, v):
         return self.__generate_schedule(token, demand_json, v)
 
+    def stop_generation(self, token, solution_json):
+        solution = Solution().from_json(solution_json)
+        self.verify_profile_accessors_access(token, solution.profile)
+        solution_from_db = self.solution_dao.get_solution(
+            solution.start_date,
+            solution.end_date,
+            solution.profile,
+            solution.version,
+        )
+        db_solution = Solution().from_json(solution_from_db)
+        """
+          TODO send the request to stop to the worker in question
+        """
+        host = db_solution.worker_host
+        stop_url = f"http://{host}/solver/stop"
+        full_path = FileSystemManager.get_solution_dir_path(
+            db_solution.profile,
+            db_solution.start_date,
+            db_solution.end_date,
+            db_solution.version,
+        )
+        relative_path = full_path.replace(base_directory, "")
+        requests.post(stop_url, relative_path)
+
     def get_detailed_solution(self, token, start, end, profile_name, v):
         self.verify_profile_accessors_access(token, profile_name)
         solution_db = self.solution_dao.get_solution(

@@ -77,6 +77,17 @@ def regenerate_schedule():
         return Response(e.args, 500)
 
 
+@mod.route("/stopGeneration", methods=["POST"])
+def stop_schedule_generation():
+    try:
+        token = request.args[user_token]
+        json = request.json
+        schedule_handler.stop_generation(token, json)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+
+
 @mod.route("/getDetailedSolution", methods=["GET"])
 def get_detailed_solution():
     try:
