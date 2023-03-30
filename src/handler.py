@@ -10,7 +10,6 @@ base_directory = os.getcwd()
 running_dir = os.path.join(base_directory, 'running')
 running_fm = FileManager(os.path.join(running_dir, 'running.json'))
 waiting_fm = FileManager(os.path.join(running_dir, 'waiting.json'))
-running_dict = {}
 
 
 def extract_version_info_from_path(path):
@@ -62,14 +61,13 @@ def callback(path, status):
         json=json
     )
     running_fm.pop_item_by_key(path)
-    print(running_dict)
-    running_dict.pop(path)
+    # print(rd)
+    exit(0)
 
 
 def schedule(full_path, counter):
     process = multiprocessing.Process(target=run_scheduler,
-                                      args=(full_path, counter, ))
-    running_dict[full_path] = process
+                                      args=(full_path, counter,))
     process.start()
 
 
@@ -82,7 +80,9 @@ def pop_from_waiting():
 
 
 def schedule_waiting():
-    if len(running_dict) < int(sys.argv[2]):
+    data = running_fm.read()
+    if len(data.keys()) < int(sys.argv[2]):
         item = pop_from_waiting()
         if item is not None:
+            print("new item scheduled")
             schedule(item[0], item[1])
