@@ -155,7 +155,7 @@
 
   <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
     <H1 class="HospitalDemandSectionTitle">Hospital Demand</H1>  
-    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)"></app-hopspital-demand-creation>
+    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
 
 
   </div>
@@ -164,8 +164,7 @@
     color="primary"
     class="generateScheduleButton"
     (click)="viewSchedule()"
-    [disabled]="
-      range.invalid || inputControlForm.invalid || nurses.length === 0 || shifts.length === 0
+    [disabled]=" nurses.length === 0 || shifts.length === 0 || demandsError
     "
   >
     Generate schedule

@@ -18,10 +18,12 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
   @Input() skills!: string[]; 
   @Input() startDate!: Date;
   @Input() endDate!: Date;
-  @Output() hospitalDemand: EventEmitter<HospitalDemandElement[]>
+  @Output() hospitalDemand: EventEmitter<HospitalDemandElement[]>;
+  @Output() errorState: EventEmitter<boolean>;
   
   demand: SkillDemandInterface;
   skillDemandErrorState: boolean;
+  saveDemandError: boolean;
   timetable: dateDisplay[];
   editOn: boolean;
   isdDisabled: boolean;
@@ -29,14 +31,17 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
   hospitalDemands: Map<string, SkillDemandInterface>;
   selectedShift: Map<string, boolean>;
   nbColumns: number | undefined;
+
  
   constructor() {
     this.hospitalDemand = new EventEmitter();
+    this.errorState = new EventEmitter();
     this.timetable = [];
     this.hospitalDemands = new Map();
     this.selectedShift = new Map();
     this.demand = {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
     this.skillDemandErrorState = true;
+    this.saveDemandError = false;
     this.editOn = false;
     this.isdDisabled = false;
     this.isEditing = false;
@@ -109,6 +114,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
       if(this.selectedShift.get(key) === true){
         this.editOn = true;
         this.isdDisabled = true;
+        this.saveDemandError = true;
         }
       }
     }
@@ -130,6 +136,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
       }
       this.selectedShift.set(key,false);
     }
+    this.saveDemandError = false;
     this.emitScheduleDemand();
   }
 
@@ -207,11 +214,15 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
       }
     }
     this.hospitalDemand.emit(scheduleDemand);
+    this.emitErrorState(); 
   }
 
 updateSkillDemandErrorState(e: boolean) {
-
   this.skillDemandErrorState = e;
+}
+
+emitErrorState(){
+  this.errorState.emit(this.saveDemandError);
 }
 
 }

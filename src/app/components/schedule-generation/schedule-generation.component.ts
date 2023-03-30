@@ -50,6 +50,7 @@ export class ScheduleGenerationComponent implements OnInit  {
   skills: string[];
 
   hospitalDemands: HospitalDemandElement[];
+  demandsError: boolean;
   nursesPreference: SchedulePreferenceElement[];
 
   scheduleData!: ScheduleDataInterface;
@@ -75,6 +76,7 @@ export class ScheduleGenerationComponent implements OnInit  {
     this.shifts = [];
     this.hospitalDemands = [];
     this.nursesPreference = [];
+    this.demandsError = true;
 
   }
   ngOnInit(): void {
@@ -257,4 +259,9 @@ export class ScheduleGenerationComponent implements OnInit  {
   updateDemands(demand: HospitalDemandElement[]){
     this.hospitalDemands = demand;
   }
+
+  updateDemandsErrorState(e: boolean){
+    this.demandsError = e;
+  }
+
 }

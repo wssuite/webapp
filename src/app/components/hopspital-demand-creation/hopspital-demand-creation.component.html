@@ -39,6 +39,10 @@
   <div *ngIf="!skillDemandErrorState"> 
     <button (click)="setEdition()">Edit</button>
     <button (click)="save()">Save</button>
+    <div *ngIf="saveDemandError" >
+      <mat-icon color="warn">error</mat-icon>
+      <label>Preferences must be saved</label>
+    </div>
   </div>
   <button (click)="cancel()">Cancel</button>
 </div>
