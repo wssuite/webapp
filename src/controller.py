@@ -1,5 +1,9 @@
 import os
-from .handler import add_to_waiting, base_directory
+from .handler import (
+    add_to_waiting,
+    base_directory,
+    running_shared_dict
+)
 
 from flask import Blueprint, request, Response
 import sys
@@ -30,4 +34,7 @@ def stop():
     path = path[1:]
     full_path = os.path.join(base_directory, path)
     """Delete the element from the running map"""
+    process = running_shared_dict.pop_item(full_path)
+    process.terminate()
+
     return Response("ok_message", status=200)

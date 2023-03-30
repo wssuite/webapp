@@ -5,6 +5,7 @@ from .file_writer import FileManager
 import os
 import subprocess
 import multiprocessing
+from .protected_dict import ProtectedDict
 
 
 base_directory = os.getcwd()
@@ -15,6 +16,8 @@ waiting_fm = FileManager(os.path.join(running_dir, 'waiting.json'))
 file = open("config.json")
 data = json.load(file)
 file.close()
+
+running_shared_dict = ProtectedDict()
 
 
 def extract_version_info_from_path(path):
@@ -94,6 +97,7 @@ def callback(path, status):
 def schedule(full_path, counter):
     process = multiprocessing.Process(target=run_scheduler,
                                       args=(full_path, counter,))
+    running_shared_dict.add_item(full_path, process)
     process.start()
 
 
