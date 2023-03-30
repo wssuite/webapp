@@ -1,9 +1,11 @@
-from threading import Event
-
 from src.timer_thread import TimerThread
 from src.controller import mod
 from flask import Flask
-from src.handler import running_fm, waiting_fm
+from src.handler import (
+    running_fm,
+    waiting_fm,
+    schedule_waiting,
+)
 
 app = Flask(__name__)
 
@@ -47,6 +49,6 @@ if __name__ == "__main__":
     schedule a thread to see the running jobs
     and schedule new processes
     """
-    thread = TimerThread(Event())
+    thread = TimerThread(schedule_waiting)
     thread.start()
     app.run(host="0.0.0.0")

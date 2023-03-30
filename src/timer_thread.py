@@ -1,12 +1,12 @@
 from threading import Thread, Event
-from .handler import schedule_waiting
 
 
 class TimerThread(Thread):
-    def __init__(self, event: Event):
+    def __init__(self, func):
         Thread.__init__(self)
-        self.stopped = event
+        self.stopped = Event()
+        self.func = func
 
     def run(self):
         while not self.stopped.wait(2):
-            schedule_waiting()
+            self.func()

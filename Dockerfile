@@ -7,6 +7,7 @@ RUN python3 -m venv /venv
 RUN /venv/bin/pip install Flask
 RUN /venv/bin/pip install requests
 RUN mkdir /invoker
-COPY . /invoker/.
+COPY *.py /invoker/.
+COPY src/ /invoker/src/
 RUN cp -r /home/dantzig/ns/bin /invoker/.
 EXPOSE 5000
