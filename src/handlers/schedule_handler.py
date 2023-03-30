@@ -94,7 +94,7 @@ class ScheduleHandler(BaseHandler):
             solution_object.state = "Waiting"
             self.solution_dao.insert_one(solution_object.db_json())
         else:
-            solution_object.state = "Fail"
+            solution_object.state = "Failed"
             self.solution_dao.insert_one(solution_object.db_json())
             raise ProjectBaseException(
                 "Try later an error occurred during processing"
