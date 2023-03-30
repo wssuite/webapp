@@ -4,7 +4,7 @@
             <button mat-raised-button (click)="exportCurrentScheduleProblem()">Download problem</button>
             <button mat-raised-button (click)="regenerateSchedule()">Regenerate Schedule</button>
         </div>
-        <h1>Your schedule is ready</h1>
+        <h1>Your schedule is ready! Start date: {{schedule.startDate}}- end date: {{schedule.endDate}}- Version: {{schedule.version}}</h1>
         <!--Modify this block to a table like the preferences table-->
         <div class="schedule-container" *ngIf="schedule.schedule">
             <!-- create a table to hold the column with the employee names-->
