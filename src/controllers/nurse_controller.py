@@ -14,7 +14,8 @@ def add_nurse():
     try:
         nurse_dict = request.json
         token = request.args[user_token]
-        return nurse_handler.add(token, nurse_dict)
+        nurse_handler.add(token, nurse_dict)
+        return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
