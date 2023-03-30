@@ -14,7 +14,6 @@ import { ErrorMessageDialogComponent } from "../error-message-dialog/error-messa
 import { GenerationRequest, HospitalDemandElement, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { CacheUtils } from "src/app/utils/CacheUtils";
-import { hospitalDemandExample } from "src/app/constants/hospital-demand-example";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
 import { Solution } from "src/app/models/Schedule";
 
@@ -268,7 +267,7 @@ export class ScheduleGenerationComponent implements OnInit {
       nurses: requestNurses,
       skills: this.skills,
       shifts: this.shifts,
-      hospitalDemand: hospitalDemandExample
+      hospitalDemand: this.hospitalDemands
     }
     this.scheduleService.generateSchedule(request).subscribe({
       next: (sol: Solution)=>{

@@ -28,14 +28,24 @@
               <button mat-menu-item (click)="duplicate()"><mat-icon>file_copy</mat-icon><span>Duplicate</span></button>
               <button mat-menu-item *ngIf="profile.creator === username" (click)="deleteProfile()"><mat-icon>delete</mat-icon><span>Remove</span></button>
               <button mat-menu-item (click)="share()"><mat-icon>share</mat-icon><span>Share</span></button>
-              <button mat-menu-item (click)="export()"><mat-icon>cloud_download</mat-icon><span>Export</span>                </button>
+              <button mat-menu-item (click)="export()"><mat-icon>cloud_download</mat-icon><span>Export</span></button>
+              <button mat-menu-item (click)="openCreateProfileDialog(true)">
+                <mat-icon>library_add</mat-icon>
+                <span> Create new profile</span>
+            </button>
           </mat-menu>
     </div>
     <div class="end-buttons">
         <div class="icon-box">
-            <button mat-icon-button class="bell-icon">
-                <mat-icon>notifications</mat-icon>
+            <button mat-icon-button [matMenuTriggerFor]="notificationsMenu" class="bell-icon" (click)="updateNewNotificationState()">
+                <mat-icon *ngIf="newNotificationAdded; else noNotification">notifications_active</mat-icon>
+                <ng-template #noNotification>
+                    <mat-icon>notifications</mat-icon>
+                </ng-template>
             </button>
+            <mat-menu #notificationsMenu="matMenu">
+                <button mat-menu-item *ngFor="let sol of notifications">The schedule {{sol.startDate}}-{{sol.endDate}}-v{{sol.version}} is {{sol.state}}</button>
+            </mat-menu>
         </div>
         <div class="icon-box">
             <button class="user-icon" mat-icon-button [matMenuTriggerFor]="menu">
@@ -49,10 +59,6 @@
                 <button *ngIf="isAdmin" mat-menu-item (click)="goToCreateAccount()">
                     <mat-icon>person_add</mat-icon>
                     <span> Create new user</span>
-                </button>
-                <button mat-menu-item (click)="openCreateProfileDialog(true)">
-                    <mat-icon>library_add</mat-icon>
-                    <span> Create new profile</span>
                 </button>
             </mat-menu>
         </div>    

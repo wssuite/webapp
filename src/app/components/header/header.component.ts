@@ -29,13 +29,17 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   profile!: BaseProfile;
   username!: string;
   validProfile: boolean;
-  connectedUser!: boolean
+  connectedUser!: boolean;
+  notifications: Solution[];
+  newNotificationAdded: boolean;
   
   constructor(private accountService: AccountService, private router: Router,
     private dialog: MatDialog, private profileService: ProfileService, 
     private scheduleService: ScheduleService){
       this.profiles = [];
       this.validProfile = false;
+      this.notifications = []
+      this.newNotificationAdded = false;
     }
 
   ngOnInit(): void {
@@ -54,6 +58,10 @@ export class HeaderComponent implements OnInit, AfterViewInit{
         this.getProfiles(created);
       })
       this.scheduleService.socket.on(NOTIFICATION_UPDATE, (solution: Solution)=>{
+        if(this.notifications.indexOf(solution) <= -1){
+          this.notifications.push(solution);
+          this.newNotificationAdded = true;
+        }
         if(solution.state === SUCCESS){
           this.scheduleService.notificationUnsubscribe(solution);
         }
@@ -201,5 +209,9 @@ export class HeaderComponent implements OnInit, AfterViewInit{
         saveAs(file);
       }
     })
+  }
+
+  updateNewNotificationState(){
+    this.newNotificationAdded = false;
   }
 }
