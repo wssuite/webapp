@@ -200,9 +200,9 @@ class TestScheduleHandler(TestCase):
         HEADERS
         (0,Patrick)
         END
-        instance1,2023-06-01,2023-06-02
+        instance1,1,2023-06-01,2023-06-02
         Assignments = 1
-        2023-06-01,0,Late,Nurse
+        0,2023-06-01,Late,Nurse
         """
         solution_file = self.fs.joinpaths(
             base_directory,

@@ -50,7 +50,7 @@ class Schedule:
                     self.id_dict[
                         match_regex_headers.group(1)
                     ] = match_regex_headers.group(2)
-                elif row.__contains__(assignments_string.upper()):
+                elif row.upper().__contains__(assignments_string.upper()):
                     is_assignments = True
 
     def filter_by_name(self):
