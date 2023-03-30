@@ -16,10 +16,10 @@ text = """
 HEADERS
 (0,Patrick)
 END
-instance1,2010-06-01,2010-06-28
-Assignments = 2
-2010-06-01,0,Late,Nurse
-2010-06-05,0,Early,Nurse
+instance1,1,2010-06-01,2010-06-28
+ASSIGNMENTS
+0,2010-06-01,Late,Nurse
+0,2010-06-05,Early,Nurse
 """
 
 
