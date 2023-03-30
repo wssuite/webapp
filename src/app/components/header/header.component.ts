@@ -139,6 +139,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
         error: (err: HttpErrorResponse)=>{
           if(err.status === HttpStatusCode.Ok){
             this.router.navigate(["/" + LOGIN]);
+            this.scheduleService.disconnectSocket();
             CacheUtils.emptyCache();
           }
           else{

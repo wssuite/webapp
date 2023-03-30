@@ -136,6 +136,10 @@ export class ScheduleService {
     console.log(this.socket)
   }
 
+  disconnectSocket(){
+    this.socket.disconnect()
+  }
+
   notificationUnsubscribe(solution: Solution){
     this.socket.emit(UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution)
   }
