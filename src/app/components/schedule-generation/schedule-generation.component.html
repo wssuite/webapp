@@ -42,7 +42,7 @@
         >Invalid end date</mat-error
       >
     </mat-form-field>
-    <div><button mat-raised-button class="addAllButton" (click)="addAll()">
+    <div *ngIf="possibleSkills.length > 0 || possibleShifts.length > 0 || possibleNurses.length > 0" ><button mat-raised-button class="addAllButton" (click)="addAll()">
       add all Nurses, Skills & Shifts
     </button></div>
   </div>
