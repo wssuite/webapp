@@ -53,6 +53,7 @@ def handle_join_continuous_visualisation(json):
     """
     if thread_dict.get(room) is None:
         thread_dict[room] = RepeatableThread(emit_schedule, json)
+        thread_dict[room].start()
 
     if room_counter_dict.get(room) is None:
         room_counter_dict[room] = 1
