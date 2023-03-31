@@ -137,3 +137,32 @@ def update_solution_satus():
     room = schedule_handler.update_solution_state(json)
     socketio.emit("notification_update", json, room=f"notification_{room}")
     return Response(ok_message, 200)
+
+
+@mod.route("/removeSolution", methods=["DELETE"])
+def remove_solution():
+    try:
+        token = request.args[user_token]
+        start = request.args[start_date]
+        end = request.args[end_date]
+        profile_name = request.args[profile]
+        v = request.args[version]
+        schedule_handler.remove_schedule(token, start, end, profile_name, v)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+
+
+@mod.route("/exportSchedule", methods=["GET"])
+def export_schedule():
+    try:
+        token = request.args[user_token]
+        start = request.args[start_date]
+        end = request.args[end_date]
+        profile_name = request.args[profile]
+        v = request.args[version]
+        schedule_str = schedule_handler.export_schedule(
+            token, start, end, profile_name, v)
+        return {"content": schedule_str}
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
