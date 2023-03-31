@@ -227,6 +227,7 @@ header_section = "HEADERS"
 
 version = "version"
 state = "state"
+timestamp = "timestamp"
 previous_versions = "previousVersions"
 worker_host = "worker"
 schedule = "schedule"

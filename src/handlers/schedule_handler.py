@@ -1,3 +1,4 @@
+import datetime
 import json
 import os.path
 from typing import Type
@@ -30,6 +31,7 @@ from constants import (
     problem,
     schedule,
     state,
+    timestamp,
 )
 from src.utils.file_system_manager import FileSystemManager, base_directory
 
@@ -76,6 +78,7 @@ class ScheduleHandler(BaseHandler):
             end_date: demand.end_date,
             profile: demand.profile,
             version: str(next_version),
+            timestamp: str(datetime.datetime.now())
         }
         """This will be the case of a schedule regeneration"""
         if v is not None:
@@ -179,6 +182,24 @@ class ScheduleHandler(BaseHandler):
             return path
         else:
             raise ProjectBaseException("The problem doesn't exist")
+
+    def remove_schedule(self, token, start, end, profile_name, v):
+        self.verify_profile_accessors_access(token, profile_name)
+        fs = FileSystemManager()
+        self.solution_dao.remove(start, end, profile_name, v)
+        path = fs.get_solution_dir_path(profile_name, start, end, v)
+        if fs.exist(path):
+            fs.delete_dir(path)
+        else:
+            raise ProjectBaseException("The problem doesn't exist")
+
+    def export_schedule(self, token, start, end, profile_name, v):
+        self.verify_profile_accessors_access(token, profile_name)
+        fs = FileSystemManager()
+        sol_dir_path = fs.get_solution_dir_path(profile_name, start, end, v)
+        sol_file = os.path.join(sol_dir_path, "sol.txt")
+        solution = Schedule(sol_file)
+        return solution.export()
 
     def __build_detailed_demand(self, demand, detailed_demand):
         nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)
