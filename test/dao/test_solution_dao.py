@@ -6,6 +6,7 @@ from constants import (
     worker_host,
     previous_versions,
     state,
+    timestamp,
 )
 from src.dao.abstract_dao import connect_to_fake_db
 from src.dao.solution_dao import SolutionDao
@@ -33,6 +34,7 @@ class TestSolutionDao(TestCase):
             solution1[profile],
             solution1[version],
         )
+        solution.pop(timestamp)
         self.assertEqual(self.solution1, solution)
 
     def test_get_latest_version(self):
@@ -42,14 +44,18 @@ class TestSolutionDao(TestCase):
         expected_before.pop(worker_host)
         expected_before.pop(previous_versions)
         self.assertEqual(1, len(latest_before))
-        self.assertEqual(expected_before, latest_before[0])
+        before = latest_before[0]
+        before.pop(timestamp)
+        self.assertEqual(expected_before, before)
         self.dao.insert_one(self.solution2.copy())
         latest_after = self.dao.get_latest_versions(profile1)
         expected_after = self.solution2.copy()
         expected_after.pop(worker_host)
         expected_after.pop(previous_versions)
+        after = latest_after[0]
+        after.pop(timestamp)
         self.assertEqual(1, len(latest_before))
-        self.assertEqual(expected_after, latest_after[0])
+        self.assertEqual(expected_after, after)
 
     def test_delete_all(self):
         self.dao.insert_one(self.solution1.copy())
@@ -68,6 +74,7 @@ class TestSolutionDao(TestCase):
             solution1[profile],
             solution1[version],
         )
+        timestamp_before = solution.pop(timestamp)
         self.assertEqual(solution1, solution)
         self.dao.update_state(
             solution1[start_date],
@@ -84,4 +91,6 @@ class TestSolutionDao(TestCase):
             solution1[profile],
             solution1[version],
         )
+        timestamp_after = actual_after.pop(timestamp)
         self.assertEqual(expected_after, actual_after)
+        self.assertEqual(timestamp_before, timestamp_after)

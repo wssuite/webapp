@@ -33,6 +33,7 @@ from constants import (
     assignment_shift,
     assignment_skill,
     schedule,
+    timestamp
 )
 from test.db_test_constants import build_db, random_hex, profile1
 from pyfakefs.fake_filesystem_unittest import TestCase
@@ -106,6 +107,7 @@ class TestScheduleHandler(TestCase):
             profile: profile1,
             version: "1",
             state: "In Progress",
+            timestamp: solution[timestamp]
         }
         self.assertEqual(expected_solution, solution)
         folder_exist = self.fs.exists(full_path)
@@ -136,7 +138,8 @@ class TestScheduleHandler(TestCase):
     def test_regenerate_schedule_and_get_solution_detail_without_schedule(
         self,
     ):
-        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        first_solution = self.handler.generate_schedule(
+            random_hex, hospital_demand_dict)
         solution = self.handler.regenerate_schedule(
             random_hex, hospital_demand_dict, "1"
         )
@@ -146,12 +149,14 @@ class TestScheduleHandler(TestCase):
             profile: profile1,
             version: "2",
             state: "In Progress",
+            timestamp: solution[timestamp]
         }
         self.assertEqual(expected_solution, solution)
         solution_detailed = self.handler.get_detailed_solution(
             random_hex, "2023-06-01", "2023-06-02", profile1, "2"
         )
         expected_detailed = expected_solution.copy()
+        expected_detailed[timestamp] = solution[timestamp]
         expected_detailed[previous_versions] = [
             {
                 start_date: "2023-06-01",
@@ -159,13 +164,15 @@ class TestScheduleHandler(TestCase):
                 profile: profile1,
                 version: "1",
                 state: "In Progress",
+                timestamp: first_solution[timestamp]
             }
         ]
         expected_detailed[problem] = hospital_demand_dict
         self.assertEqual(expected_detailed, solution_detailed)
 
     def test_generate_schedule_and_get_solution_detail_with_schedule(self):
-        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        generation = self.handler.generate_schedule(
+            random_hex, hospital_demand_dict)
         text = """
         HEADERS
         (0,Patrick)
@@ -209,6 +216,7 @@ class TestScheduleHandler(TestCase):
             profile: profile1,
             version: "1",
             state: "In Progress",
+            timestamp: generation[timestamp],
             previous_versions: [],
             problem: hospital_demand_dict,
             schedule: expected_solution,
@@ -217,7 +225,8 @@ class TestScheduleHandler(TestCase):
 
     def test_get_latest_solutions(self):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
-        self.handler.regenerate_schedule(random_hex, hospital_demand_dict, "1")
+        last_generation = self.handler.regenerate_schedule(
+            random_hex, hospital_demand_dict, "1")
         actual = self.handler.get_latest_solutions_versions(
             random_hex, profile1
         )
@@ -227,12 +236,15 @@ class TestScheduleHandler(TestCase):
             profile: profile1,
             version: "2",
             state: "In Progress",
+            timestamp: last_generation[timestamp]
         }
         self.assertEqual([expected_solution], actual)
 
     def test_get_all_solutions(self):
-        self.handler.generate_schedule(random_hex, hospital_demand_dict)
-        self.handler.regenerate_schedule(random_hex, hospital_demand_dict, "1")
+        first_generation = self.handler.generate_schedule(
+            random_hex, hospital_demand_dict)
+        last_generation = self.handler.regenerate_schedule(
+            random_hex, hospital_demand_dict, "1")
         actual = self.handler.get_all_solutions(random_hex, profile1)
         expected_solution = [
             {
@@ -241,6 +253,7 @@ class TestScheduleHandler(TestCase):
                 profile: profile1,
                 version: "1",
                 state: "In Progress",
+                timestamp: first_generation[timestamp]
             },
             {
                 start_date: "2023-06-01",
@@ -248,6 +261,7 @@ class TestScheduleHandler(TestCase):
                 profile: profile1,
                 version: "2",
                 state: "In Progress",
+                timestamp: last_generation[timestamp]
             },
         ]
         self.assertEqual(expected_solution, actual)
