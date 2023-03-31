@@ -1,6 +1,5 @@
 import json
 import os.path
-import shutil
 from typing import Type
 
 import requests
@@ -68,12 +67,14 @@ class ScheduleHandler(BaseHandler):
         self.__build_detailed_demand(demand, detailed_demand)
 
         input_txt = os.path.join(full_path, "input.txt")
-        with open(input_txt, "w") as f:
-            f.write(detailed_demand.to_string())
+        with open(input_txt, "w") as f1:
+            f1.write(detailed_demand.to_string())
 
-        instance_folder = os.path.join(full_path, "sol")
-        os.mkdir(instance_folder)
-        shutil.copyfile(input_txt, os.path.join(instance_folder, "sol.txt"))
+        os.mkdir(os.path.join(full_path, "sol"))
+        instance_path = os.path.join(full_path, "sol")
+        instance_txt = os.path.join(instance_path, "sol.txt")
+        with open(instance_txt, "w") as f2:
+            f2.write(detailed_demand.to_string())
 
         solution_json = {
             start_date: demand.start_date,

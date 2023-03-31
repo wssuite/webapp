@@ -206,7 +206,6 @@ class TestScheduleHandler(TestCase):
                 "input.txt",
             )
         )
-        self.assertTrue(input_file_exist)
         instance_file_exist = self.fs.exists(
             self.fs.joinpaths(
                 base_directory,
@@ -219,6 +218,29 @@ class TestScheduleHandler(TestCase):
             )
         )
         self.assertTrue(instance_file_exist)
+        self.assertTrue(input_file_exist)
+        input_file = self.fs.get_object(
+            self.fs.joinpaths(
+                base_directory,
+                dataset_directory,
+                profile1,
+                "2023-06-01_2023-06-02",
+                "1",
+                "input.txt",
+            )
+        )
+        instance_file = self.fs.get_object(
+            self.fs.joinpaths(
+                base_directory,
+                dataset_directory,
+                profile1,
+                "2023-06-01_2023-06-02",
+                "1",
+                "sol",
+                "sol.txt",
+            )
+        )
+        self.assertEqual(instance_file.contents, input_file.contents)
         text = """
         HEADERS
         (0,Patrick)
