@@ -2,7 +2,14 @@ from flask import Blueprint, Response
 
 from flask import request
 from src.exceptions.project_base_exception import ProjectBaseException
-from constants import user_token, profile, start_date, end_date, version
+from constants import (
+    user_token,
+    profile,
+    start_date,
+    end_date,
+    version,
+    ok_message
+)
 from src.dao.abstract_dao import DBConnection
 from src.handlers.schedule_handler import ScheduleHandler
 
@@ -105,6 +112,7 @@ def get_latest_solutions():
         )
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
 
 @mod.route("/removeSolution", methods=["DELETE"])
 def remove_solution():

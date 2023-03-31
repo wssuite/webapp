@@ -228,5 +228,3 @@ class ScheduleHandler(BaseHandler):
         for element in array:
             t = object_type().from_json(element)
             destination.append(t)
-
-

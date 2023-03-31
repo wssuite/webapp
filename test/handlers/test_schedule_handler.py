@@ -251,3 +251,29 @@ class TestScheduleHandler(TestCase):
             },
         ]
         self.assertEqual(expected_solution, actual)
+
+    def test_remove_solution_if_exist_gets_removed(self):
+        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        path = self.fs.joinpaths(
+            base_directory,
+            dataset_directory,
+            profile1, "2023-06-01_2023-06-02", "1")
+        self.assertTrue(self.fs.exists(path))
+        self.handler.remove_schedule(
+            random_hex,
+            "2023-06-01",
+            "2023-06-02",
+            profile1,
+            "1"
+        )
+        self.assertFalse(self.fs.exists(path))
+
+    def test_remove_solution_if_not_exist_raise_error(self):
+        with self.assertRaises(ProjectBaseException):
+            self.handler.remove_schedule(
+                random_hex,
+                "2023-06-01",
+                "2023-06-02",
+                profile1,
+                "1"
+            )
