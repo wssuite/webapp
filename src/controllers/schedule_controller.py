@@ -126,3 +126,18 @@ def remove_solution():
         return Response(ok_message, 200)
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/exportSchedule", methods=["GET"])
+def export_schedule():
+    try:
+        token = request.args[user_token]
+        start = request.args[start_date]
+        end = request.args[end_date]
+        profile_name = request[profile]
+        v = request.args[version]
+        schedule_str = schedule_handler.export_schedule(
+            token, start, end, profile_name, v)
+        return {"content": schedule_str}
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
