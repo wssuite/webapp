@@ -31,7 +31,7 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
      private router: Router){
     this.connectedUser = false;
     this.schedules = []
-    this.displayedColumns = ["startDate", "endDate", "versionNumber", "state", "actions"]
+    this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.dataSource = new MatTableDataSource();
   }
   

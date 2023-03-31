@@ -44,6 +44,10 @@
         <h1>Previous Versions</h1>
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="CreationDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Creation Date </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.timestamp}} </td>
+                </ng-container>
                 <ng-container matColumnDef="startDate">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
                     <td mat-cell *matCellDef="let schedule"> {{schedule.startDate}} </td>

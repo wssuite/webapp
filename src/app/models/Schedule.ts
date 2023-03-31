@@ -7,6 +7,7 @@ export interface Solution {
     profile: string,
     version: string,
     state: string,
+    timestamp: string,
 }
 
 export interface DetailedSchedule {
@@ -17,5 +18,5 @@ export interface DetailedSchedule {
     endDate: string,
     profile: string,
     version: string,
-    state: string,  
+    state: string, 
 }

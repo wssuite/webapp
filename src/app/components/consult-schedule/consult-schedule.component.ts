@@ -43,7 +43,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
     this.connectedUser = false;
     this.validSchedule = false;
     this.dataSource = new MatTableDataSource();
-    this.displayedColumns = ["startDate", "endDate", "versionNumber", "state", "actions"]
+    this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.preferences = new Map();
   }
 
