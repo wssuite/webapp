@@ -142,6 +142,7 @@ class ScheduleHandler(BaseHandler):
     def remove_schedule(self, token, start, end, profile_name, v):
         self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()
+        self.solution_dao.remove(start, end, profile_name, v)
         path = fs.get_solution_dir_path(profile_name, start, end, v)
         if fs.exist(path):
             fs.delete_dir(path)
