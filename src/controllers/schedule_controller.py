@@ -134,7 +134,7 @@ def export_schedule():
         token = request.args[user_token]
         start = request.args[start_date]
         end = request.args[end_date]
-        profile_name = request[profile]
+        profile_name = request.args[profile]
         v = request.args[version]
         schedule_str = schedule_handler.export_schedule(
             token, start, end, profile_name, v)
