@@ -1,3 +1,5 @@
+import datetime
+
 from constants import (
     start_date,
     end_date,
@@ -6,6 +8,7 @@ from constants import (
     state,
     previous_versions,
     worker_host,
+    timestamp,
 )
 from src.models.jsonify import Jsonify
 from pykson import StringField, ListField
@@ -20,6 +23,10 @@ class Solution(Jsonify, DBDocument):
     state = StringField(serialized_name=state)
     previous_versions = ListField(str, serialized_name=previous_versions)
     worker_host = StringField(serialized_name=worker_host, default_value="")
+    timestamp = StringField(
+        serialized_name=timestamp,
+        default_value=f"{datetime.datetime.now()}"
+    )
 
     def to_json(self):
         return {
@@ -28,6 +35,7 @@ class Solution(Jsonify, DBDocument):
             profile: self.profile,
             version: self.version,
             state: self.state,
+            timestamp: self.timestamp
         }
 
     def db_json(self) -> dict:

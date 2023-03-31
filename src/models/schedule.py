@@ -7,6 +7,7 @@ from constants import (
     assignment_employee_name,
     assignments_string,
 )
+from src.models.exporter import CSVExporter
 
 regex_assignments = (
     r"([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+),"
@@ -20,7 +21,7 @@ regex_instance_info = (
 regex_headers = r"\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9]+)\)\n"
 
 
-class Schedule:
+class Schedule(CSVExporter):
     def __init__(self, file_name):
         self.assignments_list = []
         self.start_date = ""
@@ -80,3 +81,9 @@ class Schedule:
             schedule_string: schedule,
         }
         return ret
+
+    def export(self):
+        ret_string = "ASSIGNMENTS\n"
+        for assignment in self.assignments_list:
+            ret_string += assignment.export()
+        return ret_string

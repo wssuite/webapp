@@ -69,3 +69,12 @@ class TestSchedule(TestCase):
     def test_schedule_init(self, fake_fs):
         schedule = create_schedule(fake_fs)
         self.assertEqual(len(schedule.assignments_list), 2)
+
+    @patchfs
+    def test_export_schedule(self, fake_fs):
+        schedule = create_schedule(fake_fs)
+        expected_text = """ASSIGNMENTS
+Patrick,2010-06-01,Late,Nurse
+Patrick,2010-06-05,Early,Nurse
+"""
+        self.assertEqual(expected_text, schedule.export())

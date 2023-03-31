@@ -87,3 +87,13 @@ class SolutionDao(AbstractDao):
             },
             {mongo_set_operation: {state: new_state}},
         )
+
+    def remove(self, start_, end_, profile_name, v):
+        self.collection.find_one_and_delete(
+            {
+                profile: profile_name,
+                start_date: start_,
+                end_date: end_,
+                version: v
+            }
+        )
