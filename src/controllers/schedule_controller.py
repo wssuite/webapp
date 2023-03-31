@@ -105,3 +105,16 @@ def get_latest_solutions():
         )
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+@mod.route("/removeSolution", methods=["DELETE"])
+def remove_solution():
+    try:
+        token = request.args[user_token]
+        start = request.args[start_date]
+        end = request.args[end_date]
+        profile_name = request.args[profile]
+        v = request.args[version]
+        schedule_handler.remove_schedule(token, start, end, profile_name, v)
+        return Response(ok_message, 200)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
