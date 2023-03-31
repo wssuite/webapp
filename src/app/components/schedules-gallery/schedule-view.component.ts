@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -83,6 +83,19 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
       next: (data: {content: string})=>{
         const file = new File([data.content], CacheUtils.getProfile() + "_" + schedule.startDate + "_" + schedule.endDate + "_" + schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
         saveAs(file);
+      }
+    })
+  }
+
+  removeSolution(sol: Solution){
+    this.service.removeSolution(sol).subscribe({
+      error: (err: HttpErrorResponse)=>{
+        if(err.status === HttpStatusCode.Ok){
+          this.getSchedules()
+        }
+        else{
+          this.openErrorDialog(err.error)
+        }
       }
     })
   }

@@ -1,11 +1,11 @@
-import { HttpClient, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {Socket, io} from "socket.io-client";
 import { ALL_SOLUTIONS, BASE_URL, DETAILED_SOLUTION_URL,
   EXPORT_PROBLEM_URL, GENERATE_SCHEDULE,
   LATEST_SOLUTIONS, 
-  REGENERATE_SCHEDULE_URL} from 'src/app/constants/api-constants';
+  REGENERATE_SCHEDULE_URL,REMOVE_SOLUTION} from 'src/app/constants/api-constants';
 import { SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS } from 'src/app/constants/socket-events';
 import { GenerationRequest } from 'src/app/models/GenerationRequest';
 import { DetailedSchedule, Solution } from 'src/app/models/Schedule';
@@ -20,7 +20,7 @@ export class ScheduleService {
   socket!: Socket;
 
   constructor(private httpClient: HttpClient) { 
-    this.socket = io(BASE_URL)
+    //this.socket = io(BASE_URL)
     console.log(this.socket)
   }
 
@@ -78,6 +78,23 @@ export class ScheduleService {
       queryParams = queryParams.append("endDate", endDate)
       queryParams = queryParams.append("version", version)
       return this.httpClient.get<{content: string}>(EXPORT_PROBLEM_URL, {
+        params: queryParams,
+      })
+    }
+    catch(err){
+      throw new Error("user not logged in");
+    }
+  }
+
+  removeSolution(sol: Solution): Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
+      queryParams = queryParams.append("startDate", sol.startDate)
+      queryParams = queryParams.append("endDate", sol.endDate)
+      queryParams = queryParams.append("version", sol.version)
+      return this.httpClient.delete<HttpResponse<string>>(REMOVE_SOLUTION, {
         params: queryParams,
       })
     }

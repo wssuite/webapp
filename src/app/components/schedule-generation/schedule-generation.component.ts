@@ -58,6 +58,7 @@ export class ScheduleGenerationComponent implements OnInit {
   nursesPreference: SchedulePreferenceElement[];
 
   scheduleData!: ScheduleDataInterface;
+  dateError: boolean
 
   constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService, 
     private nurseService: NurseService, private dialog: MatDialog, private scheduleService: ScheduleService
@@ -81,7 +82,7 @@ export class ScheduleGenerationComponent implements OnInit {
     this.hospitalDemands = [];
     this.nursesPreference = [];
     this.demandsError = true;
-
+    this.dateError = true;
   }
   ngOnInit(): void {
     try{
@@ -243,6 +244,7 @@ export class ScheduleGenerationComponent implements OnInit {
       e.value != null && e.value != undefined
         ? (this.startDate = e.value)
         : (this.startDate = new Date());
+    //this.endDate = new Date(+this.startDate + (7 * DateUtils.dayMultiplicationFactor))
   }
 
   updateEndDate(e: MatDatepickerInputEvent<Date>) {
@@ -250,6 +252,10 @@ export class ScheduleGenerationComponent implements OnInit {
       e.value != null && e.value != undefined
         ? (this.endDate = e.value)
         : (this.endDate = new Date());
+    const dayDiffrences = Math.ceil((+this.endDate - +this.startDate)/DateUtils.dayMultiplicationFactor);
+    console.log(dayDiffrences)
+    this.dateError = dayDiffrences % 7 !== 0
+    console.log(this.dateError)
   }
 
   generateSchedule(){
