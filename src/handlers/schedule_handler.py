@@ -139,6 +139,16 @@ class ScheduleHandler(BaseHandler):
         else:
             raise ProjectBaseException("The problem doesn't exist")
 
+    def remove_schedule(self, token, start, end, profile_name, v):
+        self.verify_profile_accessors_access(token, profile_name)
+        fs = FileSystemManager()
+        self.solution_dao.remove(start, end, profile_name, v)
+        path = fs.get_solution_dir_path(profile_name, start, end, v)
+        if fs.exist(path):
+            fs.delete_dir(path)
+        else:
+            raise ProjectBaseException("The problem doesn't exist")
+
     def __build_detailed_demand(self, demand, detailed_demand):
         nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)
         """Get the nurses objects included in the demand"""

@@ -85,3 +85,30 @@ class TestSolutionDao(TestCase):
             solution1[version],
         )
         self.assertEqual(expected_after, actual_after)
+
+    def test_remove_a_solution_succeeds(self):
+        self.dao.insert_one(self.solution1.copy())
+        solution = self.dao.collection.find_one(
+            {
+                start_date: self.solution1[start_date],
+                end_date: self.solution1[end_date],
+                profile: self.solution1[profile],
+                version: self.solution1[version]
+            }
+        )
+        self.assertNotEqual(None, solution)
+        self.dao.remove(
+            self.solution1[start_date],
+            self.solution1[end_date],
+            self.solution1[profile],
+            self.solution1[version]
+        )
+        after = self.dao.collection.find_one(
+            {
+                start_date: self.solution1[start_date],
+                end_date: self.solution1[end_date],
+                profile: self.solution1[profile],
+                version: self.solution1[version]
+            }
+        )
+        self.assertEqual(None, after)
