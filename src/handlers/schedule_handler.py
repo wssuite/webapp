@@ -1,3 +1,4 @@
+import datetime
 import json
 import os.path
 from typing import Type
@@ -28,6 +29,7 @@ from constants import (
     previous_versions,
     problem,
     schedule,
+    timestamp,
 )
 from src.utils.file_system_manager import FileSystemManager
 
@@ -70,6 +72,7 @@ class ScheduleHandler(BaseHandler):
             profile: demand.profile,
             version: str(next_version),
             state: "In Progress",
+            timestamp: str(datetime.datetime.now())
         }
         """This will be the case of a schedule regeneration"""
         if v is not None:
