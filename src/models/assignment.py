@@ -4,9 +4,10 @@ from constants import (
     assignment_shift,
     assignment_skill,
 )
+from src.models.exporter import CSVExporter
 
 
-class Assignment:
+class Assignment(CSVExporter):
     def __init__(self, info):
         self.date = info[0]
         self.employee_name = info[1]
@@ -20,3 +21,6 @@ class Assignment:
             assignment_shift: self.shift,
             assignment_skill: self.skill,
         }
+
+    def export(self):
+        return f"{self.employee_name},{self.date},{self.shift},{self.skill}\n"

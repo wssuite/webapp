@@ -39,6 +39,7 @@ from constants import (
     assignment_shift,
     assignment_skill,
     schedule,
+    timestamp
 )
 from test.db_test_constants import build_db, random_hex, profile1
 from pyfakefs.fake_filesystem_unittest import TestCase
@@ -132,6 +133,7 @@ class TestScheduleHandler(TestCase):
             profile: profile1,
             version: "1",
             state: "Waiting",
+            timestamp: solution[timestamp]
         }
         self.assertEqual(expected_solution, solution)
         folder_exist = self.fs.exists(full_path)
@@ -163,7 +165,8 @@ class TestScheduleHandler(TestCase):
     def test_regenerate_schedule_and_get_solution_detail_without_schedule(
         self, mock_post
     ):
-        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        first_solution = self.handler.generate_schedule(
+            random_hex, hospital_demand_dict)
         solution = self.handler.regenerate_schedule(
             random_hex, hospital_demand_dict, "1"
         )
@@ -173,12 +176,14 @@ class TestScheduleHandler(TestCase):
             profile: profile1,
             version: "2",
             state: "Waiting",
+            timestamp: solution[timestamp]
         }
         self.assertEqual(expected_solution, solution)
         solution_detailed = self.handler.get_detailed_solution(
             random_hex, "2023-06-01", "2023-06-02", profile1, "2"
         )
         expected_detailed = expected_solution.copy()
+        expected_detailed[timestamp] = solution[timestamp]
         expected_detailed[previous_versions] = [
             {
                 start_date: "2023-06-01",
@@ -186,6 +191,7 @@ class TestScheduleHandler(TestCase):
                 profile: profile1,
                 version: "1",
                 state: "Waiting",
+                timestamp: first_solution[timestamp]
             }
         ]
         expected_detailed[problem] = hospital_demand_dict
@@ -195,7 +201,7 @@ class TestScheduleHandler(TestCase):
     def test_generate_schedule_and_get_solution_detail_with_schedule(
         self, mock_post
     ):
-        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        generation = self.handler.generate_schedule(random_hex, hospital_demand_dict)
         text = """
         HEADERS
         (0,Patrick)
@@ -239,6 +245,7 @@ class TestScheduleHandler(TestCase):
             profile: profile1,
             version: "1",
             state: "Waiting",
+            timestamp: generation[timestamp],
             previous_versions: [],
             problem: hospital_demand_dict,
             schedule: expected_solution,
@@ -251,9 +258,38 @@ class TestScheduleHandler(TestCase):
             self.handler.generate_schedule(random_hex, hospital_demand_dict)
 
     @patch("requests.post", return_value=mock_succeed_response())
+    def test_export_schedule(self, mock_post):
+        self.handler.generate_schedule(
+            random_hex, hospital_demand_dict)
+        text = """
+        HEADERS
+        (0,Patrick)
+        END
+        instance1,2023-06-01,2023-06-02
+        Assignments = 1
+        0,2023-06-01,Late,Nurse
+        """
+        solution_file = self.fs.joinpaths(
+            base_directory,
+            dataset_directory,
+            profile1,
+            "2023-06-01_2023-06-02",
+            "1",
+            "sol.txt",
+        )
+        self.fs.create_file(solution_file, contents=text)
+        expected_text = """ASSIGNMENTS
+Patrick,2023-06-01,Late,Nurse
+"""
+        solution = self.handler.export_schedule(
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1")
+        self.assertEqual(expected_text, solution)
+
+    @patch("requests.post", return_value=mock_succeed_response())
     def test_get_latest_solutions(self, mock_post):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
-        self.handler.regenerate_schedule(random_hex, hospital_demand_dict, "1")
+        last_generation = self.handler.regenerate_schedule(
+            random_hex, hospital_demand_dict, "1")
         actual = self.handler.get_latest_solutions_versions(
             random_hex, profile1
         )
@@ -263,13 +299,16 @@ class TestScheduleHandler(TestCase):
             profile: profile1,
             version: "2",
             state: "Waiting",
+            timestamp: last_generation[timestamp]
         }
         self.assertEqual([expected_solution], actual)
 
     @patch("requests.post", return_value=mock_succeed_response())
     def test_get_all_solutions(self, mock_post):
-        self.handler.generate_schedule(random_hex, hospital_demand_dict)
-        self.handler.regenerate_schedule(random_hex, hospital_demand_dict, "1")
+        first_generation = self.handler.generate_schedule(
+            random_hex, hospital_demand_dict)
+        last_generation = self.handler.regenerate_schedule(
+            random_hex, hospital_demand_dict, "1")
         actual = self.handler.get_all_solutions(random_hex, profile1)
         expected_solution = [
             {
@@ -278,6 +317,7 @@ class TestScheduleHandler(TestCase):
                 profile: profile1,
                 version: "1",
                 state: "Waiting",
+                timestamp: first_generation[timestamp]
             },
             {
                 start_date: "2023-06-01",
@@ -285,6 +325,34 @@ class TestScheduleHandler(TestCase):
                 profile: profile1,
                 version: "2",
                 state: "Waiting",
+                timestamp: last_generation[timestamp]
             },
         ]
         self.assertEqual(expected_solution, actual)
+
+    @patch("requests.post", return_value=mock_succeed_response())
+    def test_remove_solution_if_exist_gets_removed(self, mock_post):
+        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        path = self.fs.joinpaths(
+            base_directory,
+            dataset_directory,
+            profile1, "2023-06-01_2023-06-02", "1")
+        self.assertTrue(self.fs.exists(path))
+        self.handler.remove_schedule(
+            random_hex,
+            "2023-06-01",
+            "2023-06-02",
+            profile1,
+            "1"
+        )
+        self.assertFalse(self.fs.exists(path))
+
+    def test_remove_solution_if_not_exist_raise_error(self):
+        with self.assertRaises(ProjectBaseException):
+            self.handler.remove_schedule(
+                random_hex,
+                "2023-06-01",
+                "2023-06-02",
+                profile1,
+                "1"
+            )
