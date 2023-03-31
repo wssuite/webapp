@@ -6,6 +6,7 @@ import os
 import subprocess
 import multiprocessing
 from .protected_dict import ProtectedDict
+import time
 
 
 base_directory = os.getcwd()
@@ -39,10 +40,7 @@ def run_scheduler(path, counter):
     info_json = extract_version_info_from_path(path)
     info_json["state"] = "In Progress"
     running_fm.add_item(path, counter)
-    input_file_path = os.path.join(path, "input.txt")
-    input_folder = os.path.join(path, "sol")
-    os.mkdir(input_folder)
-    shutil.copy(input_file_path, os.path.join(input_folder, "sol.txt"))
+    
     requests.post(
         f"http://{data['main_server_address']}/schedule/updateStatus",
         json=info_json
@@ -50,12 +48,18 @@ def run_scheduler(path, counter):
     proc = subprocess.Popen(
         [
             "./bin/staticscheduler",
-            f"--dir {path}",
-            "--instance sol",
-            "--param default.txt",
-            f"--sol {path}",
-            f"--timeout {data['timeout']}",
-            "--origin ui"
+            "--dir",
+            f"{path}/",
+            "--instance",
+            "sol",
+            "--param",
+            "default.txt",
+            "--sol",
+            f"{path}/",
+            "--timeout",
+            f"{data['timeout']}",
+            "--origin",
+            "ui"
         ]
     )
     proc.wait()
