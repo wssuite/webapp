@@ -6,7 +6,7 @@ import os
 import subprocess
 import multiprocessing
 from .protected_dict import ProtectedDict
-import time
+import shlex
 
 
 base_directory = os.getcwd()
@@ -45,22 +45,12 @@ def run_scheduler(path, counter):
         f"http://{data['main_server_address']}/schedule/updateStatus",
         json=info_json
     )
+    cmd = "./bin/staticscheduler --dir {0}/ --instance sol --param default.txt --sol {0} --timeout {1} --origin ui".\
+        format(path, data['timeout'])
+    cmd_split = shlex.split(cmd)
+    print(cmd_split)
     proc = subprocess.Popen(
-        [
-            "./bin/staticscheduler",
-            "--dir",
-            f"{path}/",
-            "--instance",
-            "sol",
-            "--param",
-            "default.txt",
-            "--sol",
-            f"{path}/",
-            "--timeout",
-            f"{data['timeout']}",
-            "--origin",
-            "ui"
-        ]
+        cmd_split
     )
     proc.wait()
     print(proc.returncode)
@@ -73,14 +63,6 @@ def callback(path, status):
         it with the status of the schedule
     """
     info_json = extract_version_info_from_path(path)
-    try:
-        shutil.move(
-            os.path.join(path, "input.txt"),
-            os.path.join(path, "sol.txt")
-        )
-    except Exception:
-        pass
-
     if status == 0:
         """return success status"""
         info_json["state"] = "Success"
