@@ -196,6 +196,29 @@ class TestScheduleHandler(TestCase):
         self, mock_post
     ):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        input_file_exist = self.fs.exists(
+            self.fs.joinpaths(
+                base_directory,
+                dataset_directory,
+                profile1,
+                "2023-06-01_2023-06-02",
+                "1",
+                "input.txt",
+            )
+        )
+        self.assertTrue(input_file_exist)
+        instance_file_exist = self.fs.exists(
+            self.fs.joinpaths(
+                base_directory,
+                dataset_directory,
+                profile1,
+                "2023-06-01_2023-06-02",
+                "1",
+                "sol",
+                "sol.txt",
+            )
+        )
+        self.assertTrue(instance_file_exist)
         text = """
         HEADERS
         (0,Patrick)

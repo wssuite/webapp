@@ -1,5 +1,6 @@
 import json
 import os.path
+import shutil
 from typing import Type
 
 import requests
@@ -69,8 +70,11 @@ class ScheduleHandler(BaseHandler):
         input_txt = os.path.join(full_path, "input.txt")
         with open(input_txt, "w") as f:
             f.write(detailed_demand.to_string())
-        """TODO: Launch request to the HAProxy in order for the demand
-        to be scheduled. The state will not be always in progress"""
+
+        instance_folder = os.path.join(full_path, "sol")
+        os.mkdir(instance_folder)
+        shutil.copyfile(input_txt, os.path.join(instance_folder, "sol.txt"))
+
         solution_json = {
             start_date: demand.start_date,
             end_date: demand.end_date,
