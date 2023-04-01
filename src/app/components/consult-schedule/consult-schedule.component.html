@@ -2,9 +2,11 @@
     <div *ngIf="validSchedule === true else elseBlock">
         <div class="btn-section">
             <button mat-raised-button (click)="exportCurrentScheduleProblem()">Download problem</button>
-            <button mat-raised-button (click)="regenerateSchedule()">Regenerate Schedule</button>
+            <button *ngIf="schedule.state !== inPrgressState" mat-raised-button (click)="regenerateSchedule()">Regenerate Schedule</button>
+            <button *ngIf="schedule.state === inPrgressState" mat-raised-button (click)="stopGeneration()">Stop generation></button>
         </div>
-        <h1>Your schedule is ready! Start date: {{schedule.startDate}}- end date: {{schedule.endDate}}- Version: {{schedule.version}}</h1>
+        <h1>The state of your schedule is: {{schedule.state}}</h1>
+        <h1>Start date: {{schedule.startDate}}- end date: {{schedule.endDate}}- Version: {{schedule.version}}</h1>
         <!--Modify this block to a table like the preferences table-->
         <div class="schedule-container" *ngIf="schedule.schedule">
             <!-- create a table to hold the column with the employee names-->
@@ -27,13 +29,21 @@
                     </tr>
                     <tr class="checkbox-row" *ngFor="let sc of schedule.schedule.schedule">
                         <td class="checkbox-cell" *ngFor="let index of indexes" class="schedule-cells">
-                            <button mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
-                                [ngStyle]="getButtonStyle(sc.employee_name, index)" (click)="updatePreference(sc.employee_name, index)">
-                                <span>
+                            <div *ngIf="schedule.state !== inPrgressState; else inProgress">
+                                <button mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
+                                    [ngStyle]="getButtonStyle(sc.employee_name, index)" (click)="updatePreference(sc.employee_name, index)">
+                                    <span>
+                                        {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                                    </span>
+                                </button>
+                                <ng-template #noPreference></ng-template>
+                            </div>
+                            <ng-template #inProgress>
+                                <span *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference">
                                     {{getEmployeeShiftSkill(sc.employee_name, index)}}
                                 </span>
-                            </button>
-                            <ng-template #noPreference></ng-template>
+                                <ng-template #noPreference></ng-template>
+                            </ng-template>
                         </td>
                     </tr>
                 </table>

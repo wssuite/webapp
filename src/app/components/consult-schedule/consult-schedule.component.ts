@@ -1,17 +1,19 @@
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
-import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import * as saveAs from "file-saver";
 import { MAIN_MENU, VIEW_SCHEDULES } from "src/app/constants/app-routes";
-import { Assignment } from "src/app/models/Assignment";
+import { Assignment, EmployeeSchedule } from "src/app/models/Assignment";
 import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
-import { DetailedSchedule, Solution } from "src/app/models/Schedule";
+import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from "src/app/models/Schedule";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
+import { IN_PROGRESS } from "src/app/constants/schedule_states";
+import { NOTIFICATION_UPDATE, VISUALISATION_UPDATE } from "src/app/constants/socket-events";
 
 interface PreferenceKeyInterface{
   nurse: string,
@@ -24,7 +26,7 @@ interface PreferenceKeyInterface{
   templateUrl: "./consult-schedule.component.html",
   styleUrls: ["./consult-schedule.component.css"],
 })
-export class ConsultScheduleComponent implements OnInit, OnDestroy {
+export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewInit {
 
   schedule!: DetailedSchedule;
   connectedUser: boolean;
@@ -37,6 +39,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
   displayedColumns: string[];
   dataSource: MatTableDataSource<Solution>
   preferences: Map<string, string>
+  inPrgressState = IN_PROGRESS
 
   constructor(private service: ScheduleService, public dialog: MatDialog, private router: Router) {
     this.employeeAssignmentsMap = new Map();
@@ -69,7 +72,30 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.savePreferences()    
+    this.savePreferences()
+    this.service.unsubscribeContinuousVisulation({
+      startDate: this.schedule.startDate,
+      endDate: this.schedule.endDate,
+      profile: this.schedule.profile,
+      version: this.schedule.version
+    })  
+  }
+
+  ngAfterViewInit(): void {
+      this.service.socket.on(VISUALISATION_UPDATE, (schedule: EmployeeSchedule)=>{
+        this.updateAssignments(schedule)
+      })
+      this.service.socket.on(NOTIFICATION_UPDATE, (sol: Solution)=>{
+        this.getDetailedSchedule(sol);
+        if(sol.state !== IN_PROGRESS){
+          this.service.unsubscribeContinuousVisulation({
+            startDate: sol.startDate,
+            endDate: sol.endDate,
+            profile: sol.profile,
+            version: sol.version
+          })
+        }
+      })
   }
 
   getDetailedSchedule(schedule: Solution) {
@@ -85,18 +111,22 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
           this.nbColumns =
             DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
             this.indexes = this.getIndexes();
-          for (const sch of this.schedule.schedule.schedule) {
-            this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
-            for(const assignement of sch.assignments){
-              //console.log(assignement.date)
-              this.preferences.set(JSON.stringify({nurse: assignement.employee_name,
-                 shift: assignement.shift, date:assignement.date}),"");
+          if(data.state === IN_PROGRESS){
+            const obj: ContinuousVisualisationInterface = {
+              startDate: this.schedule.startDate,
+              endDate: this.schedule.endDate,
+              profile: this.schedule.profile,
+              version: this.schedule.version
             }
+            this.service.subscribeContinuousVisulation(obj)
           }
-          const savedPrefrences = CacheUtils.getPreferences(schedule);
-          if(savedPrefrences){
-            for(const pref of savedPrefrences){
-              this.preferences.set(JSON.stringify({nurse: pref.username, shift: pref.shift, date: pref.date}), pref.preference)
+          this.updateAssignments(this.schedule.schedule);
+          if(data.state !== IN_PROGRESS){
+            const savedPrefrences = CacheUtils.getPreferences(schedule);
+            if(savedPrefrences){
+              for(const pref of savedPrefrences){
+                this.preferences.set(JSON.stringify({nurse: pref.username, shift: pref.shift, date: pref.date}), pref.preference)
+              }
             }
           }
         }
@@ -107,6 +137,19 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
         this.openErrorDialog(err.error)
       }
     })
+  }
+
+  updateAssignments(schedule:EmployeeSchedule){
+    for (const sch of schedule.schedule) {
+      this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
+      if(this.schedule.state !== IN_PROGRESS){
+        for(const assignement of sch.assignments){
+          //console.log(assignement.date)
+          this.preferences.set(JSON.stringify({nurse: assignement.employee_name,
+            shift: assignement.shift, date:assignement.date}),"");
+        }
+      }
+    }
   }
 
   openErrorDialog(message: string){
@@ -320,6 +363,20 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
         else{
           this.openErrorDialog(err.error);
         }
+      }
+    })
+  }
+
+  stopGeneration(){
+    const obj: ContinuousVisualisationInterface = {
+      startDate: this.schedule.startDate,
+      endDate: this.schedule.endDate,
+      profile: this.schedule.profile,
+      version: this.schedule.version,
+    }
+    this.service.stopGeneration(obj).subscribe({
+      error: (err: HttpErrorResponse)=>{
+        this.openErrorDialog(err.error)
       }
     })
   }

@@ -5,10 +5,10 @@ import {Socket, io} from "socket.io-client";
 import { ALL_SOLUTIONS, BASE_URL, DETAILED_SOLUTION_URL,
   EXPORT_PROBLEM_URL, GENERATE_SCHEDULE,
   LATEST_SOLUTIONS, 
-  REGENERATE_SCHEDULE_URL,REMOVE_SOLUTION} from 'src/app/constants/api-constants';
-import { SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS } from 'src/app/constants/socket-events';
+  REGENERATE_SCHEDULE_URL,REMOVE_SOLUTION, STOP_GENERATION_URL} from 'src/app/constants/api-constants';
+import { SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, VISUALISATION_SUBSCRIPTION, VISUALISATION_UNSUBSCRIPTION } from 'src/app/constants/socket-events';
 import { GenerationRequest } from 'src/app/models/GenerationRequest';
-import { DetailedSchedule, Solution } from 'src/app/models/Schedule';
+import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from 'src/app/models/Schedule';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
 
 @Injectable({
@@ -24,6 +24,10 @@ export class ScheduleService {
     const notifSubscriptions = CacheUtils.getNotifSubscriptions()
     for(const sub of notifSubscriptions){
       this.notificationSubscribe(sub);
+    }
+    const savedVisulaisation = CacheUtils.getContinuousVisulaisation()
+    if(savedVisulaisation){
+      this.subscribeContinuousVisulation(savedVisulaisation)
     }
     console.log(this.socket)
   }
@@ -152,6 +156,19 @@ export class ScheduleService {
     }
   }
 
+  stopGeneration(sol: ContinuousVisualisationInterface): Observable<HttpResponse<string>>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
+      return this.httpClient.post<HttpResponse<string>>(STOP_GENERATION_URL, sol,{
+        params: queryParams
+      })
+    }
+    catch(err){
+      throw new Error("user not logged in")
+    }
+  }
+
   connectSocket(){
     this.socket = io(BASE_URL)
     console.log(this.socket)
@@ -167,5 +184,18 @@ export class ScheduleService {
 
   notificationSubscribe(solution: Solution) {
     this.socket.emit(SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution)
+  }
+
+  subscribeContinuousVisulation(solution: ContinuousVisualisationInterface ){
+    this.socket.emit(VISUALISATION_SUBSCRIPTION, solution)
+    CacheUtils.setContinuousVisualisation(solution)
+  }
+  unsubscribeContinuousVisulation(solution: ContinuousVisualisationInterface) {
+    this.socket.emit(VISUALISATION_UNSUBSCRIPTION, solution)
+    try{
+      CacheUtils.clearContinuousVisulaisation()
+    } catch(err){
+      // Do nothing
+    }
   }
 }

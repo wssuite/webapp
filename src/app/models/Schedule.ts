@@ -20,3 +20,10 @@ export interface DetailedSchedule {
     version: string,
     state: string, 
 }
+
+export interface ContinuousVisualisationInterface {
+    startDate: string,
+    endDate: string,
+    profile: string,
+    version: string,
+}
