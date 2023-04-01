@@ -7,6 +7,7 @@ const IS_ADMIN_STRING = "isAdmin";
 export const USERNAME_STRING = "username";
 export const PROFILE_STRING = "profile";
 export const CURRENT_SCHEDULE = "schedule";
+export const NOTIFICATION_SUBSCRIPTION_STRING = "notifiSubscription";
 
 export class CacheUtils {
 
@@ -57,6 +58,7 @@ export class CacheUtils {
         for(const key of this.savedPreferencesKeys){
             localStorage.removeItem(key)
         }
+        localStorage.removeItem(NOTIFICATION_SUBSCRIPTION_STRING);
     }
 
     public static getUsername(): string{
@@ -105,5 +107,39 @@ export class CacheUtils {
             return undefined
         }
         return JSON.parse(savedPrefrences) as SchedulePreferenceElement[]
+    }
+
+    public static addNewNotifSubscription(sol: Solution){
+        const subscriptions = localStorage.getItem(NOTIFICATION_SUBSCRIPTION_STRING);
+        let parsedSubscriptions: Solution[];
+        if(!subscriptions){
+            parsedSubscriptions = []
+        }
+        else{
+            parsedSubscriptions = JSON.parse(subscriptions) as Solution[]
+        }
+        parsedSubscriptions.push(sol)
+        localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, JSON.stringify(parsedSubscriptions))
+    }
+
+    public static removeNotifSubscription(sol: Solution){
+        const subscriptions = localStorage.getItem(NOTIFICATION_SUBSCRIPTION_STRING);
+        if(!subscriptions){
+            return
+        }
+        const parsedSubscriptions = JSON.parse(subscriptions) as Solution[]
+        const index = parsedSubscriptions.indexOf(sol)
+        if(index > -1){
+            parsedSubscriptions.splice(index, 1);
+        }
+        localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, JSON.stringify(parsedSubscriptions))
+    }
+
+    public static getNotifSubscriptions(): Solution[]{
+        const subscriptions = localStorage.getItem(NOTIFICATION_SUBSCRIPTION_STRING);
+        if(!subscriptions){
+            return []
+        }
+        return JSON.parse(subscriptions) as Solution[]
     }
 }

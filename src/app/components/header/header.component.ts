@@ -3,8 +3,8 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
-import { CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
-import { SUCCESS } from 'src/app/constants/schedule_states';
+import { CONSULT_SCHEDULE, CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
+import { IN_PROGRESS} from 'src/app/constants/schedule_states';
 import { NOTIFICATION_UPDATE } from 'src/app/constants/socket-events';
 import { BaseProfile } from 'src/app/models/Profile';
 import { Solution } from 'src/app/models/Schedule';
@@ -62,7 +62,15 @@ export class HeaderComponent implements OnInit, AfterViewInit{
           this.notifications.push(solution);
           this.newNotificationAdded = true;
         }
-        if(solution.state === SUCCESS){
+        if(solution.state !== IN_PROGRESS){
+          CacheUtils.removeNotifSubscription({
+            startDate: solution.startDate,
+            endDate: solution.endDate,
+            profile: solution.profile,
+            version: solution.version,
+            state: IN_PROGRESS,
+            timestamp: solution.timestamp
+          })
           this.scheduleService.notificationUnsubscribe(solution);
         }
         console.log(solution.state);
@@ -214,5 +222,10 @@ export class HeaderComponent implements OnInit, AfterViewInit{
 
   updateNewNotificationState(){
     this.newNotificationAdded = false;
+  }
+
+  viewSchedule(sol: Solution){
+    this.scheduleService.selectedScheduleToView = sol;
+    this.router.navigate(["/"+ CONSULT_SCHEDULE])
   }
 }

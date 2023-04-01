@@ -277,6 +277,7 @@ export class ScheduleGenerationComponent implements OnInit {
     }
     this.scheduleService.generateSchedule(request).subscribe({
       next: (sol: Solution)=>{
+        CacheUtils.addNewNotifSubscription(sol)
         this.scheduleService.notificationSubscribe(sol);
         this.router.navigate(["/" + VIEW_SCHEDULES])
       },

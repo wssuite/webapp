@@ -309,6 +309,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
     console.log(this.schedule.problem.preferences)
     this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
       next: (sol: Solution)=> {
+        CacheUtils.addNewNotifSubscription(sol)
         this.service.notificationSubscribe(sol);
         this.router.navigate(["/" + VIEW_SCHEDULES])
       },

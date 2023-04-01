@@ -20,7 +20,11 @@ export class ScheduleService {
   socket!: Socket;
 
   constructor(private httpClient: HttpClient) { 
-    //this.socket = io(BASE_URL)
+    this.socket = io(BASE_URL)
+    const notifSubscriptions = CacheUtils.getNotifSubscriptions()
+    for(const sub of notifSubscriptions){
+      this.notificationSubscribe(sub);
+    }
     console.log(this.socket)
   }
 

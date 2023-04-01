@@ -44,7 +44,7 @@
                 </ng-template>
             </button>
             <mat-menu #notificationsMenu="matMenu">
-                <button mat-menu-item *ngFor="let sol of notifications">The schedule {{sol.startDate}}-{{sol.endDate}}-v{{sol.version}} is {{sol.state}}</button>
+                <button mat-menu-item *ngFor="let sol of notifications" (click)="viewSchedule(sol)">The schedule {{sol.startDate}}-{{sol.endDate}}-v{{sol.version}} is {{sol.state}}</button>
             </mat-menu>
         </div>
         <div class="icon-box">
