@@ -18,11 +18,17 @@ def emit_schedule(json):
     )
     sol_file_path = os.path.join(sol_folder_path, "sol.txt")
     room = create_room_name_from_json(json)
-    socketio.emit(
-        "update_visualisation",
-        Schedule(sol_file_path).filter_by_name(),
-        room=f"visualisation_{room}",
-    )
+    schedule_json = None
+    try:
+        schedule_json = Schedule(sol_file_path).filter_by_name()
+    except Exception:
+        schedule_json = None
+    finally:
+        socketio.emit(
+            "update_visualisation",
+            schedule_json,
+            room=f"visualisation_{room}",
+        )
 
 
 def create_room_name_from_json(json):

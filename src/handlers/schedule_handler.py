@@ -83,7 +83,7 @@ class ScheduleHandler(BaseHandler):
             end_date: demand.end_date,
             profile: demand.profile,
             version: str(next_version),
-            timestamp: str(datetime.datetime.now())
+            timestamp: str(datetime.datetime.now()),
         }
         """This will be the case of a schedule regeneration"""
         if v is not None:

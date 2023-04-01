@@ -162,7 +162,8 @@ def export_schedule():
         profile_name = request.args[profile]
         v = request.args[version]
         schedule_str = schedule_handler.export_schedule(
-            token, start, end, profile_name, v)
+            token, start, end, profile_name, v
+        )
         return {"content": schedule_str}
     except ProjectBaseException as e:
         return Response(e.args, 500)

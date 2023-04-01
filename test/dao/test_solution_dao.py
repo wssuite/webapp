@@ -102,7 +102,7 @@ class TestSolutionDao(TestCase):
                 start_date: self.solution1[start_date],
                 end_date: self.solution1[end_date],
                 profile: self.solution1[profile],
-                version: self.solution1[version]
+                version: self.solution1[version],
             }
         )
         self.assertNotEqual(None, solution)
@@ -110,14 +110,14 @@ class TestSolutionDao(TestCase):
             self.solution1[start_date],
             self.solution1[end_date],
             self.solution1[profile],
-            self.solution1[version]
+            self.solution1[version],
         )
         after = self.dao.collection.find_one(
             {
                 start_date: self.solution1[start_date],
                 end_date: self.solution1[end_date],
                 profile: self.solution1[profile],
-                version: self.solution1[version]
+                version: self.solution1[version],
             }
         )
         self.assertEqual(None, after)
