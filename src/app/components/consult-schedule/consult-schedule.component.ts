@@ -376,6 +376,29 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     }
     this.service.stopGeneration(obj).subscribe({
       error: (err: HttpErrorResponse)=>{
+        if(err.status === HttpStatusCode.Ok){
+          const currentSolution = CacheUtils.getCurrentSchedule();
+          if(currentSolution){
+            this.getDetailedSchedule(currentSolution)
+          }
+        }
+        this.openErrorDialog(err.error)
+      }
+    })
+  }
+  exportSchedule(){
+    const obj: ContinuousVisualisationInterface = {
+      startDate: this.schedule.startDate,
+      endDate: this.schedule.endDate,
+      profile: this.schedule.profile,
+      version: this.schedule.version,
+    }
+    this.service.exportSolution(obj).subscribe({
+      next:(data:{content: string})=>{
+        const file = new File([data.content], "schedule_" + CacheUtils.getProfile() + "_" + this.schedule.startDate + "_" + this.schedule.endDate + "_" + this.schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
+        saveAs(file);
+      },
+      error:(err: HttpErrorResponse)=>{
         this.openErrorDialog(err.error)
       }
     })

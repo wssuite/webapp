@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {Socket, io} from "socket.io-client";
 import { ALL_SOLUTIONS, BASE_URL, DETAILED_SOLUTION_URL,
-  EXPORT_PROBLEM_URL, GENERATE_SCHEDULE,
+  EXPORT_PROBLEM_URL, EXPORT_SOLUTION_URL, GENERATE_SCHEDULE,
   LATEST_SOLUTIONS, 
   REGENERATE_SCHEDULE_URL,REMOVE_SOLUTION, STOP_GENERATION_URL} from 'src/app/constants/api-constants';
 import { SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, VISUALISATION_SUBSCRIPTION, VISUALISATION_UNSUBSCRIPTION } from 'src/app/constants/socket-events';
@@ -166,6 +166,22 @@ export class ScheduleService {
     }
     catch(err){
       throw new Error("user not logged in")
+    }
+  }
+
+  exportSolution(sol: ContinuousVisualisationInterface): Observable<{content: string}>{
+    try{
+      let queryParams = new HttpParams;
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
+      queryParams = queryParams.append("startDate", sol.startDate)
+      queryParams = queryParams.append("endDate", sol.endDate)
+      queryParams = queryParams.append("version", sol.version)
+      return this.httpClient.get<{content: string}>(EXPORT_SOLUTION_URL, {
+        params: queryParams
+      })
+    } catch(err){
+      throw new Error("user not connected")
     }
   }
 

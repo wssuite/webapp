@@ -3,6 +3,7 @@
         <div class="btn-section">
             <button mat-raised-button (click)="exportCurrentScheduleProblem()">Download problem</button>
             <button *ngIf="schedule.state !== inPrgressState" mat-raised-button (click)="regenerateSchedule()">Regenerate Schedule</button>
+            <button *ngIf="schedule.state !== inPrgressState && this.schedule.schedule" mat-raised-button (click)="exportSchedule()">Export Schedule</button>
             <button *ngIf="schedule.state === inPrgressState" mat-raised-button (click)="stopGeneration()">Stop generation></button>
         </div>
         <h1>The state of your schedule is: {{schedule.state}}</h1>

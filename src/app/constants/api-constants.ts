@@ -9,6 +9,7 @@ export const ALL_SOLUTIONS = SCHEDULE_URL + "/getAllSolutions";
 export const LATEST_SOLUTIONS = SCHEDULE_URL + "/getLatestSolutions";
 export const REMOVE_SOLUTION = SCHEDULE_URL + "/removeSolution"
 export const STOP_GENERATION_URL = SCHEDULE_URL + "/stopGeneration"
+export const EXPORT_SOLUTION_URL = SCHEDULE_URL + "/exportSchedule"
 
 export const NAME_FILTER_SCHEDULE_URL = SCHEDULE_URL + "/nameFilter";
 export const PROTOTYPE_SCHEDULE_URL = NAME_FILTER_SCHEDULE_URL + "/prototype";
