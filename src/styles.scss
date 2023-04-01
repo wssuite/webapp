@@ -36,3 +36,7 @@ $nurseScheduling-theme: mat-light-theme($nurseScheduling-primary, $nurseScheduli
     z-index: 10000000 !important;
 }
 
+button[color=nurse-blue] {
+    background-color: #135baf !important; //blue for the buttons 
+    color: white !important;
+}
