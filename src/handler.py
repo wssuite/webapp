@@ -1,5 +1,4 @@
 import json
-import shutil
 import requests
 from .file_writer import FileManager
 import os
@@ -7,7 +6,6 @@ import subprocess
 import multiprocessing
 from .protected_dict import ProtectedDict
 import shlex
-
 
 base_directory = os.getcwd()
 running_dir = os.path.join(base_directory, 'running')
@@ -40,13 +38,16 @@ def run_scheduler(path, counter):
     info_json = extract_version_info_from_path(path)
     info_json["state"] = "In Progress"
     running_fm.add_item(path, counter)
-    
+
     requests.post(
         f"http://{data['main_server_address']}/schedule/updateStatus",
         json=info_json
     )
-    cmd = "./bin/staticscheduler --dir {0}/ --instance sol --param default.txt --sol {0} --timeout {1} --origin ui".\
-        format(path, data['timeout'])
+    cmd = (
+        "./bin/staticscheduler --dir {0}/ --instance sol --param "
+        "default.txt --sol {0} --timeout {1} --origin ui".format(
+            path, data['timeout'])
+    )
     cmd_split = shlex.split(cmd)
     print(cmd_split)
     proc = subprocess.Popen(
@@ -101,3 +102,16 @@ def schedule_waiting():
         if item is not None:
             print("new item scheduled")
             schedule(item[0], item[1])
+
+
+def handle_stop_event(full_path):
+    """Delete the element from the running map"""
+    process = running_shared_dict.pop_item(full_path)
+    process.terminate()
+    info_json = extract_version_info_from_path(full_path)
+    running_fm.pop_item_by_key(full_path)
+    info_json["state"] = "Stopped"
+    requests.post(
+        f"http://{data['main_server_address']}/schedule/updateStatus",
+        json=info_json
+    )
