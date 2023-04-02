@@ -33,7 +33,12 @@ class FileSystemManager:
 
     @staticmethod
     def current_version(dir_name: str):
-        return len(os.listdir(dir_name))
+        max_version = 0
+        for version in os.listdir(dir_name):
+            version_ = int(version)
+            if version_ > max_version:
+                max_version = version_
+        return max_version
 
     @staticmethod
     def delete_dir(name):

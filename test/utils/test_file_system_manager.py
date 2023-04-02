@@ -35,3 +35,14 @@ class TestFileSystemManager(TestCase):
         dir_name = f"{base_directory}/{dataset_directory}/prototype"
         fake_fs.create_dir(dir_name)
         self.assertEqual(FileSystemManager.current_version(dir_name), 0)
+
+    def test_get_current_version_when_folder_is_deleted(self):
+        dir_name = f"{base_directory}/{dataset_directory}/prototype"
+        first_version = f"{dir_name}/1"
+        second_version = f"{dir_name}/2"
+        self.fs.create_dir(first_version)
+        self.fs.create_dir(second_version)
+        before = FileSystemManager.current_version(dir_name)
+        FileSystemManager.delete_dir(first_version)
+        after = FileSystemManager.current_version(dir_name)
+        self.assertEqual(before, after)
