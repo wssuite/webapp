@@ -31,10 +31,15 @@ class NurseDao(AbstractDao):
         exist = self.exist(nurse[nurse_username], nurse[profile])
         if exist is True:
             raise NurseUsernameAlreadyExist(nurse[nurse_username])
-        id_chosen = len(self.fetch_all(nurse[profile]))
-        nurse[nurse_id] = str(id_chosen)
-        self.collection.insert_one(nurse)
-        return str(id_chosen)
+        mongo_id = self.collection.insert_one(nurse)
+        chosen_id = str(mongo_id.inserted_id)
+        self.collection.update_one(
+            {mongo_id_field: mongo_id.inserted_id},
+            {mongo_set_operation: {nurse_id: chosen_id}},
+            upsert=False,
+        )
+
+        return chosen_id
 
     def fetch_all(self, profile_name):
         list_nurse = self.collection.find(

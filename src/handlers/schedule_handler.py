@@ -209,6 +209,8 @@ class ScheduleHandler(BaseHandler):
     def __build_detailed_demand(self, demand, detailed_demand):
         nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)
         """Get the nurses objects included in the demand"""
+        counter = 0
+        username_id_dict = {}
         for nurse in demand.nurses:
             nurse_dict = self.nurse_dao.find_by_username(nurse, demand.profile)
             if nurse is not None:
@@ -222,7 +224,9 @@ class ScheduleHandler(BaseHandler):
                         nurse_object.contract_groups.extend(
                             nurse_group_object.contract_groups
                         )
-
+                nurse_object.id = str(counter)
+                username_id_dict[nurse_object.username] = nurse_object.id
+                counter += 1
                 detailed_demand.nurses.append(nurse_object)
 
         detailed_demand.set_from_schedule_demand(demand)
@@ -231,14 +235,11 @@ class ScheduleHandler(BaseHandler):
          to the detailed demand"""
         for preference in demand.preferences:
             """Get the nurse for the given preference"""
-            nurse_dict = self.nurse_dao.find_by_username(
-                preference.username, demand.profile
-            )
+            preference_id = username_id_dict.get(preference.username)
             """if the nurse is found the dict will not be empty and we can
              proceed to verify the shift """
-            if nurse_dict is not None:
-                nurse_obj = Nurse().from_json(nurse_dict)
-                preference.id = nurse_obj.id
+            if preference_id is not None:
+                preference.id = preference_id
                 shift_exist = self.shift_dao.exist(
                     preference.shift, demand.profile
                 )
