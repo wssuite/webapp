@@ -1,11 +1,12 @@
 from src.dao.abstract_dao import connect_to_fake_db
-from src.handlers.contract_group_handler import ContractGroupHandler, Contract
+from src.handlers.contract_group_handler import ContractGroupHandler
 from src.exceptions.contract_exceptions import (
     ContractGroupNotExist,
     ContractNotExist,
     ContractContradictionException,
     ContractGroupDeletionError,
 )
+from src.models.contract import Contract
 from unittest import TestCase
 from test_constants import (
     default_user,

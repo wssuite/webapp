@@ -119,6 +119,7 @@ class ProfileHandler(BaseHandler):
                 work, shift.name, d_p.name
             )
         for shift_type in d_p.shift_types:
+            self._shift_type_verifications(shift_type)
             self.shift_type_dao.insert_one_if_not_exist(shift_type.db_json())
             self.shift_group_dao.add_shift_type_to_shift_group_list(
                 work, shift_type.name, d_p.name
@@ -126,21 +127,27 @@ class ProfileHandler(BaseHandler):
 
         for shift_group in d_p.shift_groups:
             if shift_group.name != work and shift_group.name != rest:
+                self._shift_group_verifications(shift_group)
                 self.shift_group_dao.insert_one_if_not_exist(
                     shift_group.db_json()
                 )
 
         for contract in d_p.contracts:
+            self.contract_insertion_verification(contract)
             self.contract_dao.insert_one(contract.db_json())
 
         for contract_group in d_p.contract_groups:
+            self.contract_group_insertion_verification(contract_group)
             self.contract_group_dao.insert_if_not_exist(
                 contract_group.db_json()
             )
 
         for nurse in d_p.nurses:
+            self.nurse_insertion_validations(nurse)
             self.nurse_dao.insert_one(nurse.db_json())
+
         for nurse_group in d_p.nurse_groups:
+            self.verify_nurse_group_is_valid(nurse_group)
             self.nurse_group_dao.insert_one_if_not_exist(nurse_group.db_json())
 
     def export_profile(self, token, profile_to_export):

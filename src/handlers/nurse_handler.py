@@ -1,11 +1,5 @@
-from src.dao.contract_dao import Contract
-from src.utils.contracts_validator import ContractsValidator
 from src.dao.nurse_dao import Nurse
 from src.handlers.base_handler import BaseHandler
-from src.exceptions.contract_exceptions import (
-    ContractNotExist,
-    ContractGroupNotExist,
-)
 from src.exceptions.nurse_exceptions import NurseNotFound, CannotDeleteNurse
 from constants import (
     nurse_username,
@@ -18,27 +12,6 @@ class NurseHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
 
-    def insertion_validations(self, json):
-        nurse = Nurse().from_json(json)
-        contract_validator = ContractsValidator()
-        for contract_string in nurse.direct_contracts:
-            contract_dict = self.contract_dao.find_by_name(
-                contract_string, nurse.profile
-            )
-            if contract_dict is None:
-                raise ContractNotExist(contract_string)
-            contract = Contract().from_json(contract_dict)
-            contract_validator.add_contract_constraints(contract)
-
-        for contract_group in nurse.contract_groups:
-            exist = self.contract_group_dao.exist(
-                contract_group, nurse.profile
-            )
-            if exist is False:
-                raise ContractGroupNotExist(contract_group)
-
-        return nurse, contract_validator
-
     """
     Before adding a nurse we need to verify:
     1- Contracts of the nurse exist
@@ -47,7 +20,8 @@ class NurseHandler(BaseHandler):
 
     def add(self, token, json):
         super().add(token, json)
-        nurse, contract_validator = self.insertion_validations(json)
+        nurse = Nurse().from_json(json)
+        self.nurse_insertion_validations(nurse)
         inserted_id = self.nurse_dao.insert_one(nurse.db_json())
         return inserted_id
 
@@ -61,7 +35,8 @@ class NurseHandler(BaseHandler):
 
     def update(self, token, json):
         super().update(token, json)
-        nurse, contract_validator = self.insertion_validations(json)
+        nurse = Nurse().from_json(json)
+        self.nurse_insertion_validations(nurse)
         before_update = self.get_by_username(
             token, nurse.username, nurse.profile
         )

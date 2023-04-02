@@ -11,15 +11,6 @@ class ShiftTypeHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
 
-    def verify_shifts_exist(self, shifts, profile):
-        not_exist_shifts = []
-        for shift in shifts:
-            exist = self.shift_dao.exist(shift, profile)
-            if exist is False:
-                not_exist_shifts.append(shift)
-        if len(not_exist_shifts) > 0:
-            raise ShiftNotExist(not_exist_shifts)
-
     def __add_shift_type_to_work_shift_group(self, name, profile):
         self.shift_group_dao.add_shift_type_to_shift_group_list(
             work, name, profile
@@ -28,7 +19,7 @@ class ShiftTypeHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         shift_type = ShiftType().from_json(json)
-        self.verify_shifts_exist(shift_type.shifts, shift_type.profile)
+        self._shift_type_verifications(shift_type)
         self.shift_type_dao.insert_one_if_not_exist(shift_type.db_json())
         self.__add_shift_type_to_work_shift_group(
             shift_type.name, shift_type.profile
@@ -37,7 +28,7 @@ class ShiftTypeHandler(BaseHandler):
     def update(self, token, json):
         super().update(token, json)
         shift_type = ShiftType().from_json(json)
-        self.verify_shifts_exist(shift_type.shifts, shift_type.profile)
+        self._shift_type_verifications(shift_type)
         self.shift_type_dao.update(shift_type.db_json())
 
     def __remove_shift_type_from_work_shift_group(self, name, profile_name):

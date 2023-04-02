@@ -1,41 +1,26 @@
 from src.handlers.base_handler import BaseHandler
 from src.models.contract_group import ContractGroup
 from src.exceptions.contract_exceptions import (
-    ContractNotExist,
     ContractGroupNotExist,
     ContractGroupDeletionError,
 )
 from constants import contract_group_name, nurse_group_name, nurse_username
-from src.utils.contracts_validator import ContractsValidator
-from src.models.contract import Contract
 
 
 class ContractGroupHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
 
-    def verify_insertion(self, json):
-        contract_group = ContractGroup().from_json(json)
-        validator = ContractsValidator()
-        for contract in contract_group.contracts:
-            contract_dict = self.contract_dao.find_by_name(
-                contract, contract_group.profile
-            )
-            if contract_dict is None:
-                raise ContractNotExist(contract)
-            contract_object = Contract().from_json(contract_dict)
-            validator.add_contract_constraints(contract_object)
-
-        return contract_group
-
     def add(self, token, json):
         super().add(token, json)
-        contract_group = self.verify_insertion(json)
+        contract_group = ContractGroup().from_json(json)
+        self.contract_group_insertion_verification(contract_group)
         self.contract_group_dao.insert_if_not_exist(contract_group.db_json())
 
     def update(self, token, json):
         super().update(token, json)
-        contract_group = self.verify_insertion(json)
+        contract_group = ContractGroup().from_json(json)
+        self.contract_group_insertion_verification(contract_group)
         self.contract_group_dao.update(contract_group.db_json())
 
     def get_all(self, token, profile_name):

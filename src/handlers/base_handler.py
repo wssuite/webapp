@@ -1,3 +1,10 @@
+from src.exceptions.nurse_exceptions import NurseNotFound
+from src.models.nurse_group import NurseGroup
+from src.exceptions.contract_exceptions import (
+    ContractNotExist,
+    ContractGroupNotExist,
+)
+from src.models.contract import Contract
 from src.dao.user_dao import UserDao
 from constants import (
     empty_token,
@@ -18,6 +25,9 @@ from src.dao.profile_dao import ProfileDao
 from src.dao.contract_group_dao import ContractGroupDao
 from src.dao.solution_dao import SolutionDao
 from src.exceptions.user_exceptions import ProfileAccessException
+from src.exceptions.shift_exceptions import ShiftNotExist
+from src.exceptions.skill_exceptions import SkillNotExist
+from src.utils.contracts_validator import ContractsValidator
 
 
 class BaseHandler:
@@ -79,3 +89,142 @@ class BaseHandler:
 
     def get_by_name(self, token, name, profile_name):
         self.verify_profile_accessors_access(token, profile_name)
+
+    def verify_shifts_exist(self, shifts, profile_name):
+        not_exist_shifts = []
+        for shift in shifts:
+            exist = self.shift_dao.exist(shift, profile_name)
+            if exist is False:
+                not_exist_shifts.append(shift)
+        if len(not_exist_shifts) > 0:
+            raise ShiftNotExist(not_exist_shifts)
+
+    def verify_shift_shift_types_exist(self, shifts, profile_name):
+        not_exist_shifts = []
+        for shift in shifts:
+            exist_shift = self.shift_dao.exist(shift, profile_name)
+            exist_shift_type = self.shift_type_dao.exist(shift, profile_name)
+            if exist_shift is False and exist_shift_type is False:
+                not_exist_shifts.append(shift)
+        if len(not_exist_shifts) > 0:
+            raise ShiftNotExist(not not_exist_shifts)
+
+    def _shift_group_verifications(self, shift_group):
+        shifts = []
+        shifts.extend(shift_group.shifts)
+        shifts.extend(shift_group.shift_types)
+        self.verify_shift_shift_types_exist(shifts, shift_group.profile)
+
+    def _shift_type_verifications(self, shift_type):
+        self.verify_shifts_exist(shift_type.shifts, shift_type.profile)
+
+    def verify_contract_shifts_exist(self, shifts, profile_name):
+        not_exist_shifts = []
+        for shift in shifts:
+            shift_dict = self.shift_dao.find_by_name(shift, profile_name)
+            shift_type = self.shift_type_dao.find_by_name(shift, profile_name)
+            shift_group = self.shift_group_dao.find_by_name(
+                shift, profile_name
+            )
+            exist = (
+                shift_dict is not None
+                or shift_group is not None
+                or shift_type is not None
+            )
+            if exist is False:
+                not_exist_shifts.append(shift)
+
+        if len(not_exist_shifts) > 0:
+            raise ShiftNotExist(not_exist_shifts)
+
+    def verify_contract_skills_exist(self, skills, profile_name):
+        non_existent_skills = []
+        for skill in skills:
+            exist = self.skill_dao.exist(skill, profile_name)
+            if exist is False:
+                non_existent_skills.append(skill)
+
+        if len(non_existent_skills) > 0:
+            raise SkillNotExist(non_existent_skills)
+
+    def contract_insertion_verification(self, contract):
+        self.verify_contract_shifts_exist(contract.shifts, contract.profile)
+        self.verify_contract_skills_exist(contract.skills, contract.profile)
+
+    def contract_group_insertion_verification(self, contract_group):
+        validator = ContractsValidator()
+        for contract in contract_group.contracts:
+            contract_dict = self.contract_dao.find_by_name(
+                contract, contract_group.profile
+            )
+            if contract_dict is None:
+                raise ContractNotExist(contract)
+            contract_object = Contract().from_json(contract_dict)
+            validator.add_contract_constraints(contract_object)
+
+    def nurse_insertion_validations(self, nurse):
+        contract_validator = ContractsValidator()
+        for contract_string in nurse.direct_contracts:
+            contract_dict = self.contract_dao.find_by_name(
+                contract_string, nurse.profile
+            )
+            if contract_dict is None:
+                raise ContractNotExist(contract_string)
+            contract = Contract().from_json(contract_dict)
+            contract_validator.add_contract_constraints(contract)
+
+        for contract_group in nurse.contract_groups:
+            exist = self.contract_group_dao.exist(
+                contract_group, nurse.profile
+            )
+            if exist is False:
+                raise ContractGroupNotExist(contract_group)
+
+        return contract_validator
+
+    def verify_nurse_group_contracts(self, nurse_group):
+        nurse_group_merged_contract = Contract()
+        nurse_group_merged_contract.name = f"{nurse_group.name} contract"
+        contract_validator = ContractsValidator()
+        for contract_name in nurse_group.contracts:
+            contract_dict = self.contract_dao.find_by_name(
+                contract_name, nurse_group.profile
+            )
+            if contract_dict is None:
+                raise ContractNotExist(contract_name)
+            contract = Contract().from_json(contract_dict)
+            contract_validator.add_contract_constraints(contract)
+            nurse_group_merged_contract.merge_contract_constraints(contract)
+        return nurse_group_merged_contract
+
+    def verify_contract_groups(self, nurse_group: NurseGroup):
+        for contract_group in nurse_group.contract_groups:
+            exist = self.contract_group_dao.exist(
+                contract_group, nurse_group.profile
+            )
+            if exist is False:
+                raise ContractGroupNotExist(contract_group)
+
+    def verify_group_combination_with_nurses(
+        self, nurse_group, nurse_group_merged_contract: Contract
+    ):
+        for nurse_name in nurse_group.nurses:
+            nurse_group_contract_copy = nurse_group_merged_contract.copy()
+            nurse_contract_validator = ContractsValidator()
+            nurse_contract_validator.add_contract_constraints(
+                nurse_group_contract_copy
+            )
+            nurse_dict = self.nurse_dao.find_by_username(
+                nurse_name, nurse_group.profile
+            )
+            if nurse_dict is None:
+                raise NurseNotFound(nurse_name)
+
+    def verify_nurse_group_is_valid(self, nurse_group):
+        nurse_group_merged_contract = self.verify_nurse_group_contracts(
+            nurse_group
+        )
+        self.verify_group_combination_with_nurses(
+            nurse_group, nurse_group_merged_contract
+        )
+        self.verify_contract_groups(nurse_group)

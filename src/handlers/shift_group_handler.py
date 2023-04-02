@@ -12,32 +12,16 @@ class ShiftGroupHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
 
-    def verify_shifts_exist(self, shifts, profile):
-        not_exist_shifts = []
-        for shift in shifts:
-            exist_shift = self.shift_dao.exist(shift, profile)
-            exist_shift_type = self.shift_type_dao.exist(shift, profile)
-            if exist_shift is False and exist_shift_type is False:
-                not_exist_shifts.append(shift)
-        if len(not_exist_shifts) > 0:
-            raise ShiftNotExist(not not_exist_shifts)
-
     def add(self, token, json):
         super().add(token, json)
         shift_group = ShiftGroup().from_json(json)
-        shifts = []
-        shifts.extend(shift_group.shifts)
-        shifts.extend(shift_group.shift_types)
-        self.verify_shifts_exist(shifts, shift_group.profile)
+        self._shift_group_verifications(shift_group)
         self.shift_group_dao.insert_one_if_not_exist(shift_group.db_json())
 
     def update(self, token, json):
         super().update(token, json)
         shift_group = ShiftGroup().from_json(json)
-        shifts = []
-        shifts.extend(shift_group.shifts)
-        shifts.extend(shift_group.shift_types)
-        self.verify_shifts_exist(shifts, shift_group.profile)
+        self._shift_group_verifications(shift_group)
         self.shift_group_dao.update(shift_group.db_json())
 
     def delete(self, token, name, profile):

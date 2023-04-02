@@ -4,7 +4,6 @@ from src.handlers.nurse_handler import (
     NurseHandler,
     NurseNotFound,
     CannotDeleteNurse,
-    ContractGroupNotExist,
 )
 from test_constants import (
     default_user,
@@ -23,6 +22,7 @@ from test_constants import (
 from constants import user_token
 from src.exceptions.contract_exceptions import (
     ContractNotExist,
+    ContractGroupNotExist,
 )
 from constants import (
     nurse_contracts,
