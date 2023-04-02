@@ -1,17 +1,8 @@
 <app-header [showProfile]='false'></app-header>
 <div class="problemDefinitionContainer">
-  <div class="NameDefinitionContainer">
-    <label>Name: </label>
-    <mat-form-field
-      class="problemNameInputField"
-      [formGroup]="inputControlForm"
-    >
-      <mat-label>Enter problem's name</mat-label>
-      <input matInput [(ngModel)]="problemName" [formControl]="problemNameFormCtrl">
-    </mat-form-field>
-  </div>
   <div class="PlanningHorizonContainer">
-    <label>planning horizon: </label>
+    <h2>Planning Horizon</h2>
+    <hr>
     <mat-form-field appearance="fill">
       <mat-label>Enter a date range</mat-label>
       <mat-date-range-input
@@ -43,16 +34,22 @@
         >Invalid end date</mat-error
       >
     </mat-form-field>
-    <div *ngIf="possibleSkills.length > 0 || possibleShifts.length > 0 || possibleNurses.length > 0" ><button mat-raised-button class="addAllButton" (click)="addAll()">
-      add all Nurses, Skills & Shifts
-    </button></div>
-  </div>
   <div class="scheduleDataSection">
-    <H1 class="employeeSectionTitle">Nurses</H1>
-    <div *ngIf="possibleNurses.length > 0">
-      <button mat-raised-button class="addAllNurseButton" (click)="addAllNurse()">
-        add all Nurses
-      </button><br>
+  </div>
+  
+    <div *ngIf="possibleSkills.length > 0 || possibleShifts.length > 0 || possibleNurses.length > 0" class="flex-row-center-container margin-on-top ">
+      <button mat-raised-button class="add-all-button" color="accent" (click)="addAll()">
+      add all Nurses, Skills & Shifts
+      </button>
+      <div class=" flex-row-center-container padding-div">
+      <mat-icon class="info-icon">info</mat-icon>
+      <p>Now, add the nurses, shifts and skills you want to include in this schedule. You can add them all at once or specify them in their respective spection below.</p>
+      </div>
+    </div>
+    <div class="nurseSection margin-on-bottom">
+    <h2 class="employeeSectionTitle">Nurses</h2>
+    <hr>
+    <div *ngIf="possibleNurses.length > 0" class="flex-row-center-container">
       <mat-form-field appearance="fill">
         <mat-label>select a nurse</mat-label>
         <mat-select [(ngModel)]="selectedNurse">
@@ -61,9 +58,12 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button class="addNurseButton" (click)="addNurse()" color="nurse-blue">
-        add Nurse
+      <button mat-raised-button class="single-action-button" (click)="addNurse()" color="nurse-blue">
+        add nurse
       </button>
+      <button mat-raised-button color="accent" class="bulk-action-button" (click)="addAllNurse()">
+        add all nurses
+      </button><br>
     </div>
     <table class="nursesTable">
       <tr *ngFor="let nurse of  nurses">
@@ -80,12 +80,11 @@
         </button>
       </tr>
     </table>
-  <div class="shiftSection">
-    <H1 class="shiftSectionTitle">Shifts</H1>
-    <div *ngIf="possibleShifts.length > 0">
-      <button mat-raised-button class="addAllShiftButton" (click)="addAllShift()">
-        add all Shifts
-      </button><br>
+  </div>
+  <div class="shiftSection margin-on-bottom">
+    <h2 class="shiftSectionTitle">Shifts</h2>
+    <hr>
+    <div *ngIf="possibleShifts.length > 0" class="flex-row-center-container">
       <mat-form-field appearance="fill">
         <mat-label>select a shift</mat-label>
         <mat-select [(ngModel)]="selectedShift">
@@ -94,8 +93,11 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button class="addShiftButton" (click)="addShift()" color="primary">
-        add Shift
+      <button mat-raised-button color="nurse-blue" class="single-action-button" (click)="addShift()">
+        add shift
+      </button>
+      <button mat-raised-button color="accent" class="bulk-action-button" (click)="addAllShift()">
+        add all shifts
       </button>
     </div>
     <table class="shiftsTable">
@@ -105,7 +107,7 @@
         </td>
         <button
           mat-raised-button
-          class="removeShiftButton"
+          class="single-action-button"
           (click)="removeShift(shift)"
           color="accent"
         >
@@ -115,12 +117,10 @@
     </table>
   </div>
 
-  <div class="skillSection">
-  <H1 class="shiftSectionTitle">Skills</H1>
-  <div *ngIf="possibleSkills.length > 0">
-    <button mat-raised-button class="addAllSkillButton" (click)="addAllSkill()">
-      add all Skills
-    </button><br>
+  <div class="skillSection margin-on-bottom">
+  <h2 class="shiftSectionTitle">Skills</h2>
+  <hr>
+  <div *ngIf="possibleSkills.length > 0" class="flex-row-center-container">
     <mat-form-field appearance="fill">
       <mat-label>select a skill</mat-label>
       <mat-select [(ngModel)]="selectedSkill">
@@ -129,8 +129,11 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button class="addSkillButton" (click)="addSkill()">
+    <button mat-raised-button color="nurse-blue" class="single-action-button" (click)="addSkill()">
       add Skill
+    </button>
+    <button mat-raised-button color="accent" class="bulk-action-button" (click)="addAllSkill()">
+      add all skills
     </button>
   </div>
   <table class="skillsTable">
@@ -150,15 +153,13 @@
   </table>
 </div>
 <div *ngIf= "shifts.length > 0  && nurses.length > 0" class="nursePreferenceSection">
-  <H1 class="HospitalDemandSectionTitle">Nurse Preferences</H1>  
+  <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>  
   <app-nurse-preference [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)"></app-nurse-preference>
 </div>
 
   <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
-    <H1 class="HospitalDemandSectionTitle">Hospital Demand</H1>  
+    <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
     <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
-
-
   </div>
   <button
     mat-raised-button

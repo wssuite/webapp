@@ -40,3 +40,9 @@ button[color=nurse-blue] {
     background-color: #135baf !important; //blue for the buttons 
     color: white !important;
 }
+
+.flex-row-center-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

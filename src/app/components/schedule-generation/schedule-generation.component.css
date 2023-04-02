@@ -1,16 +1,18 @@
 .problemDefinitionContainer {
-    margin-left: 10vw;
-    margin-top: 2vh;
+    margin-left: 7vw;
+    margin-top: 3vh;
 }
 label {
     margin-right: 2vw;
     font-size: large;
 }
-div {
-    margin-bottom: 2vw;
+
+.margin-on-top {
+    margin-top: 4vh;
 }
-.addNurseButton, .removeNurseButton{
-    margin-left: 5vw;
+
+.margin-on-bottom {
+    margin-bottom: 5vh;
 }
 
 .generateScheduleButton{
@@ -24,17 +26,9 @@ div {
     overflow-y: scroll;
 }
 
-.addSkillButton, .removeSkillButton{
-    margin-left: 5vw;
-}
-
 .skillsTable {
     overflow-x: scroll;
     overflow-y: scroll;
-}
-
-.addShiftButton, .removeShiftButton{
-    margin-left: 5vw;
 }
 
 .shiftsdTable {
@@ -42,3 +36,56 @@ div {
     overflow-y: scroll;
 }
 
+.row-contend-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.padding-div{
+    color: #1a3d66;
+    background-color: #EFF2F7;
+    border-radius: 12px;
+    padding: 1vh;
+    width: max-content;
+    margin-left: 2vw;
+}
+
+h2 {
+    color:#1a3d66;
+    margin-bottom: 0px;
+}
+
+
+hr {
+    color: #8ea2ba;
+    background: #8ea2ba;
+    border: 0;
+    height: 1px;
+    width: 90%;
+    margin-left: 0px;
+}
+
+.info-icon {
+    margin-right:1vw;
+    margin-left:1vw;
+}
+
+.single-action-button{ 
+    margin-left: 5vw;
+    margin-right: 2vw;
+    width: 115px;
+}
+
+.add-all-button {
+    height: 60px;
+    padding: 10px;
+    font-size: medium;
+    font-weight: bold;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.bulk-action-button{
+    width: 115px;
+}
