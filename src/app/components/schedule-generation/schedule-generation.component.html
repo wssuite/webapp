@@ -71,10 +71,10 @@
           {{nurse.name}} - {{nurse.username}}
         </td>
         <button
-          mat-raised-button
+          mat-icon-button
+          color="warn"
           class="removeNurseButton"
           (click)="removeNurse(nurse)"
-          color="accent"
         >
           <mat-icon>delete</mat-icon>
         </button>
@@ -106,10 +106,10 @@
           {{ shift }}
         </td>
         <button
-          mat-raised-button
+          mat-icon-button 
+          color="warn"
           class="single-action-button"
           (click)="removeShift(shift)"
-          color="accent"
         >
           <mat-icon>delete</mat-icon>
         </button>
@@ -142,10 +142,10 @@
         {{ skill }}
       </td>
       <button
-        mat-raised-button
+        mat-icon-button
+        color="warn"
         class="removeSkillButton"
         (click)="removeSkill(skill)"
-        color="accent"
       >
         <mat-icon>delete</mat-icon>
       </button>
