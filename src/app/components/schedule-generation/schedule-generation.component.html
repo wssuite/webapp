@@ -66,20 +66,20 @@
         add all nurses
       </button><br>
     </div>
-    <table class="nursesTable">
-      <tr *ngFor="let nurse of  nurses">
+    <table class="list-table">
+      <th *ngFor="let nurse of  nurses">
+        <div class="table-element-container flex-row-center-container">
         <td class="nurseNameUsername">
           {{nurse.name}} - {{nurse.username}}
         </td>
         <button
           mat-icon-button
-          color="warn"
-          class="removeNurseButton"
           (click)="removeNurse(nurse)"
         >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </tr>
+        <mat-icon>cancel</mat-icon>
+      </button>
+        </div>
+      </th>
     </table>
   </div>
   <div class="shiftSection margin-on-bottom">
@@ -101,20 +101,20 @@
         add all shifts
       </button>
     </div>
-    <table class="shiftsTable">
-      <tr *ngFor="let shift of shifts">
+    <table class="list-table">
+      <th *ngFor="let shift of shifts">
+        <div class="table-element-container flex-row-center-container">        
         <td class="shiftName">
           {{ shift }}
         </td>
         <button
           mat-icon-button 
-          color="warn"
-          class="single-action-button"
           (click)="removeShift(shift)"
         >
-          <mat-icon>delete</mat-icon>
+        <mat-icon>cancel</mat-icon>
         </button>
-      </tr>
+        </div>
+      </th>
     </table>
   </div>
 
@@ -137,20 +137,20 @@
       add all skills
     </button>
   </div>
-  <table class="skillsTable">
-    <tr *ngFor="let skill of skills">
+  <table class="list-table">
+    <th *ngFor="let skill of skills">
+      <div class="table-element-container flex-row-center-container">        
       <td class="skillName">
         {{ skill }}
       </td>
       <button
         mat-icon-button
-        color="warn"
-        class="removeSkillButton"
         (click)="removeSkill(skill)"
       >
-        <mat-icon>delete</mat-icon>
+        <mat-icon>cancel</mat-icon>
       </button>
-    </tr>
+      </div>
+    </th>
   </table>
 </div>
 <div *ngIf= "shifts.length > 0  && nurses.length > 0" class="nursePreferenceSection">

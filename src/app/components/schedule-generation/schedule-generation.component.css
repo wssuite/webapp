@@ -15,31 +15,18 @@ label {
     margin-bottom: 5vh;
 }
 
-.generateScheduleButton{
-    position: absolute;
-    height:75px;
-    transform: translateX(150%);
-    font-size: large;
-}
-.nursesTable {
-    overflow-x: scroll;
-    overflow-y: scroll;
-}
-
-.skillsTable {
-    overflow-x: scroll;
-    overflow-y: scroll;
-}
-
-.shiftsdTable {
-    overflow-x: scroll;
-    overflow-y: scroll;
-}
-
-.row-contend-container{
+.list-table {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-wrap: wrap;
+}
+
+.table-element-container {
+    background-color: #EFF2F7;
+    color: #1a3d66;
+    padding-left: 24px;
+    width: max-content;
+    border-radius: 4px;
+    margin: 5px;
 }
 
 .padding-div{
@@ -88,4 +75,8 @@ hr {
 
 .bulk-action-button{
     width: 115px;
+}
+
+.schedule-generation-container{
+    background-color: #d3dde9;
 }
