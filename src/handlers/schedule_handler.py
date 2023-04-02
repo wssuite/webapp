@@ -191,7 +191,32 @@ class ScheduleHandler(BaseHandler):
     def remove_schedule(self, token, start, end, profile_name, v):
         self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()
+        """Before removing the solution update next versions to
+        not consider the version that is about to be deleted"""
+        next_versions = self.solution_dao.get_next_versions(
+            start,
+            end,
+            profile_name,
+            v
+        )
         self.solution_dao.remove(start, end, profile_name, v)
+        for next_version in next_versions:
+            solution = self.solution_dao.get_solution(
+                next_version[start_date],
+                next_version[end_date],
+                next_version[profile],
+                next_version[version]
+            )
+            list_to_update = solution[previous_versions]
+            list_to_update.remove(v)
+            self.solution_dao.update_previous_versions_array(
+                next_version[start_date],
+                next_version[end_date],
+                next_version[profile],
+                next_version[version],
+                list_to_update
+            )
+
         path = fs.get_solution_dir_path(profile_name, start, end, v)
         if fs.exist(path):
             fs.delete_dir(path)

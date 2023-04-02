@@ -88,6 +88,18 @@ class SolutionDao(AbstractDao):
             {mongo_set_operation: {state: new_state}},
         )
 
+    def update_previous_versions_array(
+            self, start_date_, end_date_, profile_name_, version_, p_v):
+        self.collection.find_one_and_update(
+            {
+                version: version_,
+                start_date: start_date_,
+                end_date: end_date_,
+                profile: profile_name_,
+            },
+            {mongo_set_operation: {previous_versions: p_v}},
+        )
+
     def remove(self, start_, end_, profile_name, v):
         self.collection.find_one_and_delete(
             {
