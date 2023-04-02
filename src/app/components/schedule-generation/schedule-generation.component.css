@@ -21,7 +21,7 @@ label {
 }
 
 .table-element-container {
-    background-color: #EFF2F7;
+    background-color: white;
     color: #1a3d66;
     padding-left: 24px;
     width: max-content;
@@ -29,14 +29,6 @@ label {
     margin: 5px;
 }
 
-.padding-div{
-    color: #1a3d66;
-    background-color: #EFF2F7;
-    border-radius: 12px;
-    padding: 1vh;
-    width: max-content;
-    margin-left: 2vw;
-}
 
 h2 {
     color:#1a3d66;
@@ -49,13 +41,8 @@ hr {
     background: #8ea2ba;
     border: 0;
     height: 1px;
-    width: 90%;
+    width: 95%;
     margin-left: 0px;
-}
-
-.info-icon {
-    margin-right:1vw;
-    margin-left:1vw;
 }
 
 .single-action-button{ 
@@ -71,6 +58,7 @@ hr {
     font-weight: bold;
     padding-left: 14px;
     padding-right: 14px;
+    margin-right: 2vw;
 }
 
 .bulk-action-button{
