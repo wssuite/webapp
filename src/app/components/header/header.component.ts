@@ -4,10 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
 import { CONSULT_SCHEDULE, CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
-import { IN_PROGRESS} from 'src/app/constants/schedule_states';
+import { IN_PROGRESS, WAITING} from 'src/app/constants/schedule_states';
 import { NOTIFICATION_UPDATE } from 'src/app/constants/socket-events';
 import { BaseProfile } from 'src/app/models/Profile';
-import { Solution } from 'src/app/models/Schedule';
+import { ContinuousVisualisationInterface, Solution } from 'src/app/models/Schedule';
 import { AccountService } from 'src/app/services/account/account.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ScheduleService } from 'src/app/services/schedule/schedule-service.service';
@@ -62,16 +62,15 @@ export class HeaderComponent implements OnInit, AfterViewInit{
           this.notifications.push(solution);
           this.newNotificationAdded = true;
         }
-        if(solution.state !== IN_PROGRESS){
-          CacheUtils.removeNotifSubscription({
-            startDate: solution.startDate,
-            endDate: solution.endDate,
-            profile: solution.profile,
-            version: solution.version,
-            state: IN_PROGRESS,
-            timestamp: solution.timestamp
-          })
-          this.scheduleService.notificationUnsubscribe(solution);
+        const savedNotifSub: ContinuousVisualisationInterface = {
+          startDate: solution.startDate,
+          endDate: solution.endDate,
+          profile: solution.profile,
+          version: solution.version,
+        }
+        if(solution.state !== IN_PROGRESS && solution.state!== WAITING && CacheUtils.isNotifSubscription(savedNotifSub)){
+          CacheUtils.removeNotifSubscription(savedNotifSub)
+          this.scheduleService.notificationUnsubscribe(savedNotifSub);
         }
         console.log(solution.state);
       })

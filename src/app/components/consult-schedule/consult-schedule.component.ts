@@ -12,7 +12,7 @@ import { ScheduleService } from "src/app/services/schedule/schedule-service.serv
 import { CacheUtils } from "src/app/utils/CacheUtils";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
-import { IN_PROGRESS } from "src/app/constants/schedule_states";
+import { IN_PROGRESS, WAITING } from "src/app/constants/schedule_states";
 import { NOTIFICATION_UPDATE, VISUALISATION_UPDATE } from "src/app/constants/socket-events";
 
 interface PreferenceKeyInterface{
@@ -74,12 +74,14 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngOnDestroy(): void {
     this.savePreferences()
-    this.service.unsubscribeContinuousVisulation({
-      startDate: this.schedule.startDate,
-      endDate: this.schedule.endDate,
-      profile: this.schedule.profile,
-      version: this.schedule.version
-    })  
+    if(CacheUtils.getContinuousVisulaisation()){
+      this.service.unsubscribeContinuousVisulation({
+        startDate: this.schedule.startDate,
+        endDate: this.schedule.endDate,
+        profile: this.schedule.profile,
+        version: this.schedule.version
+      })
+    }  
   }
 
   ngAfterViewInit(): void {
@@ -89,7 +91,17 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       })
       this.service.socket.on(NOTIFICATION_UPDATE, (sol: Solution)=>{
         this.getDetailedSchedule(sol);
-        if(sol.state !== IN_PROGRESS){
+        const savedNotifSub: ContinuousVisualisationInterface = {
+          startDate: sol.startDate,
+          endDate: sol.endDate,
+          profile: sol.profile,
+          version: sol.version,
+        }
+        if(sol.state !== IN_PROGRESS && CacheUtils.getContinuousVisulaisation()){
+          if(sol.state!== WAITING && CacheUtils.isNotifSubscription(savedNotifSub)){
+            CacheUtils.removeNotifSubscription(savedNotifSub)
+            this.service.notificationUnsubscribe(savedNotifSub);
+          }
           this.service.unsubscribeContinuousVisulation({
             startDate: sol.startDate,
             endDate: sol.endDate,
@@ -355,8 +367,14 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     console.log(this.schedule.problem.preferences)
     this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
       next: (sol: Solution)=> {
-        CacheUtils.addNewNotifSubscription(sol)
-        this.service.notificationSubscribe(sol);
+        const subscription: ContinuousVisualisationInterface = {
+          startDate: sol.startDate,
+          endDate: sol.endDate,
+          profile: sol.profile,
+          version: sol.version
+        }
+        CacheUtils.addNewNotifSubscription(subscription)
+        this.service.notificationSubscribe(subscription);
         this.router.navigate(["/" + VIEW_SCHEDULES])
       },
       error: (err: HttpErrorResponse)=>{

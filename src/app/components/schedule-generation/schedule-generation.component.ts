@@ -15,7 +15,7 @@ import { GenerationRequest, HospitalDemandElement, SchedulePreferenceElement } f
 import { DateUtils } from "src/app/utils/DateUtils";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
-import { Solution } from "src/app/models/Schedule";
+import { ContinuousVisualisationInterface, Solution } from "src/app/models/Schedule";
 
 
 @Component({
@@ -277,8 +277,14 @@ export class ScheduleGenerationComponent implements OnInit {
     }
     this.scheduleService.generateSchedule(request).subscribe({
       next: (sol: Solution)=>{
-        CacheUtils.addNewNotifSubscription(sol)
-        this.scheduleService.notificationSubscribe(sol);
+        const subscription: ContinuousVisualisationInterface = {
+          startDate: sol.startDate,
+          endDate: sol.endDate,
+          profile: sol.profile,
+          version: sol.version
+        }
+        CacheUtils.addNewNotifSubscription(subscription)
+        this.scheduleService.notificationSubscribe(subscription);
         this.router.navigate(["/" + VIEW_SCHEDULES])
       },
       error: (err: HttpErrorResponse)=>{

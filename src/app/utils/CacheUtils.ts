@@ -110,9 +110,9 @@ export class CacheUtils {
         return JSON.parse(savedPrefrences) as SchedulePreferenceElement[]
     }
 
-    public static addNewNotifSubscription(sol: Solution){
+    public static addNewNotifSubscription(sol: ContinuousVisualisationInterface){
         const subscriptions = localStorage.getItem(NOTIFICATION_SUBSCRIPTION_STRING);
-        let parsedSubscriptions: Solution[];
+        let parsedSubscriptions: ContinuousVisualisationInterface[];
         if(!subscriptions){
             parsedSubscriptions = []
         }
@@ -123,25 +123,41 @@ export class CacheUtils {
         localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, JSON.stringify(parsedSubscriptions))
     }
 
-    public static removeNotifSubscription(sol: Solution){
+    public static removeNotifSubscription(sol: ContinuousVisualisationInterface){
         const subscriptions = localStorage.getItem(NOTIFICATION_SUBSCRIPTION_STRING);
         if(!subscriptions){
             return
         }
-        const parsedSubscriptions = JSON.parse(subscriptions) as Solution[]
+        const parsedSubscriptions = JSON.parse(subscriptions) as ContinuousVisualisationInterface[]
         const index = parsedSubscriptions.indexOf(sol)
         if(index > -1){
             parsedSubscriptions.splice(index, 1);
         }
         localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, JSON.stringify(parsedSubscriptions))
     }
+    public static isNotifSubscription(sol: ContinuousVisualisationInterface): boolean{
+        const subscriptions = this.getNotifSubscriptions()
+        if(subscriptions.length === 0){
+            return false
+        }
+        console.log(sol)
+        console.log(subscriptions)
+        let contains = false;
+        for(const sub of subscriptions){
+            if(JSON.stringify(sub) === JSON.stringify(sol)){
+                contains = true
+            }
+        }
+        console.log(contains)
+        return contains
+    }
 
-    public static getNotifSubscriptions(): Solution[]{
+    public static getNotifSubscriptions(): ContinuousVisualisationInterface[]{
         const subscriptions = localStorage.getItem(NOTIFICATION_SUBSCRIPTION_STRING);
         if(!subscriptions){
             return []
         }
-        return JSON.parse(subscriptions) as Solution[]
+        return JSON.parse(subscriptions) as ContinuousVisualisationInterface[]
     }
 
     public static setContinuousVisualisation(sol: ContinuousVisualisationInterface){

@@ -194,11 +194,11 @@ export class ScheduleService {
     this.socket.disconnect()
   }
 
-  notificationUnsubscribe(solution: Solution){
+  notificationUnsubscribe(solution: ContinuousVisualisationInterface){
     this.socket.emit(UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution)
   }
 
-  notificationSubscribe(solution: Solution) {
+  notificationSubscribe(solution: ContinuousVisualisationInterface) {
     this.socket.emit(SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution)
   }
 
