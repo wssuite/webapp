@@ -112,7 +112,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
           this.startDate = new Date(this.schedule.schedule.startDate)
           this.endDate = new Date(this.schedule.schedule.endDate);
           this.nbColumns =
-            DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
+            DateUtils.nbDaysDifference(this.endDate, this.startDate);
             this.indexes = this.getIndexes();
           if(data.state === IN_PROGRESS){
             const obj: ContinuousVisualisationInterface = {
