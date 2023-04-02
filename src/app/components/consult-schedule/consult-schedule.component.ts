@@ -29,6 +29,7 @@ interface PreferenceKeyInterface{
 export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewInit {
 
   schedule!: DetailedSchedule;
+  employeeSchedule!: EmployeeSchedule;
   connectedUser: boolean;
   employeeAssignmentsMap: Map<string, Assignment[]>;
   endDate: Date | undefined;
@@ -83,6 +84,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngAfterViewInit(): void {
       this.service.socket.on(VISUALISATION_UPDATE, (schedule: EmployeeSchedule)=>{
+        this.employeeSchedule = schedule
         this.updateAssignments(schedule)
       })
       this.service.socket.on(NOTIFICATION_UPDATE, (sol: Solution)=>{
@@ -105,6 +107,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     this.service.getDetailedSolution(schedule).subscribe({
       next: (data: DetailedSchedule)=>{
         this.schedule = data;
+        this.employeeSchedule = this.schedule.schedule
         if(this.schedule.schedule){
           this.startDate = new Date(this.schedule.schedule.startDate)
           this.endDate = new Date(this.schedule.schedule.endDate);
