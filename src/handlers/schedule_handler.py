@@ -3,6 +3,8 @@ import json
 import os.path
 from typing import Type
 
+import requests
+
 from src.models.schedule import Schedule
 from src.models.solution import Solution
 from src.exceptions.project_base_exception import ProjectBaseException
@@ -25,13 +27,13 @@ from constants import (
     start_date,
     end_date,
     version,
-    state,
     previous_versions,
     problem,
     schedule,
+    state,
     timestamp,
 )
-from src.utils.file_system_manager import FileSystemManager
+from src.utils.file_system_manager import FileSystemManager, base_directory
 
 
 class ScheduleHandler(BaseHandler):
@@ -41,6 +43,11 @@ class ScheduleHandler(BaseHandler):
     def __generate_schedule(self, token, demand_json, v):
         demand = ScheduleDemand().from_json(demand_json)
         self.verify_profile_accessors_access(token, demand.profile)
+
+        config = open("config.json")
+        data = json.load(config)
+        config.close()
+        generate_url = f"http://{data['haproxy_address']}/solver/schedule"
 
         """Get th path for next version"""
         (
@@ -62,17 +69,21 @@ class ScheduleHandler(BaseHandler):
         self.__build_detailed_demand(demand, detailed_demand)
 
         input_txt = os.path.join(full_path, "input.txt")
-        with open(input_txt, "w") as f:
-            f.write(detailed_demand.to_string())
-        """TODO: Launch request to the HAProxy in order for the demand
-        to be scheduled. The state will not be always in progress"""
+        with open(input_txt, "w") as f1:
+            f1.write(detailed_demand.to_string())
+
+        os.mkdir(os.path.join(full_path, "sol"))
+        instance_path = os.path.join(full_path, "sol")
+        instance_txt = os.path.join(instance_path, "sol.txt")
+        with open(instance_txt, "w") as f2:
+            f2.write(detailed_demand.to_string())
+
         solution_json = {
             start_date: demand.start_date,
             end_date: demand.end_date,
             profile: demand.profile,
             version: str(next_version),
-            state: "In Progress",
-            timestamp: str(datetime.datetime.now())
+            timestamp: str(datetime.datetime.now()),
         }
         """This will be the case of a schedule regeneration"""
         if v is not None:
@@ -84,7 +95,18 @@ class ScheduleHandler(BaseHandler):
             solution_json[previous_versions] = previous_version_array
 
         solution_object = Solution().from_json(solution_json)
-        self.solution_dao.insert_one(solution_object.db_json())
+        relative_path = full_path.replace(base_directory, "")
+        response = requests.post(generate_url, params={"path": relative_path})
+        if response.status_code == 200:
+            solution_object.worker_host = response.text
+            solution_object.state = "Waiting"
+            self.solution_dao.insert_one(solution_object.db_json())
+        else:
+            solution_object.state = "Failed"
+            self.solution_dao.insert_one(solution_object.db_json())
+            raise ProjectBaseException(
+                "Try later an error occurred during processing"
+            )
         return solution_object.to_json()
 
     def generate_schedule(self, token, demand_json):
@@ -92,6 +114,30 @@ class ScheduleHandler(BaseHandler):
 
     def regenerate_schedule(self, token, demand_json, v):
         return self.__generate_schedule(token, demand_json, v)
+
+    def stop_generation(self, token, solution_json):
+        solution = Solution().from_json(solution_json)
+        self.verify_profile_accessors_access(token, solution.profile)
+        solution_from_db = self.solution_dao.get_solution(
+            solution.start_date,
+            solution.end_date,
+            solution.profile,
+            solution.version,
+        )
+        db_solution = Solution().from_json(solution_from_db)
+        """
+          TODO send the request to stop to the worker in question
+        """
+        host = db_solution.worker_host
+        stop_url = f"http://{host}/solver/stop"
+        full_path = FileSystemManager.get_solution_dir_path(
+            db_solution.profile,
+            db_solution.start_date,
+            db_solution.end_date,
+            db_solution.version,
+        )
+        relative_path = full_path.replace(base_directory, "")
+        requests.post(stop_url, params={"path": relative_path})
 
     def get_detailed_solution(self, token, start, end, profile_name, v):
         self.verify_profile_accessors_access(token, profile_name)
@@ -240,3 +286,17 @@ class ScheduleHandler(BaseHandler):
         for element in array:
             t = object_type().from_json(element)
             destination.append(t)
+
+    def update_solution_state(self, solution_json):
+        self.solution_dao.update_state(
+            solution_json[start_date],
+            solution_json[end_date],
+            solution_json[profile],
+            solution_json[version],
+            solution_json[state],
+        )
+        return os.path.join(
+            solution_json[profile],
+            f"{solution_json[start_date]}_{solution_json[end_date]}",
+            solution_json[version],
+        )

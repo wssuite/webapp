@@ -1,10 +1,9 @@
-from flask import Blueprint, request, Response
+from flask import request, Response
 from src.handlers.nurse_group_handler import NurseGroupHandler
 from src.dao.abstract_dao import DBConnection
 from constants import nurse_group_name, user_token, ok_message, profile
 from src.exceptions.project_base_exception import ProjectBaseException
-
-mod = Blueprint("nurse_group_controller", __name__, url_prefix="/nurseGroup")
+from . import nurse_group_mod as mod
 
 nurse_group_handler = NurseGroupHandler(DBConnection.get_connection())
 

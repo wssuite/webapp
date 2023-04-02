@@ -1,10 +1,9 @@
 from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.skill_handler import SkillHandler
 from src.dao.abstract_dao import DBConnection
-from flask import Blueprint, request, Response
+from flask import request, Response
 from constants import user_token, profile, ok_message, skill_name
-
-mod = Blueprint("skill_controller", __name__, url_prefix="/skill")
+from . import skill_mod as mod
 
 skill_handler = SkillHandler(DBConnection.get_connection())
 

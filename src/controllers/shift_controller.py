@@ -1,10 +1,9 @@
 from src.dao.abstract_dao import DBConnection
 from src.handlers.shift_handler import ShiftHandler
-from flask import Blueprint, request, Response
+from flask import request, Response
 from constants import shift_name, user_token, ok_message, profile
 from src.exceptions.project_base_exception import ProjectBaseException
-
-mod = Blueprint("shift_controller", __name__, url_prefix="/shift")
+from . import shift_mod as mod
 
 shift_handler = ShiftHandler(DBConnection.get_connection())
 

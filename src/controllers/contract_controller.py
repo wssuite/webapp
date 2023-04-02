@@ -1,10 +1,9 @@
-from flask import Blueprint, request, Response
+from flask import request, Response
 from src.handlers.contract_handler import ContractHandler
 from src.dao.abstract_dao import DBConnection
 from constants import ok_message, contract_name, user_token, profile
 from src.exceptions.project_base_exception import ProjectBaseException
-
-mod = Blueprint("contract_controller", __name__, url_prefix="/contract")
+from . import contract_mod as mod
 
 contract_handler = ContractHandler(DBConnection.get_connection())
 

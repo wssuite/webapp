@@ -94,6 +94,6 @@ class SolutionDao(AbstractDao):
                 profile: profile_name,
                 start_date: start_,
                 end_date: end_,
-                version: v
+                version: v,
             }
         )
