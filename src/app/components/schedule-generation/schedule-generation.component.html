@@ -1,4 +1,5 @@
 <app-header [showProfile]='false'></app-header>
+<div class="schedule-generation-container">
 <div class="problemDefinitionContainer">
   <div class="PlanningHorizonContainer">
     <h2>Planning Horizon</h2>
@@ -154,11 +155,13 @@
 </div>
 <div *ngIf= "shifts.length > 0  && nurses.length > 0" class="nursePreferenceSection">
   <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>  
+  <hr>
   <app-nurse-preference [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)"></app-nurse-preference>
 </div>
 
   <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
     <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
+    <hr>
     <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
   </div>
   <button
@@ -171,5 +174,6 @@
   >
     Generate schedule
   </button>
+</div>
 </div>
 
