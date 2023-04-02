@@ -1,5 +1,5 @@
 import os
-
+from threading import Lock
 from src.models.schedule import Schedule
 from src.utils.file_system_manager import FileSystemManager
 from constants import version, start_date, end_date, profile
@@ -8,7 +8,9 @@ from .. import socketio
 from flask_socketio import join_room, leave_room
 
 
+thread_dict_lock = Lock()
 thread_dict: dict[str, RepeatableThread] = {}
+room_counter_dict_lock = Lock()
 room_counter_dict = {}
 
 
@@ -57,14 +59,16 @@ def handle_join_continuous_visualisation(json):
         TODO: start thread and add it it to a dict if not exist
         Increment counter
     """
-    if thread_dict.get(room) is None:
-        thread_dict[room] = RepeatableThread(emit_schedule, json)
-        thread_dict[room].start()
+    with thread_dict_lock:
+        if thread_dict.get(room) is None:
+            thread_dict[room] = RepeatableThread(emit_schedule, json)
+            thread_dict[room].start()
 
-    if room_counter_dict.get(room) is None:
-        room_counter_dict[room] = 1
-    else:
-        room_counter_dict[room] = room_counter_dict[room] + 1
+    with room_counter_dict_lock:
+        if room_counter_dict.get(room) is None:
+            room_counter_dict[room] = 1
+        else:
+            room_counter_dict[room] = room_counter_dict[room] + 1
 
 
 @socketio.on("leave_visualisation")
@@ -74,7 +78,11 @@ def handle_leave_continuous_visualisation(json):
     """
         TODO: stop thread if no other user is in the room 
     """
-    room_counter_dict[room] = room_counter_dict[room] - 1
-    if room_counter_dict[room] == 0:
-        thread = thread_dict.pop(room)
-        thread.stop_event.set()
+    with room_counter_dict_lock:
+        if room_counter_dict[room] > 0:
+            room_counter_dict[room] = room_counter_dict[room] - 1
+
+        if room_counter_dict[room] == 0:
+            with thread_dict_lock:
+                thread = thread_dict.pop(room)
+                thread.stop_event.set()
