@@ -252,7 +252,7 @@ export class ScheduleGenerationComponent implements OnInit {
       e.value != null && e.value != undefined
         ? (this.endDate = e.value)
         : (this.endDate = new Date());
-    const dayDiffrences = Math.ceil((+this.endDate - +this.startDate)/DateUtils.dayMultiplicationFactor);
+    const dayDiffrences = Math.round((+this.endDate - +this.startDate)/DateUtils.dayMultiplicationFactor);
     console.log(dayDiffrences)
     this.dateError = dayDiffrences % 7 !== 0
     console.log(this.dateError)
