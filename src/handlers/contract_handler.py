@@ -1,6 +1,5 @@
 from src.handlers.base_handler import BaseHandler
 from src.dao.contract_dao import Contract
-from src.exceptions.shift_exceptions import ShiftNotExist
 from constants import (
     nurse_contracts,
     nurse_group_contracts_list,
@@ -14,7 +13,6 @@ from src.exceptions.contract_exceptions import (
     CannotDeleteContract,
     ContractNotExist,
 )
-from src.exceptions.skill_exceptions import SkillNotExist
 
 
 class ContractHandler(BaseHandler):
@@ -32,41 +30,9 @@ class ContractHandler(BaseHandler):
 
     def add(self, token, json):
         super().add(token, json)
-        contract = self.insertion_verification(json)
-        self.contract_dao.insert_one(contract.db_json())
-
-    def verify_contract_shifts_exist(self, shifts, profile):
-        not_exist_shifts = []
-        for shift in shifts:
-            shift_dict = self.shift_dao.find_by_name(shift, profile)
-            shift_type = self.shift_type_dao.find_by_name(shift, profile)
-            shift_group = self.shift_group_dao.find_by_name(shift, profile)
-            exist = (
-                shift_dict is not None
-                or shift_group is not None
-                or shift_type is not None
-            )
-            if exist is False:
-                not_exist_shifts.append(shift)
-
-        if len(not_exist_shifts) > 0:
-            raise ShiftNotExist(not_exist_shifts)
-
-    def verify_contract_skills_exist(self, skills, profile):
-        non_existent_skills = []
-        for skill in skills:
-            exist = self.skill_dao.exist(skill, profile)
-            if exist is False:
-                non_existent_skills.append(skill)
-
-        if len(non_existent_skills) > 0:
-            raise SkillNotExist(non_existent_skills)
-
-    def insertion_verification(self, json) -> Contract:
         contract = Contract().from_json(json)
-        self.verify_contract_shifts_exist(contract.shifts, contract.profile)
-        self.verify_contract_skills_exist(contract.skills, contract.profile)
-        return contract
+        self.contract_insertion_verification(contract)
+        self.contract_dao.insert_one(contract.db_json())
 
     """
     Before updating a contract we will perform the verifications that
@@ -78,7 +44,8 @@ class ContractHandler(BaseHandler):
 
     def update(self, token, json):
         super().update(token, json)
-        contract = self.insertion_verification(json)
+        contract = Contract().from_json(json)
+        self.contract_insertion_verification(contract)
         nurses_with_contract = self.nurse_dao.get_with_contracts(
             [contract.name], contract.profile
         )

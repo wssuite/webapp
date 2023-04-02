@@ -1,4 +1,6 @@
 from werkzeug.datastructures import FileStorage
+
+from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.base_handler import BaseHandler
 from src.importers.importer import CSVImporter
 from src.models.profile import Profile, DetailedProfile
@@ -66,7 +68,8 @@ class ProfileHandler(BaseHandler):
         self.contract_group_dao.delete_all(name)
         self.solution_dao.delete_all(name)
         profile_path = os.path.join(fs.get_dataset_directory_path(), name)
-        fs.delete_dir(profile_path)
+        if fs.exist(profile_path):
+            fs.delete_dir(profile_path)
 
     """
     When duplicating a profile, we want to duplicate the work
@@ -110,38 +113,53 @@ class ProfileHandler(BaseHandler):
 
     def save_import(self, token, json):
         d_p = DetailedProfile().from_json(json)
-        self.create_profile(token, d_p.name)
-        for skill in d_p.skills:
-            self.skill_dao.insert_one_if_not_exist(skill.db_json())
-        for shift in d_p.shifts:
-            self.shift_dao.insert_one_if_not_exist(shift.db_json())
-            self.shift_group_dao.add_shift_to_shift_group_list(
-                work, shift.name, d_p.name
-            )
-        for shift_type in d_p.shift_types:
-            self.shift_type_dao.insert_one_if_not_exist(shift_type.db_json())
-            self.shift_group_dao.add_shift_type_to_shift_group_list(
-                work, shift_type.name, d_p.name
-            )
-
-        for shift_group in d_p.shift_groups:
-            if shift_group.name != work and shift_group.name != rest:
-                self.shift_group_dao.insert_one_if_not_exist(
-                    shift_group.db_json()
+        try:
+            self.create_profile(token, d_p.name)
+            for skill in d_p.skills:
+                self.skill_dao.insert_one_if_not_exist(skill.db_json())
+            for shift in d_p.shifts:
+                self.shift_dao.insert_one_if_not_exist(shift.db_json())
+                self.shift_group_dao.add_shift_to_shift_group_list(
+                    work, shift.name, d_p.name
+                )
+            for shift_type in d_p.shift_types:
+                self._shift_type_verifications(shift_type)
+                self.shift_type_dao.insert_one_if_not_exist(
+                    shift_type.db_json()
+                )
+                self.shift_group_dao.add_shift_type_to_shift_group_list(
+                    work, shift_type.name, d_p.name
                 )
 
-        for contract in d_p.contracts:
-            self.contract_dao.insert_one(contract.db_json())
+            for shift_group in d_p.shift_groups:
+                if shift_group.name != work and shift_group.name != rest:
+                    self._shift_group_verifications(shift_group)
+                    self.shift_group_dao.insert_one_if_not_exist(
+                        shift_group.db_json()
+                    )
 
-        for contract_group in d_p.contract_groups:
-            self.contract_group_dao.insert_if_not_exist(
-                contract_group.db_json()
-            )
+            for contract in d_p.contracts:
+                self.contract_insertion_verification(contract)
+                self.contract_dao.insert_one(contract.db_json())
 
-        for nurse in d_p.nurses:
-            self.nurse_dao.insert_one(nurse.db_json())
-        for nurse_group in d_p.nurse_groups:
-            self.nurse_group_dao.insert_one_if_not_exist(nurse_group.db_json())
+            for contract_group in d_p.contract_groups:
+                self.contract_group_insertion_verification(contract_group)
+                self.contract_group_dao.insert_if_not_exist(
+                    contract_group.db_json()
+                )
+
+            for nurse in d_p.nurses:
+                self.nurse_insertion_validations(nurse)
+                self.nurse_dao.insert_one(nurse.db_json())
+
+            for nurse_group in d_p.nurse_groups:
+                self.verify_nurse_group_is_valid(nurse_group)
+                self.nurse_group_dao.insert_one_if_not_exist(
+                    nurse_group.db_json()
+                )
+        except ProjectBaseException as e:
+            self.delete_profile(token, d_p.name)
+            raise e
 
     def export_profile(self, token, profile_to_export):
         self.verify_profile_accessors_access(token, profile_to_export)
