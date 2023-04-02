@@ -36,3 +36,26 @@ $nurseScheduling-theme: mat-light-theme($nurseScheduling-primary, $nurseScheduli
     z-index: 10000000 !important;
 }
 
+button[color=nurse-blue] {
+    background-color: #214e83 !important; //blue for the buttons 
+    color: white !important;
+}
+
+.flex-row-center-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.info-div{
+    color: #1a3d66;
+    background-color: #EFF2F7;
+    border-radius: 12px;
+    padding: 1vh;
+    width: max-content;
+}
+
+.info-icon {
+    margin-right:1vw;
+    margin-left:1vw;
+}
