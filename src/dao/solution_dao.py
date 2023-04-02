@@ -89,7 +89,8 @@ class SolutionDao(AbstractDao):
         )
 
     def update_previous_versions_array(
-            self, start_date_, end_date_, profile_name_, version_, p_v):
+        self, start_date_, end_date_, profile_name_, version_, p_v
+    ):
         self.collection.find_one_and_update(
             {
                 version: version_,

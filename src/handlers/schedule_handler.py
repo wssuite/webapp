@@ -194,10 +194,7 @@ class ScheduleHandler(BaseHandler):
         """Before removing the solution update next versions to
         not consider the version that is about to be deleted"""
         next_versions = self.solution_dao.get_next_versions(
-            start,
-            end,
-            profile_name,
-            v
+            start, end, profile_name, v
         )
         self.solution_dao.remove(start, end, profile_name, v)
         for next_version in next_versions:
@@ -205,7 +202,7 @@ class ScheduleHandler(BaseHandler):
                 next_version[start_date],
                 next_version[end_date],
                 next_version[profile],
-                next_version[version]
+                next_version[version],
             )
             list_to_update = solution[previous_versions]
             list_to_update.remove(v)
@@ -214,7 +211,7 @@ class ScheduleHandler(BaseHandler):
                 next_version[end_date],
                 next_version[profile],
                 next_version[version],
-                list_to_update
+                list_to_update,
             )
 
         path = fs.get_solution_dir_path(profile_name, start, end, v)
