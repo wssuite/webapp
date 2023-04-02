@@ -15,6 +15,7 @@ import { SkillInterface } from 'src/app/models/skill';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
+import { ALLOWED_PROFILE_NAMES } from 'src/app/constants/regex';
 
 @Component({
   selector: 'app-import-profile-dialog',
@@ -57,7 +58,8 @@ export class ImportProfileComponent implements OnInit{
       this.validProfile = false;
       this.profileNames = [];
       this.connectedUser = false;
-      this.profileNameCtrl = new FormControl(null, Validators.required)
+      this.profileNameCtrl = new FormControl(null, [Validators.required,
+      Validators.pattern(ALLOWED_PROFILE_NAMES)])
       this.contracts = [];
       this.contractsGroup = [];
       this.possibleContracts = [];
@@ -373,7 +375,7 @@ export class ImportProfileComponent implements OnInit{
      this.nurseSectionHasError() || this.nurseGroupSectionHasError()
       || this.contractSectionHasError() || this.shiftGroupSectionHasError()
       || this.shiftSectionHasError() || this.shiftTypeSectionHasError() ||
-      this.nameExist() || this.profileNameCtrl.hasError("required") 
+      this.nameExist() || this.profileNameCtrl.hasError("required") || this.profileNameCtrl.hasError("pattern")
   }
 
   updateShiftErrorState(index:number, e:boolean){
