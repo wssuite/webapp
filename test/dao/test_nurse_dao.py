@@ -48,9 +48,9 @@ class TestNurseDao(TestCase):
 
     def test_insert_nurse_when_not_exist_succeed(self):
         nurse = Nurse().from_json(self.nurse_dict)
-        self.dao.insert_one(nurse.db_json())
+        id_nurse = self.dao.insert_one(nurse.db_json())
         nurse_dict = self.nurse_dict.copy()
-        nurse_dict[nurse_id] = "0"
+        nurse_dict[nurse_id] = id_nurse
         all_nurses = self.dao.fetch_all(profile1)
         self.assertEqual(1, len(all_nurses))
         self.assertEqual(nurse_dict, all_nurses[0])
@@ -109,11 +109,11 @@ class TestNurseDao(TestCase):
 
     def test_get_nurses_with_contract_groups(self):
         nurse = Nurse().from_json(nurse_with_contract_group.copy())
-        self.dao.insert_one(nurse.db_json())
+        id_nurse = self.dao.insert_one(nurse.db_json())
         actual_nurse_with_contract_group = self.dao.get_with_contract_groups(
             ["contract_group_without_contradiction"], profile1
         )
         expected = nurse_with_contract_group.copy()
-        expected[nurse_id] = "0"
+        expected[nurse_id] = id_nurse
         self.assertEqual(1, len(actual_nurse_with_contract_group))
         self.assertEqual(expected, actual_nurse_with_contract_group[0])

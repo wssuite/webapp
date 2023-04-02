@@ -70,9 +70,9 @@ hospital_demand_dict = {
 
 expected = """HEADERS
 (0,patrick)
-(3,eve)
-(1,nurse2)
-(2,nurse3)
+(1,eve)
+(2,nurse2)
+(3,nurse3)
 (4,head nurse 2)
 (5,head nurse 3)
 END
@@ -140,9 +140,9 @@ nurse contract group,1,Nurses contracts
 END
 EMPLOYEES
 0,patrick,2,patricks contract,General,1,nurse contract group
-3,eve,2,eves contract,General,1,head nurse contract group
-1,nurse2,2,patricks contract,General,1,nurse contract group
-2,nurse3,2,patricks contract,General,1,nurse contract group
+1,eve,2,eves contract,General,1,head nurse contract group
+2,nurse2,2,patricks contract,General,1,nurse contract group
+3,nurse3,2,patricks contract,General,1,nurse contract group
 4,head nurse 2,2,eves contract,General,1,head nurse contract group
 5,head nurse 3,2,eves contract,General,1,head nurse contract group
 END
@@ -150,7 +150,7 @@ HOSPITAL_DEMAND
 2023-06-01,Late,Nurse,1.0,hard,10.0,5.0
 END
 PREFERENCES
-2023-06-01,3,ON,Early,5.0
+2023-06-01,1,ON,Early,5.0
 END
 """
 
