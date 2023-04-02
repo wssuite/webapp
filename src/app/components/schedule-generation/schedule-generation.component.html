@@ -39,7 +39,7 @@
   </div>
   
     <div *ngIf="possibleSkills.length > 0 || possibleShifts.length > 0 || possibleNurses.length > 0" class="flex-row-center-container margin-on-top ">
-      <button mat-raised-button class="add-all-button" color="accent" (click)="addAll()">
+      <button mat-raised-button class="add-all-button" color="nurse-blue" (click)="addAll()">
       add all Nurses, Skills & Shifts
       </button>
       <div class=" flex-row-center-container padding-div">
@@ -60,10 +60,10 @@
         </mat-select>
       </mat-form-field>
       <button mat-raised-button class="single-action-button" (click)="addNurse()" color="nurse-blue">
-        add nurse
+        add selected
       </button>
-      <button mat-raised-button color="accent" class="bulk-action-button" (click)="addAllNurse()">
-        add all nurses
+      <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllNurse()">
+        add all
       </button><br>
     </div>
     <table class="list-table">
@@ -95,10 +95,10 @@
         </mat-select>
       </mat-form-field>
       <button mat-raised-button color="nurse-blue" class="single-action-button" (click)="addShift()">
-        add shift
+        add selected
       </button>
-      <button mat-raised-button color="accent" class="bulk-action-button" (click)="addAllShift()">
-        add all shifts
+      <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllShift()">
+        add all
       </button>
     </div>
     <table class="list-table">
@@ -131,10 +131,10 @@
       </mat-select>
     </mat-form-field>
     <button mat-raised-button color="nurse-blue" class="single-action-button" (click)="addSkill()">
-      add Skill
+      add selected
     </button>
-    <button mat-raised-button color="accent" class="bulk-action-button" (click)="addAllSkill()">
-      add all skills
+    <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllSkill()">
+      add all 
     </button>
   </div>
   <table class="list-table">
