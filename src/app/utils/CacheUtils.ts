@@ -60,6 +60,7 @@ export class CacheUtils {
             localStorage.removeItem(key)
         }
         localStorage.removeItem(NOTIFICATION_SUBSCRIPTION_STRING);
+        localStorage.removeItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING)
     }
 
     public static getUsername(): string{
