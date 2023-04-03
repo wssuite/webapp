@@ -1,6 +1,14 @@
+<div class="info-div flex-row-center-container">
+  <mat-icon class="info-icon">info</mat-icon>
+  <p>Enter the weight that will be associated to nurses' preferences in the box below. First click will mark a shift as working (ON). Second click will mark a shift as not working (OFF).  Third click will clear the weight associated to the shift.</p>
+</div>
+  <div class="preference-weight-container">
+    <app-weight class="weight" [(weight)]="weight" [label]="weightLabel"></app-weight>
+  </div>
+  
 <div class="schedule-container">
   <div class="nurse-name-table">
-    <table>
+    <table class="nurse-table">
       <tr>
         <th class="nurse-name-header">Nurse</th>
       </tr>
@@ -32,5 +40,3 @@
     </div>
   </div>
 </div>
-
-<app-weight class="weight" [(weight)]="weight"></app-weight>
