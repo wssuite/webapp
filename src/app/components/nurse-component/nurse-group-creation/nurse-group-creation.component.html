@@ -1,13 +1,17 @@
 <div class="nurseGroup-container" (mouseleave)="emitNurseGroup()"></div>
- <div class="nameNurseGroupContainer">
-    <label>Name</label>
+<div class="content"  mat-dialog-content>
+
+  <div class="nameNurseGroupContainer">
+    <h2>Name</h2>
+    <hr>
     <mat-form-field class = "nameForm" appearance="fill">
     <mat-label>Enter Group nurse Name</mat-label>
     <input matInput [(ngModel)]="nurseGroup.name" [formControl]="nameNurseGroupFormCtrl" (keyup)="emitNurseGroup()">
     </mat-form-field>
  </div>
  <div class="nurseSection">
-   <H1 class="NurseSectionTitle">Nurses</H1>
+   <h2 class="NurseSectionTitle">Nurses</h2>
+   <hr>
    <div *ngIf="possibleNurses.length > 0">
      <mat-form-field appearance="fill">
        <mat-label>Select a nurse</mat-label>
@@ -23,25 +27,24 @@
    </div>
    <table class="nurseTable">
      <tr *ngFor="let nurse of nurseGroup.nurses">
-       <td class="nurseName">
-         <mat-chip>
-         {{ nurse }}
-       </mat-chip>
-       </td>
-       <button
-         mat-raised-button
-         class="removeContractButton"
-         (click)="removeNurse(nurse)"
-         color="accent"
-       >
-         <mat-icon>delete</mat-icon>
-       </button>
+      <div class="table-element-container flex-row-center-container">
+        <td class="nurseName">
+          {{ nurse }}
+        </td>
+        <button
+          mat-icon-button
+          (click)="removeNurse(nurse)"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
      </tr>
    </table>
  </div>
  
   <div class="contractSection">
-   <H1 class="contractSectionTitle">Contracts</H1>
+   <h2 class="contractSectionTitle">Contracts</h2>
+   <hr>
    <div *ngIf="possibleContracts.length > 0">
      <mat-form-field appearance="fill">
        <mat-label>Select a contract</mat-label>
@@ -57,24 +60,23 @@
    </div>
    <table class="contractTable">
      <tr *ngFor="let contract of nurseGroup.contracts">
-       <td class="contractName">
-         <mat-chip>
-         {{ contract }}
-       </mat-chip>
-       </td>
-       <button
-         mat-raised-button
-         class="removeContractButton"
-         (click)="removeContract(contract)"
-         color="accent"
-       >
-         <mat-icon>delete</mat-icon>
-       </button>
-     </tr>
+      <div class="table-element-container flex-row-center-container">
+        <td class="contractName">
+          {{ contract }}
+        </td>
+        <button
+          mat-icon-button
+          (click)="removeContract(contract)"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+      </tr>
    </table>
  </div>
  <div class="contractGroupSection">
-  <H1 class="contractSectionTitle">Group Contracts</H1>
+  <h2 class="contractSectionTitle">Group Contracts</h2>
+  <hr>
   <div *ngIf="possibleContractsGroup.length > 0">
     <mat-form-field appearance="fill">
       <mat-label>Select a group contract</mat-label>
@@ -90,19 +92,19 @@
   </div>
   <table class="contractGroupTable">
     <tr *ngFor="let contractGroup of nurseGroup.contract_groups">
-      <td class="contractGroupName">
-        <mat-chip>
-        {{ contractGroup }}
-      </mat-chip>
-      </td>
-      <button
-        mat-raised-button
-        class="removeContractGroupButton"
-        (click)="removeContractGroup(contractGroup)"
-        color="accent"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
+      <div class="table-element-container flex-row-center-container">
+        <td class="contractGroupName">
+          {{ contractGroup }}
+        </td>
+        <button
+          mat-icon-button
+          (click)="removeContractGroup(contractGroup)"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
     </tr>
   </table>
+</div>
+
 </div>
