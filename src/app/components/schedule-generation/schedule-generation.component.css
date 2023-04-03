@@ -68,3 +68,11 @@ hr {
 .schedule-generation-container{
     background-color: #d3dde9;
 }
+
+.generateScheduleButtonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 5vw;
+    margin-bottom: 2vh;
+}

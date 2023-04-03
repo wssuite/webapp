@@ -171,15 +171,18 @@
     <hr>
     <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
   </div>
-  <button
-    mat-raised-button
-    color="primary"
-    class="generateScheduleButton"
-    (click)="generateSchedule()"
-    [disabled]=" dateError || nurses.length === 0 || shifts.length === 0 || demandsError"
-  >
-    Generate schedule
-  </button>
+  <div class="generateScheduleButtonContainer">
+    <button
+      mat-raised-button
+      color="primary"
+      class="generateScheduleButton"
+      (click)="generateSchedule()"
+      [disabled]=" dateError || nurses.length === 0 || shifts.length === 0 || demandsError
+      "
+    >
+      Generate schedule
+    </button>
+  </div>
 </div>
 </div>
 
