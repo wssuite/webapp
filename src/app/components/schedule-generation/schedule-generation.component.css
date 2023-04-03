@@ -38,7 +38,7 @@ h2 {
 
 hr {
     color: #8ea2ba;
-    background: #8ea2ba;
+    background: hsl(213, 24%, 64%);
     border: 0;
     height: 1px;
     width: 95%;

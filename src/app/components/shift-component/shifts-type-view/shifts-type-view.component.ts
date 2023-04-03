@@ -83,9 +83,9 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
   openShiftTypeCreationDialog(shiftType: ShiftTypeInterface) {
     const dialog = this.dialog.open(ShiftTypeCreationDialogComponent,  
       { disableClose: true,  
-        height: '85%',
-        width: '55%', 
-        position: {top:'5vh',left: '25%', right: '25%'},
+        height: '65%',
+        width: '50%', 
+        position: {top:'10vh',left: '25%', right: '25%'},
         data: {shiftType:shiftType, shiftsType:this.shiftsType}
       });
 
