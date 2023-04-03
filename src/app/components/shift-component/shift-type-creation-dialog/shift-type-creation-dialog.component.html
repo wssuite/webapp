@@ -5,11 +5,12 @@
             [(shiftType)]="data.shiftType" [shiftsType]="data.shiftsType" [possibleShifts]="possibleShifts" [selectedShift]="possibleShifts[0]"  (errorState)="updateShiftTypeErrorState($event)"></app-shift-type-creation>
         </div>
         <div mat-dialog-action class="buttons-container">
-            <button  mat-raised-button color="warn" [mat-dialog-close]="true">
-                Cancel
-            </button>
             <button [disabled]="shiftTypeErrorState"  mat-raised-button color="primary" (click)="add()">
                 Submit
             </button>
+            <button  mat-raised-button color="warn" [mat-dialog-close]="true">
+                Cancel
+            </button>
+            
         </div>
     </div>

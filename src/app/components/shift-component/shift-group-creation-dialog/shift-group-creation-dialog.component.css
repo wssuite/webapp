@@ -1,4 +1,18 @@
+.title {
+    color: #1a3d66;
+    background-color: #d3dde9;
+    font-weight: bold;
+    font-size: xx-large;
+    padding: 1.5% 2.5% 3% 2.5%;
+    align-self: center;
+}
 
+button {
+    margin-right: 1vw;
+    float: right;
+}
+
+/* 
 .title {
     color: black;
     background-color: lightgray;
@@ -41,4 +55,4 @@ button {
 
 .shiftGroupSection{
     padding: 2%;
-}
+} */
