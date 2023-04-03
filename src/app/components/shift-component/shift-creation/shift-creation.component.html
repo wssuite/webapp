@@ -12,10 +12,12 @@
         <div class="label" mat-label>Start Time</div>
             <mat-form-field appearance="fill">
                 <mat-label>Start Time</mat-label>
-                <input (mouseleave)="setEndTime()"
+                <input
                   type="text"
                   matInput
                   [ngxTimepicker]="timepickerStart"
+                  (timeChanged)="setEndTime()"
+                  (timeSet)="setEndTime()"
                   [format]="24"
                   readonly
                   [formControl]="startTimeFormCtrl"
@@ -42,7 +44,6 @@
               <ngx-material-timepicker 
                 #timepickerStart
                 [disable]="true"
-                (timeChanged)="setEndTime()"
               ></ngx-material-timepicker>
 
     </div>
@@ -84,4 +85,5 @@
     </div>
  
 </div>
+<!-- TODO: leave this div -->
 <div class="hover-div" (mouseover)="changeEndTimeOnHover()" (mouseover)="emitShift()" ></div>
