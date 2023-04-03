@@ -3,10 +3,14 @@ import { AfterViewInit, Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
-import { CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
+import { CONSULT_SCHEDULE, CREATE_ACCOUNT, LOGIN } from 'src/app/constants/app-routes';
+import { IN_PROGRESS, WAITING} from 'src/app/constants/schedule_states';
+import { NOTIFICATION_UPDATE } from 'src/app/constants/socket-events';
 import { BaseProfile } from 'src/app/models/Profile';
+import { ContinuousVisualisationInterface, Solution } from 'src/app/models/Schedule';
 import { AccountService } from 'src/app/services/account/account.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { ScheduleService } from 'src/app/services/schedule/schedule-service.service';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { CreateProfileDialogComponent } from '../create-profile-dialog/create-profile-dialog.component';
 import { DuplicateProfileComponent } from '../create-profile-dialog/duplicate-profile/duplicate-profile.component';
@@ -25,13 +29,18 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   profile!: BaseProfile;
   username!: string;
   validProfile: boolean;
-  connectedUser!: boolean
+  connectedUser!: boolean;
+  notifications: Solution[];
+  newNotificationAdded: boolean;
   @Input() showProfile!: boolean; 
   
   constructor(private accountService: AccountService, private router: Router,
-    private dialog: MatDialog, private profileService: ProfileService){
+    private dialog: MatDialog, private profileService: ProfileService, 
+    private scheduleService: ScheduleService){
       this.profiles = [];
       this.validProfile = false;
+      this.notifications = []
+      this.newNotificationAdded = false;
       this.showProfile = true;
     }
 
@@ -40,7 +49,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       this.getProfiles(false);
       this.isAdmin = CacheUtils.getIsAdmin();
       this.username = CacheUtils.getUsername();
-      this.connectedUser= true; 
+      this.connectedUser= true;
     } catch(err){
       this.connectedUser = false;
     }
@@ -49,6 +58,23 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   ngAfterViewInit(): void {
       this.profileService.newImportedProfileCreated.subscribe((created: boolean)=>{
         this.getProfiles(created);
+      })
+      this.scheduleService.socket.on(NOTIFICATION_UPDATE, (solution: Solution)=>{
+        if(this.notifications.indexOf(solution) <= -1){
+          this.notifications.push(solution);
+          this.newNotificationAdded = true;
+        }
+        const savedNotifSub: ContinuousVisualisationInterface = {
+          startDate: solution.startDate,
+          endDate: solution.endDate,
+          profile: solution.profile,
+          version: solution.version,
+        }
+        if(solution.state !== IN_PROGRESS && solution.state!== WAITING && CacheUtils.isNotifSubscription(savedNotifSub)){
+          CacheUtils.removeNotifSubscription(savedNotifSub)
+          this.scheduleService.notificationUnsubscribe(savedNotifSub);
+        }
+        console.log(solution.state);
       })
   }
   
@@ -122,6 +148,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
         error: (err: HttpErrorResponse)=>{
           if(err.status === HttpStatusCode.Ok){
             this.router.navigate(["/" + LOGIN]);
+            this.scheduleService.disconnectSocket();
             CacheUtils.emptyCache();
           }
           else{
@@ -192,5 +219,14 @@ export class HeaderComponent implements OnInit, AfterViewInit{
         saveAs(file);
       }
     })
+  }
+
+  updateNewNotificationState(){
+    this.newNotificationAdded = false;
+  }
+
+  viewSchedule(sol: Solution){
+    this.scheduleService.selectedScheduleToView = sol;
+    this.router.navigate(["/"+ CONSULT_SCHEDULE])
   }
 }

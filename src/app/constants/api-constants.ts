@@ -6,7 +6,10 @@ export const EXPORT_PROBLEM_URL = SCHEDULE_URL + "/exportProblem";
 export const REGENERATE_SCHEDULE_URL = SCHEDULE_URL + "/regenerate";
 export const DETAILED_SOLUTION_URL = SCHEDULE_URL + "/getDetailedSolution";
 export const ALL_SOLUTIONS = SCHEDULE_URL + "/getAllSolutions";
-export const LATEST_SOLUTIONS = SCHEDULE_URL + "getLatestSolutions";
+export const LATEST_SOLUTIONS = SCHEDULE_URL + "/getLatestSolutions";
+export const REMOVE_SOLUTION = SCHEDULE_URL + "/removeSolution"
+export const STOP_GENERATION_URL = SCHEDULE_URL + "/stopGeneration"
+export const EXPORT_SOLUTION_URL = SCHEDULE_URL + "/exportSchedule"
 
 export const NAME_FILTER_SCHEDULE_URL = SCHEDULE_URL + "/nameFilter";
 export const PROTOTYPE_SCHEDULE_URL = NAME_FILTER_SCHEDULE_URL + "/prototype";

@@ -6,6 +6,7 @@ import { BaseProfile } from 'src/app/models/Profile';
 //import { APIService } from 'src/app/services/api-service/api.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
+import { ALLOWED_PROFILE_NAMES } from 'src/app/constants/regex';
 
 @Component({
   selector: 'app-create-empty-profile-dialog',
@@ -22,7 +23,10 @@ export class CreateEmptyProfileDialogComponent {
   constructor(public dialogRef: MatDialogRef<CreateEmptyProfileDialogComponent>, private api: ProfileService,
     private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: {profiles: BaseProfile[]}){
     this.name = '';
-    this.nameCtrl = new FormControl(null, Validators.required);
+    this.nameCtrl = new FormControl(null,[ 
+      Validators.required,
+      Validators.pattern(ALLOWED_PROFILE_NAMES)
+    ]);
     this.profileNames = [];
     this.data.profiles.forEach((p:BaseProfile)=>{
       this.profileNames.push(p.profile);
@@ -50,6 +54,6 @@ export class CreateEmptyProfileDialogComponent {
   }
 
   hasError():boolean{
-    return this.nameCtrl.hasError('required') || this.nameExist();
+    return this.nameCtrl.hasError('required') || this.nameExist() || this.nameCtrl.hasError('pattern');
   }
 }

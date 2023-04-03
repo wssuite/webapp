@@ -1,12 +1,14 @@
 import { UserInfo } from "../models/Credentials";
 import { SchedulePreferenceElement } from "../models/GenerationRequest";
-import { Solution } from "../models/Schedule";
+import { ContinuousVisualisationInterface, Solution } from "../models/Schedule";
 
 export const TOKEN_STRING = "token";
 const IS_ADMIN_STRING = "isAdmin";
 export const USERNAME_STRING = "username";
 export const PROFILE_STRING = "profile";
 export const CURRENT_SCHEDULE = "schedule";
+export const NOTIFICATION_SUBSCRIPTION_STRING = "notifiSubscription";
+const CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING = "continuousVisualisation"
 
 export class CacheUtils {
 
@@ -57,6 +59,7 @@ export class CacheUtils {
         for(const key of this.savedPreferencesKeys){
             localStorage.removeItem(key)
         }
+        localStorage.removeItem(NOTIFICATION_SUBSCRIPTION_STRING);
     }
 
     public static getUsername(): string{
@@ -105,5 +108,70 @@ export class CacheUtils {
             return undefined
         }
         return JSON.parse(savedPrefrences) as SchedulePreferenceElement[]
+    }
+
+    public static addNewNotifSubscription(sol: ContinuousVisualisationInterface){
+        const subscriptions = localStorage.getItem(NOTIFICATION_SUBSCRIPTION_STRING);
+        let parsedSubscriptions: ContinuousVisualisationInterface[];
+        if(!subscriptions){
+            parsedSubscriptions = []
+        }
+        else{
+            parsedSubscriptions = JSON.parse(subscriptions) as Solution[]
+        }
+        parsedSubscriptions.push(sol)
+        localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, JSON.stringify(parsedSubscriptions))
+    }
+
+    public static removeNotifSubscription(sol: ContinuousVisualisationInterface){
+        const subscriptions = localStorage.getItem(NOTIFICATION_SUBSCRIPTION_STRING);
+        if(!subscriptions){
+            return
+        }
+        const parsedSubscriptions = JSON.parse(subscriptions) as ContinuousVisualisationInterface[]
+        const index = parsedSubscriptions.indexOf(sol)
+        if(index > -1){
+            parsedSubscriptions.splice(index, 1);
+        }
+        localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, JSON.stringify(parsedSubscriptions))
+    }
+    public static isNotifSubscription(sol: ContinuousVisualisationInterface): boolean{
+        const subscriptions = this.getNotifSubscriptions()
+        if(subscriptions.length === 0){
+            return false
+        }
+        console.log(sol)
+        console.log(subscriptions)
+        let contains = false;
+        for(const sub of subscriptions){
+            if(JSON.stringify(sub) === JSON.stringify(sol)){
+                contains = true
+            }
+        }
+        console.log(contains)
+        return contains
+    }
+
+    public static getNotifSubscriptions(): ContinuousVisualisationInterface[]{
+        const subscriptions = localStorage.getItem(NOTIFICATION_SUBSCRIPTION_STRING);
+        if(!subscriptions){
+            return []
+        }
+        return JSON.parse(subscriptions) as ContinuousVisualisationInterface[]
+    }
+
+    public static setContinuousVisualisation(sol: ContinuousVisualisationInterface){
+        localStorage.setItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING, JSON.stringify(sol));
+    }
+
+    public static clearContinuousVisulaisation(){
+        localStorage.removeItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING)
+    }
+    public static getContinuousVisulaisation(): ContinuousVisualisationInterface| undefined{
+        const savedItem = localStorage.getItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING);
+        if(!savedItem){
+            return undefined
+        }
+        return JSON.parse(savedItem) as ContinuousVisualisationInterface;
     }
 }

@@ -1,17 +1,19 @@
 import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
-import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import * as saveAs from "file-saver";
-import { MAIN_MENU } from "src/app/constants/app-routes";
-import { Assignment } from "src/app/models/Assignment";
+import { MAIN_MENU, VIEW_SCHEDULES } from "src/app/constants/app-routes";
+import { Assignment, EmployeeSchedule } from "src/app/models/Assignment";
 import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
-import { DetailedSchedule, Solution } from "src/app/models/Schedule";
+import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from "src/app/models/Schedule";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
+import { IN_PROGRESS, WAITING } from "src/app/constants/schedule_states";
+import { NOTIFICATION_UPDATE, VISUALISATION_UPDATE } from "src/app/constants/socket-events";
 
 interface PreferenceKeyInterface{
   nurse: string,
@@ -24,9 +26,10 @@ interface PreferenceKeyInterface{
   templateUrl: "./consult-schedule.component.html",
   styleUrls: ["./consult-schedule.component.css"],
 })
-export class ConsultScheduleComponent implements OnInit, OnDestroy {
+export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewInit {
 
   schedule!: DetailedSchedule;
+  employeeSchedule!: EmployeeSchedule;
   connectedUser: boolean;
   employeeAssignmentsMap: Map<string, Assignment[]>;
   endDate: Date | undefined;
@@ -37,13 +40,14 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
   displayedColumns: string[];
   dataSource: MatTableDataSource<Solution>
   preferences: Map<string, string>
+  inPrgressState = IN_PROGRESS
 
   constructor(private service: ScheduleService, public dialog: MatDialog, private router: Router) {
     this.employeeAssignmentsMap = new Map();
     this.connectedUser = false;
     this.validSchedule = false;
     this.dataSource = new MatTableDataSource();
-    this.displayedColumns = ["startDate", "endDate", "versionNumber", "state", "actions"]
+    this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.preferences = new Map();
   }
 
@@ -59,6 +63,9 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
         }
       }
       this.connectedUser = true;
+      if(this.service.socket === undefined){
+        this.service.connectSocket()
+      }
     }
     catch(err){
       // Do noting
@@ -66,7 +73,43 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.savePreferences()    
+    this.savePreferences()
+    if(CacheUtils.getContinuousVisulaisation()){
+      this.service.unsubscribeContinuousVisulation({
+        startDate: this.schedule.startDate,
+        endDate: this.schedule.endDate,
+        profile: this.schedule.profile,
+        version: this.schedule.version
+      })
+    }  
+  }
+
+  ngAfterViewInit(): void {
+      this.service.socket.on(VISUALISATION_UPDATE, (schedule: EmployeeSchedule)=>{
+        this.employeeSchedule = schedule
+        this.updateAssignments(schedule)
+      })
+      this.service.socket.on(NOTIFICATION_UPDATE, (sol: Solution)=>{
+        this.getDetailedSchedule(sol);
+        const savedNotifSub: ContinuousVisualisationInterface = {
+          startDate: sol.startDate,
+          endDate: sol.endDate,
+          profile: sol.profile,
+          version: sol.version,
+        }
+        if(sol.state !== IN_PROGRESS && CacheUtils.getContinuousVisulaisation()){
+          if(sol.state!== WAITING && CacheUtils.isNotifSubscription(savedNotifSub)){
+            CacheUtils.removeNotifSubscription(savedNotifSub)
+            this.service.notificationUnsubscribe(savedNotifSub);
+          }
+          this.service.unsubscribeContinuousVisulation({
+            startDate: sol.startDate,
+            endDate: sol.endDate,
+            profile: sol.profile,
+            version: sol.version
+          })
+        }
+      })
   }
 
   getDetailedSchedule(schedule: Solution) {
@@ -76,24 +119,29 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
     this.service.getDetailedSolution(schedule).subscribe({
       next: (data: DetailedSchedule)=>{
         this.schedule = data;
+        this.employeeSchedule = this.schedule.schedule
         if(this.schedule.schedule){
           this.startDate = new Date(this.schedule.schedule.startDate)
           this.endDate = new Date(this.schedule.schedule.endDate);
           this.nbColumns =
-            DateUtils.nbDaysDifference(this.endDate, this.startDate) + 1;
+            DateUtils.nbDaysDifference(this.endDate, this.startDate);
             this.indexes = this.getIndexes();
-          for (const sch of this.schedule.schedule.schedule) {
-            this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
-            for(const assignement of sch.assignments){
-              //console.log(assignement.date)
-              this.preferences.set(JSON.stringify({nurse: assignement.employee_name,
-                 shift: assignement.shift, date:assignement.date}),"");
+          if(data.state === IN_PROGRESS){
+            const obj: ContinuousVisualisationInterface = {
+              startDate: this.schedule.startDate,
+              endDate: this.schedule.endDate,
+              profile: this.schedule.profile,
+              version: this.schedule.version
             }
+            this.service.subscribeContinuousVisulation(obj)
           }
-          const savedPrefrences = CacheUtils.getPreferences(schedule);
-          if(savedPrefrences){
-            for(const pref of savedPrefrences){
-              this.preferences.set(JSON.stringify({nurse: pref.username, shift: pref.shift, date: pref.date}), pref.preference)
+          this.updateAssignments(this.schedule.schedule);
+          if(data.state !== IN_PROGRESS){
+            const savedPrefrences = CacheUtils.getPreferences(schedule);
+            if(savedPrefrences){
+              for(const pref of savedPrefrences){
+                this.preferences.set(JSON.stringify({nurse: pref.username, shift: pref.shift, date: pref.date}), pref.preference)
+              }
             }
           }
         }
@@ -104,6 +152,19 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
         this.openErrorDialog(err.error)
       }
     })
+  }
+
+  updateAssignments(schedule:EmployeeSchedule){
+    for (const sch of schedule.schedule) {
+      this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
+      if(this.schedule.state !== IN_PROGRESS){
+        for(const assignement of sch.assignments){
+          //console.log(assignement.date)
+          this.preferences.set(JSON.stringify({nurse: assignement.employee_name,
+            shift: assignement.shift, date:assignement.date}),"");
+        }
+      }
+    }
   }
 
   openErrorDialog(message: string){
@@ -305,7 +366,17 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
     }
     console.log(this.schedule.problem.preferences)
     this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
-      next: ()=> this.router.navigate(["/" + MAIN_MENU]),
+      next: (sol: Solution)=> {
+        const subscription: ContinuousVisualisationInterface = {
+          startDate: sol.startDate,
+          endDate: sol.endDate,
+          profile: sol.profile,
+          version: sol.version
+        }
+        CacheUtils.addNewNotifSubscription(subscription)
+        this.service.notificationSubscribe(subscription);
+        this.router.navigate(["/" + VIEW_SCHEDULES])
+      },
       error: (err: HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
           this.router.navigate(["/" + MAIN_MENU]);
@@ -313,6 +384,43 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy {
         else{
           this.openErrorDialog(err.error);
         }
+      }
+    })
+  }
+
+  stopGeneration(){
+    const obj: ContinuousVisualisationInterface = {
+      startDate: this.schedule.startDate,
+      endDate: this.schedule.endDate,
+      profile: this.schedule.profile,
+      version: this.schedule.version,
+    }
+    this.service.stopGeneration(obj).subscribe({
+      error: (err: HttpErrorResponse)=>{
+        if(err.status === HttpStatusCode.Ok){
+          const currentSolution = CacheUtils.getCurrentSchedule();
+          if(currentSolution){
+            this.getDetailedSchedule(currentSolution)
+          }
+        }
+        this.openErrorDialog(err.error)
+      }
+    })
+  }
+  exportSchedule(){
+    const obj: ContinuousVisualisationInterface = {
+      startDate: this.schedule.startDate,
+      endDate: this.schedule.endDate,
+      profile: this.schedule.profile,
+      version: this.schedule.version,
+    }
+    this.service.exportSolution(obj).subscribe({
+      next:(data:{content: string})=>{
+        const file = new File([data.content], "schedule_" + CacheUtils.getProfile() + "_" + this.schedule.startDate + "_" + this.schedule.endDate + "_" + this.schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
+        saveAs(file);
+      },
+      error:(err: HttpErrorResponse)=>{
+        this.openErrorDialog(err.error)
       }
     })
   }

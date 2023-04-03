@@ -23,10 +23,12 @@ export class DateUtils {
     "Sunday"
   ]
   public static nbDaysDifference(endDate: Date, startDate: Date): number {
-    return (+endDate - +startDate) / this.dayMultiplicationFactor;
+    return Math.round((+endDate - +startDate) / this.dayMultiplicationFactor);
   }
   public static arrangeDateString(date: string): string {
     const splittedDate = date.split("-");
-    return `${splittedDate[2]}-${splittedDate[1]}-${splittedDate[0]}`;
+    const month = +splittedDate[1].toString();
+    const day = +splittedDate[0].toString()
+    return `${splittedDate[2]}-${month}-${day}`;
   }
 }

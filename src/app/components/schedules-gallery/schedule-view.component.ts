@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,6 +11,7 @@ import { saveAs } from 'file-saver';
 import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Router } from '@angular/router';
 import { CONSULT_SCHEDULE, SCHEDULE_GENERATION } from 'src/app/constants/app-routes';
+import { NOTIFICATION_UPDATE } from 'src/app/constants/socket-events';
 
 @Component({
   selector: 'app-schedule-view',
@@ -30,7 +31,7 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
      private router: Router){
     this.connectedUser = false;
     this.schedules = []
-    this.displayedColumns = ["startDate", "endDate", "versionNumber", "state", "actions"]
+    this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.dataSource = new MatTableDataSource();
   }
   
@@ -48,6 +49,9 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
       this.getSchedules();
     })
     this.dataSource.paginator = this.paginator;
+    this.service.socket.on(NOTIFICATION_UPDATE, ()=>{
+      this.getSchedules()
+    })
   }
 
   getSchedules(){
@@ -56,7 +60,6 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
         this.schedules = schedules.reverse();
         this.dataSource.data= schedules;
         this.dataSource.paginator = this.paginator;
-        console.log(this.schedules)
       },
       error: (err: HttpErrorResponse)=> {
         this.openErrorDialog(err.error)
@@ -80,6 +83,19 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
       next: (data: {content: string})=>{
         const file = new File([data.content], CacheUtils.getProfile() + "_" + schedule.startDate + "_" + schedule.endDate + "_" + schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
         saveAs(file);
+      }
+    })
+  }
+
+  removeSolution(sol: Solution){
+    this.service.removeSolution(sol).subscribe({
+      error: (err: HttpErrorResponse)=>{
+        if(err.status === HttpStatusCode.Ok){
+          this.getSchedules()
+        }
+        else{
+          this.openErrorDialog(err.error)
+        }
       }
     })
   }

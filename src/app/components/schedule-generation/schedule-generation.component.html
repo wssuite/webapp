@@ -35,6 +35,13 @@
         >Invalid end date</mat-error
       >
     </mat-form-field>
+    <mat-error *ngIf="dateError"
+      >The planning horizon must be a multiple of seven days</mat-error
+    >
+    <div *ngIf="possibleSkills.length > 0 || possibleShifts.length > 0 || possibleNurses.length > 0" ><button mat-raised-button class="addAllButton" (click)="addAll()">
+      add all Nurses, Skills & Shifts
+    </button></div>
+  </div>
   <div class="scheduleDataSection">
   </div>
   
@@ -164,16 +171,18 @@
     <hr>
     <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
   </div>
-  <button
-    mat-raised-button
-    color="primary"
-    class="generateScheduleButton"
-    (click)="viewSchedule()"
-    [disabled]=" nurses.length === 0 || shifts.length === 0 || demandsError
-    "
-  >
-    Generate schedule
-  </button>
+  <div class="generateScheduleButtonContainer">
+    <button
+      mat-raised-button
+      color="primary"
+      class="generateScheduleButton"
+      (click)="generateSchedule()"
+      [disabled]=" dateError || nurses.length === 0 || shifts.length === 0 || demandsError
+      "
+    >
+      Generate schedule
+    </button>
+  </div>
 </div>
 </div>
 
