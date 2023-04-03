@@ -11,7 +11,7 @@
         </mat-menu>
         <span><h1 routerLink="/main-menu">Nurse scheduler</h1></span>
     </div>
-    <div class="profile-container">
+    <div class="profile-container" *ngIf='showProfile'>
         <!-- <label class="profile-label">Profile: </label> -->
         <mat-form-field class="profile-dropdown" appearance="fill">
             <mat-label>Hospital Profile</mat-label>

@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   connectedUser!: boolean;
   notifications: Solution[];
   newNotificationAdded: boolean;
+  @Input() showProfile!: boolean; 
   
   constructor(private accountService: AccountService, private router: Router,
     private dialog: MatDialog, private profileService: ProfileService, 
@@ -40,6 +41,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       this.validProfile = false;
       this.notifications = []
       this.newNotificationAdded = false;
+      this.showProfile = true;
     }
 
   ngOnInit(): void {

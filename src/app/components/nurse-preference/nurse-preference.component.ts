@@ -16,6 +16,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   regex = WEIGHT_ALLOWED_INTEGERS
 
   weight: string;
+  weightLabel: string;
   @Input() shifts!: string[];
   @Input() nurses!: NurseInterface[]; 
   @Input() startDate!: Date;
@@ -30,6 +31,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   constructor() {
     this.schedulePreference = new EventEmitter();
     this.weight = '';
+    this.weightLabel = 'Preference Weight'
     this.timetable = [];
     this.preferences = new Map();
   }
