@@ -1,33 +1,18 @@
-.nameShiftContainer{
-    background-color: gray;
-    padding: 2%;
-    font-size: 25px;
-    border-radius: 30px;
-    margin-top: 2%;
+h2 {
+    color:#1a3d66;
+    font-size: large;
+    margin-bottom: 0px;
 }
 
-.nameForm{
-    padding-top: 2%;
-    background-color: white;
-    border-radius: 10px;
-    margin-top: 1%;
-    width: 46vw;
+.nameForm {
+    width: 100%;
 }
 
-.label{
-    text-align: center;
-    padding: 2%;
-}
-
-button {
-    margin-right: 1vw;
-    float: right;
-}
-
-.shiftSection{
-    padding: 2%;
-}
-
-.shiftTypeSection{
-    padding: 2%;
+.table-element-container {
+    background-color: #d3dde9;
+    color: #1a3d66;
+    padding-left: 24px;
+    width: max-content;
+    border-radius: 4px;
+    margin: 5px;
 }

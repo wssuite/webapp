@@ -1,54 +1,18 @@
-.title {
-    color: black;
-    background-color: lightgray;
-    text-align: left;
-    font-size: 50px;
-    height: 10%;
-    padding: 1%;
+h2 {
+    color:#1a3d66;
+    font-size: large;
+    margin-bottom: 0px;
 }
 
-
-.nameNurseContainer{
-    background-color: gray;
-    padding: 2%;
-    font-size: 25px;
-    border-radius: 30px;
-    margin-top: 2%;
+.nameForm {
+    width: 100%;
 }
 
-.UsernameNurseContainer{
-    background-color: gray;
-    padding: 2%;
-    font-size: 25px;
-    border-radius: 30px;
-    margin-top: 2%;
+.table-element-container {
+    background-color: #d3dde9;
+    color: #1a3d66;
+    padding-left: 24px;
+    width: max-content;
+    border-radius: 4px;
+    margin: 5px;
 }
-
-.nameForm{
-    padding-top: 2%;
-    background-color: white;
-    border-radius: 10px;
-    margin-top: 1%;
-    width: 46vw;
-}
-
-.label{
-    text-align: center;
-    padding: 2%;
-}
-
-button {
-    margin-right: 1vw;
-    float: right;
-}
-
-.contractSection{
-    padding: 2%;
-}
-
-.contractGroupSection{
-    padding: 2%;
-}
-
-
-

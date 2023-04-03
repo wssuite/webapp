@@ -1,40 +1,14 @@
+
 .title {
-    color: black;
-    background-color: lightgray;
-    text-align: left;
-    font-size: 50px;
-    height: 10%;
-    padding: 1%;
-}
-
-
-.nameNurseContainer{
-    background-color: gray;
-    padding: 2%;
-    font-size: 25px;
-    border-radius: 30px;
-    margin-top: 2%;
-}
-
-.nameForm{
-    padding-top: 2%;
-    background-color: white;
-    border-radius: 10px;
-    margin-top: 1%;
-    width: 46vw;
-}
-
-.label{
-    text-align: center;
-    padding: 2%;
+    color: #1a3d66;
+    background-color: #d3dde9;
+    font-weight: bold;
+    font-size: xx-large;
+    padding: 1.5% 2.5% 3% 2.5%;
+    align-self: center;
 }
 
 button {
     margin-right: 1vw;
     float: right;
 }
-
-.contractSection{
-    padding: 2%;
-}
-
