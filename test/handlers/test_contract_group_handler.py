@@ -1,3 +1,4 @@
+from src.exceptions.project_base_exception import ProjectBaseException
 from src.dao.abstract_dao import connect_to_fake_db
 from src.handlers.contract_group_handler import ContractGroupHandler
 from src.exceptions.contract_exceptions import (
@@ -57,6 +58,13 @@ class TestContractGroupHandler(TestCase):
         self.handler.add(random_hex, contract_group_without_contradiction)
         actual = self.handler.get_all_names(random_hex, profile1)
         self.assertEqual(["contract_group_without_contradiction"], actual)
+
+    def test_add_contract_group_with_unsupported_name_raise_error(self):
+        self.insert_deps()
+        contract_group = contract_group_without_contradiction.copy()
+        contract_group[contract_group_name] = "@contract_group!"
+        with self.assertRaises(ProjectBaseException):
+            self.handler.add(random_hex, contract_group)
 
     def test_update_contract_group(self):
         self.insert_deps()

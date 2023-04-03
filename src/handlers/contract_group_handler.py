@@ -14,6 +14,7 @@ class ContractGroupHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         contract_group = ContractGroup().from_json(json)
+        self.verify_name_is_valid(contract_group.name)
         self.contract_group_insertion_verification(contract_group)
         self.contract_group_dao.insert_if_not_exist(contract_group.db_json())
 

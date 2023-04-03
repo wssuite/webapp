@@ -16,6 +16,7 @@ class ShiftGroupHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         shift_group = ShiftGroup().from_json(json)
+        self.verify_name_is_valid(shift_group.name)
         self._shift_group_verifications(shift_group)
         self.shift_group_dao.insert_one_if_not_exist(shift_group.db_json())
 

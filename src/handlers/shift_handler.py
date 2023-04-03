@@ -30,6 +30,7 @@ class ShiftHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         shift = Shift().from_json(json)
+        self.verify_name_is_valid(shift.name)
         self.shift_dao.insert_one_if_not_exist(shift.db_json())
         add_shift_in_work_shift_group(
             shift.name, self.shift_group_dao, shift.profile

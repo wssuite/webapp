@@ -24,6 +24,7 @@ class NurseGroupHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         nurse_group = NurseGroup().from_json(json)
+        self.verify_name_is_valid(nurse_group.name)
         self.verify_nurse_group_is_valid(nurse_group)
         self.nurse_group_dao.insert_one_if_not_exist(nurse_group.db_json())
 

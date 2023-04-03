@@ -1,3 +1,4 @@
+from src.exceptions.project_base_exception import ProjectBaseException
 from src.dao.abstract_dao import connect_to_fake_db
 from src.handlers.profile_handler import ProfileHandler
 from test_constants import (
@@ -77,6 +78,10 @@ class TestProfileHandler(TestCase):
         expected.pop(profile_access)
         self.assertEqual(expected, all_profiles[0])
         self.assertTrue(profile_dir_exist)
+
+    def test_create_profile_with_whitespace_raise_error(self):
+        with self.assertRaises(ProjectBaseException):
+            self.handler.create_profile(random_hex, "hospital 1")
 
     def test_get_all_profiles_change_with_access(self):
         self.handler.create_profile(random_hex, profile1)

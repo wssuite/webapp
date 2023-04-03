@@ -32,8 +32,9 @@ class ProfileHandler(BaseHandler):
 
     def create_profile(self, token, profile_):
         user = self.verify_token(token)
+        self.verify_profile_name_not_have_whitespace(profile_)
+        self.verify_name_is_valid(profile_)
         fs = FileSystemManager()
-
         profile_object = Profile()
         profile_object.name = profile_
         profile_object.creator = user[user_username]
