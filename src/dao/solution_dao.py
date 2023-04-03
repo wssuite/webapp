@@ -60,7 +60,10 @@ class SolutionDao(AbstractDao):
                 version: version_,
             }
         )
-        return Solution().from_json(ret).db_json()
+        if ret is not None:
+            return Solution().from_json(ret).db_json()
+        else:
+            return None
 
     def get_next_versions(
         self, start_date_, end_date_, profile_name_, version_
@@ -86,6 +89,19 @@ class SolutionDao(AbstractDao):
                 profile: profile_name_,
             },
             {mongo_set_operation: {state: new_state}},
+        )
+
+    def update_previous_versions_array(
+        self, start_date_, end_date_, profile_name_, version_, p_v
+    ):
+        self.collection.find_one_and_update(
+            {
+                version: version_,
+                start_date: start_date_,
+                end_date: end_date_,
+                profile: profile_name_,
+            },
+            {mongo_set_operation: {previous_versions: p_v}},
         )
 
     def remove(self, start_, end_, profile_name, v):

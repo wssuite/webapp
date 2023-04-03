@@ -1,3 +1,4 @@
+from src.exceptions.project_base_exception import ProjectBaseException
 from src.dao.shift_group_dao import ShiftGroup
 from constants import shift_group_name, work, rest, contract_name
 from src.exceptions.shift_exceptions import (
@@ -20,6 +21,10 @@ class ShiftGroupHandler(BaseHandler):
 
     def update(self, token, json):
         super().update(token, json)
+        if json[shift_group_name] == work or json[shift_group_name] == rest:
+            raise ProjectBaseException(
+                f"Cannot update default shift group {json[shift_group_name]}"
+            )
         shift_group = ShiftGroup().from_json(json)
         self._shift_group_verifications(shift_group)
         self.shift_group_dao.update(shift_group.db_json())

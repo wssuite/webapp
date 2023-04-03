@@ -199,6 +199,35 @@ class TestScheduleHandler(TestCase):
         self.assertEqual(expected_detailed, solution_detailed)
 
     @patch("requests.post", return_value=mock_succeed_response())
+    def test_get_solution_detail_with_schedule_when_previous_version_is_deleted(
+        self, mock_post
+    ):
+        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        solution = self.handler.regenerate_schedule(
+            random_hex, hospital_demand_dict, "1"
+        )
+        expected_solution = {
+            start_date: "2023-06-01",
+            end_date: "2023-06-02",
+            profile: profile1,
+            version: "2",
+            state: "Waiting",
+            timestamp: solution[timestamp],
+        }
+        self.assertEqual(expected_solution, solution)
+        self.handler.remove_schedule(
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1"
+        )
+        solution_detailed = self.handler.get_detailed_solution(
+            random_hex, "2023-06-01", "2023-06-02", profile1, "2"
+        )
+        expected_detailed = expected_solution.copy()
+        expected_detailed[timestamp] = solution[timestamp]
+        expected_detailed[previous_versions] = []
+        expected_detailed[problem] = hospital_demand_dict
+        self.assertEqual(expected_detailed, solution_detailed)
+
+    @patch("requests.post", return_value=mock_succeed_response())
     def test_generate_schedule_and_get_solution_detail_with_schedule(
         self, mock_post
     ):

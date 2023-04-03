@@ -1,3 +1,4 @@
+from src.exceptions.project_base_exception import ProjectBaseException
 from src.dao.abstract_dao import connect_to_fake_db
 from src.handlers.shift_group_handler import ShiftGroupHandler
 from test_constants import (
@@ -65,6 +66,10 @@ class TestShiftGroupHandler(TestCase):
             random_hex, "Day", profile1
         )
         self.assertEqual(shift_group_before, shift_group_after)
+
+    def test_update_work_shift_group_raise_error(self):
+        with self.assertRaises(ProjectBaseException):
+            self.handler.update(random_hex, work_shift_group)
 
     def test_update_shift_group_with_empty_shifts_succeed(self):
         self.handler.shift_dao.insert_one_if_not_exist(early_shift.copy())
