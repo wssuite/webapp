@@ -150,8 +150,10 @@ class ScheduleHandler(BaseHandler):
             pv = self.solution_dao.get_solution(
                 start, end, profile_name, previous_version
             )
-            pvo = Solution().from_json(pv)
-            previous_versions_detailed.append(pvo.to_json())
+            if pv is not None:
+                pvo = Solution().from_json(pv)
+                previous_versions_detailed.append(pvo.to_json())
+
         ret_json = so.to_json()
         ret_json[previous_versions] = previous_versions_detailed
         """TODO: Get the schedule and the request from the file system"""

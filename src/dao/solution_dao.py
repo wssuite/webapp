@@ -60,7 +60,10 @@ class SolutionDao(AbstractDao):
                 version: version_,
             }
         )
-        return Solution().from_json(ret).db_json()
+        if ret is not None:
+            return Solution().from_json(ret).db_json()
+        else:
+            return None
 
     def get_next_versions(
         self, start_date_, end_date_, profile_name_, version_
