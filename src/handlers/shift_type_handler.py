@@ -19,6 +19,7 @@ class ShiftTypeHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         shift_type = ShiftType().from_json(json)
+        self.verify_name_is_valid(shift_type.name)
         self._shift_type_verifications(shift_type)
         self.shift_type_dao.insert_one_if_not_exist(shift_type.db_json())
         self.__add_shift_type_to_work_shift_group(

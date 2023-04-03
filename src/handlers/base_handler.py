@@ -1,3 +1,6 @@
+import re
+
+from src.exceptions.project_base_exception import ProjectBaseException
 from src.exceptions.nurse_exceptions import NurseNotFound
 from src.models.nurse_group import NurseGroup
 from src.exceptions.contract_exceptions import (
@@ -228,3 +231,17 @@ class BaseHandler:
             nurse_group, nurse_group_merged_contract
         )
         self.verify_contract_groups(nurse_group)
+
+    @staticmethod
+    def verify_name_is_valid(name):
+        pattern = r"[^a-zA-Z0-9_\-\s]+"
+        match = re.match(pattern, name)
+        if match is not None:
+            raise ProjectBaseException(
+                "The special characters like @ and ! are not supported"
+            )
+
+    @staticmethod
+    def verify_profile_name_not_have_whitespace(name: str):
+        if name.__contains__(" "):
+            raise ProjectBaseException("The profile must not have whitespaces")

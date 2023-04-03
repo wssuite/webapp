@@ -12,6 +12,7 @@ class SkillHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         skill = Skill().from_json(json)
+        self.verify_name_is_valid(skill.name)
         self.skill_dao.insert_one_if_not_exist(skill.db_json())
 
     def delete(self, token, name, profile_name):

@@ -31,6 +31,7 @@ class ContractHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         contract = Contract().from_json(json)
+        self.verify_name_is_valid(contract.name)
         self.contract_insertion_verification(contract)
         self.contract_dao.insert_one(contract.db_json())
 
