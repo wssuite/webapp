@@ -106,7 +106,7 @@ export class ContractCreationDialogComponent implements OnInit{
       //call api service to push the contract
       const contractJson = this.service.getJson();
       console.log(contractJson);
-      if(this.initName == ""){
+      if(this.initName === ""){
         this.service.addContract(contractJson).subscribe({
           error: (err: HttpErrorResponse)=> {
             if(err.status === HttpStatusCode.Ok) {

@@ -71,34 +71,34 @@ export class ShiftGroupCreationDialogComponent implements OnInit {
     try
     { 
       console.log(this.data.shiftGroup);
-      if(this.initShiftGroupName == ""){
-      this.api.addShiftGroup(this.data.shiftGroup).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
+      if(this.initShiftGroupName === ""){
+        this.api.addShiftGroup(this.data.shiftGroup).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          } 
+        })
+      }
+      else {
+        this.api.updateShiftGroup(this.data.shiftGroup).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
           }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
-      })
+        })
+      } 
     }
-    else {
-      this.api.updateShiftGroup(this.data.shiftGroup).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
-          }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        }
-      })
-    } 
-  }
-  catch(e){
-    this.openErrorDialog((e as Exception).getMessage())
-  }
+    catch(e){
+      this.openErrorDialog((e as Exception).getMessage())
+    }
   }
 
 

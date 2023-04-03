@@ -1,6 +1,6 @@
 <div class="schedule-container">
   <div class="skill-name-table">
-    <table>
+    <table class="skill-table">
       <tr>
         <th class="skill-name-header">Skill</th>
       </tr>
@@ -37,14 +37,14 @@
 <div *ngIf="editOn" class="min-max-value">
   <app-min-max-hopspital-demand   [(demand)]="demand" (errorState)="updateSkillDemandErrorState($event)"></app-min-max-hopspital-demand>
   <div *ngIf="!skillDemandErrorState"> 
-    <button (click)="setEdition()">Edit</button>
-    <button (click)="save()">Save</button>
+    <button mat-raised-button (click)="setEdition()">Edit</button>
+    <button mat-raised-button (click)="save()">Save</button>
     <div *ngIf="saveDemandError" >
       <mat-icon color="warn">error</mat-icon>
       <label>Preferences must be saved</label>
     </div>
   </div>
-  <button (click)="cancel()">Cancel</button>
+  <button mat-raised-button (click)="cancel()">Cancel</button>
 </div>
 
 

@@ -1,8 +1,8 @@
 <div *ngIf="connectedUser; else elseBlock">
     <app-header></app-header>
     <div *ngIf="this.schedules.length > 0; else noSchedules">
-        <div class="button-container">
-            <button mat-raised-button class="buttonCreate" color="primary"  (click)="generateNewSchedule()">Generate new schedule</button>
+        <div class="generateScheduleButtonContainer">
+            <button mat-raised-button class="buttonCreate" color="nurse-blue"  (click)="generateNewSchedule()">Generate new schedule</button>
         </div>
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>

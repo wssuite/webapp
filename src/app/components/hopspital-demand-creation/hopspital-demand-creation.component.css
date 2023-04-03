@@ -1,38 +1,52 @@
 .schedule-container {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .skill-name-table {
-  display: flex;
-  width: 150px;
+  height: calc(100%-15px);
+  max-height: calc(100%-15px); 
+  width:max-content;
+  max-width: 100%;
 }
 
 .skill-name-header {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-top: 20px;
+  /* padding-top: 5px; */
   height: 5px;
 }
 
-.nurse-name-cell {
-  padding-top: 2px;
-  padding-bottom: 2px;
+.skill-name-cell {
   background-color: rgb(235, 234, 234);
+  height: 42px;
+  max-height: 42px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .timetable-table {
   display: flex;
   overflow-x: scroll;
+  text-align: center;
+  width:82%;
 }
+
 .date-header {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  width: 335px;
-  background-color: #A7C6EA;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-weight: bold;
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: #255792;
+    color:white;
 }
 
 .min-max-row {
@@ -46,10 +60,10 @@
 }
 
 .min-max-value{
-  background-color: lightgray;
+  background-color: white;
   border-radius: 30px;
-  padding: 10px;
-
+  padding: 20px;
+  width: 70%
 }
 
 button{
@@ -62,6 +76,17 @@ button:hover{
 
 }
 
+
+.skill-table{
+  width:max-content;
+  max-width: 100%;
+  height: calc(100%-15px);
+  max-height: calc(100%-15px); 
+}
+
+table{
+  color:#1a3d66;
+}
 
  
 
