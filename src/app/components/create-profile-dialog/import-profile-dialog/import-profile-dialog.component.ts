@@ -449,7 +449,6 @@ export class ImportProfileComponent implements OnInit{
           this.router.navigate(["/" + MAIN_MENU])
         }
         else{
-          this.profileService.deleteProfileByName(this.profile.profile)
           this.openErrorDialog(err.error)
         }
       }
