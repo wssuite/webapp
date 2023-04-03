@@ -48,3 +48,6 @@ class PatternElement(Jsonify, Stringify, StringReader, CSVExporter):
                 shifts_string += "|"
         shifts_string += ""
         return f"{days_string};{shifts_string}"
+
+    def repr(self):
+        return f"{self.to_string()}"

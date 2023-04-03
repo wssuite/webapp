@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 from src.models.exporter import CSVExporter
 from src.models.string_reader import StringReader
 from src.models.stringify import (
@@ -54,6 +56,7 @@ class ContractConstraint(BaseConstraint, StringReader, CSVExporter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    @abstractmethod
     def repr(self):
         pass
 
@@ -237,6 +240,12 @@ class ContractUnwantedPatterns(ContractConstraint):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    def repr(self):
+        repr_pattern_elements = ""
+        for pattern in self.pattern_elements:
+            repr_pattern_elements += f"{pattern.repr()}\n"
+        return f"{self.name},{repr_pattern_elements}"
+
     def to_json(self):
         array = [element.to_json() for element in self.pattern_elements]
         return {
@@ -326,7 +335,7 @@ class ContractUnwantedSkills(ContractConstraint):
         super().__init__(*args, **kwargs)
 
     def repr(self):
-        return self.name
+        return f"{self.name},{[self.unwanted_skills]}"
 
     def get_skills(self):
         return self.unwanted_skills
