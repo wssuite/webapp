@@ -30,34 +30,34 @@ add() {
   try
   { 
     console.log(this.data.shift);
-    if(this.initShiftName == ""){
-    this.api.addShift(this.data.shift).subscribe({
-      error: (err: HttpErrorResponse)=> {
-        if(err.status === HttpStatusCode.Ok) {
-          this.close();
+    if(this.initShiftName === ""){
+      this.api.addShift(this.data.shift).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }
+          else{
+            this.openErrorDialog(err.error)
+          }
+        } 
+      })
+    }
+    else {
+      this.api.updateShift(this.data.shift).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }
+          else{
+            this.openErrorDialog(err.error)
+          }
         }
-        else{
-          this.openErrorDialog(err.error)
-        }
-      } 
-    })
+      })
+    } 
   }
-  else {
-    this.api.updateShift(this.data.shift).subscribe({
-      error: (err: HttpErrorResponse)=> {
-        if(err.status === HttpStatusCode.Ok) {
-          this.close();
-        }
-        else{
-          this.openErrorDialog(err.error)
-        }
-      }
-    })
-  } 
-}
-catch(e){
-  this.openErrorDialog((e as Exception).getMessage())
-}
+  catch(e){
+    this.openErrorDialog((e as Exception).getMessage())
+  }
 }
 
 openErrorDialog(message: string) {

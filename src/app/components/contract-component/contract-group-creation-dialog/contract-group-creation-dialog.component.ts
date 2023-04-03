@@ -54,30 +54,30 @@ export class ContractGroupCreationDialogComponent implements OnInit {
   add() {
     try
     { 
-      if(this.initContractGroupName == ""){
-      this.api.addContractGroup(this.data.contractGroup).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
+      if(this.initContractGroupName === ""){
+        this.api.addContractGroup(this.data.contractGroup).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          } 
+        })
+      }
+      else {
+        this.api.updateContractGroup(this.data.contractGroup).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }          
+            else{
+              this.openErrorDialog(err.error)
+            }
           }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
-      })
-    }
-    else {
-      this.api.updateContractGroup(this.data.contractGroup).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
-          }          
-          else{
-            this.openErrorDialog(err.error)
-          }
-        }
-      })
-    } 
+        })
+      } 
   }
   catch(e){
     this.openErrorDialog((e as Exception).getMessage())

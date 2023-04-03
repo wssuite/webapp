@@ -74,34 +74,34 @@ export class NurseCreationDialogComponent  implements OnInit{
     try
     { 
       console.log(this.data.nurse);
-      if(this.initNurseUsername == ""){
-      this.api.addNurse(this.data.nurse).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
+      if(this.initNurseUsername === ""){
+        this.api.addNurse(this.data.nurse).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          } 
+        })
+      }
+      else {
+        this.api.updateNurse(this.data.nurse).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }          
+            else{
+              this.openErrorDialog(err.error)
+            }
           }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
-      })
+        })
+      } 
     }
-    else {
-      this.api.updateNurse(this.data.nurse).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.close();
-          }          
-          else{
-            this.openErrorDialog(err.error)
-          }
-        }
-      })
-    } 
-  }
-  catch(e){
-    this.openErrorDialog((e as Exception).getMessage())
-  }
+    catch(e){
+      this.openErrorDialog((e as Exception).getMessage())
+    }
   }
 
 
