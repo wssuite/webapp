@@ -1,19 +1,19 @@
 <div class="nurse-container" (mouseleave)="emitNurse()"></div>
 <div class="content"  mat-dialog-content>
+  <div class="nameNurseContainer">
+    <h2>Name</h2>
+    <hr>
+    <mat-form-field class = "nameForm" appearance="fill">
+    <mat-label>Enter nurse Name</mat-label>
+    <input matInput [(ngModel)]="nurse.name" [formControl]="nameNurseFormCtrl" (keyup)="emitNurse()" (keyup)="setUsername()">
+    </mat-form-field>
+ </div>
   <div class="UsernameNurseContainer">
     <h2>Username</h2>
     <hr>
     <mat-form-field class = "nameForm" appearance="fill">
     <mat-label>Enter nurse username</mat-label>
     <input matInput [(ngModel)]="nurse.username" [formControl]="usernameNurseFormCtrl" (keyup)="emitNurse()">
-    </mat-form-field>
- </div>
- <div class="nameNurseContainer">
-    <h2>Name</h2>
-    <hr>
-    <mat-form-field class = "nameForm" appearance="fill">
-    <mat-label>Enter nurse Name</mat-label>
-    <input matInput [(ngModel)]="nurse.name" [formControl]="nameNurseFormCtrl" (keyup)="emitNurse()">
     </mat-form-field>
  </div>
  <div class="contractSection">

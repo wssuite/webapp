@@ -147,5 +147,14 @@ export class NurseCreationComponent implements OnInit {
     return this.nurses.includes(this.nurse.username);
   }
 
+  setUsername(){
+    let counter = 1;
+    this.nurse.username = this.nurse.name + counter.toString();
+    while(this.usernameExist()){
+      counter++;
+      this.nurse.username = this.nurse.name + counter.toString();
+    }
+    this.emitNurse()
+  }
 }
 
