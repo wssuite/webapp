@@ -7,6 +7,7 @@
         <mat-label>Enter shift type name</mat-label>
         <input matInput [(ngModel)]="shiftType.name" [formControl]="nameShiftTypeFormCtrl" (keyup)="emitShiftType()">
       </mat-form-field>
+      <mat-error *ngIf="nameExist()">Shift type name is already used</mat-error>
     </div>
     <div class="shifts-Section">
       <h2 class="shiftSectionTitle">Shifts</h2>

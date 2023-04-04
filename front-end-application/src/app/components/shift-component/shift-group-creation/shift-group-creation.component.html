@@ -1,12 +1,13 @@
 <div class="shiftType-container" (mouseleave)="emitShiftGroup()"></div>
 <div class="content"  mat-dialog-content>
     <div class="nameShiftContainer">
-    <h2>Shift group name </h2>
-    <hr>
-    <mat-form-field class = "nameForm" >
-      <mat-label>Enter shift group name</mat-label>
-      <input matInput [(ngModel)]="shiftGroup.name" [formControl]="nameShiftGroupFormCtrl" (keyup)="emitShiftGroup()">
-    </mat-form-field>
+      <h2>Shift group name </h2>
+      <hr>
+      <mat-form-field class = "nameForm" >
+        <mat-label>Enter shift group name</mat-label>
+        <input matInput [(ngModel)]="shiftGroup.name" [formControl]="nameShiftGroupFormCtrl" (keyup)="emitShiftGroup()">
+      </mat-form-field>
+      <mat-error *ngIf="nameExist()">Shift group name is already used</mat-error>
     </div>
     <div class="shiftSection">
       <h2 class="shiftSectionTitle">Shifts</h2>

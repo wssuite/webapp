@@ -8,6 +8,7 @@
     <mat-label>Enter Group nurse Name</mat-label>
     <input matInput [(ngModel)]="nurseGroup.name" [formControl]="nameNurseGroupFormCtrl" (keyup)="emitNurseGroup()">
     </mat-form-field>
+    <mat-error *ngIf="nameExist()">Nurse group name is already used</mat-error>
  </div>
  <div class="nurseSection">
    <h2 class="NurseSectionTitle">Nurses</h2>
