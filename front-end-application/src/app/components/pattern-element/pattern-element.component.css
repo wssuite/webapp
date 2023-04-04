@@ -1,0 +1,16 @@
+label {
+    margin-left:1vw;
+    margin-right: 1vw;
+}
+mat-form-field {
+    margin-left:1vw;
+    margin-right: 1vw;;
+}
+
+.pattern-group {
+    padding: 10px;
+    border-style: solid;
+    border-color: rgb(161, 158, 158);
+    border-width: 1px;
+    border-radius: 16px;
+}

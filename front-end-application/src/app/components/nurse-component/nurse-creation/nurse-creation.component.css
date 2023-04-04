@@ -1,0 +1,18 @@
+h2 {
+    color:#1a3d66;
+    font-size: large;
+    margin-bottom: 0px;
+}
+
+.nameForm {
+    width: 100%;
+}
+
+.table-element-container {
+    background-color: #d3dde9;
+    color: #1a3d66;
+    padding-left: 24px;
+    width: max-content;
+    border-radius: 4px;
+    margin: 5px;
+}

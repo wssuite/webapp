@@ -1,0 +1,26 @@
+mat-card {
+    width: 20vw;
+    margin: 1vh;
+    margin-left: 5vw;
+}
+
+mat-card-actions {
+    margin-bottom: 2vh;
+}
+
+
+.create-button{
+    margin-left: 90vw;
+    margin-top: 2vh;
+    height: 5vh;
+    width: auto;
+    font-size: large;
+}
+
+.accounts-container{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    height: 70vh;
+}

@@ -1,0 +1,38 @@
+<div class="header">
+    <span><h1>Nurse scheduler</h1></span>
+</div>
+<div class="loginContainer">
+    <img src="../../../assets/background.png">
+    <div class="loginFormContainer">
+        <label>Username: </label>
+        <mat-form-field
+            class="userInputField"
+        >
+        <mat-label>Enter username</mat-label>
+        <input
+            matInput
+            placeholder="username"
+            [formControl]="usernameControlForm"
+            [(ngModel)]="username"
+        />
+        </mat-form-field>
+        <br>
+        <label>Password: </label>
+        <mat-form-field
+            class="passwordInputField"
+        >
+        <mat-label>Enter password</mat-label>
+        <input
+            matInput
+            type="password"
+            placeholder="password"
+            [formControl]="passwordControlForm"
+            [(ngModel)]="password"
+        />
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" [disabled]="hasError()" (click)="login()">
+            LOG IN
+        </button>
+    </div>    
+</div>

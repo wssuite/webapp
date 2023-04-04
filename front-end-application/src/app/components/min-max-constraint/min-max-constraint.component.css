@@ -1,0 +1,18 @@
+.value-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
+
+.input{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+app-numeric-input{
+    margin-left: 1vw;
+}
+

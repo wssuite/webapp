@@ -1,0 +1,11 @@
+<div class="skill-container" (mouseleave)="emitSkill()"></div>
+  <div class="name-section" >
+    <h2>Skill Name</h2>
+    <hr>
+    <div class="nameForm">
+      <mat-form-field class="nameField" appearance="fill">
+        <mat-label>Enter skill name</mat-label>
+        <input matInput [(ngModel)]="skill.name" [formControl]="nameSkillFormCtrl" (keyup)="emitSkill()">
+      </mat-form-field>
+    </div>
+  </div>

@@ -1,0 +1,10 @@
+<div class="boolean-contraint-container">
+  <div class="description-box">
+    <p>{{disclaimer}}</p>
+  </div>
+  <app-weight
+    [(weight)]="constraint.weight"
+    (errorState)="updateWeightErrorState($event)"
+    [label]="weightLabel"
+  ></app-weight>
+</div>

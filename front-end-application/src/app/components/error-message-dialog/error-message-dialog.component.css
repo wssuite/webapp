@@ -1,0 +1,17 @@
+.messageErrorContainer {
+    height:10vh;
+    width: 40vw;
+    overflow-x:auto;
+}
+
+.messageErrorContent {
+    text-align: center;
+    font-size: large;
+    color: red;
+}
+
+.cancelButton {
+    flex-direction: column;
+    position: relative;
+    margin-left: 20vw;
+}

@@ -1,0 +1,18 @@
+<div class="title" mat-dialog-title>Skill
+</div>
+
+<div class="dialog-container">
+    <div class="skill-container">
+        <app-skill-creation [(skill)]="data.skill" [skills]="data.skills" (errorState)="updateSkillErrorState($event)"></app-skill-creation>
+    </div>
+    <div mat-dialog-action class="buttons-container">
+        <button [disabled]="skillErrorState"  mat-raised-button color="primary" (click)="add()">
+            Submit
+        </button>
+        <button  mat-raised-button color="warn" [mat-dialog-close]="true">
+            Cancel
+        </button>
+    </div>
+</div>
+    
+    

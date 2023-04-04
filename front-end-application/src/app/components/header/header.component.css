@@ -1,0 +1,79 @@
+.header-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #255792;
+    justify-content: space-between;
+    height: 100px;
+    width: 100%;
+}
+
+.navigation-container {
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ margin-left: 2vw;
+}
+
+span {
+    margin-left: 1vw;
+    font-size: larger;
+}
+
+h1{
+    margin-left: 1vw;
+    color: white;
+    font-size: 180%;
+}
+
+h1:hover{
+    cursor: pointer;
+}
+
+.start-container {
+    margin-left: 2vw;
+}
+
+.end-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items:flex-end;
+    right: 0%;
+}
+
+mat-icon {
+    color: white;
+}
+
+.menu-icon{
+    transform: scale(1.5);
+}
+
+.bell-icon{
+    transform: scale(1.25);
+}
+
+.user-icon{
+    transform: scale(1.5);
+}
+
+.icon-box{
+    margin: 2vh;
+}
+
+.profile-container{
+    margin-right: 5vw;
+}
+
+.profile-label{
+    font-weight: bolder;
+    font-size: 20px;
+    color:white;
+}
+
+.profile-dropdown{
+    font-size: 20px;
+    margin-top: 20px;
+    width: 30vw;
+}
+

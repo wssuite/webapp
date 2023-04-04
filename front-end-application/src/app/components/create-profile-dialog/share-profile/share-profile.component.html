@@ -1,0 +1,42 @@
+<div class="share-container">
+    <div class="share-section">
+        <label>Share with:</label>
+        <mat-form-field class="header">
+                <mat-chip *ngFor="let user of usersToShareWith" (removed)="removeName(user)">
+                    {{user}}
+                    <mat-icon matChipRemove>clear</mat-icon>
+                </mat-chip>
+                <input
+                    matInput
+                    #nameInput
+                    [formControl]="userCtrl"
+                    [matAutocomplete]="auto"
+                    placeholder="Enter the names"
+                />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let user of filterNames | async" [value]="user">
+                    {{ user }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <button class="share-button" mat-raised-button color="primary" [disabled]="usersToShareWith.length === 0" (click)="share()">
+            Share
+        </button>
+    </div>
+    <div class="aceesors-section">
+        <h1>Users who have access</h1>
+        <table cellspacing="10">
+            <tr *ngFor="let acessor of accessors" >
+                <td *ngIf="acessor !== currentUser">
+                    <span>{{acessor}}</span>
+                </td>
+                <td *ngIf="acessor !== currentUser">
+                    <button mat-raised-button color="accent" (click)="revoke(acessor)">Revoke access</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="buttons-section">
+        <button mat-raised-button color="warn" [mat-dialog-close]="true">Close</button>
+    </div>
+</div>

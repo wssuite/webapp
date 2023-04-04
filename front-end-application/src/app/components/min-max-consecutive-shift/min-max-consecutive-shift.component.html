@@ -1,0 +1,31 @@
+<div (mouseleave)="emitConstraint()" class="min-min-shift-constraint-container">
+        <div class="shift-input">
+        <label>Shift: </label>
+        <mat-form-field appearance="fill">
+            <mat-label>Choose a shift </mat-label>
+            <mat-select [(value)]="constraint.shiftId" [formControl]="selectFormCtrl" (selectionChange)="emitConstraint()">
+                <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
+                    {{shift}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="constraint-variables-container">
+    <div class="value-container">
+        <div class="input">
+        <label>Min value: </label>
+        <app-numeric-input [(value)]="constraint.minValue" (errorState)="updateMinValueErrorState($event)"></app-numeric-input>
+        </div>
+        <div class="weight-container">
+            <app-weight [(weight)]="constraint.minWeight" [label]="minWeightLabel" (errorState)="updateMinWeightErrorState($event)"></app-weight>
+        </div>
+    </div>
+    <div class="value-container">
+        <div class="input">
+        <label>Max value: </label>
+        <app-numeric-input [(value)]="constraint.maxValue" (errorState)="updateMaxValueErrorState($event)"></app-numeric-input>
+        </div>
+        <app-weight [(weight)]="constraint.maxWeight" [label]="maxWeightLabel" (errorState)="updateMaxWeightErrorState($event)"></app-weight>
+    </div>
+</div>
+</div>

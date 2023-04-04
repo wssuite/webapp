@@ -1,0 +1,32 @@
+<div *ngIf="connectedUser; else elseBlock">
+  <app-header></app-header>
+  <div class="main-menu-page-buttons-container">
+    <div *ngFor="let button of buttons; let i = index">
+      <div *ngIf="i % 2 === 0; else elseBlock" class="start-buttons">
+        <button *ngIf="show(button)" mat--button align="getAlignemntDirection(button,i)"
+        (click)="redirect(button)"
+        >
+          <img [src]="button.icon" align="left" />
+          <span>
+            <h1>{{ button.title }}</h1>
+            {{ button.description }}
+          </span>
+        </button>  
+      </div>
+      <ng-template #elseBlock class="end-buttons">
+        <button *ngIf="show(button)" class="end-buttons" mat--button align="getAlignemntDirection(button,i)"
+        (click)="redirect(button)"
+        >
+          <img [src]="button.icon" align="left" />
+          <span>
+            <h1>{{ button.title }}</h1>
+            {{ button.description }}
+          </span>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<ng-template #elseBlock>
+  <app-not-connected></app-not-connected>
+</ng-template>

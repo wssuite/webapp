@@ -1,0 +1,78 @@
+.problemDefinitionContainer {
+    margin-left: 7vw;
+    margin-top: 3vh;
+}
+label {
+    margin-right: 2vw;
+    font-size: large;
+}
+
+.margin-on-top {
+    margin-top: 4vh;
+}
+
+.margin-on-bottom {
+    margin-bottom: 5vh;
+}
+
+.list-table {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.table-element-container {
+    background-color: white;
+    color: #1a3d66;
+    padding-left: 24px;
+    width: max-content;
+    border-radius: 4px;
+    margin: 5px;
+}
+
+
+h2 {
+    color:#1a3d66;
+    margin-bottom: 0px;
+}
+
+
+hr {
+    color: #8ea2ba;
+    background: hsl(213, 24%, 64%);
+    border: 0;
+    height: 1px;
+    width: 95%;
+    margin-left: 0px;
+}
+
+.single-action-button{ 
+    margin-left: 5vw;
+    margin-right: 5px;
+    width: 115px;
+}
+
+.add-all-button {
+    height: 60px;
+    padding: 10px;
+    font-size: medium;
+    font-weight: bold;
+    padding-left: 14px;
+    padding-right: 14px;
+    margin-right: 2vw;
+}
+
+.bulk-action-button{
+    width: 115px;
+}
+
+.schedule-generation-container{
+    background-color: #d3dde9;
+}
+
+.generateScheduleButtonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 5vw;
+    margin-bottom: 2vh;
+}

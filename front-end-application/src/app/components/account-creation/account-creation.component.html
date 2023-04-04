@@ -1,0 +1,21 @@
+<div *ngIf="connectedUser; else elseBlock">
+    <app-header></app-header>
+    <div class="account-creation-container">
+            <button mat-raised-button color = "primary" class="create-button" (click)="openCreateAccountDialog()">
+                Create New Account
+            </button>
+        <div class="accounts-container">
+            <mat-card *ngFor="let account of accounts">
+                <mat-card-content>{{ account }}</mat-card-content>
+                <mat-card-actions  align="end">
+                    <button  mat-icon-button *ngIf="account !== 'admin'" (click)="deleteAccount(account)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>
+<ng-template #elseBlock>
+    <app-not-connected></app-not-connected>
+</ng-template>

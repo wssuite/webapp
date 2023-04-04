@@ -1,0 +1,23 @@
+app-weight {
+    position: relative;
+    top:0%;
+    float: right;
+    margin-right: 2vw;
+    margin-left: 10vw;;
+}
+
+.weight-container {
+    position: relative;
+    float:right;
+}
+
+.min-value-container, .max-value-container {
+    display: inline-flex;
+    width: 100%;
+}
+
+label{
+    margin-right: 2vw;
+}
+
+

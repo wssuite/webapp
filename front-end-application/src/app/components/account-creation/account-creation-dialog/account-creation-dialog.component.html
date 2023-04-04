@@ -1,0 +1,56 @@
+<div mat-dialog-title class="title">Create New Account</div>
+<div  mat-dialog-content class="dialog-content">
+    <div class="userInputContainer">
+        <label>Username: </label>
+        <mat-form-field
+            class="userInputField"
+        >
+        <mat-label>Enter username</mat-label>
+        <input
+            matInput
+            placeholder="username"
+            [formControl]="usernameControlForm"
+            [(ngModel)]="username"
+        />
+        </mat-form-field>
+    </div>
+    <div class="passwordInputContainer">
+        <label>Password: </label>
+        <mat-form-field
+            class="passwordInputField"
+        >
+        <mat-label>Enter password</mat-label>
+        <input
+            matInput
+            type="password"
+            placeholder="password"
+            [formControl]="passwordControlForm"
+            [(ngModel)]="password"
+        />
+        </mat-form-field>
+    </div>
+    <div class="passwordConfirmationInputContainer">
+        <label>Confirm Password: </label>
+        <mat-form-field
+            class="passwordConfirmationInputField"
+        >
+        <mat-label>Enter password</mat-label>
+        <input
+            matInput
+            type="password"
+            placeholder="password"
+            [formControl]="passwordConfirmationControlForm"
+            [(ngModel)]="passwordConfirmation"
+        />
+        </mat-form-field>
+        <mat-error *ngIf="confirmPassword()">{{getErrorMessage()}}</mat-error>
+    </div>
+</div>
+<div mat-dialog-action class="buttons-container">
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">
+        Cancel
+    </button>
+    <button  mat-raised-button [disabled]="hasError()" color="primary"  (click)="createAccount()">
+        Create
+    </button>
+</div>

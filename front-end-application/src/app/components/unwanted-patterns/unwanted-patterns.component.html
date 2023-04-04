@@ -1,0 +1,20 @@
+<div class="unwanted-patterns-container">
+    <div class="additional-items">
+        <button mat-raised-button (click)="addPattern()" color="primary" matTooltip="Add another pattern" class="add-button">
+            Add new pattern
+        </button>
+        <app-weight [(weight)]="constraint.weight" (errorState)="updateWeightErrorState($event)" [label]="weightLabel"></app-weight>
+    </div>
+    <table cellspacing="5">
+        <tr *ngFor="let element of constraint.patternElements; let i= index">
+            <td>
+                <app-pattern-element [(element)]="constraint.patternElements[i]" [possibleShifts]="possibleShifts" (errorState)="changePatternErrorState(i, $event)"></app-pattern-element>
+            </td>
+            <td>
+                <button *ngIf="constraint.patternElements.length > 1" mat-icon-button (click)="removePattern(element)" color="warn">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,17 @@
+export const LOGIN = "login"
+export const MAIN_MENU = "main-menu";
+export const CONSULT_SCHEDULE = "consult-schedule";
+export const CREATE_CONTRACT = "create-contract";
+export const NURSE = "nurse"
+export const NURSE_GROUP = "nurse-group"
+export const SCHEDULE_GENERATION = "schedule-generation";
+export const SHIFT = "shift"
+export const SHIFT_TYPE = "shift-type"
+export const SHIFT_GROUP = "shift-group"
+export const CREATE_ACCOUNT = "create-account"
+export const TESTING = "testing";
+export const CONTRACTS="contracts";
+export const CONTRACT_GROUP ="contracts-group";
+export const SKILL = "skill";
+export const IMPORT = "import";
+export const VIEW_SCHEDULES = "schedules"

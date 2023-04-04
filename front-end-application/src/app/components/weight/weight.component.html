@@ -1,0 +1,28 @@
+<div class="weight-container">
+  <mat-icon *ngIf="inputCtrl.hasError('pattern')" color="warn">error</mat-icon>
+  <label> {{ label }} : </label>
+  <mat-form-field appearance="fill">
+    <mat-label>Enter the weight</mat-label>
+    <input
+      matInput
+      [(ngModel)]="weight"
+      [errorStateMatcher]="matcher"
+      [formControl]="inputCtrl"
+      placeholder="Ex: 2.0"
+      (keyup)="emitWeight()"
+    />
+    <mat-error
+      *ngIf="
+        inputCtrl.hasError('pattern') ||
+        inputCtrl.hasError('required') ||
+        inputCtrl.hasError('min')
+      "
+    >
+      Please enter a non-zero integer between -100 and 100.
+    </mat-error>
+  </mat-form-field>
+  <br />
+  <mat-checkbox [(ngModel)]="disabled" (change)="update()"
+    >Constraint must be respected (hard)</mat-checkbox
+  >
+</div>

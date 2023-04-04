@@ -1,0 +1,61 @@
+/* You can add global styles to this file, and also import other style files */
+html, body { 
+    height: 100%; 
+}
+
+body { 
+    margin: 0; 
+    padding: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+@import '@angular/material/theming';
+
+
+@include mat-core();
+
+$nurseScheduling-warn: mat-palette($mat-red);
+$nurseScheduling-primary: mat-palette($mat-indigo);
+$nurseScheduling-accent: mat-palette($mat-pink, A200, A100,A400);
+$nurseScheduling-header: mat-palette($mat-blue);
+$nurseScheduling-theme: mat-light-theme($nurseScheduling-primary, $nurseScheduling-accent, $nurseScheduling-warn);
+
+@include angular-material-theme($nurseScheduling-theme);
+
+#modalWindow {
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+}
+
+.timepicker-overlay {
+    z-index: 10000000 !important;
+}
+
+.timepicker-backdrop-overlay {
+    z-index: 10000000 !important;
+}
+
+button[color=nurse-blue] {
+    background-color: #214e83 !important; //blue for the buttons 
+    color: white !important;
+}
+
+.flex-row-center-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.info-div{
+    color: #1a3d66;
+    background-color: #EFF2F7;
+    border-radius: 12px;
+    padding: 1vh;
+    width: max-content;
+}
+
+.info-icon {
+    margin-right:1vw;
+    margin-left:1vw;
+}
