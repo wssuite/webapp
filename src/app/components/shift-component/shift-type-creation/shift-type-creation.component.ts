@@ -39,6 +39,12 @@ export class ShiftTypeCreationComponent implements OnInit {
       if(!this.possibleShifts.includes(this.shiftType.shifts[i])){
         this.shiftType.shifts.splice(i,1);
       }
+      else{
+        const index = this.possibleShifts.indexOf(this.shiftType.shifts[i])
+        if(index > -1){
+          this.possibleShifts.splice(index,1)
+        }
+      }
     }
     this.emitShiftType()
    

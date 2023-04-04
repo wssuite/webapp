@@ -42,10 +42,22 @@ export class ShiftGroupCreationComponent implements OnInit{
       if(!this.possibleShifts.includes(this.shiftGroup.shifts[i])){
         this.shiftGroup.shifts.splice(i, 1);
       }
+      else{
+        const index = this.possibleShifts.indexOf(this.shiftGroup.shifts[i])
+        if(index > -1){
+          this.possibleShifts.splice(index, 1);
+        }
+      }
     }
     for(let i=0; i< this.shiftGroup.shiftTypes.length; i++) {
       if(!this.possibleShiftsType.includes(this.shiftGroup.shiftTypes[i])){
         this.shiftGroup.shiftTypes.splice(i, 1);
+      }
+      else{
+        const index = this.possibleShiftsType.indexOf(this.shiftGroup.shiftTypes[i])
+        if(index > -1){
+          this.possibleShiftsType.splice(index, 1);
+        }
       }
     }
     this.emitShiftGroup() 

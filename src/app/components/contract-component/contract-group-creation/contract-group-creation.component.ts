@@ -42,6 +42,12 @@ export class ContractGroupCreationComponent implements OnInit {
       if(!this.possibleContracts.includes(this.contractGroup.contracts[i])){
         this.contractGroup.contracts.splice(i, 1);
       }
+      else{
+        const index = this.possibleContracts.indexOf(this.contractGroup.contracts[i])
+        if(index > -1) {
+          this.possibleContracts.splice(index, 1)
+        }
+      }
     }
 
     this.emitContractGroup();

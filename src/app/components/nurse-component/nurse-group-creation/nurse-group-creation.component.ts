@@ -55,17 +55,35 @@ export class NurseGroupCreationComponent implements OnInit {
       if(!this.possibleContracts.includes(this.nurseGroup.contracts[i])){
         this.nurseGroup.contracts.splice(i, 1);
       }
+      else{
+        const index = this.possibleContracts.indexOf(this.nurseGroup.contracts[i])
+        if(index > -1){
+          this.possibleContracts.splice(index,1)
+        }
+      }
     }
 
     for(let i=0; i< this.nurseGroup.contract_groups.length; i++) {
       if(!this.possibleContractsGroup.includes(this.nurseGroup.contract_groups[i])){
         this.nurseGroup.contract_groups.splice(i, 1);
       }
+      else{
+        const index = this.possibleContractsGroup.indexOf(this.nurseGroup.contract_groups[i])
+        if(index > -1){
+          this.possibleContractsGroup.splice(index,1)
+        }
+      }
     }
 
     for(let i=0; i< this.nurseGroup.nurses.length; i++) {
       if(!this.possibleNurses.includes(this.nurseGroup.nurses[i])){
         this.nurseGroup.nurses.splice(i, 1);
+      }
+      else{
+        const index = this.possibleNurses.indexOf(this.nurseGroup.nurses[i])
+        if(index > -1){
+          this.possibleNurses.splice(index,1)
+        }
       }
     }
 
@@ -120,7 +138,7 @@ export class NurseGroupCreationComponent implements OnInit {
       this.nurseGroup.contract_groups.splice(index, 1);
     }
     if (contractGroup !== undefined && contractGroup !== null) {
-      this.possibleContracts.push(contractGroup);
+      this.possibleContractsGroup.push(contractGroup);
     }
     if(this.nurseGroup.contract_groups.length === 0){
       this.contractGroupSelectorError = true;
