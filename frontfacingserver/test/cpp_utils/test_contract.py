@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.models.contract import Contract, ContractMinMaxConstraint
+from src.models.contract import Contract, ContractMinMaxShiftConstraint
 
 from constants import (
     number_of_free_days_after_shift,
@@ -140,7 +140,7 @@ class TestContract(TestCase):
     def test_two_merged_contract_constraints_are_added(self):
         contract = Contract().from_json(self.contract_dict)
         self.assertEqual(11, len(contract.constraints))
-        added_constraint = ContractMinMaxConstraint().from_json(
+        added_constraint = ContractMinMaxShiftConstraint().from_json(
             {
                 constraint_name: min_max_num_assignments_in_four_weeks,
                 max_constraint_value: "6.0",
