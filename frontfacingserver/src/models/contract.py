@@ -5,7 +5,6 @@ from src.models.jsonify import Jsonify
 from src.models.constraints import (
     ContractConstraint,
     ContractBooleanConstraint,
-    ContractMinMaxConstraint,
     ContractIntegerShiftConstraint,
     ContractMinMaxShiftConstraint,
     ContractUnwantedPatterns,
