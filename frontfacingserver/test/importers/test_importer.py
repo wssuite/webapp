@@ -86,6 +86,7 @@ class TestCSVImporter(fake_filesystem_unittest.TestCase):
                         max_constraint_weight: "hard",
                         min_constraint_value: "1.0",
                         min_constraint_weight: "5.0",
+                        shift_constraint: "Early",
                     },
                     {
                         constraint_name: min_max_num_assignments_in_four_weeks,
@@ -93,6 +94,7 @@ class TestCSVImporter(fake_filesystem_unittest.TestCase):
                         max_constraint_weight: "hard",
                         min_constraint_value: "1.0",
                         min_constraint_weight: "5.0",
+                        shift_constraint: "Early",
                     },
                     {
                         constraint_name: min_max_consecutive_weekends,
@@ -100,6 +102,7 @@ class TestCSVImporter(fake_filesystem_unittest.TestCase):
                         max_constraint_weight: "hard",
                         min_constraint_value: "1.0",
                         min_constraint_weight: "5.0",
+                        shift_constraint: "Early",
                     },
                     {
                         constraint_name: min_max_consecutive_shift_type,
@@ -190,12 +193,12 @@ number of free days after shift,Early,1.0,hard
 #,skills,weight,,,,,,,
 unwanted skills,Nurse,hard,,,,,,,
 #,value,weight,,,,,,,
-total number of working weekends in four weeks,1.0,5.0,5.0,hard,,,,,,,
-#,min value,min weight,max value,max weight
+total number of working weekends in four weeks,Early,1.0,5.0,5.0,hard,,,,,,,
+#,shift,min value,min weight,max value,max weight
 ,,,,,
-minimum and maximum number of assignments in four weeks,1.0,5.0,5.0,hard,,,,,
-#,min value,min weight,max value,max weight,,,,,
-minimum and maximum of consecutive working weekends,1.0,5.0,5.0,hard,,,,,
+minimum and maximum number of assignments in four weeks,Early,1.0,5.0,5.0,hard,,,,,
+#,shift,min value,min weight,max value,max weight,,,,,
+minimum and maximum of consecutive working weekends,Early,1.0,5.0,5.0,hard,,,,,
 #,shift,min value,min weight,max value,max weight,,,,
 minimum and maximum of consecutive shift type,Early,1.0,5.0,5.0,hard,,,,
 #,weight,,,,,,,,
