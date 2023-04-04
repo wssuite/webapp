@@ -8,7 +8,7 @@
     </div>
     </div>
     <div class = "duration-section">
-    <div class="startTime-section" (mouseleave)="emitShift()" (mouseleave)="setEndTime()">
+    <div class="startTime-section" (mouseleave)="emitShift()">
         <div class="label" mat-label>Start Time</div>
             <mat-form-field appearance="fill">
                 <mat-label>Start Time</mat-label>
@@ -19,7 +19,6 @@
                   (timeChanged)="setEndTime()"
                   (timeSet)="setEndTime()"
                   [format]="24"
-                  readonly
                   [formControl]="startTimeFormCtrl"
                   [value]="shift.startTime"
                   [(ngModel)]="shift.startTime"
@@ -41,7 +40,9 @@
                 >
               </mat-form-field>
               
-              <ngx-material-timepicker 
+              <ngx-material-timepicker
+                (timeSet)="setEndTime()"
+                (timeChanged)="setEndTime()" 
                 #timepickerStart
                 [disable]="true"
               ></ngx-material-timepicker>
@@ -56,7 +57,6 @@
                   matInput
                   [ngxTimepicker]="timepickerEnd"
                   [format]="24"
-                  readonly
                   [formControl]="endTimeFormCtrl"
                   [value]="shift.endTime"
                   [(ngModel)]="shift.endTime"
@@ -85,5 +85,3 @@
     </div>
  
 </div>
-<!-- TODO: leave this div -->
-<div class="hover-div" (mouseover)="changeEndTimeOnHover()" (mouseover)="emitShift()" ></div>

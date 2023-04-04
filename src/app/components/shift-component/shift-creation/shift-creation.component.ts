@@ -1,6 +1,7 @@
 import { Time } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';
 import { ShiftInterface } from 'src/app/models/Shift';
 import { Exception } from 'src/app/utils/Exception';
 
@@ -78,6 +79,7 @@ export class ShiftCreationComponent implements OnInit{
     const endHoursString: string = endHours < 10? "0"+ endHours.toString(): endHours.toString()
     const endMinutesString: string = startTime.minutes < 10 ? "0"+ startTime.minutes.toString() : startTime.minutes.toString()
     this.shift.endTime = (endHoursString+':'+endMinutesString);
+    this.emitShift()
   }
 
   emitShift(){
@@ -105,14 +107,20 @@ export class ShiftCreationComponent implements OnInit{
     this.emitShift();
   }
   
-  openFromIconStartTime(timepicker: { open: () => void }) {
+  openFromIconStartTime(timepicker: NgxMaterialTimepickerComponent) {
+    console.log("here open start time")
     if (!this.startTimeFormCtrl.disabled) {
       this.onClearStartTime()
       timepicker.open();
     }
+    timepicker.timeChanged.subscribe((time: string)=>{
+      console.log("time changed")
+      this.shift.startTime = time
+      this.setEndTime()
+    })
   }
 
-  openFromIconEndTime(timepicker: { open: () => void }) {
+  openFromIconEndTime(timepicker: NgxMaterialTimepickerComponent) {
     if (!this.endTimeFormCtrl.disabled) {
       timepicker.open();
     }
