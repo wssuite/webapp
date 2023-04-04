@@ -47,7 +47,9 @@ services:
     ports:
       - 5000
     entrypoint: >
-      bash -c "cd /invoker && /venv/bin/python app.py 192.168.5.6:5000"
+      bash -c "
+      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000
+      && cpulimit --limit=30 -p `pgrep -f app.py`"
     volumes:
       - dataset:/invoker/dataset
       - running-worker1:/invoker/running
@@ -63,7 +65,9 @@ services:
     ports:
       - 5000
     entrypoint: >
-      bash -c "cd /invoker && /venv/bin/python app.py 192.168.5.7:5000"
+      bash -c "
+      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000
+      && cpulimit --limit=30 -p `pgrep -f app.py`"
     volumes:
       - dataset:/invoker/dataset
       - running-worker2:/invoker/running
@@ -79,7 +83,9 @@ services:
     ports:
       - 5000
     entrypoint: >
-      bash -c "cd /invoker && /venv/bin/python app.py 192.168.5.8:5000"
+      bash -c "
+      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000
+      && cpulimit --limit=30 -p `pgrep -f app.py`"
     volumes:
       - dataset:/invoker/dataset
       - running-worker3:/invoker/running
