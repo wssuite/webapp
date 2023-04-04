@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
   FormControl,
   FormGroupDirective,
@@ -31,7 +31,7 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: "./weight.component.html",
   styleUrls: ["./weight.component.css"],
 })
-export class WeightComponent {
+export class WeightComponent implements OnInit{
   @Input() weight!: string;
   @Input() label!: string;
 
@@ -60,15 +60,28 @@ export class WeightComponent {
     this.errorState = new EventEmitter();
   }
 
+  ngOnInit(): void {
+    this.disabled = this.weight === "hard"? true: false;
+    this.update();
+    if(!this.disabled){
+      this.inputCtrl.setValue(this.weight)
+    }
+    this.emitWeight();
+  }
+
   update() {
     this.numberChecks++;
-    if (this.numberChecks % 2 === 0) {
-      this.disabled = false;
-      this.weight = this.localWeight;
-    } else {
-      this.localWeight = this.weight;
-      this.disabled = true;
-      this.weight = "hard";
+    if (!this.disabled) {
+      this.weight = this.localWeight === ""? this.weight: this.localWeight;
+      if(this.weight === "hard"){
+        this.weight = "0";
+      }
+    } 
+    else {
+        if(this.weight !== "hard"){
+          this.localWeight = this.weight;
+        }
+        this.weight = "hard";
     }
     this.inputCtrl = this.updateFormControl(this.disabled);
     this.emitWeight();

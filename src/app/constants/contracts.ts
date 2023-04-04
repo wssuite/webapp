@@ -1,0 +1,1 @@
+export const contractsExample = ["Contract1","Contract2","Contract3","Contract4"];

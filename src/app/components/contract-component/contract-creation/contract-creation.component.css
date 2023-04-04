@@ -1,0 +1,88 @@
+mat-expansion-panel {
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+mat-panel-title{
+    font-weight: bold;
+}
+
+.tool-tip-icon{
+    margin-left: 10px;
+    color: rgb(161, 158, 158);
+}
+
+.contract-container {
+    margin-left: 1vw;
+}
+
+.delete-button {
+    float:right;
+    position: relative;
+    margin-right: 6vw;
+    margin-left: 2vw;
+    transform: scale(1.5);
+}
+
+.constraint-container {
+    flex-direction: row;
+    margin-bottom: 2vh;
+    align-content: space-between;
+    display:inline-flex;
+}
+
+.constraints-container{
+    margin-top: 5vh;
+}
+
+label {
+    margin-right: 1vw;
+    font-size: 20px;
+}
+
+.name-input, .constraint-select{
+    width:30vw;
+}
+
+.add-button {
+    margin-left: 2vw;
+}
+
+mat-expansion-panel {
+    width: 70vw;
+}
+
+.skills-section-header {
+    align-items:baseline;
+    display: inline-flex;
+}
+
+.add-skill-button {
+    margin-left: 1vw;
+}
+.skill-input {
+    margin-right: 1vw;;
+}
+
+.delete-skill-button {
+    margin-left: 1vw;
+}
+
+.constraint-button{
+    margin-right: 1vw;
+    margin-top: 1vh;
+    font-size: 2vh;
+    background-color: #006CC9;
+    color: white
+}
+
+.constraints{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.constraints-section{
+    width: 70vw;
+}
+

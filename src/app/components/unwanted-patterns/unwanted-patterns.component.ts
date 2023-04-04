@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { BASE_VALUE } from 'src/app/constants/constraints';
 import { PatternElement } from 'src/app/models/PatternElement';
 import { UnwantedPatterns } from 'src/app/models/UnwantedPatterns';
 
@@ -28,8 +29,14 @@ export class UnwantedPatternsComponent implements OnInit {
 
   ngOnInit(): void {
     for(let i=0; i < this.constraint.patternElements.length; i++) {
-      this.patternErrors.push(true);
+      if(this.constraint.patternElements[i].days.length === 0){
+        this.patternErrors.push(true);
+      }
+      else{
+        this.patternErrors.push(false);
+      }
     }
+    this.weightErrorState = this.constraint.weight === BASE_VALUE;
   }
 
   addPattern() {

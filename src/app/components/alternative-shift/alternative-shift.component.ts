@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { BASE_VALUE } from 'src/app/constants/constraints';
 import { AlternativeShift } from 'src/app/models/AlternativeShift';
 
 @Component({
@@ -7,7 +8,7 @@ import { AlternativeShift } from 'src/app/models/AlternativeShift';
   templateUrl: './alternative-shift.component.html',
   styleUrls: ['./alternative-shift.component.css']
 })
-export class AlternativeShiftComponent {
+export class AlternativeShiftComponent implements OnInit{
 
   @Input() constraint!: AlternativeShift;
   @Output() constraintChange: EventEmitter<AlternativeShift>;
@@ -17,7 +18,6 @@ export class AlternativeShiftComponent {
   shiftSelectorCtrl: FormControl;
   weightLabel: string;
 
-
   constructor(){
     this.constraintChange = new EventEmitter();
     this.errorState = new EventEmitter();
@@ -25,6 +25,15 @@ export class AlternativeShiftComponent {
     this.shiftSelectorCtrl =new FormControl(null, Validators.required);
     this.weightLabel = "weight";
     
+  }
+
+  ngOnInit(): void {
+    if(!this.possibleShifts.includes(this.constraint.shiftId)){
+      this.constraint.shiftId = "";
+    }
+    this.shiftSelectorCtrl.setValue(this.constraint.shiftId);
+    this.weightErrorState = this.constraint.weight === BASE_VALUE;
+    this.emitConstraint();    
   }
 
   emitConstraint() {

@@ -1,20 +1,8 @@
-<div (mouseleave)="emitElement()">
-    <label> Day name: </label>
-    <mat-form-field appearance="fill">
-        <mat-label> choose a day </mat-label>
-        <mat-select [(value)]="element.dayName" [formControl]="daySelectorFormControl">
-            <mat-option *ngFor="let day of possibleDays" [value]="day">
-                {{day}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+<div (mouseleave)="emitElement()" class="pattern-group">
+    <label> Days: </label>
+    <app-button-multiselect [(elements)]="element.days" [allPossibleElements]="possibleDays" [customSelectors]="customSelectorDays" (selectionChanged)="emitElement()"></app-button-multiselect>
+    <br>
+    <br>
     <label>Shift: </label>
-    <mat-form-field appearance="fill">
-        <mat-label> choose a shift </mat-label>
-        <mat-select [(value)]="element.shiftId" [formControl]="shiftSelectorFormControl">
-            <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
-                {{shift}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+    <app-button-multiselect [(elements)]="element.shifts" [allPossibleElements]="possibleShifts" [customSelectors]="customSelectorShifts" (selectionChanged)="emitElement()"></app-button-multiselect>
 </div>

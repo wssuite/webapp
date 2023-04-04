@@ -1,6 +1,7 @@
 import { Time } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';
 import { ShiftInterface } from 'src/app/models/Shift';
 import { Exception } from 'src/app/utils/Exception';
 
@@ -40,9 +41,10 @@ export class ShiftCreationComponent implements OnInit{
       Validators.required);
     this.startTimeFormCtrl = new FormControl({value: this.shift.startTime, disabled: false},
       Validators.required);
-    this.endTimeFormCtrl = new FormControl({value: this.shift.name, disabled: false},
+    this.endTimeFormCtrl = new FormControl({value: this.shift.endTime, disabled: false},
         Validators.required);
       this.shiftStartName = this.shift.name;
+      this.emitShift()
   }
 
   convertTime(time: string): Time{
@@ -57,7 +59,14 @@ export class ShiftCreationComponent implements OnInit{
 
   }
 
+  changeEndTimeOnHover(){
+    if (this.shift.endTime === undefined || this.shift.endTime === ''){
+      this.setEndTime();
+    }
+  }
+
   setEndTime(){
+    console.log("here")
     if (this.shift.startTime === undefined || this.shift.startTime === '') {
       return;
     }
@@ -67,7 +76,10 @@ export class ShiftCreationComponent implements OnInit{
     if(endHours > 24){
       endHours = endHours - 24
     }
-    this.shift.endTime = (endHours.toString()+':'+startTime.minutes.toString());
+    const endHoursString: string = endHours < 10? "0"+ endHours.toString(): endHours.toString()
+    const endMinutesString: string = startTime.minutes < 10 ? "0"+ startTime.minutes.toString() : startTime.minutes.toString()
+    this.shift.endTime = (endHoursString+':'+endMinutesString);
+    this.emitShift()
   }
 
   emitShift(){
@@ -86,22 +98,29 @@ export class ShiftCreationComponent implements OnInit{
 
 
   onClearStartTime() {
-    this.startTimeFormCtrl.setValue(null);
+    this.startTimeFormCtrl.setValue("");
     this.onClearEndTime()
   }
 
   onClearEndTime() {
-    this.endTimeFormCtrl.setValue(null);
+    this.endTimeFormCtrl.setValue("");
     this.emitShift();
   }
   
-  openFromIconStartTime(timepicker: { open: () => void }) {
+  openFromIconStartTime(timepicker: NgxMaterialTimepickerComponent) {
+    console.log("here open start time")
     if (!this.startTimeFormCtrl.disabled) {
+      this.onClearStartTime()
       timepicker.open();
     }
+    timepicker.timeChanged.subscribe((time: string)=>{
+      console.log("time changed")
+      this.shift.startTime = time
+      this.setEndTime()
+    })
   }
 
-  openFromIconEndTime(timepicker: { open: () => void }) {
+  openFromIconEndTime(timepicker: NgxMaterialTimepickerComponent) {
     if (!this.endTimeFormCtrl.disabled) {
       timepicker.open();
     }

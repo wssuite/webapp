@@ -1,35 +1,51 @@
 .schedule-container{
-    margin-top: 0px auto;
-
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
+
 .schedule-table {
+    display: flex;
     overflow-x: scroll;
-    margin-left: 100px;
-    border: solid;
-    top: 10px;;
-    align-items: flex-start;
-    position:static;
-    float: inline-end;
-    align-content: start;
-
 }
-.employee-names-column{
-    border:solid;
-    width: 100px;
-    top:0%;
-    float:left;
-    margin-right: 1px;
 
+.nurse-name-table {
+    display: flex;
+    width: 150px;
 }
-.schedule-cells {
-    border-right: solid;
+
+.nurse-name-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: 10px;
+    height: 2px;
+}
+
+.date-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: center;
-    width: 200px;
-    margin-top: 10px;
-
+    width: 335px;
+    background-color: #A7C6EA;
 }
-.employee-name-cells {
-    margin-top: 10px;
-    text-align: center;
-    border-top: solid;
+
+.nurse-name-cell {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: rgb(235, 234, 234);
+}
+
+.checkbox-row {
+    height: 60px;
+    background-color: rgb(235, 234, 234);
+}
+
+.checkbox-cell{
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.nurse-name-row{
+    height: 50px
 }

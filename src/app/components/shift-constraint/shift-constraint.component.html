@@ -4,7 +4,7 @@
         <label> Shift: </label>
         <mat-form-field appearance="fill">
             <mat-label>choose a shift </mat-label>
-            <mat-select [(value)]="constraint.shiftId" [formControl]="selectFormCtrl">
+            <mat-select [(value)]="constraint.shiftId" [formControl]="selectFormCtrl" (selectionChange)="emitConstraint()">
                 <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
                     {{shift}}
                 </mat-option>

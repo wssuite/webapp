@@ -1,4 +1,5 @@
 <div class="weight-container">
+  <mat-icon *ngIf="inputCtrl.hasError('pattern')" color="warn">error</mat-icon>
   <label> {{ label }} : </label>
   <mat-form-field appearance="fill">
     <mat-label>Enter the weight</mat-label>
@@ -21,7 +22,7 @@
     </mat-error>
   </mat-form-field>
   <br />
-  <mat-checkbox (change)="update()"
+  <mat-checkbox [(ngModel)]="disabled" (change)="update()"
     >Constraint must be respected (hard)</mat-checkbox
   >
 </div>

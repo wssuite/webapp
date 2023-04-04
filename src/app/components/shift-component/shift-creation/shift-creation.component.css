@@ -1,61 +1,60 @@
-
-.title {
-    color: black;
-    background-color: lightgray;
-    text-align: left;
-    font-size: 50px;
-    height: 10%;
-    padding: 1%;
-}
-
-
 .name-section{
-    background-color: gray;
+    background-color:#EEEEEE;
     padding: 2%;
-    font-size: 25px;
+    font-size: 18px;
     border-radius: 30px;
-    margin-top: 2%;
+    margin-top: 5%;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 .nameForm{
-    padding-top: 2%;
-    background-color: white;
+    background-color: #EEEEEE;
     border-radius: 10px;
     margin-top: 1%;
     display: grid;
 }
 
 .duration-section{
-    background-color: gray;
-    padding: 2%;
-    font-size: 25px;
+    background-color: #EEEEEE;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 18px;
+    padding-bottom: 2%;
     border-radius: 30px;
-    margin-top: 2%;
+    margin-top: 8%;
+    margin-left: 2%;
+    margin-right: 2%;
     text-align: left;
-    display: grid;
-    grid-gap: 1px;
 }
     
 .startTime-section{
-    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #EEEEEE;
+    width: 35%;
     border-radius: 8px;
     margin-top: 2%;
-    color: black;
-    display: grid;
 }
 
 .endTime-section{
-    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #EEEEEE;
+    width: 35%;
     border-radius: 8px;
     margin-top: 2%;
-    color: black;
-    display: grid;
 }
 
 
 .label{
     text-align: center;
     padding: 2%;
+    font-weight: bold;
+    font-size: larger;
 }
 
 button {
@@ -64,6 +63,9 @@ button {
     float: right;
 }
 
-
-
-
+.hover-div{
+    display: block;
+    margin-bottom: 0%;
+    width:100%;
+    height: 100px;
+}

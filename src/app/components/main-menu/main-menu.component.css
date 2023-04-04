@@ -1,12 +1,12 @@
 .main-menu-page-buttons-container{
   width: 75vw;
   margin-left: 20vw;
-  margin-top: 3vh;
+  margin-top: 15vh;
 }
 
 button {
   margin: 1vw;
-  height: 27vh;
+  height: 200px;
   width: 30vw;
   background-color: white;
   border-color: transparent;
@@ -15,9 +15,9 @@ button {
 }
 
 img {
-  margin-left: 55px;
-  width: 13vh;
-  height: 6vw;
+  margin-left: 30px;
+  height: max-content;
+  width: 100px;
 }
 
 .start-buttons {
@@ -25,12 +25,14 @@ img {
   float: left;
 }
 
-.end-buttons {
+/* .end-buttons {
   align-items: flex-end;
   float: left;
-}
+} */
 
 h1{
+  position: relative;
+  font-size: 130%;
   font-weight: bolder;
 }
 
@@ -45,5 +47,5 @@ span{
   text-align:left;
   padding-left: 50px;
   padding-right: 10px;
-  font-size: 20px;
+  font-size: 15px;
 }

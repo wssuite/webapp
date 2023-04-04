@@ -1,18 +1,11 @@
 
 button {
-    height: max-content;
-    width: 400px;
-    height: 200px;
+    width: 25%;
+    height: 400px;
   }
 
 
-.side-bar{
-    background-color: lightgray;
-    height: 600px;
-    width: 400px;
-    margin-top: 5vw;
-    margin-left: 5vw;
-    margin-bottom: 2vh;
-    border: solid black;
-    border-radius: 10px;
+.example-button-row{
+  background-color: white;
+  padding-top: 30px;
 }

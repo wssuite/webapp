@@ -3,9 +3,11 @@
     justify-items: flex-start;
     display: flex;
 }
+
 img{
-    height: 80vh;
-    margin-left: 5vw;
+    height: 60vh;
+    margin-left: 20vw;
+    margin-top: 5vh;
 }
 
 .loginFormContainer{
@@ -13,6 +15,7 @@ img{
     margin: auto;
     float: inline-end;
 }
+
 label{
     margin-right: 1vw;
     font-size: large;
@@ -23,7 +26,26 @@ mat-form-field{
 }
 
 button{
-    margin-right: 5vw;
-    margin-left: 5vw;
-    width:auto;
+    width: 13vw;
+    padding: 2vw;
+    font-size: 2vh;
+}
+
+.header {
+    background-color: #255792; 
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+span {
+    margin-left: 6vw;
+    font-size: larger;
+}
+
+h1{
+    margin-left: 1vw;
+    color: white;
+    font-size: 180%;
 }

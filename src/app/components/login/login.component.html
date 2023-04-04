@@ -1,7 +1,8 @@
+<div class="header">
+    <span><h1>Nurse scheduler</h1></span>
+</div>
 <div class="loginContainer">
-    <div class="background">
-        <img src="../../../assets/background.png">
-    </div>
+    <img src="../../../assets/background.png">
     <div class="loginFormContainer">
         <label>Username: </label>
         <mat-form-field
@@ -30,7 +31,7 @@
         />
         </mat-form-field>
         <br>
-        <button mat-raised-button [disabled]="hasError()" class="loginButton" (click)="login()">
+        <button mat-raised-button color="primary" [disabled]="hasError()" (click)="login()">
             LOG IN
         </button>
     </div>    

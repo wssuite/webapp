@@ -1,0 +1,26 @@
+.dialog-container {
+    width: 80vw;
+    height: 90vh;
+}
+.buttons-container {
+    margin-top: 2vh;
+    float:right;
+    position: absolute;
+    right:0px;
+    bottom: 0px;
+}
+
+.contract-container{
+    margin-top: 5vh;
+    margin-bottom: 1vh;
+    border-width: 10px;
+    border-color: black;
+    overflow-y: scroll;
+    height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+button {
+    margin-right: 2vw;
+}

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { SHIFT, SHIFT_GROUP, SHIFT_TYPE } from 'src/app/constants/app-routes';
-import { SHIFT_MENU_BUTTONS } from 'src/app/constants/shiftButton';
+import { SHIFT, SHIFT_GROUP, SHIFT_TYPE, SKILL } from 'src/app/constants/app-routes';
+
   
 
 @Component({
@@ -11,10 +11,9 @@ import { SHIFT_MENU_BUTTONS } from 'src/app/constants/shiftButton';
   styleUrls: ['./sidenav-shift.component.css']
 })
 export class SidenavShiftComponent {
-  buttons: string[]
+
 
   constructor(public dialog: MatDialog, private router: Router) {
-    this.buttons = SHIFT_MENU_BUTTONS;
   }
 
 
@@ -28,6 +27,9 @@ export class SidenavShiftComponent {
           break;
         case "Shift Group":
             this.router.navigate(["/" + SHIFT_GROUP]);
+            break;
+        case "Skill":
+            this.router.navigate(["/" + SKILL]);
             break;
         default:
           break;

@@ -1,55 +1,16 @@
-<div class="title" mat-dialog-title>Shift Type</div>
-<div class="content"  mat-dialog-content>
-    <div class="nameShiftContainer">
-    <label>Shift type name </label>
-    <mat-form-field class = "nameForm" [formGroup]="inputControlForm">
-      <mat-label>Enter shift type name</mat-label>
-      <input id="input"
-        matInput
-        placeholder="Name"
-        formControlName="name"
-        [(ngModel)]="data.name"
-      />
-    </mat-form-field>
+    <div class="title" mat-dialog-title>Shift Type</div>
+    <div class="dialog-container">
+        <div class="shiftType-container">
+            <app-shift-type-creation *ngIf="shiftsLoaded"
+            [(shiftType)]="data.shiftType" [shiftsType]="data.shiftsType" [possibleShifts]="possibleShifts" [selectedShift]="possibleShifts[0]"  (errorState)="updateShiftTypeErrorState($event)"></app-shift-type-creation>
+        </div>
+        <div mat-dialog-action class="buttons-container">
+            <button [disabled]="shiftTypeErrorState"  mat-raised-button color="primary" (click)="add()">
+                Submit
+            </button>
+            <button  mat-raised-button color="warn" [mat-dialog-close]="true">
+                Cancel
+            </button>
+            
+        </div>
     </div>
-</div>
-<div class="shiftSection">
-  <H1 class="shiftSectionTitle">Shifts</H1>
-  <div *ngIf="possibleShifts.length > 0">
-    <mat-form-field appearance="fill">
-      <mat-label>Select a shift</mat-label>
-      <mat-select [(value)]="selectedShift">
-        <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
-          {{ shift}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button class="addShiftButton" (click)="addShift()">
-      add Shift
-    </button>
-  </div>
-  <table class="shiftTable">
-    <tr *ngFor="let shift of shifts">
-      <td class="shiftName">
-        <mat-chip>{{ shift }}</mat-chip>
-      </td>
-      <button
-        mat-raised-button
-        class="removeShiftButton"
-        (click)="removeShift(shift)"
-        color="accent"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    </tr>
-  </table>
-</div>
-
-<div mat-dialog-action class="buttons-container">
-    <button  mat-raised-button color="primary" (click)="add()">
-        Add
-    </button>
-    <button mat-raised-button color="warn" [mat-dialog-close]="true">
-        Cancel
-    </button>
-

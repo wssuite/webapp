@@ -1,9 +1,9 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ShiftTypeInterface } from 'src/app/models/Shift';
-import { APIService } from 'src/app/services/api-service/api.service';
+import { ShiftTypeService } from 'src/app/services/shift/shift-type.service';
+import { ShiftService } from 'src/app/services/shift/shift.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
@@ -12,35 +12,34 @@ import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-me
   templateUrl: './shift-type-creation-dialog.component.html',
   styleUrls: ['./shift-type-creation-dialog.component.css']
 })
-export class ShiftTypeCreationDialogComponent implements OnInit {
-  possibleShifts: string[];
-  selectedShift: string;
-  shifts: string[];
-
-
-
-  inputControlForm = new FormGroup({
-    name: new FormControl(null, Validators.required),
-  });
+export class ShiftTypeCreationDialogComponent implements OnInit{
+  @Output() errorState: EventEmitter<boolean> | undefined;
+  shiftTypeErrorState: boolean;
+  initShiftTypeName: string;
+  possibleShifts!: string[];
+  shiftsLoaded: boolean;
+  
 
   constructor(public dialogRef: MatDialogRef<ShiftTypeCreationDialogComponent >,
-    @Inject(MAT_DIALOG_DATA) public data: ShiftTypeInterface,
-    private api: APIService,
+    @Inject(MAT_DIALOG_DATA) public data:  {shiftType: ShiftTypeInterface, shiftsType: string[]},
+    private api: ShiftTypeService, private shiftService: ShiftService,
     private dialog: MatDialog,  
 ) {
-    this.possibleShifts = [];
-    this.selectedShift = this.possibleShifts[0];
-    this.shifts = [];
-    this.possibleShifts = []
+  this.errorState = new EventEmitter();
+  this.shiftTypeErrorState = true;
+  this.initShiftTypeName = data.shiftType.name;
+  this.shiftsLoaded = false;
       
 }
   ngOnInit(): void {
+    this.possibleShifts = [];
     try{
-      this.api.getShiftNames().subscribe({
+      this.shiftService.getShiftNames().subscribe({
         next: (shifts: string[])=>{
           shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
           })
+          this.shiftsLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -52,52 +51,39 @@ export class ShiftTypeCreationDialogComponent implements OnInit {
 
   }
 
-
-
-addShift() {
-  const index = this.possibleShifts.indexOf(this.selectedShift);
-  if (index > -1) {
-    this.possibleShifts.splice(index, 1);
-  }
-  this.shifts.push(this.selectedShift);
-  this.data.shifts.push(this.selectedShift);
-  if (this.possibleShifts.length > 0) {
-    this.selectedShift = this.possibleShifts[0];
-  }
-}
-
-removeShift(shift: string) {
-  const index = this.shifts.indexOf(shift);
-  if (index > -1) {
-    this.shifts.splice(index, 1);
-  }
-  if (shift !== undefined && shift !== null) {
-    this.possibleShifts.push(shift);
-  }
-}
-
-
-add() {
-  try
-  { 
-    //call api service to push the contract
-    
-    this.api.addShiftType(this.data).subscribe({
-      error: (err: HttpErrorResponse)=> {
-        if(err.status === HttpStatusCode.Ok) {
-          this.close();
-        }
-        else{
-          this.openErrorDialog(err.error)
-        }
+  add() {
+    try
+    { 
+      console.log(this.data.shiftType);
+      if(this.initShiftTypeName === ""){
+        this.api.addShiftType(this.data.shiftType).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          } 
+        })
+      }
+      else {
+        this.api.updateShiftType(this.data.shiftType).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.close();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          }
+        })
       } 
-    })
+    }
+    catch(e){
+      this.openErrorDialog((e as Exception).getMessage())
+    }
   }
-  catch(e){
-    console.log("error")
-    this.openErrorDialog((e as Exception).getMessage())
-  }
-}
 
 
 openErrorDialog(message: string) {
@@ -109,6 +95,11 @@ openErrorDialog(message: string) {
 close(){
   this.dialogRef.close();
 
+}
+
+updateShiftTypeErrorState(e: boolean) {
+  console.log("update")
+  this.shiftTypeErrorState = e;
 }
 
 }

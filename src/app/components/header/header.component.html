@@ -1,21 +1,67 @@
-<div class="header-container">
-    <div class="end-buttons">
-        <button mat-icon-button>
-            <mat-icon>notifications</mat-icon>
+<div *ngIf="validProfile" class="header-container">
+    <div class="navigation-container">
+        <button mat-icon-button [matMenuTriggerFor]="navigationMenu">
+            <mat-icon class="menu-icon">menu</mat-icon>
         </button>
-        <button class="user-icon" mat-icon-button [matMenuTriggerFor]="menu">
-            <img src="../../../assets/user.png">
-        </button>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="logout()">
-                <mat-icon>logout</mat-icon>
-                <span>logout</span>
-            </button>
-            <button *ngIf="isAdmin" mat-menu-item (click)="goToCreateAccount()">
-                <img class="add-user" src="../../assets/add-user.png">
-                <span> Create new user</span>
-            </button>
+        <mat-menu #navigationMenu="matMenu">
+            <button mat-menu-item routerLink="/schedules"><span>Schedule</span></button>
+            <button mat-menu-item routerLink="/contracts"><span>Contracts</span></button>
+            <button mat-menu-item routerLink="/nurse"><span>Nurse</span></button>
+            <button mat-menu-item routerLink="/shift"><span>Shift</span></button>
         </mat-menu>
-        
+        <span><h1 routerLink="/main-menu">Nurse scheduler</h1></span>
     </div>
+    <div class="profile-container" *ngIf='showProfile'>
+        <!-- <label class="profile-label">Profile: </label> -->
+        <mat-form-field class="profile-dropdown" appearance="fill">
+            <mat-label>Hospital Profile</mat-label>
+            <mat-select  [(value)]="profile" (selectionChange)="handleSelectionChange()">
+                <mat-option *ngFor="let profile of profiles" [value]="profile">
+                    {{profile.profile}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-icon-button [matMenuTriggerFor]="profileMenu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+          <mat-menu #profileMenu="matMenu">
+              <button mat-menu-item (click)="duplicate()"><mat-icon>file_copy</mat-icon><span>Duplicate</span></button>
+              <button mat-menu-item *ngIf="profile.creator === username" (click)="deleteProfile()"><mat-icon>delete</mat-icon><span>Remove</span></button>
+              <button mat-menu-item (click)="share()"><mat-icon>share</mat-icon><span>Share</span></button>
+              <button mat-menu-item (click)="export()"><mat-icon>cloud_download</mat-icon><span>Export</span></button>
+              <button mat-menu-item (click)="openCreateProfileDialog(true)">
+                <mat-icon>library_add</mat-icon>
+                <span> Create new profile</span>
+            </button>
+          </mat-menu>
+    </div>
+    <div class="end-buttons">
+        <div class="icon-box">
+            <button mat-icon-button [matMenuTriggerFor]="notificationsMenu" class="bell-icon" (click)="updateNewNotificationState()">
+                <mat-icon *ngIf="newNotificationAdded; else noNotification">notifications_active</mat-icon>
+                <ng-template #noNotification>
+                    <mat-icon>notifications</mat-icon>
+                </ng-template>
+            </button>
+            <mat-menu #notificationsMenu="matMenu">
+                <button mat-menu-item *ngFor="let sol of notifications" (click)="viewSchedule(sol)">The schedule {{sol.startDate}}-{{sol.endDate}}-v{{sol.version}} is {{sol.state}}</button>
+            </mat-menu>
+        </div>
+        <div class="icon-box">
+            <button class="user-icon" mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>account_circle</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" class="account-dropdown">
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+                <button *ngIf="isAdmin" mat-menu-item (click)="goToCreateAccount()">
+                    <mat-icon>person_add</mat-icon>
+                    <span> Create new user</span>
+                </button>
+            </mat-menu>
+        </div>    
+    </div>
+    <!--<ng-template #elseBlock></ng-template>-->
 </div>

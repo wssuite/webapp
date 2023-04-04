@@ -1,1 +1,46 @@
-<p>shift-type-creation works!</p>
+<div class="shiftType-container" (mouseleave)="emitShiftType()"></div>
+<div class="content"  mat-dialog-content>
+    <div class="nameShiftTypeContainer">
+      <h2>Shift type name </h2>
+      <hr>
+      <mat-form-field class = "nameForm" appearance="fill">
+        <mat-label>Enter shift type name</mat-label>
+        <input matInput [(ngModel)]="shiftType.name" [formControl]="nameShiftTypeFormCtrl" (keyup)="emitShiftType()">
+      </mat-form-field>
+    </div>
+    <div class="shifts-Section">
+      <h2 class="shiftSectionTitle">Shifts</h2>
+      <hr>
+      <div *ngIf="possibleShifts.length > 0">
+        <mat-form-field appearance="fill">
+          <mat-label>Select a shift</mat-label>
+          <mat-select [(value)]="selectedShift" (selectionChange)="emitShiftType()">
+            <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
+                {{shift}}
+            </mat-option>
+        </mat-select>
+        </mat-form-field>
+        <button mat-raised-button class="addShiftButton flex-row-center-container" (click)="addShift()">
+          add Shift
+        </button>
+      </div>
+      <table class="shiftTable">
+        <tr *ngFor="let shift of shiftType.shifts">
+          <div class="table-element-container flex-row-center-container">
+            <td class="shiftName">
+              {{ shift }}
+            </td>
+            <button
+              mat-icon-button
+              (click)="removeShift(shift)"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+         
+        </tr>
+      </table>
+    </div>
+</div>
+
+

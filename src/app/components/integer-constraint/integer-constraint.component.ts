@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { BASE_VALUE } from "src/app/constants/constraints";
 import { IntegerConstraint } from "src/app/models/IntegerConstraint";
 
 @Component({
@@ -6,7 +7,7 @@ import { IntegerConstraint } from "src/app/models/IntegerConstraint";
   templateUrl: "./integer-constraint.component.html",
   styleUrls: ["./integer-constraint.component.css"],
 })
-export class IntegerConstraintComponent {
+export class IntegerConstraintComponent implements OnInit{
   @Input() constraint!: IntegerConstraint;
   @Output() constraintChange: EventEmitter<IntegerConstraint>;
   @Output() errorState: EventEmitter<boolean>;
@@ -26,6 +27,11 @@ export class IntegerConstraintComponent {
 
     this.weightErrorState = true;
     this.weightLabel = "weight";
+  }
+
+  ngOnInit(): void {
+    this.weightErrorState = this.constraint.weight === BASE_VALUE;
+    this.emitConstraint();
   }
 
   emitConstraint() {

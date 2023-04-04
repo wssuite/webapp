@@ -1,0 +1,76 @@
+<div *ngIf="connectedUser; else elseBlock">
+    <app-header></app-header>
+    <div *ngIf="this.schedules.length > 0; else noSchedules">
+        <div class="generateScheduleButtonContainer">
+            <button mat-raised-button class="buttonCreate" color="nurse-blue"  (click)="generateNewSchedule()">Generate new schedule</button>
+        </div>
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="CreationDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Creation Date </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.timestamp}} </td>
+                </ng-container>
+                <ng-container matColumnDef="startDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.startDate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="endDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.endDate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="versionNumber">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Version number </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.version}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="state">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+                    <td mat-cell *matCellDef="let schedule"> {{schedule.state}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions" justify="end">
+                    <th mat-header-cell *matHeaderCellDef aria-label="row actions"> Actions &nbsp;</th>
+                    <td mat-cell *matCellDef="let schedule">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                        <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="viewSchedule(schedule)">
+                            <mat-icon>visibility</mat-icon>
+                            <span>View Schedule</span>
+                        </button>
+                        <button mat-menu-item (click)="exportProblem(schedule)">
+                            <mat-icon>download</mat-icon>
+                            <span>Download Problem</span>
+                        </button>
+                        <button mat-menu-item (click)="removeSolution(schedule)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete Solution</span>
+                        </button>
+                        </mat-menu>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row
+                *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+                <!-- Row shown when there is no matching data. 
+                <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                </tr> -->
+            </table>
+            <mat-paginator #paginator pageSize="5" aria-label="Select page of users" [length]="this.schedules.length"></mat-paginator>
+        </div>
+    </div>
+    <ng-template #noSchedules>
+        <div class="button-container">
+            <button mat-raised-button class="buttonCreate" color="primary"  (click)="generateNewSchedule()">Generate new schedule</button>
+          </div>
+    </ng-template>
+</div>
+<ng-template #elseBlock>
+    <app-not-connected></app-not-connected>
+  </ng-template>

@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, EventEmitter, Inject, Output} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ShiftInterface } from 'src/app/models/Shift';
-import { APIService } from 'src/app/services/api-service/api.service';
+import { ShiftService } from 'src/app/services/shift/shift.service';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 
@@ -18,7 +18,7 @@ export class ShiftCreationDialogComponent{
   initShiftName: string;
   constructor(public dialogRef: MatDialogRef<ShiftCreationDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: {shift: ShiftInterface, shifts: string[]},  
-    private api: APIService,
+    private api: ShiftService,
     private dialog: MatDialog,                                       
     ) { 
       this.errorState = new EventEmitter();
@@ -30,34 +30,34 @@ add() {
   try
   { 
     console.log(this.data.shift);
-    if(this.initShiftName == ""){
-    this.api.addShift(this.data.shift).subscribe({
-      error: (err: HttpErrorResponse)=> {
-        if(err.status === HttpStatusCode.Ok) {
-          this.close();
+    if(this.initShiftName === ""){
+      this.api.addShift(this.data.shift).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }
+          else{
+            this.openErrorDialog(err.error)
+          }
+        } 
+      })
+    }
+    else {
+      this.api.updateShift(this.data.shift).subscribe({
+        error: (err: HttpErrorResponse)=> {
+          if(err.status === HttpStatusCode.Ok) {
+            this.close();
+          }
+          else{
+            this.openErrorDialog(err.error)
+          }
         }
-        else{
-          this.openErrorDialog(err.error)
-        }
-      } 
-    })
+      })
+    } 
   }
-  else {
-    this.api.updateShift(this.data.shift).subscribe({
-      error: (err: HttpErrorResponse)=> {
-        if(err.status === HttpStatusCode.Ok) {
-          this.close();
-        }
-        else{
-          this.openErrorDialog(err.error)
-        }
-      }
-    })
-  } 
-}
-catch(e){
-  this.openErrorDialog((e as Exception).getMessage())
-}
+  catch(e){
+    this.openErrorDialog((e as Exception).getMessage())
+  }
 }
 
 openErrorDialog(message: string) {
