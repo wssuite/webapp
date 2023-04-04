@@ -77,13 +77,14 @@ class ScheduleHandler(BaseHandler):
         instance_txt = os.path.join(instance_path, "sol.txt")
         with open(instance_txt, "w") as f2:
             f2.write(detailed_demand.to_string())
-
+        time = datetime.datetime.now().astimezone()
+        time_str = str(time).split(".")[0]
         solution_json = {
             start_date: demand.start_date,
             end_date: demand.end_date,
             profile: demand.profile,
             version: str(next_version),
-            timestamp: str(datetime.datetime.now()),
+            timestamp: time_str,
         }
         """This will be the case of a schedule regeneration"""
         if v is not None:
