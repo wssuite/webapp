@@ -1,0 +1,4 @@
+{
+  "mongo_address": "localhost",
+  "haproxy_address": "localhost"
+}
