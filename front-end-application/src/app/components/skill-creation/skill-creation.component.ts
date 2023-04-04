@@ -29,8 +29,10 @@ export class SkillCreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.skill.name = this.skill.name.replace(/[^a-zA-Z0-9]/, '')
     this.inputDisabled = this.skill.name === ""? false: true;
     this.skillStartName = this.skill.name;
+    console.log(this.skill.name)
     this.nameSkillFormCtrl = new FormControl({value: this.skill.name, disabled: this.inputDisabled},
       Validators.required);
     this.emitSkill()

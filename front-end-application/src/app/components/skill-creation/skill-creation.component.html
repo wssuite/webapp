@@ -7,6 +7,6 @@
         <mat-label>Enter skill name</mat-label>
         <input matInput [(ngModel)]="skill.name" [formControl]="nameSkillFormCtrl" (keyup)="emitSkill()">
       </mat-form-field>
-      <mat-error *ngIf="nameExist()">Skill name is already used</mat-error>
+      <mat-error *ngIf="nameExist() && skillStartName === ''">Skill name is already used</mat-error>
     </div>
   </div>
