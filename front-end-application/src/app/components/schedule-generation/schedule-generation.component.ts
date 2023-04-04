@@ -190,6 +190,7 @@ export class ScheduleGenerationComponent implements OnInit {
     }
     if (nurse !== undefined && nurse !== null) {
       this.possibleNurses.push(nurse);
+      this.selectedNurse = this.possibleNurses[0]
     }
   }
 
@@ -212,6 +213,7 @@ export class ScheduleGenerationComponent implements OnInit {
     }
     if (shift !== undefined && shift !== null) {
       this.possibleShifts.push(shift);
+      this.selectedShift = this.possibleShifts[0];
     }
   }
 
@@ -234,6 +236,7 @@ export class ScheduleGenerationComponent implements OnInit {
       this.skills = [...this.skills];
     if (skill !== undefined && skill !== null) {
       this.possibleSkills.push(skill);
+      this.selectedSkill = this.possibleSkills[0];
     }
   }
 }
