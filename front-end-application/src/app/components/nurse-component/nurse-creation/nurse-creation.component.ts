@@ -146,13 +146,14 @@ export class NurseCreationComponent implements OnInit {
   }
 
   usernameExist(): boolean {
+    const temp = [...this.nurses]
     if(this.imported){
-      const index = this.nurses.indexOf(this.nurse.username)
+      const index = temp.indexOf(this.nurse.username)
       if(index > -1){
-        this.nurses.splice(index, 1)
+        temp.splice(index, 1)
       }
     }
-    return this.nurses.includes(this.nurse.username);
+    return temp.includes(this.nurse.username);
   }
 
   setUsername(){

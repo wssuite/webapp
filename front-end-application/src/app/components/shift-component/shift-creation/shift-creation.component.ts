@@ -94,13 +94,14 @@ export class ShiftCreationComponent implements OnInit{
   }
 
   nameExist(): boolean {
+    const temp = [...this.shifts]
     if(this.imported){
-      const index = this.shifts.indexOf(this.shift.name)
+      const index = temp.indexOf(this.shift.name)
       if(index > -1){
-        this.shifts.splice(index, 1)
+        temp.splice(index, 1)
       }
     }
-    return this.shifts.includes(this.shift.name);
+    return temp.includes(this.shift.name);
   }
 
 

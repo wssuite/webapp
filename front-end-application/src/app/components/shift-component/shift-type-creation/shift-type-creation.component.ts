@@ -90,13 +90,14 @@ export class ShiftTypeCreationComponent implements OnInit {
   }
 
   nameExist(): boolean {
+    const temp = [...this.shiftsType]
     if(this.imported){
-      const index = this.shiftsType.indexOf(this.shiftType.name)
+      const index = temp.indexOf(this.shiftType.name)
       if(index > -1){
-        this.shiftsType.splice(index, 1);
+        temp.splice(index, 1);
       }
     }
-    return this.shiftsType.includes(this.shiftType.name);
+    return temp.includes(this.shiftType.name);
   }
 
 }

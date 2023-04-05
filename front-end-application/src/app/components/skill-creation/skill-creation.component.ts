@@ -52,13 +52,14 @@ export class SkillCreationComponent implements OnInit {
   }
 
   nameExist(): boolean {
+    const temp = [...this.skills]
     if(this.imported){
-      const index = this.skills.indexOf(this.skill.name)
+      const index = temp.indexOf(this.skill.name)
       if(index > -1){
-        this.skills.splice(index, 1);
+        temp.splice(index, 1);
       }
     }
-    return this.skills.includes(this.skill.name);
+    return temp.includes(this.skill.name);
   }
 
 

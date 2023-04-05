@@ -93,13 +93,14 @@ export class ContractGroupCreationComponent implements OnInit {
   }
 
   nameExist(): boolean {
+    const temp = [...this.contractGroups];
     if(this.imported){
-      const index = this.contractGroups.indexOf(this.contractGroup.name)
+      const index = temp.indexOf(this.contractGroup.name)
       if(index > -1){
-        this.contractGroups.splice(index, -1)
+        temp.splice(index, -1)
       }
     }
-    return this.contractGroups.includes(this.contractGroup.name);
+    return temp.includes(this.contractGroup.name);
   }
 
 }

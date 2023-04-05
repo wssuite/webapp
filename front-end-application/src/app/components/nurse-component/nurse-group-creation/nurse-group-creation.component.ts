@@ -189,13 +189,14 @@ export class NurseGroupCreationComponent implements OnInit {
   }
 
   nameExist(): boolean {
+    const temp = [...this.nurseGroups]
     if(this.imported){
-      const index = this.nurseGroups.indexOf(this.nurseGroup.name)
+      const index = temp.indexOf(this.nurseGroup.name)
       if(index > -1){
-        this.nurseGroups.splice(index, 1)
+        temp.splice(index, 1)
       }
     }
-    return this.nurseGroups.includes(this.nurseGroup.name);
+    return temp.includes(this.nurseGroup.name);
   }
 
 }

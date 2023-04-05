@@ -153,13 +153,14 @@ export class ContractCreationComponent implements OnInit{
   }
 
   nameExist(): boolean {
+    const temp = [...this.contracts]
     if(this.imported){
-      const index = this.contracts.indexOf(this.contract.name)
+      const index = temp.indexOf(this.contract.name)
       if(index > -1){
-        this.contracts.splice(index ,1)
+        temp.splice(index ,1)
       }
     }
-    return this.contracts.includes(this.contract.name);
+    return temp.includes(this.contract.name);
   }
 
   constraintHasErrorState(index:number){

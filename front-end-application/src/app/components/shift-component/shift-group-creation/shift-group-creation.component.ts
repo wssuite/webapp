@@ -130,13 +130,14 @@ export class ShiftGroupCreationComponent implements OnInit{
   }
 
   nameExist(): boolean {
+    const temp = [...this.shiftsGroup]
     if(this.imported){
-      const index = this.shiftsGroup.indexOf(this.shiftGroup.name)
+      const index = temp.indexOf(this.shiftGroup.name)
       if(index > -1){
-        this.shiftsGroup.splice(index, 1)
+        temp.splice(index, 1)
       }
     }
-    return this.shiftsGroup.includes(this.shiftGroup.name);
+    return temp.includes(this.shiftGroup.name);
   }
 
 }
