@@ -14,6 +14,7 @@ export class ShiftTypeCreationComponent implements OnInit {
   @Input() possibleShifts!: string[];
   @Input() selectedShift!: string;
   @Input() shiftsType!: string[]
+  @Input() imported: boolean;
 
   nameShiftTypeFormCtrl: FormControl;
   shiftTypeSelectorError: boolean;
@@ -24,14 +25,14 @@ export class ShiftTypeCreationComponent implements OnInit {
   constructor(){
     this.shiftTypeChange = new EventEmitter();
     this.errorState = new EventEmitter();
- 
+    this.imported = false;
     this.nameShiftTypeFormCtrl = new FormControl(null, Validators.required);
     this.shiftTypeSelectorError = true;
     this.inputDisabled = false; 
   }
 
   ngOnInit(): void {
-    this.inputDisabled = this.shiftType.name === ""? false: true;
+    this.inputDisabled = this.shiftType.name === "" || this.imported? false: true;
     this.nameShiftTypeFormCtrl = new FormControl({value: this.shiftType.name, disabled: this.inputDisabled},
       Validators.required);
     this.shiftTypeStartName = this.shiftType.name;
@@ -89,6 +90,12 @@ export class ShiftTypeCreationComponent implements OnInit {
   }
 
   nameExist(): boolean {
+    if(this.imported){
+      const index = this.shiftsType.indexOf(this.shiftType.name)
+      if(index > -1){
+        this.shiftsType.splice(index, 1);
+      }
+    }
     return this.shiftsType.includes(this.shiftType.name);
   }
 

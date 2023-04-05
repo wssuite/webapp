@@ -16,6 +16,7 @@ export class ShiftGroupCreationComponent implements OnInit{
   @Input() possibleShiftsType!: string[];
   @Input() selectedShiftType!: string;
   @Input() shiftsGroup!: string[]
+  @Input() imported: boolean;
 
   nameShiftGroupFormCtrl: FormControl;
   shiftGroupSelectorError: boolean;
@@ -27,14 +28,14 @@ export class ShiftGroupCreationComponent implements OnInit{
   constructor(){
     this.shiftGroupChange = new EventEmitter();
     this.errorState = new EventEmitter();
- 
+    this.imported = false
     this.nameShiftGroupFormCtrl = new FormControl(null, Validators.required);
     this.shiftGroupSelectorError = true;
     this.inputDisabled = false;  
   }
 
   ngOnInit(): void {
-    this.inputDisabled = this.shiftGroup.name === ""? false: true;
+    this.inputDisabled = this.shiftGroup.name === "" || this.imported? false: true;
     this.nameShiftGroupFormCtrl = new FormControl({value: this.shiftGroup.name, disabled: this.inputDisabled},
       Validators.required);
     this.shiftGroupStartName = this.shiftGroup.name;
@@ -124,11 +125,17 @@ export class ShiftGroupCreationComponent implements OnInit{
 
   emitErrorState() {
     this.errorState.emit(this.nameShiftGroupFormCtrl.hasError('required') ||
-     (this.nameExist() && this.shiftGroupStartName === '') ||(this.shiftGroup.shifts.length === 0 && this.shiftGroup.shiftTypes.length === 0));
+     (this.nameExist() && this.shiftGroupStartName === '') ||(this.shiftGroup.shifts.length === 0 && this.shiftGroup.shiftTypes.length === 0 && this.shiftGroup.name !== "Rest"));
     console.log("error");
   }
 
   nameExist(): boolean {
+    if(this.imported){
+      const index = this.shiftsGroup.indexOf(this.shiftGroup.name)
+      if(index > -1){
+        this.shiftsGroup.splice(index, 1)
+      }
+    }
     return this.shiftsGroup.includes(this.shiftGroup.name);
   }
 

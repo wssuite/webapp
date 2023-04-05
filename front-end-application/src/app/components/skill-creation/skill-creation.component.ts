@@ -12,6 +12,7 @@ export class SkillCreationComponent implements OnInit {
   @Output() skillChange: EventEmitter<SkillInterface>;
   @Output() errorState: EventEmitter<boolean>;
   @Input() skills!: string[]
+  @Input() imported: boolean;
 
 
   nameSkillFormCtrl: FormControl;
@@ -22,7 +23,7 @@ export class SkillCreationComponent implements OnInit {
   constructor(){
     this.skillChange = new EventEmitter();
     this.errorState = new EventEmitter();
- 
+    this.imported = false;
     this.nameSkillFormCtrl = new FormControl(null, Validators.required);
     this.inputDisabled = false;
     //this.skillStartName = ;
@@ -30,7 +31,7 @@ export class SkillCreationComponent implements OnInit {
 
   ngOnInit(): void {
     this.skill.name = this.skill.name.replace(/[^a-zA-Z0-9]/, '')
-    this.inputDisabled = this.skill.name === ""? false: true;
+    this.inputDisabled = this.skill.name === "" || this.imported? false: true;
     this.skillStartName = this.skill.name;
     console.log(this.skill.name)
     this.nameSkillFormCtrl = new FormControl({value: this.skill.name, disabled: this.inputDisabled},
@@ -51,6 +52,12 @@ export class SkillCreationComponent implements OnInit {
   }
 
   nameExist(): boolean {
+    if(this.imported){
+      const index = this.skills.indexOf(this.skill.name)
+      if(index > -1){
+        this.skills.splice(index, 1);
+      }
+    }
     return this.skills.includes(this.skill.name);
   }
 

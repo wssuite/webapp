@@ -18,6 +18,7 @@ export class NurseGroupCreationComponent implements OnInit {
   @Input() possibleContractsGroup!: string[];
   @Input() selectedContractGroup!: string;
   @Input() nurseGroups!: string[]
+  @Input() imported: boolean
 
   nameNurseGroupFormCtrl: FormControl;
   contractSelectorError: boolean;
@@ -34,7 +35,7 @@ export class NurseGroupCreationComponent implements OnInit {
   constructor(){
     this.nurseGroupChange = new EventEmitter();
     this.errorState = new EventEmitter();
- 
+    this.imported = false;
     this.nameNurseGroupFormCtrl = new FormControl(null, Validators.required);
     this.contractSelectorError = true;
     this.contractGroupSelectorError = true;
@@ -46,7 +47,7 @@ export class NurseGroupCreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.inputDisabled = this.nurseGroup.name === ""? false: true;
+    this.inputDisabled = this.nurseGroup.name === "" || this.imported? false: true;
     this.nameNurseGroupFormCtrl = new FormControl({value: this.nurseGroup.name, disabled: this.inputDisabled},
       Validators.required);
     this.nurseGroupStartname = this.nurseGroup.name;
@@ -188,6 +189,12 @@ export class NurseGroupCreationComponent implements OnInit {
   }
 
   nameExist(): boolean {
+    if(this.imported){
+      const index = this.nurseGroups.indexOf(this.nurseGroup.name)
+      if(index > -1){
+        this.nurseGroups.splice(index, 1)
+      }
+    }
     return this.nurseGroups.includes(this.nurseGroup.name);
   }
 

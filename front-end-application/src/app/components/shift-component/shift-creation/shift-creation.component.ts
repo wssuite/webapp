@@ -15,6 +15,7 @@ export class ShiftCreationComponent implements OnInit{
   @Output() shiftChange: EventEmitter<ShiftInterface>;
   @Output() errorState: EventEmitter<boolean>;
   @Input() shifts!: string[]
+  @Input() imported: boolean
 
 
 
@@ -28,7 +29,7 @@ export class ShiftCreationComponent implements OnInit{
   constructor(){
     this.shiftChange = new EventEmitter();
     this.errorState = new EventEmitter();
- 
+    this.imported = false
     this.nameShiftFormCtrl = new FormControl(null, Validators.required);
     this.startTimeFormCtrl = new FormControl(null, Validators.required);
     this.endTimeFormCtrl = new FormControl(null, Validators.required);
@@ -36,7 +37,7 @@ export class ShiftCreationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.inputDisabled = this.shift.name === ""? false: true;
+    this.inputDisabled = this.shift.name === "" || this.imported? false: true;
     this.nameShiftFormCtrl = new FormControl({value: this.shift.name, disabled: this.inputDisabled},
       Validators.required);
     this.startTimeFormCtrl = new FormControl({value: this.shift.startTime, disabled: false},
@@ -93,6 +94,12 @@ export class ShiftCreationComponent implements OnInit{
   }
 
   nameExist(): boolean {
+    if(this.imported){
+      const index = this.shifts.indexOf(this.shift.name)
+      if(index > -1){
+        this.shifts.splice(index, 1)
+      }
+    }
     return this.shifts.includes(this.shift.name);
   }
 
