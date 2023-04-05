@@ -168,6 +168,13 @@
     <hr>
     <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
   </div>
+
+  <div *ngIf= "nurses.length > 0" class="nurseHistorySection">
+    <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>  
+    <hr>
+    <app-nurse-history  [nurses]="nurses" [startDate]="startDate"  (nursesHistory)=" updateHistory($event)"></app-nurse-history>
+  </div>
+
   <div class="generateScheduleButtonContainer">
     <button
       mat-raised-button

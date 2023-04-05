@@ -11,7 +11,7 @@ import { NurseService } from "src/app/services/nurse/nurse.service"
 import { ShiftService } from "src/app/services/shift/shift.service";
 import { SkillService } from "src/app/services/shift/skill.service";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
-import { GenerationRequest, HospitalDemandElement, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+import { GenerationRequest, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
@@ -56,6 +56,7 @@ export class ScheduleGenerationComponent implements OnInit {
   hospitalDemands: HospitalDemandElement[];
   demandsError: boolean;
   nursesPreference: SchedulePreferenceElement[];
+  nursesHistory: NurseHistoryElement[];
 
   scheduleData!: ScheduleDataInterface;
   dateError: boolean
@@ -81,6 +82,7 @@ export class ScheduleGenerationComponent implements OnInit {
     this.shifts = [];
     this.hospitalDemands = [];
     this.nursesPreference = [];
+    this.nursesHistory = [];
     this.demandsError = true;
     this.dateError = true;
   }
@@ -297,6 +299,11 @@ export class ScheduleGenerationComponent implements OnInit {
   updatePreferences(preferences: SchedulePreferenceElement[]) {
     console.log(preferences);
     this.nursesPreference = preferences;
+  }
+
+  updateHistory(history: NurseHistoryElement[]){
+    this.nursesHistory = history;
+    console.log(history);
   }
 
   updateDemands(demand: HospitalDemandElement[]){

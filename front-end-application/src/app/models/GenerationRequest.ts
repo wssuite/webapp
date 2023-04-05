@@ -16,6 +16,12 @@ export interface HospitalDemandElement {
     maxWeight: string;
 }
 
+export interface NurseHistoryElement {
+    date: string;
+    username: string;
+    shift: string;
+}
+
 export interface GenerationRequest {
     startDate: string;
     endDate: string;
