@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:5000";
+export const BASE_URL = "/api";
 export const TEST_URL = BASE_URL + "/index/";
 export const SCHEDULE_URL = BASE_URL + "/schedule";
 export const GENERATE_SCHEDULE = SCHEDULE_URL + "/generate";
