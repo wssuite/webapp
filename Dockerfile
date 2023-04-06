@@ -1,4 +1,4 @@
-FROM markbekhet/horaire-infirmiere:base-image-v2
+FROM markbekhet/horaire-infirmiere:base-image-v3
 USER root
 COPY nginx/sites-available /etc/nginx/sites-available
 RUN mkdir /fe
