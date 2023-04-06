@@ -2,7 +2,7 @@ import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {Socket, io} from "socket.io-client";
-import { ALL_SOLUTIONS, BASE_URL, DETAILED_SOLUTION_URL,
+import { ALL_SOLUTIONS, SOCKET_URL, DETAILED_SOLUTION_URL,
   EXPORT_PROBLEM_URL, EXPORT_SOLUTION_URL, GENERATE_SCHEDULE,
   LATEST_SOLUTIONS, 
   REGENERATE_SCHEDULE_URL,REMOVE_SOLUTION, STOP_GENERATION_URL} from 'src/app/constants/api-constants';
@@ -20,7 +20,7 @@ export class ScheduleService {
   socket!: Socket;
 
   constructor(private httpClient: HttpClient) { 
-    this.socket = io(BASE_URL)
+    this.socket = io()
     const notifSubscriptions = CacheUtils.getNotifSubscriptions()
     for(const sub of notifSubscriptions){
       this.notificationSubscribe(sub);
@@ -186,7 +186,7 @@ export class ScheduleService {
   }
 
   connectSocket(){
-    this.socket = io(BASE_URL)
+    this.socket = io()
     console.log(this.socket)
   }
 
