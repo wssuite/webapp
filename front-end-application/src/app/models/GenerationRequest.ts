@@ -28,6 +28,7 @@ export interface GenerationRequest {
     profile: string;
     hospitalDemand: HospitalDemandElement[];
     preferences: SchedulePreferenceElement[];
+    history: NurseHistoryElement[];
     nurses: string[];
     skills: string[];
     shifts: string[];

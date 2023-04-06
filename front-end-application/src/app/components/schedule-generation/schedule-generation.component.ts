@@ -278,6 +278,7 @@ export class ScheduleGenerationComponent implements OnInit {
       nurses: requestNurses,
       skills: this.skills,
       shifts: this.shifts,
+      history: this.nursesHistory,
       hospitalDemand: this.hospitalDemands
     }
     this.scheduleService.generateSchedule(request).subscribe({
