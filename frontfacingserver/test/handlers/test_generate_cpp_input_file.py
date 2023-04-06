@@ -100,7 +100,7 @@ CONTRACTS
 {
 contractName,General
 constraints
-NumberOfFreeDaysAfterShift,hard,1.0,Late
+NumberOfFreeDaysAfterShift,1.0,hard,Late
 MinMaxConsecutiveWeekends,1.0,5.0,3.0,hard
 }
 {
