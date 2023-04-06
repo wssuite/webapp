@@ -18,7 +18,7 @@ services:
         ipv4_address: 192.168.5.4
     volumes:
       - mongo_data:/data/db
-    restart: on-failure
+    restart: always
 
   frontfacingserver_webapp:
     build:  .
@@ -42,7 +42,7 @@ services:
       - ./nginx/sites-available:/etc/nginx/sites-available
       - ./ssl/private/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key
       - ./ssl/certs/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt
-    restart: on-failure
+    restart: always
   
   worker1:
     build: ./cpp-invoker/.
@@ -53,14 +53,17 @@ services:
       - 5000
     entrypoint: >
       bash -c "
-      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000
-      && cpulimit --limit=30 -p `pgrep -f app.py`"
+      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000"
     volumes:
       - dataset:/invoker/dataset
       - running-worker1:/invoker/running
       - ./default-cpp-param.txt:/invoker/default.txt
       - ./config-cpp-invoker.json:/invoker/config.json
-    restart: on-failure
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
 
   worker2:
     build: ./cpp-invoker/.
@@ -71,14 +74,17 @@ services:
       - 5000
     entrypoint: >
       bash -c "
-      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000
-      && cpulimit --limit=30 -p `pgrep -f app.py`"
+      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000"
     volumes:
       - dataset:/invoker/dataset
       - running-worker2:/invoker/running
       - ./default-cpp-param.txt:/invoker/default.txt
       - ./config-cpp-invoker.json:/invoker/config.json
-    restart: on-failure
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
     
   worker3:
     build: ./cpp-invoker/.
@@ -89,14 +95,18 @@ services:
       - 5000
     entrypoint: >
       bash -c "
-      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000
-      && cpulimit --limit=30 -p `pgrep -f app.py`"
+      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000"
     volumes:
       - dataset:/invoker/dataset
       - running-worker3:/invoker/running
       - ./default-cpp-param.txt:/invoker/default.txt
       - ./config-cpp-invoker.json:/invoker/config.json
-    restart: on-failure
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+
 
   haproxy:
     image: haproxy
@@ -112,6 +122,7 @@ services:
       - 80:80
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    restart: always
   
 volumes:
   dataset:
