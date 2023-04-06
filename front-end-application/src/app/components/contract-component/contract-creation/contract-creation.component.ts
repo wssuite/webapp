@@ -24,6 +24,7 @@ export class ContractCreationComponent implements OnInit{
   @Input() possibleShifts!: string[];
   @Input() possibleSkills!: string[];
   @Input() contracts!: string[]
+  @Input() imported: boolean
 
   possibleConstraints: string[];
   constraintsErrorState: boolean[];
@@ -46,7 +47,7 @@ export class ContractCreationComponent implements OnInit{
   constructor() {
     this.contractChange = new EventEmitter();
     this.errorState = new EventEmitter();
-
+    this.imported = false;
     this.possibleConstraints = CONSTRAINTS;
     this.constraintsErrorState = [];
     this.nameFormCtrl = new FormControl(null, Validators.required);
@@ -65,7 +66,7 @@ export class ContractCreationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.inputDisabled = this.contract.name === ""? false: true;
+    this.inputDisabled = this.contract.name === "" || this.imported? false: true;
     this.nameFormCtrl = new FormControl({value: this.contract.name, disabled: this.inputDisabled},
       Validators.required);
     this.contractStartName = this.contract.name;
@@ -152,7 +153,14 @@ export class ContractCreationComponent implements OnInit{
   }
 
   nameExist(): boolean {
-    return this.contracts.includes(this.contract.name);
+    const temp = [...this.contracts]
+    if(this.imported){
+      const index = temp.indexOf(this.contract.name)
+      if(index > -1){
+        temp.splice(index ,1)
+      }
+    }
+    return temp.includes(this.contract.name);
   }
 
   constraintHasErrorState(index:number){

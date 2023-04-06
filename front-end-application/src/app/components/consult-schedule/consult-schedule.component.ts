@@ -121,6 +121,8 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         this.schedule = data;
         this.employeeSchedule = this.schedule.schedule
         if(this.schedule.schedule){
+          console.log(this.schedule.startDate)
+          console.log(this.schedule.endDate)
           this.startDate = new Date(this.schedule.schedule.startDate)
           this.endDate = new Date(this.schedule.schedule.endDate);
           this.nbColumns =
@@ -178,7 +180,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       return "";
     }
     const nextDay = new Date(
-      +this.startDate + (index + 1) * DateUtils.dayMultiplicationFactor
+      +this.startDate + (index) * DateUtils.dayMultiplicationFactor
     );
     const local_string = nextDay.toLocaleDateString().replaceAll("/", "-");
     return DateUtils.arrangeDateString(local_string);
@@ -201,6 +203,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     for (let i = 0; i < this.nbColumns; i++) {
       indexes.push(i);
     }
+    console.log(indexes.length)
     return indexes;
   }
 

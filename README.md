@@ -45,16 +45,12 @@ The ssl certificate is good for one year, starting from 14/02/2023.
 In order for the deployment to work correctly, the ssl certificate must be updated before 14/02/2023 and
 a new image should be created to be used
 
-To update the ssl certaficate use the following commands:
+To update the ssl certaficate use the following command before running docker compose:
 
-	docker run -dit --name container markbekhet/horaire-infirmiere:base-image-v2
-	docker exec -it container bash
 	(echo CA & echo QC & echo M & echo company & echo section & echo someone & echo happy@example.com) |\
-	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key \
-	-out /etc/ssl/certs/nginx-selfsigned.crt
-	exit
-	docker commit container <NEW_IMAGE_NAME>:<TAG>
-	(optionnal) docker push <NEW_IMAGE_NAME>:<TAG>
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/private/nginx-selfsigned.key \
+	-out ssl/certs/nginx-selfsigned.crt
+	
 
 After those commands, update the Dockerfile to use new image and the https protocol will be used.
 

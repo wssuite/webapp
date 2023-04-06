@@ -242,7 +242,7 @@ minimum and maximum of working hours in four weeks,Early,1.0,5.0,5.0,hard
         expected = """{{
 contractName,FullTime
 constraints
-{0},hard,1.0,Early
+{0},1.0,hard,Early
 {1},hard,1,Nurse
 {2},1.0,5.0,5.0,hard,Early
 {3},1.0,5.0,5.0,hard,Early

@@ -57,7 +57,7 @@
     <div *ngIf="possibleNurses.length > 0" class="flex-row-center-container">
       <mat-form-field appearance="fill">
         <mat-label>select a nurse</mat-label>
-        <mat-select [(ngModel)]="selectedNurse">
+        <mat-select [(value)]="selectedNurse">
           <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
             {{ nurse.name}} - {{nurse.username}}
           </mat-option>
@@ -92,7 +92,7 @@
     <div *ngIf="possibleShifts.length > 0" class="flex-row-center-container">
       <mat-form-field appearance="fill">
         <mat-label>select a shift</mat-label>
-        <mat-select [(ngModel)]="selectedShift">
+        <mat-select [(value)]="selectedShift">
           <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
             {{shift}}
           </mat-option>
@@ -128,7 +128,7 @@
   <div *ngIf="possibleSkills.length > 0" class="flex-row-center-container">
     <mat-form-field appearance="fill">
       <mat-label>select a skill</mat-label>
-      <mat-select [(ngModel)]="selectedSkill">
+      <mat-select [(value)]="selectedSkill">
         <mat-option *ngFor="let skill of possibleSkills" [value]="skill">
           {{skill}}
         </mat-option>
