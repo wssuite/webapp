@@ -118,7 +118,6 @@ export class ShiftCreationComponent implements OnInit{
   openFromIconStartTime(timepicker: NgxMaterialTimepickerComponent) {
     console.log("here open start time")
     if (!this.startTimeFormCtrl.disabled) {
-      this.onClearStartTime()
       timepicker.open();
     }
     timepicker.timeChanged.subscribe((time: string)=>{
