@@ -121,7 +121,7 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
         return self
 
     def to_string(self):
-        return f"{self.name},{self.weight},{self.value},{self.shift}\n"
+        return f"{self.name},{self.value},{self.weight},{self.shift}\n"
 
     def export(self):
         export_name = export_bind_map[self.name]

@@ -37,6 +37,11 @@ services:
       - mongodb
     volumes:
       - dataset:/ffs/dataset
+      - ./nginx/snippets/self-signed.conf:/etc/nginx/snippets/self-signed.conf
+      - ./nginx/snippets/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf
+      - ./nginx/sites-available:/etc/nginx/sites-available
+      - ./ssl/private/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key
+      - ./ssl/certs/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt
     restart: on-failure
   
   worker1:
