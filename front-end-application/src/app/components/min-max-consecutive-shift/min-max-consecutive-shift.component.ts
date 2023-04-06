@@ -21,6 +21,8 @@ export class MinMaxConsecutiveShiftComponent implements OnInit{
   selectFormCtrl: FormControl;
   minWeightLabel: string;
   maxWeightLabel: string;
+  maxInputDisabled: boolean;
+  minInputDisabled: boolean
 
   constructor() {
     this.constraintChange = new EventEmitter();
@@ -30,8 +32,10 @@ export class MinMaxConsecutiveShiftComponent implements OnInit{
     this.maxWeightErrorState = true;
     this.minWeightErrorState = true;
     this.selectFormCtrl = new FormControl(null, Validators.required);
-    this.maxWeightLabel = "weight for max value";
-    this.minWeightLabel = "weight for min value"
+    this.maxWeightLabel = "max weight";
+    this.minWeightLabel = "min weight";
+    this.maxInputDisabled = false;
+    this.minInputDisabled = false
   }
 
   ngOnInit(): void {
@@ -64,16 +68,18 @@ export class MinMaxConsecutiveShiftComponent implements OnInit{
 
   updateMaxValueErrorState(e: boolean) {
     this.maxValueErrorState = e;
-    this.emitConstraint(); 
+    this.emitConstraint();
   }
 
   updateMinWeightErrorState(e: boolean) {
     this.minWeightErrorState = e;
     this.emitConstraint();
+    this.minInputDisabled = this.constraint.minWeight === "0"
   }
 
   updateMaxWeightErrorState(e: boolean) {
     this.maxWeightErrorState = e;
     this.emitConstraint();
+    this.maxInputDisabled = this.constraint.maxWeight === "0"
   }
 }

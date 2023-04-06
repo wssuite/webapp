@@ -16,7 +16,8 @@ export class MinMaxConstraintComponent implements OnInit{
   maxValueErrorState: boolean;
   minWeightErrorState: boolean;
   maxWeightErrorState: boolean;
-
+  maxInputDisabled: boolean
+  minInputDisabled: boolean;
   minWeightLabel: string;
   maxWeightLabel: string;
 
@@ -29,9 +30,11 @@ export class MinMaxConstraintComponent implements OnInit{
 
     this.minWeightErrorState = true;
     this.maxWeightErrorState = true;
+    this.maxInputDisabled = false;
+    this.minInputDisabled = false;
 
-    this.minWeightLabel = "weight for min value";
-    this.maxWeightLabel = "weight for max value";
+    this.minWeightLabel = "min weight";
+    this.maxWeightLabel = "max weight";
   }
 
   ngOnInit(): void {
@@ -59,10 +62,12 @@ export class MinMaxConstraintComponent implements OnInit{
   updateMinWeightErrorState(e: boolean) {
     this.minWeightErrorState = e;
     this.emitConstraint();
+    this.minInputDisabled = this.constraint.minWeight === "0"
   }
   updateMaxWeightErrorState(e: boolean) {
     this.maxWeightErrorState = e;
     this.emitConstraint();
+    this.maxInputDisabled = this.constraint.maxWeight === "0"
   }
 
   updateMinValueErrorState(e: boolean) {
