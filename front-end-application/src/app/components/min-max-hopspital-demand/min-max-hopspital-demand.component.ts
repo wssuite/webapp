@@ -62,11 +62,19 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
 
   updateMinValueErrorState(e: boolean) {
     this.minValueErrorState = e;
+    if(+this.demand.minValue > +this.demand.maxValue){
+      this.demand.maxValue = this.demand.minValue
+    }
     this.emitSkillDemand();
   }
 
   updateMaxValueErrorState(e: boolean) {
     this.maxValueErrorState = e;
+    if(this.demand.maxValue !== ""){
+      if(+this.demand.minValue > +this.demand.maxValue) {
+        this.demand.minValue = this.demand.maxValue
+      }
+    }
     this.emitSkillDemand();
   }
 
