@@ -41,6 +41,7 @@ export class ImportProfileComponent implements OnInit{
   contractNames: string[];
   nurses: string[];
   nurseGroups: string[];
+  imported = true;
 
   shiftsErrorState: boolean[];
   shiftTypesErrorState: boolean[];
@@ -111,6 +112,7 @@ export class ImportProfileComponent implements OnInit{
     this.profileService.import(formData).subscribe({
       next: (data: DetailedProfile)=> {
         this.profile = data
+        this.profileNameCtrl.setValue(this.profile.profile)
         this.readArrays();  
         console.log(data)
         this.validProfile = true;
@@ -163,6 +165,14 @@ export class ImportProfileComponent implements OnInit{
     this.profile.shiftGroups.forEach((shiftGroup: ShiftGroupInterface)=>{
       this.possibleShiftGroups.push(shiftGroup.name);
       this.contractShifts.push(shiftGroup.name);
+      if(!this.contractShifts.includes("Work")){
+        this.contractShifts.push("Work")
+        this.possibleShiftGroups.push("Work")
+      }
+      if(!this.contractShifts.includes("Rest")){
+        this.contractShifts.push("Rest")
+        this.possibleShiftGroups.push("Rest")
+      }
     })
     this.profile.skills.forEach((skill: SkillInterface)=>{
       this.skills.push(skill.name)
@@ -380,34 +390,111 @@ export class ImportProfileComponent implements OnInit{
 
   updateShiftErrorState(index:number, e:boolean){
     this.shiftsErrorState[index] = e;
+    this.possibleShifts = []
+    this.contractShifts = []
+    this.profile.shifts.forEach((s: ShiftInterface)=>{
+      this.possibleShifts.push(s.name)
+      this.contractShifts.push(s.name);
+    })
+    this.profile.shiftTypes.forEach((st: ShiftTypeInterface)=>{
+      this.contractShifts.push(st.name)
+    })
+    this.profile.shiftGroups.forEach((sg: ShiftGroupInterface)=>{
+      this.contractShifts.push(sg.name)
+    })
+    if(!this.contractShifts.includes("Work")){
+      this.contractShifts.push("Work")
+    }
+    if(!this.contractShifts.includes("Rest")){
+      this.contractShifts.push("Rest")
+    }
   }
 
   updateShiftTypeErrorState(index:number, e:boolean){
     this.shiftTypesErrorState[index] = e;
+    this.possibleShiftTypes = []
+    this.contractShifts = []
+    this.profile.shiftTypes.forEach((st: ShiftTypeInterface)=>{
+      this.possibleShiftTypes.push(st.name)
+      this.contractShifts.push(st.name);
+    })
+    this.profile.shifts.forEach((s: ShiftInterface)=>{
+      this.contractShifts.push(s.name)
+    })
+    this.profile.shiftGroups.forEach((sg: ShiftGroupInterface)=>{
+      this.contractShifts.push(sg.name)
+    })
+    if(!this.contractShifts.includes("Work")){
+      this.contractShifts.push("Work")
+    }
+    if(!this.contractShifts.includes("Rest")){
+      this.contractShifts.push("Rest")
+    }
   }
 
   updateShiftGroupErrorState(index:number, e:boolean){
     this.shiftGroupsErrorState[index] = e;
+    this.possibleShiftGroups = []
+    this.contractShifts = []
+    this.profile.shiftTypes.forEach((st: ShiftTypeInterface)=>{
+      this.contractShifts.push(st.name);
+    })
+    this.profile.shifts.forEach((s: ShiftInterface)=>{
+      this.contractShifts.push(s.name)
+    })
+    this.profile.shiftGroups.forEach((sg: ShiftGroupInterface)=>{
+      this.possibleShiftGroups.push(sg.name)
+      this.contractShifts.push(sg.name)
+    })
+    if(!this.contractShifts.includes("Work")){
+      console.log("Adding Work shift group")
+      this.contractShifts.push("Work")
+    }
+    if(!this.contractShifts.includes("Rest")){
+      this.contractShifts.push("Rest")
+    }
   }
 
   updateContractErrorState(index:number, e:boolean){
     this.contractsErrorState[index] = e;
+    this.possibleContracts = []
+    this.contractNames = []
+    this.contracts.forEach((c: Contract)=>{
+      this.possibleContracts.push(c.name);
+      this.contractNames.push(c.name)
+    })
   }
 
   updateContractGroupErrorState(index:number, e:boolean){
     this.contractsGroupErrorState[index] = e;
+    this.contractsGroup = []
+    this.profile.contractGroups.forEach((cg: ContractGroupInterface)=>{
+      this.contractsGroup.push(cg.name)
+    })
   }
 
   updateNurseErrorState(index:number, e:boolean){
     this.nursesErrorState[index] = e;
+    this.nurses = []
+    this.profile.nurses.forEach((n: NurseInterface)=>{
+      this.nurses.push(n.username)
+    })
   }
 
   updateNurseGroupErrorState(index:number, e:boolean){
     this.nurseGroupsErrorState[index] = e;
+    this.nurseGroups = []
+    this.profile.nurseGroups.forEach((ng: NurseGroupInterface)=>{
+      this.nurseGroups.push(ng.name)
+    })
   }
 
   updateSkillErrorState(index:number, e:boolean){
     this.skillsErrorState[index] = e;
+    this.skills = []
+    this.profile.skills.forEach((s: SkillInterface)=> {
+      this.skills.push(s.name)
+    })
   }
 
   saveProfile(){
