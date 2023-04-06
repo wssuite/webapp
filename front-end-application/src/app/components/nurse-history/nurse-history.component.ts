@@ -102,7 +102,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
       return "";
     }
     const previousDay = new Date(
-      +this.startDate + (index) * DateUtils.dayMultiplicationFactor
+      +this.startDate - (index+1) * DateUtils.dayMultiplicationFactor
     ).getDay();
     return DateUtils.days[previousDay] + "\n";
   }
