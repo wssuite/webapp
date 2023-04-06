@@ -70,7 +70,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     this.isdDisabled = false;
     this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate);
     const initSkillDemand = {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
-    for(let i = 0; i <= this.nbColumns; i++) {
+    for(let i = 0; i < this.nbColumns; i++) {
       this.timetable.push( {date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
     }
     //initiate demands

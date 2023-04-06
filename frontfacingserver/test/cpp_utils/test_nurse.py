@@ -39,7 +39,7 @@ class TestNurse(TestCase):
 
     def test_nurse_creation_from_string_parse_nurse(self):
         profile_name = profile1
-        nurse_string = "suz,Suzane,contract 2,,,,,,,"
+        nurse_string = "Suzane,suz,contract 2,,,,,,,"
         expected_nurse = {
             nurse_contract_groups: [],
             nurse_username: "suz",
@@ -52,7 +52,7 @@ class TestNurse(TestCase):
         self.assertEqual(expected_nurse, nurse.to_json())
 
     def test_export_nurse(self):
-        expected = "suz,Suzane,contract 2\n"
+        expected = "Suzane,suz,contract 2\n"
         nurse_dict = {
             nurse_contract_groups: [],
             nurse_username: "suz",

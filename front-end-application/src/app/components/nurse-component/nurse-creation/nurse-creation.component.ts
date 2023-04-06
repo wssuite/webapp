@@ -16,6 +16,7 @@ export class NurseCreationComponent implements OnInit {
   @Input() selectedContract!: string;
   @Input() selectedContractGroup!: string;
   @Input() nurses!: string[]
+  @Input() imported: boolean
 
   usernameNurseFormCtrl: FormControl;
   nameNurseFormCtrl: FormControl;
@@ -29,7 +30,7 @@ export class NurseCreationComponent implements OnInit {
   constructor(){
     this.nurseChange = new EventEmitter();
     this.errorState = new EventEmitter();
- 
+    this.imported = false
     this.usernameNurseFormCtrl = new FormControl(null, Validators.required);
     this.nameNurseFormCtrl = new FormControl(null, Validators.required);
     this.contractSelectorError = true;
@@ -40,8 +41,8 @@ export class NurseCreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.inputDisabled = this.nurse.name === ""? false: true;
-    this.inputDisabled = this.nurse.username === ""? false: true;
+    this.inputDisabled = this.nurse.name === "" || this.imported? false: true;
+    this.inputDisabled = this.nurse.username === "" || this.imported? false: true;
     this.usernameNurseFormCtrl = new FormControl({value: this.nurse.username, disabled: this.inputDisabled},
       Validators.required);
     this.nameNurseFormCtrl = new FormControl({value: this.nurse.name, disabled: this.inputDisabled},
@@ -144,8 +145,24 @@ export class NurseCreationComponent implements OnInit {
   }
 
   usernameExist(): boolean {
-    return this.nurses.includes(this.nurse.username);
+    const temp = [...this.nurses]
+    if(this.imported){
+      const index = temp.indexOf(this.nurse.username)
+      if(index > -1){
+        temp.splice(index, 1)
+      }
+    }
+    return temp.includes(this.nurse.username);
   }
 
+  setUsername(){
+    let counter = 1;
+    this.nurse.username = this.nurse.name + counter.toString();
+    while(this.usernameExist()){
+      counter++;
+      this.nurse.username = this.nurse.name + counter.toString();
+    }
+    this.emitNurse()
+  }
 }
 
