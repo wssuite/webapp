@@ -42,7 +42,6 @@ export class NurseCreationComponent implements OnInit {
 
   ngOnInit(): void {
     this.inputDisabled = this.nurse.name === "" || this.imported? false: true;
-    this.setUsername()
     this.inputDisabled = this.nurse.username === "" || this.imported? false: true;
     this.usernameNurseFormCtrl = new FormControl({value: this.nurse.username, disabled: this.inputDisabled},
       Validators.required);
