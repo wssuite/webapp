@@ -167,3 +167,19 @@ def export_schedule():
         return {"content": schedule_str}
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/exportError", methods=["GET"])
+def export_schedule():
+    try:
+        token = request.args[user_token]
+        start = request.args[start_date]
+        end = request.args[end_date]
+        profile_name = request.args[profile]
+        v = request.args[version]
+        error_str = schedule_handler.export_std_error(
+            token, start, end, profile_name, v
+        )
+        return {"content": error_str}
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
