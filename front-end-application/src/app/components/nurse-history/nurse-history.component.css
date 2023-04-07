@@ -1,0 +1,70 @@
+.schedule-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .nurse-name-table {
+    display: flex;
+    width: 150px;
+  }
+  
+  .nurse-name-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: 5px;
+    height: 5px;
+    
+  }
+  
+  .nurse-name-cell {
+    background-color: rgb(235, 234, 234);
+    height: 50px;
+    max-height: 31px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+  }
+
+   .nurse-table{
+    width:max-content;
+    max-width: 100%;
+    height: calc(100%-5px);
+    max-height: calc(100%-5px); 
+  }  
+  
+  .nurse-name-table{
+  height: calc(100%-5px);
+  max-height: calc(100%-5px); 
+  width:max-content;
+  max-width: 100%;
+  } 
+  
+  .timetable-table {
+    display: flex;
+    overflow-x: scroll;
+    text-align: center;
+    width:82%;
+  }
+
+  .date-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-weight: bold;
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 10px;
+    background-color: #255792;
+    color:white;
+  }
+  
+
+  table{
+    color:#1a3d66;
+  }
+

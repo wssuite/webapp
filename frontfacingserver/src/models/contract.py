@@ -5,7 +5,6 @@ from src.models.jsonify import Jsonify
 from src.models.constraints import (
     ContractConstraint,
     ContractBooleanConstraint,
-    ContractMinMaxConstraint,
     ContractIntegerShiftConstraint,
     ContractMinMaxShiftConstraint,
     ContractUnwantedPatterns,
@@ -47,11 +46,11 @@ class ContractConstraintCreator:
     def __init__(self):
         self.dict_contract_constraints: dict[str, Type[ContractConstraint]] = {
             number_of_free_days_after_shift: ContractIntegerShiftConstraint,
-            total_weekends_in_four_weeks: ContractMinMaxConstraint,
+            total_weekends_in_four_weeks: ContractMinMaxShiftConstraint,
             min_max_consecutive_shift_type: ContractMinMaxShiftConstraint,
-            min_max_consecutive_weekends: ContractMinMaxConstraint,
-            min_max_num_assignments_in_four_weeks: ContractMinMaxConstraint,
-            min_max_hours_in_four_weeks: ContractMinMaxConstraint,
+            min_max_consecutive_weekends: ContractMinMaxShiftConstraint,
+            min_max_num_assignments_in_four_weeks: ContractMinMaxShiftConstraint,
+            min_max_hours_in_four_weeks: ContractMinMaxShiftConstraint,
             identical_shift_during_weekend: ContractBooleanConstraint,
             complete_weekends: ContractBooleanConstraint,
             alternative_shift: ContractAlternativeShift,

@@ -84,6 +84,13 @@ export class ShiftCreationComponent implements OnInit{
   }
 
   emitShift(){
+    const convertedTime= this.convertTime(this.shift.endTime)
+    convertedTime.hours = convertedTime.hours === 24 ? 0: convertedTime.hours
+    if(convertedTime.hours < 10) {
+      const endHours = convertedTime.hours < 10? "0"+ convertedTime.hours.toString() : convertedTime.hours.toString()
+      const endMinutes = convertedTime.minutes < 10? "0"+ convertedTime.minutes.toString() : convertedTime.minutes.toString()
+      this.shift.endTime = `${endHours}:${endMinutes}`
+    }
     this.shiftChange.emit(this.shift);
     this.emitErrorState();
   }
