@@ -24,9 +24,9 @@ export class CreateProfileDialogComponent {
   createEmptyProfile(){
     const dialog = this.dialog.open(CreateEmptyProfileDialogComponent, {
       data: {profiles: this.data.profiles},
-      height: '65%',
-      width: '55%', 
-      position: {top:'5vh',left: '25%', right: '25%'}
+      height: '30%',
+      width: '30%', 
+      position: {top:'10vh',left: '35%', right: '35%'}
     })
     dialog.afterClosed().subscribe(()=>{
       this.service.editionFinished = true

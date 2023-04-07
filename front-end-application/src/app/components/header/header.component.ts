@@ -121,9 +121,9 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     const dialog = this.dialog.open(CreateProfileDialogComponent,{
       data: {profiles: this.profiles, closeDisplayed: closeDisplayed},
       disableClose: true,  
-      height: '65%',
+      height: '64%',
       width: '55%', 
-      position: {top:'5vh',left: '25%', right: '25%'},
+      position: {top:'10vh',left: '25%', right: '25%'},
     })
     dialog.afterClosed().subscribe(()=>{
       console.log("here")
