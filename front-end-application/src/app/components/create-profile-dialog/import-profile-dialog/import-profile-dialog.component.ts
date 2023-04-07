@@ -150,6 +150,14 @@ export class ImportProfileComponent implements OnInit{
     this.nurses = []
     this.nurseGroups = []
     this.skills = []
+    this.contractsErrorState = []
+    this.contractsGroupErrorState = []
+    this.shiftsErrorState = []
+    this.shiftTypesErrorState = []
+    this.shiftGroupsErrorState = []
+    this.nurseGroupsErrorState = []
+    this.skillsErrorState = []
+    this.nursesErrorState = []
     this.profile.contracts.forEach((c:ContractInterface)=>{
       this.contracts.push(this.contractService.fromJson(c))
       this.contractNames.push(c.name);
