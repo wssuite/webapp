@@ -1,5 +1,6 @@
 import json
 import requests
+
 from .file_writer import FileManager
 import os
 import subprocess
@@ -51,19 +52,27 @@ def run_scheduler(path, counter):
     cmd_split = shlex.split(cmd)
     print(cmd_split)
     proc = subprocess.Popen(
-        cmd_split
+        cmd_split, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
-    proc.wait()
     print(proc.returncode)
-    callback(path, proc.returncode)
+    out, err = proc.communicate()
+    callback(path, proc.returncode, err)
 
 
-def callback(path, status):
+def callback(path, status, error: bytes):
     """
     TODO: the callback will launch a request to the ffs to inform
         it with the status of the schedule
     """
     info_json = extract_version_info_from_path(path)
+    try:
+        str_err = error.decode()
+        error_file_path = os.path.join(path, "error.txt")
+        with open(error_file_path) as f:
+            f.write(str_err)
+    except Exception:
+        print("No std error")
+
     if status == 0:
         """return success status"""
         info_json["state"] = "Success"
