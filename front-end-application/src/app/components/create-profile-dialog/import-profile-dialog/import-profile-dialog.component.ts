@@ -60,7 +60,7 @@ export class ImportProfileComponent implements OnInit{
       this.profileNames = [];
       this.connectedUser = false;
       this.profileNameCtrl = new FormControl(null, [Validators.required,
-      Validators.pattern(ALLOWED_PROFILE_NAMES)])
+        Validators.pattern(ALLOWED_PROFILE_NAMES)])
       this.contracts = [];
       this.contractsGroup = [];
       this.possibleContracts = [];
@@ -91,7 +91,6 @@ export class ImportProfileComponent implements OnInit{
           profiles.forEach((p: BaseProfile)=>{
             this.profileNames.push(p.profile)
           })
-          console.log(this.profileNames)
         },
         error: (err: HttpErrorResponse)=>{
           this.openErrorDialog(err.error)
@@ -104,7 +103,6 @@ export class ImportProfileComponent implements OnInit{
   }
 
   onFileSelected(event:any){
-    console.log("here")
     const file: File = event.target.files[0];
     this.fileName = file.name;
     const formData = new FormData();
@@ -114,7 +112,6 @@ export class ImportProfileComponent implements OnInit{
         this.profile = data
         this.profileNameCtrl.setValue(this.profile.profile)
         this.readArrays();  
-        console.log(data)
         this.validProfile = true;
       },
       error: (err: HttpErrorResponse)=>{
@@ -142,6 +139,17 @@ export class ImportProfileComponent implements OnInit{
   }
 
   readArrays(){
+    this.contracts = []
+    this.contractNames = []
+    this.possibleContracts = []
+    this.contractsGroup = []
+    this.contractShifts = []
+    this.possibleShiftGroups = []
+    this.possibleShifts = []
+    this.possibleShiftTypes = []
+    this.nurses = []
+    this.nurseGroups = []
+    this.skills = []
     this.profile.contracts.forEach((c:ContractInterface)=>{
       this.contracts.push(this.contractService.fromJson(c))
       this.contractNames.push(c.name);
@@ -165,14 +173,6 @@ export class ImportProfileComponent implements OnInit{
     this.profile.shiftGroups.forEach((shiftGroup: ShiftGroupInterface)=>{
       this.possibleShiftGroups.push(shiftGroup.name);
       this.contractShifts.push(shiftGroup.name);
-      if(!this.contractShifts.includes("Work")){
-        this.contractShifts.push("Work")
-        this.possibleShiftGroups.push("Work")
-      }
-      if(!this.contractShifts.includes("Rest")){
-        this.contractShifts.push("Rest")
-        this.possibleShiftGroups.push("Rest")
-      }
     })
     this.profile.skills.forEach((skill: SkillInterface)=>{
       this.skills.push(skill.name)
@@ -189,6 +189,18 @@ export class ImportProfileComponent implements OnInit{
     this.profile.shiftGroups.forEach(()=>{
       this.shiftGroupsErrorState.push(true);
     })
+    if(!this.contractShifts.includes("Work")){
+      this.contractShifts.push("Work")
+      this.possibleShiftGroups.push("Work")
+    }
+    if(!this.contractShifts.includes("Rest")){
+      this.contractShifts.push("Rest")
+      this.possibleShiftGroups.push("Rest")
+    }
+  }
+
+  containsWhiteSpace(){
+    return this.profile.profile.indexOf(" ") >=0
   }
 
   addShift(){
@@ -385,7 +397,8 @@ export class ImportProfileComponent implements OnInit{
      this.nurseSectionHasError() || this.nurseGroupSectionHasError()
       || this.contractSectionHasError() || this.shiftGroupSectionHasError()
       || this.shiftSectionHasError() || this.shiftTypeSectionHasError() ||
-      this.nameExist() || this.profileNameCtrl.hasError("required") || this.profileNameCtrl.hasError("pattern")
+      this.nameExist() || this.profileNameCtrl.hasError("required") 
+      || this.containsWhiteSpace()
   }
 
   updateShiftErrorState(index:number, e:boolean){
@@ -447,7 +460,6 @@ export class ImportProfileComponent implements OnInit{
       this.contractShifts.push(sg.name)
     })
     if(!this.contractShifts.includes("Work")){
-      console.log("Adding Work shift group")
       this.contractShifts.push("Work")
     }
     if(!this.contractShifts.includes("Rest")){
