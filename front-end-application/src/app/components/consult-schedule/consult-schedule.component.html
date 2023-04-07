@@ -9,7 +9,7 @@
         <h1>The state of your schedule is: {{schedule.state}}</h1>
         <h1>Start date: {{schedule.startDate}}- end date: {{schedule.endDate}}- Version: {{schedule.version}}</h1>
         <!--Modify this block to a table like the preferences table-->
-        <div class="schedule-container" *ngIf="employeeSchedule">
+        <div class="schedule-container" *ngIf="employeeSchedule && schedule.state!=='Failed'">
             <!-- create a table to hold the column with the employee names-->
             <div class="nurse-name-table">
                 <table class="employee-names-column">
