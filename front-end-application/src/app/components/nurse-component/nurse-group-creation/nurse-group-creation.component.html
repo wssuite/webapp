@@ -13,11 +13,11 @@
  <div class="nurseSection">
    <h2 class="NurseSectionTitle">Nurses</h2>
    <hr>
-   <div *ngIf="possibleNurses.length > 0">
+   <div *ngIf="localNurses.length > 0">
      <mat-form-field appearance="fill">
        <mat-label>Select a nurse</mat-label>
        <mat-select [(value)]="selectedNurse" (selectionChange)="emitNurseGroup()">
-         <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
+         <mat-option *ngFor="let nurse of localNurses" [value]="nurse">
            {{ nurse }}
          </mat-option>
        </mat-select>
@@ -46,11 +46,11 @@
   <div class="contractSection">
    <h2 class="contractSectionTitle">Contracts</h2>
    <hr>
-   <div *ngIf="possibleContracts.length > 0">
+   <div *ngIf="localContracts.length > 0">
      <mat-form-field appearance="fill">
        <mat-label>Select a contract</mat-label>
        <mat-select [(value)]="selectedContract" (selectionChange)="emitNurseGroup()">
-         <mat-option *ngFor="let contract of possibleContracts" [value]="contract">
+         <mat-option *ngFor="let contract of localContracts" [value]="contract">
            {{ contract }}
          </mat-option>
        </mat-select>
@@ -78,11 +78,11 @@
  <div class="contractGroupSection">
   <h2 class="contractSectionTitle">Group Contracts</h2>
   <hr>
-  <div *ngIf="possibleContractsGroup.length > 0">
+  <div *ngIf="localContractGroups.length > 0">
     <mat-form-field appearance="fill">
       <mat-label>Select a group contract</mat-label>
       <mat-select [(ngModel)]="selectedContractGroup" (selectionChange)="emitNurseGroup()">
-        <mat-option *ngFor="let contractGroup of possibleContractsGroup" [value]="contractGroup">
+        <mat-option *ngFor="let contractGroup of localContractGroups" [value]="contractGroup">
           {{ contractGroup }}
         </mat-option>
       </mat-select>

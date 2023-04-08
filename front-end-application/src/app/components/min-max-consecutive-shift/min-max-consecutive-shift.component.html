@@ -14,18 +14,18 @@
     <div class="value-container">
         <div class="input">
         <label>Min value: </label>
-        <app-numeric-input [(value)]="constraint.minValue" (errorState)="updateMinValueErrorState($event)"></app-numeric-input>
+        <app-numeric-input [disabled]="minInputDisabled" [(value)]="constraint.minValue" (errorState)="updateMinValueErrorState($event)"></app-numeric-input>
         </div>
         <div class="weight-container">
-            <app-weight [(weight)]="constraint.minWeight" [label]="minWeightLabel" (errorState)="updateMinWeightErrorState($event)"></app-weight>
+            <app-weight [allowZero]="true" [(weight)]="constraint.minWeight" [label]="minWeightLabel" (errorState)="updateMinWeightErrorState($event)"></app-weight>
         </div>
     </div>
     <div class="value-container">
         <div class="input">
         <label>Max value: </label>
-        <app-numeric-input [(value)]="constraint.maxValue" (errorState)="updateMaxValueErrorState($event)"></app-numeric-input>
+        <app-numeric-input [disabled]="maxInputDisabled" [(value)]="constraint.maxValue" (errorState)="updateMaxValueErrorState($event)"></app-numeric-input>
         </div>
-        <app-weight [(weight)]="constraint.maxWeight" [label]="maxWeightLabel" (errorState)="updateMaxWeightErrorState($event)"></app-weight>
+        <app-weight [allowZero]="true" [(weight)]="constraint.maxWeight" [label]="maxWeightLabel" (errorState)="updateMaxWeightErrorState($event)"></app-weight>
     </div>
 </div>
 </div>

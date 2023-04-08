@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import {
   FormControl,
   FormGroupDirective,
@@ -27,17 +27,19 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: "./numeric-input.component.html",
   styleUrls: ["./numeric-input.component.css"],
 })
-export class NumericInputComponent implements OnInit{
+export class NumericInputComponent implements OnInit, OnChanges{
   @Input() value!: string;
   @Output() valueChange: EventEmitter<string>;
 
   inputCtrl: FormControl;
+  @Input() disabled: boolean;
 
   matcher: CustomErrorStateMatcher;
   @Output() errorState: EventEmitter<boolean>;
 
   constructor() {
     this.valueChange = new EventEmitter<string>();
+    this.disabled = false;
     this.inputCtrl = new FormControl({ value: this.value, disabled: false }, [
       Validators.required,
       Validators.pattern(NUMERIC_POSITIVE_NUMBERS),
@@ -47,9 +49,26 @@ export class NumericInputComponent implements OnInit{
     this.errorState = new EventEmitter();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const disabledChange = changes["disabled"]
+    if(disabledChange){
+      this.disabled = disabledChange.currentValue
+    }
+    this.inputCtrl = this.createFormControl()
+  }
+
   ngOnInit(): void {
-      this.inputCtrl.setValue(this.value);
+    this.inputCtrl = this.createFormControl()
+    this.inputCtrl.setValue(this.value);
       this.emitValue();
+  }
+
+  createFormControl():FormControl{
+    return new FormControl({ value: this.value, disabled: this.disabled }, [
+      Validators.required,
+      Validators.pattern(NUMERIC_POSITIVE_NUMBERS),
+      Validators.min(0),
+    ]);
   }
 
   emitValue() {

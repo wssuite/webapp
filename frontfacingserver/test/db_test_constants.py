@@ -127,6 +127,7 @@ general_contract_dict = {
             min_constraint_weight: "5.0",
             max_constraint_value: "3.0",
             max_constraint_weight: "hard",
+            shift_constraint: "Early",
         },
     ],
     profile: "profile1",
@@ -146,6 +147,7 @@ nurse_contract_dict = {
             min_constraint_weight: "5.0",
             max_constraint_value: "5.0",
             max_constraint_weight: "hard",
+            shift_constraint: "Early",
         },
         {
             constraint_name: identical_shift_during_weekend,
@@ -169,6 +171,7 @@ head_nurse_contract_dict = {
             min_constraint_weight: "5.0",
             max_constraint_value: "3.0",
             max_constraint_weight: "hard",
+            shift_constraint: "Early",
         },
         {
             constraint_name: identical_shift_during_weekend,

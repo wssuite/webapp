@@ -12,11 +12,11 @@
     <div class="shifts-Section">
       <h2 class="shiftSectionTitle">Shifts</h2>
       <hr>
-      <div *ngIf="possibleShifts.length > 0">
+      <div *ngIf="localShifts.length > 0">
         <mat-form-field appearance="fill">
           <mat-label>Select a shift</mat-label>
           <mat-select [(value)]="selectedShift" (selectionChange)="emitShiftType()">
-            <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
+            <mat-option *ngFor="let shift of localShifts" [value]="shift">
                 {{shift}}
             </mat-option>
         </mat-select>
