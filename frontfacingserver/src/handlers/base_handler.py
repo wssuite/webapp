@@ -113,12 +113,14 @@ class BaseHandler:
             raise ShiftNotExist(not not_exist_shifts)
 
     def _shift_group_verifications(self, shift_group):
+        self.verify_name_is_valid(shift_group.name)
         shifts = []
         shifts.extend(shift_group.shifts)
         shifts.extend(shift_group.shift_types)
         self.verify_shift_shift_types_exist(shifts, shift_group.profile)
 
     def _shift_type_verifications(self, shift_type):
+        self.verify_name_is_valid(shift_type.name)
         self.verify_shifts_exist(shift_type.shifts, shift_type.profile)
 
     def verify_contract_shifts_exist(self, shifts, profile_name):
@@ -151,10 +153,12 @@ class BaseHandler:
             raise SkillNotExist(non_existent_skills)
 
     def contract_insertion_verification(self, contract):
+        self.verify_name_is_valid(contract.name)
         self.verify_contract_shifts_exist(contract.shifts, contract.profile)
         self.verify_contract_skills_exist(contract.skills, contract.profile)
 
     def contract_group_insertion_verification(self, contract_group):
+        self.verify_name_is_valid(contract_group.name)
         validator = ContractsValidator()
         for contract in contract_group.contracts:
             contract_dict = self.contract_dao.find_by_name(
@@ -166,6 +170,7 @@ class BaseHandler:
             validator.add_contract_constraints(contract_object)
 
     def nurse_insertion_validations(self, nurse):
+        self.verify_name_is_valid(nurse.username)
         contract_validator = ContractsValidator()
         for contract_string in nurse.direct_contracts:
             contract_dict = self.contract_dao.find_by_name(
@@ -224,6 +229,7 @@ class BaseHandler:
                 raise NurseNotFound(nurse_name)
 
     def verify_nurse_group_is_valid(self, nurse_group):
+        self.verify_name_is_valid(nurse_group.name)
         nurse_group_merged_contract = self.verify_nurse_group_contracts(
             nurse_group
         )
