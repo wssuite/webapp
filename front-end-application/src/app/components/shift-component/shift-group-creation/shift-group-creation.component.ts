@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ShiftGroupInterface } from 'src/app/models/Shift';
 
@@ -7,7 +7,7 @@ import { ShiftGroupInterface } from 'src/app/models/Shift';
   templateUrl: './shift-group-creation.component.html',
   styleUrls: ['./shift-group-creation.component.css']
 })
-export class ShiftGroupCreationComponent implements OnInit{
+export class ShiftGroupCreationComponent implements OnInit, OnChanges{
   @Input() shiftGroup!: ShiftGroupInterface;
   @Output() shiftGroupChange: EventEmitter<ShiftGroupInterface>;
   @Output() errorState: EventEmitter<boolean>;
@@ -22,7 +22,8 @@ export class ShiftGroupCreationComponent implements OnInit{
   shiftGroupSelectorError: boolean;
   inputDisabled: boolean;
   shiftGroupStartName!: string;
-
+  localShifts: string[]
+  localShiftTypes: string[]
 
 
   constructor(){
@@ -31,7 +32,9 @@ export class ShiftGroupCreationComponent implements OnInit{
     this.imported = false
     this.nameShiftGroupFormCtrl = new FormControl(null, Validators.required);
     this.shiftGroupSelectorError = true;
-    this.inputDisabled = false;  
+    this.inputDisabled = false;
+    this.localShifts = []
+    this.localShiftTypes = []  
   }
 
   ngOnInit(): void {
@@ -43,35 +46,52 @@ export class ShiftGroupCreationComponent implements OnInit{
       if(!this.possibleShifts.includes(this.shiftGroup.shifts[i])){
         this.shiftGroup.shifts.splice(i, 1);
       }
-      else{
-        const index = this.possibleShifts.indexOf(this.shiftGroup.shifts[i])
-        if(index > -1){
-          this.possibleShifts.splice(index, 1);
-        }
-      }
     }
     for(let i=0; i< this.shiftGroup.shiftTypes.length; i++) {
       if(!this.possibleShiftsType.includes(this.shiftGroup.shiftTypes[i])){
         this.shiftGroup.shiftTypes.splice(i, 1);
       }
-      else{
-        const index = this.possibleShiftsType.indexOf(this.shiftGroup.shiftTypes[i])
-        if(index > -1){
-          this.possibleShiftsType.splice(index, 1);
-        }
-      }
     }
+    this.updateLocalLists();
     this.emitShiftGroup() 
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ngOnChanges(changes: SimpleChanges): void {
+      this.updateLocalLists()
+  }
+
+  updateLocalLists(){
+    this.localShifts = [...this.possibleShifts]
+    this.localShiftTypes = [...this.possibleShiftsType]
+    this.shiftGroup.shifts.forEach((s: string)=>{
+      const index = this.localShifts.indexOf(s);
+      if(index > -1){
+        this.localShifts.splice(index,1)
+      }
+    })
+    this.shiftGroup.shiftTypes.forEach((st: string)=>{
+      const index = this.localShiftTypes.indexOf(st);
+      if(index > -1){
+        this.localShiftTypes.splice(index,1)
+      }
+    })
+    if(this.localShifts.length > 0){
+      this.selectedShift = this.localShifts[0]
+    }
+    if(this.localShiftTypes.length > 0){
+      this.selectedShiftType = this.localShiftTypes[0]
+    }
+  }
+
   addShift() {
-    const index = this.possibleShifts.indexOf(this.selectedShift);
+    const index = this.localShifts.indexOf(this.selectedShift);
     if (index > -1) {
-      this.possibleShifts.splice(index, 1);
+      this.localShifts.splice(index, 1);
     }
     this.shiftGroup.shifts.push(this.selectedShift);
-    if (this.possibleShifts.length > 0) {
-        this.selectedShift= this.possibleShifts[0];
+    if (this.localShifts.length > 0) {
+        this.selectedShift= this.localShifts[0];
     }
     this.shiftGroupSelectorError = false;
     this.emitShiftGroup();
@@ -83,7 +103,8 @@ export class ShiftGroupCreationComponent implements OnInit{
       this.shiftGroup.shifts.splice(indexShiftGroup, 1);
     }
     if (shift !== undefined && shift !== null) {
-      this.possibleShifts.push(shift);
+      this.localShifts.push(shift);
+      this.selectedShift = this.localShifts[0]
     }
     if(this.shiftGroup.shifts.length === 0){
       this.shiftGroupSelectorError = true;
@@ -94,11 +115,11 @@ export class ShiftGroupCreationComponent implements OnInit{
   addShiftType() {
     const index = this.possibleShiftsType.indexOf(this.selectedShiftType);
     if (index > -1) {
-      this.possibleShiftsType.splice(index, 1);
+      this.localShiftTypes.splice(index, 1);
     }
     this.shiftGroup.shiftTypes.push(this.selectedShiftType);
-    if (this.possibleShiftsType.length > 0) {
-        this.selectedShiftType= this.possibleShiftsType[0];
+    if (this.localShiftTypes.length > 0) {
+        this.selectedShiftType= this.localShiftTypes[0];
     }
     this.shiftGroupSelectorError = false;
     this.emitShiftGroup();
@@ -110,7 +131,8 @@ export class ShiftGroupCreationComponent implements OnInit{
       this.shiftGroup.shiftTypes.splice(indexShiftGroup, 1);
     }
     if (shiftType !== undefined && shiftType !== null) {
-      this.possibleShiftsType.push(shiftType);
+      this.localShiftTypes.push(shiftType);
+      this.selectedShiftType = this.localShiftTypes[0]
     }
     if(this.shiftGroup.shiftTypes.length === 0){
       this.shiftGroupSelectorError = true;
