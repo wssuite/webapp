@@ -29,13 +29,11 @@ export class CreateProfileDialogComponent {
       position: {top:'10vh',left: '35%', right: '35%'}
     })
     dialog.afterClosed().subscribe(()=>{
-      this.service.editionFinished = true
       this.dialogRef.close()
     })
   }
 
   importProfile(){
-    this.service.editionFinished = false;
     this.dialogRef.close()
     this.router.navigate(["/" + IMPORT])
   }
