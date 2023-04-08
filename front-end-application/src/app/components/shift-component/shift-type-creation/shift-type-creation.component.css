@@ -8,11 +8,14 @@ h2 {
     width: 100%;
 }
 
+.shiftTable {
+    overflow-y: scroll;
+}
+
 .table-element-container {
     background-color: #d3dde9;
     color: #1a3d66;
     padding-left: 24px;
     width: max-content;
     border-radius: 4px;
-    margin: 5px;
 }
