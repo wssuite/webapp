@@ -74,7 +74,7 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
       { disableClose: true,  
         height: '32%',
         width: '30%', 
-        position: {top:'10vh',left: '35%', right: '35%'},
+        position: {top:'30vh',left: '36%', right: '35%'},
         data: {skill:skill,skills:this.skills},
       });
     

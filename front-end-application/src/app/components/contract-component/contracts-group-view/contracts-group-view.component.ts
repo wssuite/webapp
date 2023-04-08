@@ -81,7 +81,7 @@ export class ContractsGroupViewComponent implements OnInit, AfterViewInit{
       { disableClose: true,  
         height: '60%',
         width: '55%', 
-        position: {top:'10vh',left: '25%', right: '25%'},
+        position: {top:'20vh',left: '23%', right: '25%'},
         data: {contractGroup:contractGroup,contractGroups:this.contractGroups},
       });
     
