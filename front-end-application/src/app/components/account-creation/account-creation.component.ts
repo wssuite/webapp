@@ -69,8 +69,8 @@ export class AccountCreationComponent implements OnInit{
     const dialog = this.dialog.open(AccountCreationDialogComponent,  
       { disableClose: true,  
         height: '60%',
-        width: '50%', 
-        position: {top:'5vh',left: '25%', right: '25%'},
+        width: '35%', 
+        position: {top:'10vh',left: '35%', right: '25%'},
         data: {name: '', startTime: '', endTime: ''}
       });
     dialog.afterClosed().subscribe(()=>{
