@@ -42,6 +42,8 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const tempHistory = this.nurseHistory;
+    console.log(tempHistory)
     if (changes["nurses"] && changes["nurses"].currentValue) {
       this.nurses = changes["nurses"].currentValue;
     }
@@ -49,19 +51,45 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
       this.startDate = changes["startDate"].currentValue;
       
     }
-    this.ngOnInit()
+    //this.ngOnInit()
+    this.timetable = []
+    this.nbColumns = 7;
+    for(let i = 0; i < this.nbColumns; i++) {
+      this.timetable.push({date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
+      
+    }
+    this.timetable.reverse();
+    //initiate demands
+    this.shiftsLoaded = false
+    this.nurseHistory = new Map();
+    for(const date of this.timetable){
+      for (const nurse of this.nurses) {
+          this.nurseHistory.set(JSON.stringify({date:date,nurse:nurse}),"");
+      }
+    }
+    for(const date of this.timetable){
+      for(const nurse of this.nurses){
+        const history = tempHistory.get(JSON.stringify({date:date, nurse: nurse}))
+        console.log(history)
+        if(history){
+          this.nurseHistory.set(JSON.stringify({date:date, nurse: nurse}), history)
+        }
+      }
+    }
+    this.emitNurseHistory()
   }
 
 
   ngOnInit(): void {
     this.timetable = []
     this.nbColumns = 7;
-    for(let i = 0; i <= this.nbColumns; i++) {
+    for(let i = 0; i < this.nbColumns; i++) {
       this.timetable.push({date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
       
     }
     this.timetable.reverse();
     //initiate demands
+    this.shiftsLoaded = false
     this.nurseHistory = new Map();
     for(const date of this.timetable){
       for (const nurse of this.nurses) {
@@ -72,9 +100,10 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
     try{
       this.shiftService.getShiftNames().subscribe({
         next: (shifts: string[])=>{
-          shifts.forEach((shift: string)=>{
+          /*shifts.forEach((shift: string)=>{
             this.possibleShifts.push(shift);
-          })
+          })*/
+          this.possibleShifts = shifts
           this.shiftsLoaded = true;
         },
         error: (error: HttpErrorResponse)=>{
@@ -85,7 +114,10 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
       //Do nothing
     }
   }
-
+  getHistory(date: dateDisplay, nurse: NurseInterface){
+    const key = JSON.stringify({date:date,nurse:nurse})
+    return this.nurseHistory.get(key)? this.nurseHistory.get(key): ""
+  }
   getDateDayStringByIndex(index: number): string {
     if (this.startDate == undefined) {
       return "";

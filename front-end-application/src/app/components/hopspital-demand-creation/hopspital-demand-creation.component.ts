@@ -48,6 +48,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const tempDemand = this.hospitalDemands;
     if (changes["skills"] && changes["skills"].currentValue) {
       this.skills = changes["skills"].currentValue;
     }
@@ -62,6 +63,20 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
       this.endDate = changes["endDate"].currentValue;
     }
     this.ngOnInit()
+    for(const date of this.timetable){
+      for(const skill of this.skills){
+        for(const shift of this.shifts){
+          const key = JSON.stringify({date: date, skill:skill,shift: shift});
+          const demand = tempDemand.get(key);
+          if(demand){
+            this.hospitalDemands.set(key, demand);
+            this.selectedShift.set(key, true);
+            this.getButtonStyle(date,skill, shift)
+          }
+        }
+      }
+    }
+    this.emitScheduleDemand()
   }
 
 
