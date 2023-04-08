@@ -59,7 +59,7 @@ class CSVImporter(BaseImporter):
             tokens = sanitize_array(lines[i].split(","))
 
         i = i + 1
-        profile_name = Wrapper(lines[i].split(",")).get_by_index(1)
+        profile_name = Wrapper(sanitize_array(lines[i].split(","))).get_by_index(1)
         i = i + 1
         j = i
         current_section = ""
