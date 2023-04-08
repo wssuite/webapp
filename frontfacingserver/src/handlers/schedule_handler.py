@@ -57,6 +57,7 @@ class ScheduleHandler(BaseHandler):
             demand_json[profile],
             demand_json[start_date],
             demand_json[end_date],
+            v
         )
         detailed_demand = ScheduleDemandDetailed()
 
@@ -83,7 +84,7 @@ class ScheduleHandler(BaseHandler):
             start_date: demand.start_date,
             end_date: demand.end_date,
             profile: demand.profile,
-            version: str(next_version),
+            version: next_version,
             timestamp: time_str,
         }
         """This will be the case of a schedule regeneration"""
