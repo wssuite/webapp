@@ -1,4 +1,59 @@
-h1, h2{
+img{
+    width: 23vw;
+    height: inherit;
+    padding: 7.8% 3%;
+    background-color: #d3dde9;
+}
+
+.profile-container{
+    display: inline;
+    justify-items: flex-start;
+    display: flex;
+    height: inherit;
+}
+
+.text-container {
+    padding: 2%;
+}
+
+.title-container {
+    padding-top: 5vh;
+}
+
+h1, h4{
+    text-align: center;
+}
+
+.action-button{
+    font-size: larger;
+    font-weight: bold;
+    height: 50px;
+    width: 240px;
+}
+
+.import-section, .create-empty-section {
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-container {
+    padding-top:1vh;
+    padding-bottom: 6vh;
+}
+
+.close-button{
+    float:right;
+    bottom: 0%;
+    right: 0%;
+    position: absolute;
+    margin-bottom: 3vh;
+    margin-right: 3vh;
+}
+
+
+/* h1, h2{
     text-align: center;
 }
 
@@ -34,4 +89,4 @@ p{
 
 .profile-container{
     margin-top: 5vh;
-}
+} */

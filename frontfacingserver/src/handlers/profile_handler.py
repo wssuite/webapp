@@ -117,8 +117,10 @@ class ProfileHandler(BaseHandler):
         try:
             self.create_profile(token, d_p.name)
             for skill in d_p.skills:
+                self.verify_name_is_valid(skill.name)
                 self.skill_dao.insert_one_if_not_exist(skill.db_json())
             for shift in d_p.shifts:
+                self.verify_name_is_valid(shift.name)
                 self.shift_dao.insert_one_if_not_exist(shift.db_json())
                 self.shift_group_dao.add_shift_to_shift_group_list(
                     work, shift.name, d_p.name
