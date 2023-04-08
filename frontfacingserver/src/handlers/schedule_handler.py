@@ -253,7 +253,7 @@ class ScheduleHandler(BaseHandler):
         username_id_dict = {}
         for nurse in demand.nurses:
             nurse_dict = self.nurse_dao.find_by_username(nurse, demand.profile)
-            if nurse is not None:
+            if nurse_dict is not None:
                 nurse_object = Nurse().from_json(nurse_dict)
                 for nurse_group in nurse_groups:
                     nurse_group_object = NurseGroup().from_json(nurse_group)

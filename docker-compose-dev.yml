@@ -113,7 +113,6 @@ services:
     networks:
       schedule_generator:
         ipv4_address: 192.168.5.5
-    restart: on-failure
     depends_on:
       - worker1
       - worker2

@@ -5,7 +5,7 @@ import { UNWANTED_PATTERNS_DESCRIPTION, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DESCRIPTION
 import { AlternativeShift } from "src/app/models/AlternativeShift";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 import { Contract } from "src/app/models/Contract";
-import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
+//import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
 import { MinMaxShiftConstraint } from "src/app/models/MinMaxShiftConstraint";
 import { ShiftConstraint } from "src/app/models/ShiftConstraint";
 import { UnwantedPatterns } from "src/app/models/UnwantedPatterns";
@@ -104,19 +104,19 @@ export class ContractCreationComponent implements OnInit{
         break;
 
       case TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME:
-        constraint = new MinMaxConstraint(TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DESCRIPTION);
+        constraint = new MinMaxShiftConstraint(TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DESCRIPTION);
         break;
 
       case MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME:
-        constraint = new MinMaxConstraint(MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DESCRIPTION);
+        constraint = new MinMaxShiftConstraint(MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DESCRIPTION);
         break;
       
       case MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME:
-        constraint = new MinMaxConstraint(MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DESCRIPTION);
+        constraint = new MinMaxShiftConstraint(MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DESCRIPTION);
         break;
       
       case MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME:
-        constraint = new MinMaxConstraint(MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DESCRIPTION);
+        constraint = new MinMaxShiftConstraint(MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DESCRIPTION);
         break;
         
       case UNWANTED_SKILLS_DISPLAY_NAME:

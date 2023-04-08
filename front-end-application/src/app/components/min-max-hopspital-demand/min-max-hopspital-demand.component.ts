@@ -21,6 +21,8 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
   minWeightErrorState: boolean;
   minWeightLabel: string;
   maxWeightLabel: string;
+  minInputDisabled: boolean;
+  maxInputDisabled: boolean;
 
   
   constructor() {
@@ -32,6 +34,8 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
     this.minWeightErrorState = true;
     this.maxWeightLabel = " Max weight";
     this.minWeightLabel = "Min weight"
+    this.minInputDisabled = false
+    this.maxInputDisabled = false;
     this.demand = {
       maxValue: "0",
       maxWeight: "0",
@@ -58,22 +62,32 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
 
   updateMinValueErrorState(e: boolean) {
     this.minValueErrorState = e;
+    if(+this.demand.minValue > +this.demand.maxValue){
+      this.demand.maxValue = this.demand.minValue
+    }
     this.emitSkillDemand();
   }
 
   updateMaxValueErrorState(e: boolean) {
     this.maxValueErrorState = e;
+    if(this.demand.maxValue !== ""){
+      if(+this.demand.minValue > +this.demand.maxValue) {
+        this.demand.minValue = this.demand.maxValue
+      }
+    }
     this.emitSkillDemand();
   }
 
   updateMinWeightErrorState(e: boolean) {
     this.minWeightErrorState = e;
     this.emitSkillDemand();
+    this.minInputDisabled = this.demand.minWeight === "0"
   }
 
   updateMaxWeightErrorState(e: boolean) {
     this.maxWeightErrorState = e;
     this.emitSkillDemand();
+    this.maxInputDisabled = this.demand.maxWeight === "0"
   }
 
 }

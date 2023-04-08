@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { NurseInterface } from 'src/app/models/Nurse';
 
@@ -7,7 +7,7 @@ import { NurseInterface } from 'src/app/models/Nurse';
   templateUrl: './nurse-creation.component.html',
   styleUrls: ['./nurse-creation.component.css']
 })
-export class NurseCreationComponent implements OnInit {
+export class NurseCreationComponent implements OnInit, OnChanges {
   @Input() nurse!: NurseInterface;
   @Output() nurseChange: EventEmitter<NurseInterface>;
   @Output() errorState: EventEmitter<boolean>;
@@ -26,6 +26,8 @@ export class NurseCreationComponent implements OnInit {
   contractsError: boolean;
   contractsGroupError: boolean;
   nurseStartUsername!: string;
+  localContracts: string[]
+  localContractGroups: string[]
 
   constructor(){
     this.nurseChange = new EventEmitter();
@@ -38,6 +40,8 @@ export class NurseCreationComponent implements OnInit {
     this.inputDisabled = false;
     this.contractsError = true;
     this.contractsGroupError = true;
+    this.localContracts = []
+    this.localContractGroups = []
   }
 
   ngOnInit(): void {
@@ -53,37 +57,52 @@ export class NurseCreationComponent implements OnInit {
       if(!this.possibleContracts.includes(this.nurse.contracts[i])){
         this.nurse.contracts.splice(i, 1);
       }
-      else{
-        const index = this.possibleContracts.indexOf(this.nurse.contracts[i])
-        if(index > -1){
-          this.possibleContracts.splice(index, 1)
-        }
-      }
     }
 
     for(let i=0; i< this.nurse.contract_groups.length; i++) {
       if(!this.possibleContractsGroup.includes(this.nurse.contract_groups[i])){
         this.nurse.contract_groups.splice(i, 1);
       }
-      else{
-        const index = this.possibleContractsGroup.indexOf(this.nurse.contract_groups[i])
-        if(index > -1){
-          this.possibleContractsGroup.splice(index, 1)
-        }
-      }
     }
+    this.updateLocalContracts()
 
     this.emitNurse()
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ngOnChanges(changes: SimpleChanges): void {
+      this.updateLocalContracts()
+  }
 
+  updateLocalContracts(){
+    this.localContracts = [...this.possibleContracts];
+    this.localContractGroups = [...this.possibleContractsGroup];
+    this.nurse.contracts.forEach((c: string)=>{
+      const index = this.localContracts.indexOf(c)
+      if(index > -1){
+        this.localContracts.splice(index, 1)
+      }
+    })
+    this.nurse.contract_groups.forEach((cg: string)=>{
+      const index = this.localContractGroups.indexOf(cg)
+      if(index > -1){
+        this.localContractGroups.splice(index, 1)
+      }
+    })
+    if(this.localContracts.length > 0){
+      this.selectedContract = this.localContracts[0]
+    }
+    if(this.localContractGroups,length > 0){
+      this.selectedContractGroup = this.localContractGroups[0]
+    }
+  }
   addContract() {
-    const index = this.possibleContracts.indexOf(this.selectedContract);
+    const index = this.localContracts.indexOf(this.selectedContract);
     if (index > -1) {
-      this.possibleContracts.splice(index, 1);
+      this.localContracts.splice(index, 1);
     }
     this.nurse.contracts.push(this.selectedContract);
-    if (this.possibleContracts.length > 0) {
-        this.selectedContract= this.possibleContracts[0];
+    if (this.localContracts.length > 0) {
+        this.selectedContract= this.localContracts[0];
     }
     this.contractSelectorError = false;
     this.emitNurse();
@@ -95,7 +114,8 @@ export class NurseCreationComponent implements OnInit {
       this.nurse.contracts.splice(index, 1);
     }
     if (contract !== undefined && contract !== null) {
-      this.possibleContracts.push(contract);
+      this.localContracts.push(contract);
+      this.selectedContract= this.localContracts[0];
     }
     if(this.nurse.contracts.length === 0){
       this.contractSelectorError = true;
@@ -104,13 +124,13 @@ export class NurseCreationComponent implements OnInit {
   }
 
   addContractGroup() {
-    const index = this.possibleContractsGroup.indexOf(this.selectedContractGroup);
+    const index = this.localContractGroups.indexOf(this.selectedContractGroup);
     if (index > -1) {
-      this.possibleContractsGroup.splice(index, 1);
+      this.localContractGroups.splice(index, 1);
     }
     this.nurse.contract_groups.push(this.selectedContractGroup);
-    if (this.possibleContractsGroup.length > 0) {
-        this.selectedContractGroup= this.possibleContractsGroup[0];
+    if (this.localContractGroups.length > 0) {
+        this.selectedContractGroup= this.localContractGroups[0];
     }
     this.contractGroupSelectorError = false;
     this.emitNurse();
@@ -122,7 +142,8 @@ export class NurseCreationComponent implements OnInit {
       this.nurse.contract_groups.splice(index, 1);
     }
     if (contractGroup !== undefined && contractGroup !== null) {
-      this.possibleContractsGroup.push(contractGroup);
+      this.localContractGroups.push(contractGroup);
+      this.selectedContractGroup= this.localContractGroups[0];
     }
     if(this.nurse.contract_groups.length === 0){
       this.contractGroupSelectorError = true;

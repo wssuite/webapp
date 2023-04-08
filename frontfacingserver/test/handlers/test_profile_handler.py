@@ -253,7 +253,7 @@ name,unwantedSkillsContract
 unwanted skills,Nurse,hard
 
 name,minConsContract
-minimum and maximum of consecutive working weekends,1.0,5.0,5.0,hard
+minimum and maximum of consecutive working weekends,Early,1.0,5.0,5.0,hard
 
 name,General
 unwanted shift,Early,hard
