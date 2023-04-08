@@ -8,6 +8,14 @@ h2 {
     width: 100%;
 }
 
+.formContainer {
+    padding: 1.5%;
+}
+
+.addShiftButton {
+    margin-left: 1.5%;
+}
+
 .shiftTable {
     overflow-y: scroll;
 }

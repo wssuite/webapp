@@ -3,6 +3,7 @@
   <div class="nameShiftTypeContainer">
     <h2>Shift type name</h2>
     <hr />
+    <div class="formContainer"></div>
     <mat-form-field class="nameForm" appearance="fill">
       <mat-label>Enter shift type name</mat-label>
       <input
@@ -19,6 +20,7 @@
   <div class="shifts-Section">
     <h2 class="shiftSectionTitle">Shifts</h2>
     <hr />
+    <div class="formContainer"></div>
     <div *ngIf="localShifts.length > 0">
       <mat-form-field appearance="fill">
         <mat-label>Select a shift</mat-label>
@@ -35,6 +37,7 @@
         mat-raised-button
         class="addShiftButton flex-row-center-container"
         (click)="addShift()"
+        color="nurse-blue"
       >
         add Shift
       </button>
