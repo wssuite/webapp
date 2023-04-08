@@ -46,8 +46,8 @@ class Nurse(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
-        self.username = wrapper.get_by_index(0)
-        self.name = wrapper.get_by_index(1)
+        self.username = wrapper.get_by_index(1)
+        self.name = wrapper.get_by_index(0)
         self.direct_contracts = []
         for i in range(2, len(tokens)):
             self.direct_contracts.append(wrapper.get_by_index(i))
@@ -73,6 +73,6 @@ class Nurse(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
             self.contract_groups
         )
         return (
-            f"{self.username},{self.name}{contracts_string}"
+            f"{self.name},{self.username}{contracts_string}"
             f"{contract_groups_string}\n"
         )

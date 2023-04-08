@@ -96,6 +96,7 @@ import { ButtonMultiselectComponent } from './components/button-multiselect/butt
 import { SidenavContractComponent } from './components/contract-component/sidenav-contract/sidenav-contract.component';
 import { ContractsGroupViewComponent } from './components/contract-component/contracts-group-view/contracts-group-view.component';
 import { SchedulesGalleryComponent } from './components/schedules-gallery/schedule-view.component';
+import { NurseHistoryComponent } from './components/nurse-history/nurse-history.component';
 
 @NgModule({
   declarations: [
@@ -163,6 +164,7 @@ import { SchedulesGalleryComponent } from './components/schedules-gallery/schedu
     SidenavContractComponent,
     ContractsGroupViewComponent,
     SchedulesGalleryComponent,
+    NurseHistoryComponent,
   ],
   imports: [
     BrowserModule,

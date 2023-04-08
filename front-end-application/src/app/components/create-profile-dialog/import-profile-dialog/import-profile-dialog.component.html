@@ -24,7 +24,7 @@
             <mat-error *ngIf="nameExist()">
                 Profile name is already used
             </mat-error>
-            <mat-error *ngIf="profileNameCtrl.hasError('pattern')">
+            <mat-error *ngIf="containsWhiteSpace()">
                 Profile name should not contain empty spaces
             </mat-error>
         </div>
@@ -48,7 +48,7 @@
                             {{shift.name}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-shift-creation [(shift)]="profile.shifts[i]" [shifts]="possibleShifts" (errorState)="updateShiftErrorState(i, $event)" ></app-shift-creation>
+                    <app-shift-creation [(shift)]="profile.shifts[i]" [imported]="imported" [shifts]="possibleShifts" (errorState)="updateShiftErrorState(i, $event)" ></app-shift-creation>
                     <button mat-raised-button color="accent" (click)="removeShift(i)">
                         Remove
                     </button>
@@ -74,7 +74,7 @@
                             {{shiftType.name}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-shift-type-creation [(shiftType)]="profile.shiftTypes[i]" [possibleShifts]="possibleShifts" [selectedShift]="possibleShifts[0]" (errorState)="updateShiftTypeErrorState(i,$event)" [shiftsType]="possibleShiftTypes"></app-shift-type-creation>
+                    <app-shift-type-creation [imported]="imported" [(shiftType)]="profile.shiftTypes[i]" [possibleShifts]="possibleShifts" [selectedShift]="possibleShifts[0]" (errorState)="updateShiftTypeErrorState(i,$event)" [shiftsType]="possibleShiftTypes"></app-shift-type-creation>
                     <button mat-raised-button color="accent" (click)="removeShiftType(i)">
                         Remove
                     </button>
@@ -100,7 +100,7 @@
                             {{shiftGroup.name}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-shift-group-creation [(shiftGroup)]="profile.shiftGroups[i]" [possibleShifts]="possibleShifts" [selectedShift]="possibleShifts[0]" [possibleShiftsType]="possibleShiftTypes" [selectedShiftType]="possibleShiftTypes[0]" (errorState)="updateShiftGroupErrorState(i, $event)" [shiftsGroup]="possibleShiftGroups"></app-shift-group-creation>
+                    <app-shift-group-creation [imported]="imported" [(shiftGroup)]="profile.shiftGroups[i]" [possibleShifts]="possibleShifts" [selectedShift]="possibleShifts[0]" [possibleShiftsType]="possibleShiftTypes" [selectedShiftType]="possibleShiftTypes[0]" (errorState)="updateShiftGroupErrorState(i, $event)" [shiftsGroup]="possibleShiftGroups"></app-shift-group-creation>
                     <button mat-raised-button color="accent" (click)="removeShiftGroup(i)">
                         Remove
                     </button>
@@ -126,7 +126,7 @@
                             {{c.name}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-contract-creation [(contract)]="contracts[i]" [possibleShifts]="contractShifts" [possibleSkills]="skills" [contracts]="contractNames" (errorState)="updateContractErrorState(i, $event)"></app-contract-creation>
+                    <app-contract-creation [imported]="imported" [(contract)]="contracts[i]" [possibleShifts]="contractShifts" [possibleSkills]="skills" [contracts]="contractNames" (errorState)="updateContractErrorState(i, $event)"></app-contract-creation>
                     <button mat-raised-button color="accent" (click)="removeContract(i)">
                         Remove
                     </button>
@@ -152,7 +152,7 @@
                             {{c.name}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-contract-group-creation [(contractGroup)]="profile.contractGroups[i]" [contractGroups]="contractsGroup" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateContractGroupErrorState(i,$event)"></app-contract-group-creation>
+                    <app-contract-group-creation [imported]="imported" [(contractGroup)]="profile.contractGroups[i]" [contractGroups]="contractsGroup" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateContractGroupErrorState(i,$event)"></app-contract-group-creation>
                     <button mat-raised-button color="accent" (click)="removeContractGroup(i)">
                         Remove
                     </button>
@@ -178,7 +178,7 @@
                             {{n.username}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-nurse-creation [(nurse)]="profile.nurses[i]" [possibleContracts]="contractNames" [possibleContractsGroup]="contractsGroup" [selectedContract]="contractNames[0]" [selectedContractGroup]="contractsGroup[0]"  [nurses]="nurses" (errorState)="updateNurseErrorState(i, $event)"></app-nurse-creation>
+                    <app-nurse-creation [imported]="imported" [(nurse)]="profile.nurses[i]" [possibleContracts]="contractNames" [possibleContractsGroup]="contractsGroup" [selectedContract]="contractNames[0]" [selectedContractGroup]="contractsGroup[0]"  [nurses]="nurses" (errorState)="updateNurseErrorState(i, $event)"></app-nurse-creation>
                     <button mat-raised-button color="accent" (click)="removeNurse(i)">
                         Remove
                     </button>
@@ -204,7 +204,7 @@
                             {{n.name}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-nurse-group-creation [(nurseGroup)]="profile.nurseGroups[i]" [possibleContracts]="contractNames" [possibleContractsGroup]="contractsGroup" [selectedContract]="contractNames[0]" [selectedContractGroup]="contractsGroup[0]" [possibleNurses]="nurses" [selectedNurse]="nurses[0]" [nurseGroups]="nurseGroups" (errorState)="updateNurseGroupErrorState(i, $event)"></app-nurse-group-creation>
+                    <app-nurse-group-creation [imported]="imported" [(nurseGroup)]="profile.nurseGroups[i]" [possibleContracts]="contractNames" [possibleContractsGroup]="contractsGroup" [selectedContract]="contractNames[0]" [selectedContractGroup]="contractsGroup[0]" [possibleNurses]="nurses" [selectedNurse]="nurses[0]" [nurseGroups]="nurseGroups" (errorState)="updateNurseGroupErrorState(i, $event)"></app-nurse-group-creation>
                     <button mat-raised-button color="accent" (click)="removeNurseGroup(i)">
                         Remove
                     </button>
@@ -230,7 +230,7 @@
                             {{s.name}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-skill-creation [(skill)]="profile.skills[i]" [skills]="skills" (errorState)="updateSkillErrorState(i, $event)"></app-skill-creation>
+                    <app-skill-creation [imported]="imported" [(skill)]="profile.skills[i]" [skills]="skills" (errorState)="updateSkillErrorState(i, $event)"></app-skill-creation>
                     <button mat-raised-button color="accent" (click)="removeSkill(i)">
                         Remove
                     </button>

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.models.contract import Contract, ContractMinMaxConstraint
+from src.models.contract import Contract, ContractMinMaxShiftConstraint
 
 from constants import (
     number_of_free_days_after_shift,
@@ -54,6 +54,7 @@ class TestContract(TestCase):
                     max_constraint_weight: "hard",
                     min_constraint_value: "1.0",
                     min_constraint_weight: "5.0",
+                    shift_constraint: "Early",
                 },
                 {
                     constraint_name: min_max_num_assignments_in_four_weeks,
@@ -61,6 +62,7 @@ class TestContract(TestCase):
                     max_constraint_weight: "hard",
                     min_constraint_value: "1.0",
                     min_constraint_weight: "5.0",
+                    shift_constraint: "Early",
                 },
                 {
                     constraint_name: min_max_consecutive_weekends,
@@ -68,6 +70,7 @@ class TestContract(TestCase):
                     max_constraint_weight: "hard",
                     min_constraint_value: "1.0",
                     min_constraint_weight: "5.0",
+                    shift_constraint: "Early",
                 },
                 {
                     constraint_name: min_max_consecutive_shift_type,
@@ -114,6 +117,7 @@ class TestContract(TestCase):
                     max_constraint_weight: "hard",
                     min_constraint_value: "1.0",
                     min_constraint_weight: "5.0",
+                    shift_constraint: "Early",
                 },
             ],
             profile: profile1,
@@ -136,13 +140,14 @@ class TestContract(TestCase):
     def test_two_merged_contract_constraints_are_added(self):
         contract = Contract().from_json(self.contract_dict)
         self.assertEqual(11, len(contract.constraints))
-        added_constraint = ContractMinMaxConstraint().from_json(
+        added_constraint = ContractMinMaxShiftConstraint().from_json(
             {
                 constraint_name: min_max_num_assignments_in_four_weeks,
                 max_constraint_value: "6.0",
                 max_constraint_weight: "1.0",
                 min_constraint_value: "1.0",
                 min_constraint_weight: "5.0",
+                shift_constraint: "Late",
             }
         )
 
@@ -172,12 +177,12 @@ number of free days after shift,Early,1.0,hard
 #,skills,weight,,,,,,,
 unwanted skills,Nurse,hard,,,,,,,
 #,value,weight,,,,,,,
-total number of working weekends in four weeks,1.0,5.0,5.0,hard,,,,,,,
-#,min value,min weight,max value,max weight
+total number of working weekends in four weeks,Early,1.0,5.0,5.0,hard,,,,,,,
+#,shift,min value,min weight,max value,max weight
 ,,,,,
-minimum and maximum number of assignments in four weeks,1.0,5.0,5.0,hard,,,,,
-#,min value,min weight,max value,max weight,,,,,
-minimum and maximum of consecutive working weekends,1.0,5.0,5.0,hard,,,,,
+minimum and maximum number of assignments in four weeks,Early,1.0,5.0,5.0,hard,,,,,
+#,shift,min value,min weight,max value,max weight,,,,,
+minimum and maximum of consecutive working weekends,Early,1.0,5.0,5.0,hard,,,,,
 #,shift,min value,min weight,max value,max weight,,,,
 minimum and maximum of consecutive shift type,Early,1.0,5.0,5.0,hard,,,,
 #,weight,,,,,,,,
@@ -188,7 +193,7 @@ complete weekends,hard,,,,,,,,
 Unwanted patterns,Monday|Wednesday|Friday,Late|Early|MidDay,Tuesday,Early,hard
 #,shift,weight,,,,,,,
 unwanted shift,Early,hard,,,,,,,
-minimum and maximum of working hours in four weeks,1.0,5.0,5.0,hard,,,,,
+minimum and maximum of working hours in four weeks,Early,1.0,5.0,5.0,hard,,,,,
 ,,,,,,,,,"""
         contract = Contract().read_contract(profile1, string)
         self.assertEqual(self.contract_dict, contract.to_json())
@@ -197,15 +202,15 @@ minimum and maximum of working hours in four weeks,1.0,5.0,5.0,hard,,,,,
         expected = """name,FullTime
 number of free days after shift,Early,1.0,hard
 unwanted skills,Nurse,hard
-total number of working weekends in four weeks,1.0,5.0,5.0,hard
-minimum and maximum number of assignments in four weeks,1.0,5.0,5.0,hard
-minimum and maximum of consecutive working weekends,1.0,5.0,5.0,hard
+total number of working weekends in four weeks,Early,1.0,5.0,5.0,hard
+minimum and maximum number of assignments in four weeks,Early,1.0,5.0,5.0,hard
+minimum and maximum of consecutive working weekends,Early,1.0,5.0,5.0,hard
 minimum and maximum of consecutive shift type,Early,1.0,5.0,5.0,hard
 identical shift types during weekend,hard
 complete weekends,hard
 unwanted patterns,Monday|Wednesday|Friday,Late|Early|MidDay,Tuesday,Early,hard
 unwanted shift,Early,hard
-minimum and maximum of working hours in four weeks,1.0,5.0,5.0,hard
+minimum and maximum of working hours in four weeks,Early,1.0,5.0,5.0,hard
 
 """
         contract = Contract().from_json(self.contract_dict)
@@ -237,17 +242,17 @@ minimum and maximum of working hours in four weeks,1.0,5.0,5.0,hard
         expected = """{{
 contractName,FullTime
 constraints
-{0},hard,1.0,Early
+{0},1.0,hard,Early
 {1},hard,1,Nurse
-{2},1.0,5.0,5.0,hard
-{3},1.0,5.0,5.0,hard
-{4},1.0,5.0,5.0,hard
+{2},1.0,5.0,5.0,hard,Early
+{3},1.0,5.0,5.0,hard,Early
+{4},1.0,5.0,5.0,hard,Early
 {5},1.0,5.0,5.0,hard,Early
 {6},hard
 {7},hard
 {8},hard,2,Monday|Wednesday|Friday;Late|Early|MidDay,Tuesday;Early
 {9},hard,Early
-{10},1.0,5.0,5.0,hard
+{10},1.0,5.0,5.0,hard,Early
 }}
 """.format(
             number_of_free_days_after_shift,

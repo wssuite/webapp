@@ -100,21 +100,21 @@ CONTRACTS
 {
 contractName,General
 constraints
-NumberOfFreeDaysAfterShift,hard,1.0,Late
-MinMaxConsecutiveWeekends,1.0,5.0,3.0,hard
+NumberOfFreeDaysAfterShift,1.0,hard,Late
+MinMaxConsecutiveWeekends,1.0,5.0,3.0,hard,Early
 }
 {
 contractName,Nurses contracts
 constraints
 unwantedSkills,hard,1,HeadNurse
-TotalWeekendsInFourWeeks,1.0,5.0,5.0,hard
+TotalWeekendsInFourWeeks,1.0,5.0,5.0,hard,Early
 IdentShiftTypesDuringWeekend,hard
 }
 {
 contractName,Head nurses contracts
 constraints
 unwantedSkills,hard,1,Nurse
-TotalWeekendsInFourWeeks,1.0,5.0,3.0,hard
+TotalWeekendsInFourWeeks,1.0,5.0,3.0,hard,Early
 IdentShiftTypesDuringWeekend,hard
 }
 {
