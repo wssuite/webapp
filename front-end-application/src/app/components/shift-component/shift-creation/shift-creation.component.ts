@@ -15,6 +15,7 @@ export class ShiftCreationComponent implements OnInit{
   @Output() shiftChange: EventEmitter<ShiftInterface>;
   @Output() errorState: EventEmitter<boolean>;
   @Input() shifts!: string[]
+  @Input() imported: boolean
 
 
 
@@ -28,7 +29,7 @@ export class ShiftCreationComponent implements OnInit{
   constructor(){
     this.shiftChange = new EventEmitter();
     this.errorState = new EventEmitter();
- 
+    this.imported = false
     this.nameShiftFormCtrl = new FormControl(null, Validators.required);
     this.startTimeFormCtrl = new FormControl(null, Validators.required);
     this.endTimeFormCtrl = new FormControl(null, Validators.required);
@@ -36,7 +37,7 @@ export class ShiftCreationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.inputDisabled = this.shift.name === ""? false: true;
+    this.inputDisabled = this.shift.name === "" || this.imported? false: true;
     this.nameShiftFormCtrl = new FormControl({value: this.shift.name, disabled: this.inputDisabled},
       Validators.required);
     this.startTimeFormCtrl = new FormControl({value: this.shift.startTime, disabled: false},
@@ -83,6 +84,13 @@ export class ShiftCreationComponent implements OnInit{
   }
 
   emitShift(){
+    const convertedTime= this.convertTime(this.shift.endTime)
+    convertedTime.hours = convertedTime.hours === 24 ? 0: convertedTime.hours
+    if(convertedTime.hours < 10) {
+      const endHours = convertedTime.hours < 10? "0"+ convertedTime.hours.toString() : convertedTime.hours.toString()
+      const endMinutes = convertedTime.minutes < 10? "0"+ convertedTime.minutes.toString() : convertedTime.minutes.toString()
+      this.shift.endTime = `${endHours}:${endMinutes}`
+    }
     this.shiftChange.emit(this.shift);
     this.emitErrorState();
   }
@@ -93,7 +101,14 @@ export class ShiftCreationComponent implements OnInit{
   }
 
   nameExist(): boolean {
-    return this.shifts.includes(this.shift.name);
+    const temp = [...this.shifts]
+    if(this.imported){
+      const index = temp.indexOf(this.shift.name)
+      if(index > -1){
+        temp.splice(index, 1)
+      }
+    }
+    return temp.includes(this.shift.name);
   }
 
 
@@ -110,7 +125,6 @@ export class ShiftCreationComponent implements OnInit{
   openFromIconStartTime(timepicker: NgxMaterialTimepickerComponent) {
     console.log("here open start time")
     if (!this.startTimeFormCtrl.disabled) {
-      this.onClearStartTime()
       timepicker.open();
     }
     timepicker.timeChanged.subscribe((time: string)=>{

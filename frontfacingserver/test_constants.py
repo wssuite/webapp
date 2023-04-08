@@ -128,6 +128,7 @@ min_cons_contract = {
             max_constraint_weight: "hard",
             min_constraint_value: "1.0",
             min_constraint_weight: "5.0",
+            shift_constraint: "Early",
         }
     ],
 }

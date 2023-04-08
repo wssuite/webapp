@@ -57,7 +57,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   ngOnInit(): void {
     this.timetable = []
     this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate);
-    for(let i = 0; i <= this.nbColumns; i++) {
+    for(let i = 0; i < this.nbColumns; i++) {
       this.timetable.push( {date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
     }
     //initiate preferences

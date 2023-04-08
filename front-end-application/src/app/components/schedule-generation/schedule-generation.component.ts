@@ -11,7 +11,7 @@ import { NurseService } from "src/app/services/nurse/nurse.service"
 import { ShiftService } from "src/app/services/shift/shift.service";
 import { SkillService } from "src/app/services/shift/skill.service";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
-import { GenerationRequest, HospitalDemandElement, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+import { GenerationRequest, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
@@ -56,6 +56,7 @@ export class ScheduleGenerationComponent implements OnInit {
   hospitalDemands: HospitalDemandElement[];
   demandsError: boolean;
   nursesPreference: SchedulePreferenceElement[];
+  nursesHistory: NurseHistoryElement[];
 
   scheduleData!: ScheduleDataInterface;
   dateError: boolean
@@ -81,6 +82,7 @@ export class ScheduleGenerationComponent implements OnInit {
     this.shifts = [];
     this.hospitalDemands = [];
     this.nursesPreference = [];
+    this.nursesHistory = [];
     this.demandsError = true;
     this.dateError = true;
   }
@@ -190,6 +192,7 @@ export class ScheduleGenerationComponent implements OnInit {
     }
     if (nurse !== undefined && nurse !== null) {
       this.possibleNurses.push(nurse);
+      this.selectedNurse = this.possibleNurses[0]
     }
   }
 
@@ -212,6 +215,7 @@ export class ScheduleGenerationComponent implements OnInit {
     }
     if (shift !== undefined && shift !== null) {
       this.possibleShifts.push(shift);
+      this.selectedShift = this.possibleShifts[0];
     }
   }
 
@@ -234,6 +238,7 @@ export class ScheduleGenerationComponent implements OnInit {
       this.skills = [...this.skills];
     if (skill !== undefined && skill !== null) {
       this.possibleSkills.push(skill);
+      this.selectedSkill = this.possibleSkills[0];
     }
   }
 }
@@ -252,7 +257,7 @@ export class ScheduleGenerationComponent implements OnInit {
       e.value != null && e.value != undefined
         ? (this.endDate = e.value)
         : (this.endDate = new Date());
-    const dayDiffrences = Math.round((+this.endDate - +this.startDate)/DateUtils.dayMultiplicationFactor);
+    const dayDiffrences = DateUtils.nbDaysDifference(this.endDate, this.startDate)
     console.log(dayDiffrences)
     this.dateError = dayDiffrences % 7 !== 0
     console.log(this.dateError)
@@ -273,6 +278,7 @@ export class ScheduleGenerationComponent implements OnInit {
       nurses: requestNurses,
       skills: this.skills,
       shifts: this.shifts,
+      history: this.nursesHistory,
       hospitalDemand: this.hospitalDemands
     }
     this.scheduleService.generateSchedule(request).subscribe({
@@ -297,6 +303,11 @@ export class ScheduleGenerationComponent implements OnInit {
   updatePreferences(preferences: SchedulePreferenceElement[]) {
     console.log(preferences);
     this.nursesPreference = preferences;
+  }
+
+  updateHistory(history: NurseHistoryElement[]){
+    this.nursesHistory = history;
+    console.log(history);
   }
 
   updateDemands(demand: HospitalDemandElement[]){

@@ -1,5 +1,13 @@
 <div class="nurse-container" (mouseleave)="emitNurse()"></div>
 <div class="content"  mat-dialog-content>
+  <div class="nameNurseContainer">
+    <h2>Name</h2>
+    <hr>
+    <mat-form-field class = "nameForm" appearance="fill">
+    <mat-label>Enter nurse Name</mat-label>
+    <input matInput [(ngModel)]="nurse.name" [formControl]="nameNurseFormCtrl" (keyup)="emitNurse()" (keyup)="setUsername()">
+    </mat-form-field>
+ </div>
   <div class="UsernameNurseContainer">
     <h2>Username</h2>
     <hr>
@@ -8,22 +16,14 @@
     <input matInput [(ngModel)]="nurse.username" [formControl]="usernameNurseFormCtrl" (keyup)="emitNurse()">
     </mat-form-field>
  </div>
- <div class="nameNurseContainer">
-    <h2>Name</h2>
-    <hr>
-    <mat-form-field class = "nameForm" appearance="fill">
-    <mat-label>Enter nurse Name</mat-label>
-    <input matInput [(ngModel)]="nurse.name" [formControl]="nameNurseFormCtrl" (keyup)="emitNurse()">
-    </mat-form-field>
- </div>
  <div class="contractSection">
    <h2 class="contractSectionTitle">Contracts</h2>
    <hr>
-   <div *ngIf="possibleContracts.length > 0">
+   <div *ngIf="localContracts.length > 0">
      <mat-form-field appearance="fill">
        <mat-label>Select a contract</mat-label>
        <mat-select [(ngModel)]="selectedContract" (selectionChange)="emitNurse()">
-         <mat-option *ngFor="let contract of possibleContracts" [value]="contract">
+         <mat-option *ngFor="let contract of localContracts" [value]="contract">
            {{ contract }}
          </mat-option>
        </mat-select>
@@ -51,11 +51,11 @@
  <div class="contractGroupSection">
   <h2 class="contractSectionTitle">Group Contracts</h2>
   <hr>
-  <div *ngIf="possibleContractsGroup.length > 0">
+  <div *ngIf="localContractGroups.length > 0">
     <mat-form-field appearance="fill">
       <mat-label>Select a group contract</mat-label>
       <mat-select [(ngModel)]="selectedContractGroup" (selectionChange)="emitNurse()">
-        <mat-option *ngFor="let contractGroup of possibleContractsGroup" [value]="contractGroup">
+        <mat-option *ngFor="let contractGroup of localContractGroups" [value]="contractGroup">
           {{ contractGroup }}
         </mat-option>
       </mat-select>

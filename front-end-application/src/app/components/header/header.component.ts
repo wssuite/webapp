@@ -56,8 +56,8 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-      this.profileService.newImportedProfileCreated.subscribe((created: boolean)=>{
-        this.getProfiles(created);
+      this.profileService.newImportedProfileCreated.subscribe(()=>{
+        this.getProfiles(true);
       })
       this.scheduleService.socket.on(NOTIFICATION_UPDATE, (solution: Solution)=>{
         if(this.notifications.indexOf(solution) <= -1){

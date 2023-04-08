@@ -4,7 +4,8 @@
     <div><mat-form-field class = "nameForm" appearance="fill">
       <mat-label>Enter shift name</mat-label>
       <input matInput [(ngModel)]="shift.name" [formControl]="nameShiftFormCtrl" (keyup)="emitShift()">
-    </mat-form-field>
+      </mat-form-field>
+      <mat-error *ngIf="nameExist() && shiftStartName === ''">Shift name is already used</mat-error>
     </div>
     </div>
     <div class = "duration-section">

@@ -15,6 +15,7 @@ export class ContractGroupCreationComponent implements OnInit {
   @Input() possibleContracts!: string[];
   @Input() selectedContract!: string;
   @Input() contractGroups!: string[]
+  @Input() imported: boolean
 
   nameContractGroupFormCtrl: FormControl;
   inputDisabled: boolean;
@@ -26,6 +27,7 @@ export class ContractGroupCreationComponent implements OnInit {
   constructor(){
     this.contractGroupChange = new EventEmitter();
     this.errorState = new EventEmitter();
+    this.imported = false
  
     this.nameContractGroupFormCtrl = new FormControl(null, Validators.required);
     this.inputDisabled = false;
@@ -33,7 +35,7 @@ export class ContractGroupCreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.inputDisabled = this.contractGroup.name === ""? false: true;
+    this.inputDisabled = this.contractGroup.name === "" ||this.imported? false: true;
     this.nameContractGroupFormCtrl = new FormControl({value: this.contractGroup.name, disabled: this.inputDisabled},
       Validators.required);
     this.contractGroupStartname = this.contractGroup.name; 
@@ -91,7 +93,14 @@ export class ContractGroupCreationComponent implements OnInit {
   }
 
   nameExist(): boolean {
-    return this.contractGroups.includes(this.contractGroup.name);
+    const temp = [...this.contractGroups];
+    if(this.imported){
+      const index = temp.indexOf(this.contractGroup.name)
+      if(index > -1){
+        temp.splice(index, -1)
+      }
+    }
+    return temp.includes(this.contractGroup.name);
   }
 
 }
