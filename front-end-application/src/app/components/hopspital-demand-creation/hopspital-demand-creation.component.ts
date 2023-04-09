@@ -71,7 +71,6 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
           const demand = tempDemand.get(key);
           if(demand){
             this.hospitalDemands.set(key, demand);
-            this.selectedShift.set(key, true);
             this.getButtonStyle(date,skill, shift)
           }
         }
@@ -111,7 +110,6 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
               const value = {maxValue: demand.maxValue,  maxWeight: demand.maxWeight, minValue: demand.minValue,  minWeight: demand.minWeight}
               const key = JSON.stringify({date: time, skill: demand.skill, shift: demand.shift})
               this.hospitalDemands.set(key, value)
-              this.selectedShift.set(key, true)
               this.getButtonStyle(time, demand.skill, demand.shift)
             }
           }
