@@ -8,7 +8,7 @@
             <mat-card *ngFor="let account of accounts">
                 <mat-card-content>{{ account }}</mat-card-content>
                 <mat-card-actions  align="end">
-                    <button  mat-icon-button *ngIf="account !== 'admin'" (click)="deleteAccount(account)">
+                    <button  mat-icon-button *ngIf="account !== 'admin'" (click)="openDeleteAccountDialog(account)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-card-actions>

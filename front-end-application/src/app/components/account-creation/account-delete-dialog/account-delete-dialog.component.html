@@ -1,0 +1,10 @@
+<h2></h2>
+<div>
+    Are you sure you want to delete the account {{account}}? 
+</div>
+<button  mat-raised-button color="warn" [mat-dialog-close]="true">
+    Cancel
+</button>
+<button mat-raised-button class=" flex-row-center-container" (click)="deleteAccount(account)">
+    delete
+</button>

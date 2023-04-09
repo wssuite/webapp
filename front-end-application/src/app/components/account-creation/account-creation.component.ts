@@ -4,6 +4,7 @@ import { AccountCreationDialogComponent } from './account-creation-dialog/accoun
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 import { AccountService } from 'src/app/services/account/account.service';
+import { AccountDeleteDialogComponent } from './account-delete-dialog/account-delete-dialog.component';
 
 @Component({
   selector: 'app-account-creation',
@@ -40,25 +41,6 @@ export class AccountCreationComponent implements OnInit{
 
   }
 
-  deleteAccount(account: string){
-    try
-    {
-      this.api.deleteAccount(account).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            this.getAccounts();
-          }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
-      })
-    }
-    catch(e){
-      console.log(e);
-    }
-  }
-
   openErrorDialog(message: string) {
     this.dialog.open(ErrorMessageDialogComponent, {
       data: {message: message},
@@ -72,6 +54,20 @@ export class AccountCreationComponent implements OnInit{
         width: '35%', 
         position: {top:'10vh',left: '35%', right: '25%'},
         data: {name: '', startTime: '', endTime: ''}
+      });
+    dialog.afterClosed().subscribe(()=>{
+      this.getAccounts();
+    })
+
+  }
+
+  openDeleteAccountDialog(account: string){
+    const dialog = this.dialog.open(AccountDeleteDialogComponent,  
+      { disableClose: true,  
+        height: '60%',
+        width: '35%', 
+        position: {top:'10vh',left: '35%', right: '25%'},
+        data: {account: account}
       });
     dialog.afterClosed().subscribe(()=>{
       this.getAccounts();
