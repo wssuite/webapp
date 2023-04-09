@@ -4,7 +4,8 @@
             <button mat-raised-button (click)="exportCurrentScheduleProblem()">Download problem</button>
             <button *ngIf="schedule.state !== inPrgressState" mat-raised-button (click)="regenerateSchedule()">Regenerate Schedule</button>
             <button *ngIf="schedule.state !== inPrgressState && employeeSchedule" mat-raised-button (click)="exportSchedule()">Export Schedule</button>
-            <button *ngIf="schedule.state === inPrgressState" mat-raised-button (click)="stopGeneration()">Stop generation></button>
+            <button *ngIf="schedule.state === inPrgressState" mat-raised-button (click)="stopGeneration()">Stop generation</button>
+            <button *ngIf="schedule.state === 'Failed'" mat-raised-button (click)="exportError()">Export error</button>
         </div>
         <h1>The state of your schedule is: {{schedule.state}}</h1>
         <h1>Start date: {{schedule.startDate}}- end date: {{schedule.endDate}}- Version: {{schedule.version}}</h1>
