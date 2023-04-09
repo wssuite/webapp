@@ -52,14 +52,14 @@ def run_scheduler(path, counter):
     cmd_split = shlex.split(cmd)
     print(cmd_split)
     proc = subprocess.Popen(
-        cmd_split, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        cmd_split, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
-    print(proc.returncode)
     out, err = proc.communicate()
-    callback(path, proc.returncode, err)
+    print(proc.returncode)
+    callback(path, proc.returncode, err, out)
 
 
-def callback(path, status, error: bytes):
+def callback(path, status, error: bytes, out:bytes):
     """
     TODO: the callback will launch a request to the ffs to inform
         it with the status of the schedule
@@ -67,9 +67,12 @@ def callback(path, status, error: bytes):
     info_json = extract_version_info_from_path(path)
     try:
         str_err = error.decode()
+        str_out = out.decode()
         error_file_path = os.path.join(path, "error.txt")
-        with open(error_file_path) as f:
-            f.write(str_err)
+        with open(error_file_path, "w") as f:
+            f.write(f"output: {str_out}\n")
+            f.write("--------------------------------------------------------------------------------------\n")
+            f.write(f"error: {str_err}")
     except Exception:
         print("No std error")
 

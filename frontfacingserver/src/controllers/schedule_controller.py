@@ -170,7 +170,7 @@ def export_schedule():
 
 
 @mod.route("/exportError", methods=["GET"])
-def export_schedule():
+def export_error():
     try:
         token = request.args[user_token]
         start = request.args[start_date]
