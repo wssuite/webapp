@@ -264,8 +264,8 @@ export class ScheduleGenerationComponent implements OnInit {
   }
 
   generateSchedule(){
-    const sd = DateUtils.arrangeDateString(this.startDate.toLocaleDateString().replaceAll("/", "-"))
-    const ed = DateUtils.arrangeDateString(this.endDate.toLocaleDateString().replaceAll("/", "-"))
+    const sd = DateUtils.arrangeDateString(this.startDate.toISOString().split("T")[0])
+    const ed = DateUtils.arrangeDateString(this.endDate.toISOString().split("T")[0])
     const requestNurses: string[] = []
     this.nurses.forEach((nurse: NurseInterface)=>{
       requestNurses.push(nurse.username)

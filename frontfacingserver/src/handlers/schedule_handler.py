@@ -231,6 +231,21 @@ class ScheduleHandler(BaseHandler):
         solution = Schedule(sol_file)
         return solution.export()
 
+    def export_std_error(self, token, start, end, profile_name, v):
+        self.verify_profile_accessors_access(token, profile_name)
+        fs = FileSystemManager()
+        sol_dir_path = fs.get_solution_dir_path(profile_name, start, end, v)
+        err_dir_path = os.path.join(sol_dir_path, "error.txt")
+        try:
+            str_error = ""
+            with open(err_dir_path) as f:
+                lines = f.readlines()
+                for line in lines:
+                    str_error += f"{line}"
+            return str_error
+        except Exception:
+            raise ProjectBaseException("No errors were found")
+
     def __build_detailed_demand(self, demand, detailed_demand):
         nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)
         """Get the nurses objects included in the demand"""

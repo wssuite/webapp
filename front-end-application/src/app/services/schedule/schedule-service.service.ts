@@ -2,8 +2,8 @@ import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {Socket, io} from "socket.io-client";
-import { ALL_SOLUTIONS, SOCKET_URL, DETAILED_SOLUTION_URL,
-  EXPORT_PROBLEM_URL, EXPORT_SOLUTION_URL, GENERATE_SCHEDULE,
+import { ALL_SOLUTIONS, DETAILED_SOLUTION_URL,
+  EXPORT_PROBLEM_URL, EXPORT_SOLUTION_URL, EXPRORT_ERROR_URL, GENERATE_SCHEDULE,
   LATEST_SOLUTIONS, 
   REGENERATE_SCHEDULE_URL,REMOVE_SOLUTION, STOP_GENERATION_URL} from 'src/app/constants/api-constants';
 import { SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, VISUALISATION_SUBSCRIPTION, VISUALISATION_UNSUBSCRIPTION } from 'src/app/constants/socket-events';
@@ -178,6 +178,22 @@ export class ScheduleService {
       queryParams = queryParams.append("endDate", sol.endDate)
       queryParams = queryParams.append("version", sol.version)
       return this.httpClient.get<{content: string}>(EXPORT_SOLUTION_URL, {
+        params: queryParams
+      })
+    } catch(err){
+      throw new Error("user not connected")
+    }
+  }
+
+  exportError(sol: ContinuousVisualisationInterface):Observable<{content: string}>{
+    try{
+      let queryParams = new HttpParams;
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
+      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
+      queryParams = queryParams.append("startDate", sol.startDate)
+      queryParams = queryParams.append("endDate", sol.endDate)
+      queryParams = queryParams.append("version", sol.version)
+      return this.httpClient.get<{content: string}>(EXPRORT_ERROR_URL, {
         params: queryParams
       })
     } catch(err){
