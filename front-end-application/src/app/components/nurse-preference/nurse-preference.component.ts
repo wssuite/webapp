@@ -1,9 +1,10 @@
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
 import { dateDisplay } from "src/app/models/DateDisplay";
 import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { NurseInterface } from "src/app/models/Nurse";
+import { CacheUtils } from "src/app/utils/CacheUtils";
 import { DateUtils } from "src/app/utils/DateUtils";
 
 
@@ -85,6 +86,21 @@ import { DateUtils } from "src/app/utils/DateUtils";
         }
       }
     }
+    const savedPreferences = CacheUtils.getGenerationRequestPreferences()
+    if(savedPreferences){
+      savedPreferences.forEach((pref:SchedulePreferenceElement)=>{
+        this.timetable.forEach((time: dateDisplay)=>{
+          if(pref.date === time.date){
+            const prefElement = this.preferences.get(JSON.stringify(time))?.get(pref.username)?.get(pref.shift)
+            if(prefElement){
+              this.preferences.get(JSON.stringify(time))?.get(pref.username)?.set(pref.shift, {pref: pref.preference, weight: pref.weight})
+              this.weight = pref.weight
+            }
+          }
+        })
+      })
+    }
+    this.emitSchedulePref()
   }
 
   updatePreferences(date: dateDisplay, nurse: string, shift: string) {
@@ -184,5 +200,29 @@ import { DateUtils } from "src/app/utils/DateUtils";
       }
     }
     this.schedulePreference.emit(scedulePref);
+  }
+
+  @HostListener("window:beforeunload")
+  savePreferences(){
+    const scedulePref = [];
+    for(const date of this.timetable){
+      for (const nurse of this.nurses) {
+        for (const shift of this.shifts) {
+          const preferenceObj = this.preferences.get(JSON.stringify(date))?.get(nurse.username)?.get(shift)
+          if( preferenceObj && (preferenceObj.pref === 'OFF' ||
+              preferenceObj.pref === 'ON')){
+            const schedule = {
+              date: date.date, 
+              username: nurse.username, 
+              preference: preferenceObj.pref,
+              shift: shift,
+              weight: preferenceObj.weight
+            }
+            scedulePref.push(schedule);
+          }
+        }
+      }
+    }
+    CacheUtils.setGenerationRequestPreferences(scedulePref)
   }
 }
