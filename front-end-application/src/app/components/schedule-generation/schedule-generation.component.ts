@@ -61,6 +61,8 @@ export class ScheduleGenerationComponent implements OnInit {
   scheduleData!: ScheduleDataInterface;
   dateError: boolean
 
+  connectedUser: boolean
+
   constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService, 
     private nurseService: NurseService, private dialog: MatDialog, private scheduleService: ScheduleService
   ){
@@ -85,6 +87,7 @@ export class ScheduleGenerationComponent implements OnInit {
     this.nursesHistory = [];
     this.demandsError = true;
     this.dateError = true;
+    this.connectedUser = false;
   }
   ngOnInit(): void {
     try{
@@ -116,24 +119,19 @@ export class ScheduleGenerationComponent implements OnInit {
         }
       })
 
-      try{
-        this.skillService.getAllSkills().subscribe({
-          next:(skills: string[])=>{
-            skills.forEach((skill: string)=>{
-              this.possibleSkills.push(skill);
-            })
-            this.selectedSkill = this.possibleSkills[0];
-          },
-          error: (error: HttpErrorResponse)=>{
-            this.openErrorDialog(error.error);
-          }
-        })
-  
-      }catch(err){
-        //Do nothing
-      }
+      this.skillService.getAllSkills().subscribe({
+        next:(skills: string[])=>{
+          skills.forEach((skill: string)=>{
+            this.possibleSkills.push(skill);
+          })
+          this.selectedSkill = this.possibleSkills[0];
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+      this.connectedUser = true
 
-      
     }catch(err){
       //Do nothing
     }
@@ -317,5 +315,5 @@ export class ScheduleGenerationComponent implements OnInit {
   updateDemandsErrorState(e: boolean){
     this.demandsError = e;
   }
-
+  
 }

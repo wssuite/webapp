@@ -1,192 +1,199 @@
-<app-header [showProfile]='false'></app-header>
-<div class="schedule-generation-container">
-<div class="problemDefinitionContainer">
-  <div class="PlanningHorizonContainer">
-    <h2>Planning Horizon</h2>
-    <hr>
-    <mat-form-field appearance="fill">
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input
-        [formGroup]="range"
-        [rangePicker]="picker"
-        seperator="to"
-        required
-      >
-        <input
-          matStartDate
-          formControlName="start"
-          placeholder="Start date"
-          (dateChange)="updateStartDate($event)"
-        />
-        <input
-          matEndDate
-          formControlName="end"
-          placeholder="End date"
-          (dateChange)="updateEndDate($event)"
-        />
-      </mat-date-range-input>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
+<div *ngIf="connectedUser; else elseBlock">
+  <app-header [showProfile]='false'></app-header>
+  <div class="schedule-generation-container">
+    <div class="problemDefinitionContainer">
+      <div class="PlanningHorizonContainer">
+        <h2>Planning Horizon</h2>
+        <hr>
+        <mat-form-field appearance="fill">
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input
+            [formGroup]="range"
+            [rangePicker]="picker"
+            seperator="to"
+            required
+          >
+            <input
+              matStartDate
+              formControlName="start"
+              placeholder="Start date"
+              (dateChange)="updateStartDate($event)"
+            />
+            <input
+              matEndDate
+              formControlName="end"
+              placeholder="End date"
+              (dateChange)="updateEndDate($event)"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
 
-      <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')"
-        >Invalid start date</mat-error
-      >
-      <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')"
-        >Invalid end date</mat-error
-      >
-    </mat-form-field>
-    <mat-error *ngIf="dateError"
-      >The planning horizon must be a multiple of seven days</mat-error
-    >
-  </div>
-  <div class="scheduleDataSection">
-  </div>
-  
-    <div *ngIf="possibleSkills.length > 0 || possibleShifts.length > 0 || possibleNurses.length > 0" class="flex-row-center-container margin-on-top ">
-      <button mat-raised-button class="add-all-button" color="nurse-blue" (click)="addAll()">
-      add all Nurses, Skills & Shifts
-      </button>
-      <div class="flex-row-center-container info-div">
-      <mat-icon class="info-icon">info</mat-icon>
-      <p>Now, add the nurses, shifts and skills you want to include in this schedule. You can add them all at once or specify them in their respective spection below.</p>
+          <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')"
+            >Invalid start date</mat-error
+          >
+          <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')"
+            >Invalid end date</mat-error
+          >
+        </mat-form-field>
+        <mat-error *ngIf="dateError"
+          >The planning horizon must be a multiple of seven days</mat-error
+        >
       </div>
-    </div>
-    <div class="nurseSection margin-on-bottom">
-    <h2 class="employeeSectionTitle">Nurses</h2>
-    <hr>
-    <div *ngIf="possibleNurses.length > 0" class="flex-row-center-container">
-      <mat-form-field appearance="fill">
-        <mat-label>select a nurse</mat-label>
-        <mat-select [(value)]="selectedNurse">
-          <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
-            {{ nurse.name}} - {{nurse.username}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-raised-button class="single-action-button" (click)="addNurse()" color="nurse-blue">
-        add selected
-      </button>
-      <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllNurse()">
-        add all
-      </button><br>
-    </div>
-    <table class="list-table">
-      <th *ngFor="let nurse of  nurses">
-        <div class="table-element-container flex-row-center-container">
-        <td class="nurseNameUsername">
-          {{nurse.name}} - {{nurse.username}}
-        </td>
-        <button
-          mat-icon-button
-          (click)="removeNurse(nurse)"
-        >
-        <mat-icon>cancel</mat-icon>
-      </button>
+      <div class="scheduleDataSection">
+      </div>
+      
+        <div *ngIf="possibleSkills.length > 0 || possibleShifts.length > 0 || possibleNurses.length > 0" class="flex-row-center-container margin-on-top ">
+          <button mat-raised-button class="add-all-button" color="nurse-blue" (click)="addAll()">
+          add all Nurses, Skills & Shifts
+          </button>
+          <div class="flex-row-center-container info-div">
+          <mat-icon class="info-icon">info</mat-icon>
+          <p>Now, add the nurses, shifts and skills you want to include in this schedule. You can add them all at once or specify them in their respective spection below.</p>
+          </div>
         </div>
-      </th>
-    </table>
-  </div>
-  <div class="shiftSection margin-on-bottom">
-    <h2 class="shiftSectionTitle">Shifts</h2>
-    <hr>
-    <div *ngIf="possibleShifts.length > 0" class="flex-row-center-container">
-      <mat-form-field appearance="fill">
-        <mat-label>select a shift</mat-label>
-        <mat-select [(value)]="selectedShift">
-          <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
-            {{shift}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-raised-button color="nurse-blue" class="single-action-button" (click)="addShift()">
-        add selected
-      </button>
-      <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllShift()">
-        add all
-      </button>
-    </div>
-    <table class="list-table">
-      <th *ngFor="let shift of shifts">
-        <div class="table-element-container flex-row-center-container">        
-        <td class="shiftName">
-          {{ shift }}
-        </td>
-        <button
-          mat-icon-button 
-          (click)="removeShift(shift)"
-        >
-        <mat-icon>cancel</mat-icon>
+        <div class="nurseSection margin-on-bottom">
+        <h2 class="employeeSectionTitle">Nurses</h2>
+        <hr>
+        <div *ngIf="possibleNurses.length > 0" class="flex-row-center-container">
+          <mat-form-field appearance="fill">
+            <mat-label>select a nurse</mat-label>
+            <mat-select [(value)]="selectedNurse">
+              <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
+                {{ nurse.name}} - {{nurse.username}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button class="single-action-button" (click)="addNurse()" color="nurse-blue">
+            add selected
+          </button>
+          <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllNurse()">
+            add all
+          </button><br>
+        </div>
+        <table class="list-table">
+          <th *ngFor="let nurse of  nurses">
+            <div class="table-element-container flex-row-center-container">
+            <td class="nurseNameUsername">
+              {{nurse.name}} - {{nurse.username}}
+            </td>
+            <button
+              mat-icon-button
+              (click)="removeNurse(nurse)"
+            >
+            <mat-icon>cancel</mat-icon>
+          </button>
+            </div>
+          </th>
+        </table>
+      </div>
+      <div class="shiftSection margin-on-bottom">
+        <h2 class="shiftSectionTitle">Shifts</h2>
+        <hr>
+        <div *ngIf="possibleShifts.length > 0" class="flex-row-center-container">
+          <mat-form-field appearance="fill">
+            <mat-label>select a shift</mat-label>
+            <mat-select [(value)]="selectedShift">
+              <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
+                {{shift}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button color="nurse-blue" class="single-action-button" (click)="addShift()">
+            add selected
+          </button>
+          <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllShift()">
+            add all
+          </button>
+        </div>
+        <table class="list-table">
+          <th *ngFor="let shift of shifts">
+            <div class="table-element-container flex-row-center-container">        
+            <td class="shiftName">
+              {{ shift }}
+            </td>
+            <button
+              mat-icon-button 
+              (click)="removeShift(shift)"
+            >
+            <mat-icon>cancel</mat-icon>
+            </button>
+            </div>
+          </th>
+        </table>
+      </div>
+
+      <div class="skillSection margin-on-bottom">
+      <h2 class="shiftSectionTitle">Skills</h2>
+      <hr>
+      <div *ngIf="possibleSkills.length > 0" class="flex-row-center-container">
+        <mat-form-field appearance="fill">
+          <mat-label>select a skill</mat-label>
+          <mat-select [(value)]="selectedSkill">
+            <mat-option *ngFor="let skill of possibleSkills" [value]="skill">
+              {{skill}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="nurse-blue" class="single-action-button" (click)="addSkill()">
+          add selected
         </button>
-        </div>
-      </th>
-    </table>
-  </div>
-
-  <div class="skillSection margin-on-bottom">
-  <h2 class="shiftSectionTitle">Skills</h2>
-  <hr>
-  <div *ngIf="possibleSkills.length > 0" class="flex-row-center-container">
-    <mat-form-field appearance="fill">
-      <mat-label>select a skill</mat-label>
-      <mat-select [(value)]="selectedSkill">
-        <mat-option *ngFor="let skill of possibleSkills" [value]="skill">
-          {{skill}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button color="nurse-blue" class="single-action-button" (click)="addSkill()">
-      add selected
-    </button>
-    <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllSkill()">
-      add all 
-    </button>
-  </div>
-  <table class="list-table">
-    <th *ngFor="let skill of skills">
-      <div class="table-element-container flex-row-center-container">        
-      <td class="skillName">
-        {{ skill }}
-      </td>
-      <button
-        mat-icon-button
-        (click)="removeSkill(skill)"
-      >
-        <mat-icon>cancel</mat-icon>
-      </button>
+        <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllSkill()">
+          add all 
+        </button>
       </div>
-    </th>
-  </table>
-</div>
-<div *ngIf= "shifts.length > 0  && nurses.length > 0" class="nursePreferenceSection">
-  <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>  
-  <hr>
-  <app-nurse-preference [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)"></app-nurse-preference>
-</div>
+      <table class="list-table">
+        <th *ngFor="let skill of skills">
+          <div class="table-element-container flex-row-center-container">        
+          <td class="skillName">
+            {{ skill }}
+          </td>
+          <button
+            mat-icon-button
+            (click)="removeSkill(skill)"
+          >
+            <mat-icon>cancel</mat-icon>
+          </button>
+          </div>
+        </th>
+      </table>
+    </div>
+    <div *ngIf= "shifts.length > 0  && nurses.length > 0 && !dateError && skills.length > 0" class="nursePreferenceSection">
+      <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>  
+      <hr>
+      <app-nurse-preference 
+        [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)">
+      </app-nurse-preference>
+    </div>
 
-  <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
-    <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
-    <hr>
-    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
-  </div>
+      <div  *ngIf= "shifts.length > 0  && skills.length > 0 && !dateError && nurses.length > 0" class="HospitalDemandSection">
+        <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
+        <hr>
+        <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
+      </div>
 
-  <div *ngIf= "nurses.length > 0" class="nurseHistorySection">
-    <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>  
-    <hr>
-    <app-nurse-history  [nurses]="nurses" [startDate]="startDate"  (nursesHistory)=" updateHistory($event)"></app-nurse-history>
-  </div>
+      <div *ngIf= "nurses.length > 0 && skills.length > 0 && shifts.length > 0 && !dateError" class="nurseHistorySection">
+        <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>  
+        <hr>
+        <app-nurse-history  [nurses]="nurses" [startDate]="startDate"  (nursesHistory)=" updateHistory($event)"></app-nurse-history>
+      </div>
 
-  <div class="generateScheduleButtonContainer">
-    <button
-      mat-raised-button
-      color="primary"
-      class="generateScheduleButton"
-      (click)="generateSchedule()"
-      [disabled]=" dateError || nurses.length === 0 || shifts.length === 0 || demandsError
-      "
-    >
-      Generate schedule
-    </button>
+      <div class="generateScheduleButtonContainer">
+        <button
+          mat-raised-button
+          color="primary"
+          class="generateScheduleButton"
+          (click)="generateSchedule()"
+          [disabled]=" dateError || nurses.length === 0 || shifts.length === 0 || demandsError
+          "
+        >
+          Generate schedule
+        </button>
+      </div>
+    </div>
   </div>
 </div>
-</div>
+<ng-template #elseBlock>
+  <app-not-connected></app-not-connected>
+</ng-template>
 
