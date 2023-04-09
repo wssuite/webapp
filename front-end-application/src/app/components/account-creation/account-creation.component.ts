@@ -64,8 +64,8 @@ export class AccountCreationComponent implements OnInit{
   openDeleteAccountDialog(account: string){
     const dialog = this.dialog.open(AccountDeleteDialogComponent,  
       { disableClose: true,  
-        height: '60%',
-        width: '35%', 
+        height: '50%',
+        width: '28%', 
         position: {top:'10vh',left: '35%', right: '25%'},
         data: {account: account}
       });
