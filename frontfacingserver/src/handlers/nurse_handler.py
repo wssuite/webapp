@@ -21,7 +21,6 @@ class NurseHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         nurse = Nurse().from_json(json)
-        self.verify_name_is_valid(nurse.name)
         self.nurse_insertion_validations(nurse)
         inserted_id = self.nurse_dao.insert_one(nurse.db_json())
         return inserted_id

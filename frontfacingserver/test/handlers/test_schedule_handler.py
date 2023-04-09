@@ -431,3 +431,29 @@ Patrick,2023-06-01,Late,Nurse
             self.handler.remove_schedule(
                 random_hex, "2023-06-01", "2023-06-02", profile1, "1"
             )
+
+    def test_export_std_error_if_file_not_exist_raise_error(self):
+        with self.assertRaises(ProjectBaseException):
+            self.handler.export_std_error(
+                random_hex, "2023-06-01", "2023-06-02", profile1, "1"
+            )
+
+    @patch("requests.post", return_value=mock_succeed_response())
+    def test_export_std_error_if_file_exist_returns_error(self, mock_post):
+        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        err_path = self.fs.joinpaths(
+            base_directory,
+            dataset_directory,
+            profile1,
+            "2023-06-01_2023-06-02",
+            "1",
+            "error.txt",
+        )
+        text = """
+        error
+        again"""
+        self.fs.create_file(err_path, contents=text)
+        actual = self.handler.export_std_error(
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1"
+        )
+        self.assertEqual(text, actual)

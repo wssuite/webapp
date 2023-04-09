@@ -41,7 +41,7 @@ export class CreateEmptyProfileDialogComponent {
     this.api.createEmptyProfile(this.name).subscribe({
       error:(err:HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
-          this.api.newProfileCreated = true;
+          this.api.emitNewProfileCreation(true)
           this.dialogRef.close();
         }
         else{

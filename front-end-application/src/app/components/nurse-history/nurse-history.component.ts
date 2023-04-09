@@ -93,7 +93,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
     const previousDay = new Date(
       +this.startDate - (index+1) * DateUtils.dayMultiplicationFactor
     );
-    const local_string = previousDay.toLocaleDateString().replaceAll("/", "-");
+    const local_string = previousDay.toISOString().split("T")[0];
     return DateUtils.arrangeDateString(local_string);
   }
 
@@ -102,7 +102,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
       return "";
     }
     const previousDay = new Date(
-      +this.startDate + (index) * DateUtils.dayMultiplicationFactor
+      +this.startDate - (index + 1) * DateUtils.dayMultiplicationFactor
     ).getDay();
     return DateUtils.days[previousDay] + "\n";
   }
