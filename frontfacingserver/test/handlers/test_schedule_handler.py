@@ -39,7 +39,7 @@ from constants import (
     assignment_shift,
     assignment_skill,
     schedule,
-    timestamp,
+    timestamp, schedule_history, history_date, history_username, history_shift,
 )
 from test.db_test_constants import build_db, random_hex, profile1
 from pyfakefs.fake_filesystem_unittest import TestCase
@@ -82,6 +82,7 @@ hospital_demand_dict = {
     ],
     schedule_skills: ["Nurse", "HeadNurse"],
     schedule_shifts: ["Early", "MidDay", "Late"],
+    schedule_history: []
 }
 
 

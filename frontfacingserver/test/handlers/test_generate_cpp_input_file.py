@@ -22,7 +22,7 @@ from constants import (
     preference_pref,
     schedule_nurses,
     schedule_skills,
-    schedule_shifts,
+    schedule_shifts, history_date, schedule_history, history_username, history_shift,
 )
 from test.db_test_constants import build_db, random_hex, profile1
 from pyfakefs.fake_filesystem_unittest import TestCase
@@ -66,6 +66,13 @@ hospital_demand_dict = {
     ],
     schedule_skills: ["Nurse", "HeadNurse"],
     schedule_shifts: ["Early", "MidDay", "Late"],
+    schedule_history: [
+        {
+            history_date: "2023-05-29",
+            history_username: "patrick",
+            history_shift: "Early",
+        }
+    ]
 }
 
 expected = """HEADERS
@@ -151,6 +158,9 @@ HOSPITAL_DEMAND
 END
 PREFERENCES
 2023-06-01,1,ON,Early,5.0
+END
+HISTORY
+2023-05-29,0,Early
 END
 """
 
