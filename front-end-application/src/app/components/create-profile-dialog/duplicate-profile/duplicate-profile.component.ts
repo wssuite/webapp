@@ -39,6 +39,7 @@ export class DuplicateProfileComponent {
     this.api.duplicateProfile(this.name).subscribe({
       error:(err:HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
+          this.api.emitNewProfileCreation(true)
           this.dialogRef.close();
         }
         else{
