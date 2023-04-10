@@ -10,8 +10,8 @@ from constants import (
 from src.models.exporter import CSVExporter
 
 regex_assignments = (
-    r"([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+),"
-    r"([a-zA-Z0-9\-]+),([a-zA-Z0-9\-]+)\n"
+    r"([a-zA-Z0-9\-\.]+),([a-zA-Z0-9\-\.]+),"
+    r"([a-zA-Z0-9\-\.]+),([a-zA-Z0-9\-\.]+)\n"
 )
 
 regex_headers = r"\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9]+)\)\n"
