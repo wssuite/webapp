@@ -98,6 +98,7 @@ import { ContractsGroupViewComponent } from './components/contract-component/con
 import { SchedulesGalleryComponent } from './components/schedules-gallery/schedule-view.component';
 import { NurseHistoryComponent } from './components/nurse-history/nurse-history.component';
 import { AccountDeleteDialogComponent } from './components/account-creation/account-delete-dialog/account-delete-dialog.component';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +168,7 @@ import { AccountDeleteDialogComponent } from './components/account-creation/acco
     SchedulesGalleryComponent,
     NurseHistoryComponent,
     AccountDeleteDialogComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
