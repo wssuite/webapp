@@ -28,7 +28,7 @@ export class DateUtils {
   public static arrangeDateString(date: string): string {
     const splittedDate = date.split("-");
     const month = +splittedDate[1].toString();
-    const day = +splittedDate[0].toString()
-    return `${splittedDate[2]}-${month}-${day}`;
+    const day = +splittedDate[2].toString()
+    return `${splittedDate[0]}-${month}-${day}`;
   }
 }

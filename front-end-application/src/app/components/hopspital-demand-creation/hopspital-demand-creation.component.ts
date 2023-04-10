@@ -1,8 +1,9 @@
-import { Component,EventEmitter,Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import { Component,EventEmitter,HostListener,Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { WEIGHT_ALLOWED_INTEGERS } from 'src/app/constants/regex';
 import { dateDisplay } from 'src/app/models/DateDisplay';
 import { HospitalDemandElement } from 'src/app/models/GenerationRequest';
 import { SkillDemandInterface } from 'src/app/models/hospital-demand';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { DateUtils } from 'src/app/utils/DateUtils';
 
 
@@ -48,6 +49,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const tempDemand = this.hospitalDemands;
     if (changes["skills"] && changes["skills"].currentValue) {
       this.skills = changes["skills"].currentValue;
     }
@@ -62,6 +64,19 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
       this.endDate = changes["endDate"].currentValue;
     }
     this.ngOnInit()
+    for(const date of this.timetable){
+      for(const skill of this.skills){
+        for(const shift of this.shifts){
+          const key = JSON.stringify({date: date, skill:skill,shift: shift});
+          const demand = tempDemand.get(key);
+          if(demand){
+            this.hospitalDemands.set(key, demand);
+            this.getButtonStyle(date,skill, shift)
+          }
+        }
+      }
+    }
+    this.emitScheduleDemand()
   }
 
 
@@ -85,6 +100,23 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
         }
       }
     }
+    const savedDemand = CacheUtils.getDemandGenerationRequest()
+    if(savedDemand){
+      savedDemand.forEach((demand: HospitalDemandElement)=>{
+        this.timetable.forEach((time: dateDisplay)=>{
+          if(demand.date === time.date){
+            const hd = this.hospitalDemands.get(JSON.stringify({date: time, skill: demand.skill, shift: demand.shift}))
+            if(hd){
+              const value = {maxValue: demand.maxValue,  maxWeight: demand.maxWeight, minValue: demand.minValue,  minWeight: demand.minWeight}
+              const key = JSON.stringify({date: time, skill: demand.skill, shift: demand.shift})
+              this.hospitalDemands.set(key, value)
+              this.getButtonStyle(time, demand.skill, demand.shift)
+            }
+          }
+        })
+      })
+    }
+    this.emitScheduleDemand()
   }
 
  displayValue(date: dateDisplay, skill: string, shift: string){
@@ -167,7 +199,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     const nextDay = new Date(
       +this.startDate + (index) * DateUtils.dayMultiplicationFactor
     );
-    const local_string = nextDay.toLocaleDateString().replaceAll("/", "-");
+    const local_string = nextDay.toISOString().split("T")[0];
     return DateUtils.arrangeDateString(local_string);
   }
 
@@ -217,13 +249,39 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     this.emitErrorState(); 
   }
 
-updateSkillDemandErrorState(e: boolean) {
-  this.skillDemandErrorState = e;
-}
+  updateSkillDemandErrorState(e: boolean) {
+    this.skillDemandErrorState = e;
+  }
 
-emitErrorState(){
-  this.errorState.emit(this.saveDemandError);
-}
+  emitErrorState(){
+    this.errorState.emit(this.saveDemandError);
+  }
+
+  @HostListener("window:beforeunload")
+  saveDemand(){
+    const scheduleDemand = [];
+    for(const date of this.timetable){
+      for (const skill of this.skills) {
+        for (const shift of this.shifts) {
+          const key = JSON.stringify({date:date,skill:skill,shift:shift});
+          const preferenceObj = this.hospitalDemands.get(key);
+          if(preferenceObj){
+          const schedule = {
+              date: date.date,
+              shift: shift,
+              skill: skill,
+              maxValue: preferenceObj.maxValue,
+              maxWeight: preferenceObj.maxWeight,
+              minValue: preferenceObj.minValue,
+              minWeight: preferenceObj.minWeight,
+            }
+            scheduleDemand.push(schedule);
+          }
+        }
+      }
+    }
+    CacheUtils.setDemandGenerationRequest(scheduleDemand);
+  }
 
 }
 

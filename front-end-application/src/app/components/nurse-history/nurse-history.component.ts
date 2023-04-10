@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WEIGHT_ALLOWED_INTEGERS } from 'src/app/constants/regex';
 import { dateDisplay } from 'src/app/models/DateDisplay';
@@ -8,6 +8,7 @@ import { DateUtils } from 'src/app/utils/DateUtils';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 import { NurseHistoryElement } from 'src/app/models/GenerationRequest';
 import { NurseInterface } from 'src/app/models/Nurse';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
 
 @Component({
   selector: 'app-nurse-history',
@@ -42,6 +43,8 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const tempHistory = this.nurseHistory;
+    console.log(tempHistory)
     if (changes["nurses"] && changes["nurses"].currentValue) {
       this.nurses = changes["nurses"].currentValue;
     }
@@ -49,20 +52,47 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
       this.startDate = changes["startDate"].currentValue;
       
     }
-    this.ngOnInit()
+    //this.ngOnInit()
+    this.timetable = []
+    this.nbColumns = 7;
+    for(let i = 0; i < this.nbColumns; i++) {
+      this.timetable.push({date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
+      
+    }
+    this.timetable.reverse();
+    //initiate demands
+    this.shiftsLoaded = false
+    this.nurseHistory = new Map();
+    for(const date of this.timetable){
+      for (const nurse of this.nurses) {
+          this.nurseHistory.set(JSON.stringify({date:date,nurse:nurse}),"");
+      }
+    }
+    for(const date of this.timetable){
+      for(const nurse of this.nurses){
+        const history = tempHistory.get(JSON.stringify({date:date, nurse: nurse}))
+        console.log(history)
+        if(history){
+          this.nurseHistory.set(JSON.stringify({date:date, nurse: nurse}), history)
+        }
+      }
+    }
+    this.emitNurseHistory()
   }
 
 
   ngOnInit(): void {
     this.timetable = []
     this.nbColumns = 7;
-    for(let i = 0; i <= this.nbColumns; i++) {
+    for(let i = 0; i < this.nbColumns; i++) {
       this.timetable.push({date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
       
     }
     this.timetable.reverse();
     //initiate demands
+    this.shiftsLoaded = false
     this.nurseHistory = new Map();
+    console.log(this.nurses)
     for(const date of this.timetable){
       for (const nurse of this.nurses) {
           this.nurseHistory.set(JSON.stringify({date:date,nurse:nurse}),"");
@@ -72,10 +102,27 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
     try{
       this.shiftService.getShiftNames().subscribe({
         next: (shifts: string[])=>{
-          shifts.forEach((shift: string)=>{
-            this.possibleShifts.push(shift);
-          })
+          this.possibleShifts = shifts
           this.shiftsLoaded = true;
+          const savedHistory = CacheUtils.getNurseHistory()
+          if(savedHistory){
+            savedHistory.forEach((history: NurseHistoryElement)=>{
+              this.timetable.forEach((time: dateDisplay)=>{
+                if(history.date === time.date){
+                  this.nurses.forEach((n: NurseInterface)=>{
+                    if(history.username === n.username){
+                      const h = this.nurseHistory.get(JSON.stringify({date: time, nurse: n}))
+                      console.log(h)
+                      if(h !== undefined){
+                        this.nurseHistory.set(JSON.stringify({date: time, nurse: n}), history.shift)
+                      }
+                    }
+                  })
+                }
+              })
+            })
+          }
+          this.emitNurseHistory()
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -85,7 +132,10 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
       //Do nothing
     }
   }
-
+  getHistory(date: dateDisplay, nurse: NurseInterface){
+    const key = JSON.stringify({date:date,nurse:nurse})
+    return this.nurseHistory.get(key)? this.nurseHistory.get(key): ""
+  }
   getDateDayStringByIndex(index: number): string {
     if (this.startDate == undefined) {
       return "";
@@ -93,7 +143,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
     const previousDay = new Date(
       +this.startDate - (index+1) * DateUtils.dayMultiplicationFactor
     );
-    const local_string = previousDay.toLocaleDateString().replaceAll("/", "-");
+    const local_string = previousDay.toISOString().split("T")[0];
     return DateUtils.arrangeDateString(local_string);
   }
 
@@ -102,7 +152,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
       return "";
     }
     const previousDay = new Date(
-      +this.startDate + (index) * DateUtils.dayMultiplicationFactor
+      +this.startDate - (index + 1) * DateUtils.dayMultiplicationFactor
     ).getDay();
     return DateUtils.days[previousDay] + "\n";
   }
@@ -117,23 +167,42 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
   emitNurseHistory(){
     const nurseHistory = [];
     for(const date of this.timetable){
-        for (const nurse of this.nurses) {
-          const key = JSON.stringify({date:date,nurse:nurse});
-          const preferenceObj = this.nurseHistory.get(key);
-          if(preferenceObj){
-            const history = {
-              date: date.date,
-              username: nurse.username,
-              shift: preferenceObj,
-            }
-            nurseHistory.push(history);
+      for (const nurse of this.nurses) {
+        const key = JSON.stringify({date:date,nurse:nurse});
+        const preferenceObj = this.nurseHistory.get(key);
+        if(preferenceObj){
+          const history = {
+            date: date.date,
+            username: nurse.username,
+            shift: preferenceObj,
           }
+          nurseHistory.push(history);
         }
       }
+    }
     this.nursesHistory.emit(nurseHistory);
     this.emitErrorState(); 
   }
 
+  @HostListener("window:beforeunload")
+  saveHistory(){
+    const nurseHistory = [];
+    for(const date of this.timetable){
+      for (const nurse of this.nurses) {
+        const key = JSON.stringify({date:date,nurse:nurse});
+        const preferenceObj = this.nurseHistory.get(key);
+        if(preferenceObj){
+          const history = {
+            date: date.date,
+            username: nurse.username,
+            shift: preferenceObj,
+          }
+          nurseHistory.push(history);
+        }
+      }
+    }
+    CacheUtils.saveNurseHistory(nurseHistory)
+  }
   emitErrorState(){
     this.errorState.emit(this.saveHistoryError);
   }
