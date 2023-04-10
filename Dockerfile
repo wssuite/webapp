@@ -9,7 +9,6 @@ RUN apt-get install python3 -y
 RUN apt-get install python3-venv -y
 RUN python3 -m venv /venv
 
-COPY nginx/sites-available /etc/nginx/sites-available
 RUN mkdir /fe
 COPY front-end-application/src/ /fe/src/
 COPY front-end-application/*.json /fe/
