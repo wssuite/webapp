@@ -15,12 +15,6 @@
     margin-right: 15px;
 }
 
-#table-wrapper{
-    height: calc(100vh - 353px);
-    max-height: calc(100vh - 353px);
-    overflow: auto;
-}
-
 ::ng-deep #skill-nav-bar #skill-button {
     background-color: #d3dde9;
     color: #1a3d66;
