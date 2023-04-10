@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from "@angular/core";
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
 import { dateDisplay } from "src/app/models/DateDisplay";
 import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
@@ -13,7 +13,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
     templateUrl: './nurse-preference.component.html',
     styleUrls: ['./nurse-preference.component.css']
   })
-  export class NursePreferenceComponent implements OnInit, OnChanges{
+  export class NursePreferenceComponent implements OnInit, OnChanges, OnDestroy{
   regex = WEIGHT_ALLOWED_INTEGERS
 
   weight: string;
@@ -68,7 +68,10 @@ import { DateUtils } from "src/app/utils/DateUtils";
     this.emitSchedulePref()
   }
 
-
+  ngOnDestroy(): void {
+      this.savePreferences()
+  }
+  
   ngOnInit(): void {
     this.timetable = []
     this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate);

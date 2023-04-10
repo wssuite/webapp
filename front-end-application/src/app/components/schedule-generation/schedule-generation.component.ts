@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, HostListener, OnInit } from "@angular/core";
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
@@ -23,7 +23,7 @@ import { ContinuousVisualisationInterface, Solution } from "src/app/models/Sched
   templateUrl: "./schedule-generation.component.html",
   styleUrls: ["./schedule-generation.component.css"],
 })
-export class ScheduleGenerationComponent implements OnInit {
+export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   startDate: Date;
   endDate: Date;
 
@@ -172,6 +172,10 @@ export class ScheduleGenerationComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.saveDetails()    
+  }
+
   openErrorDialog(message: string) {
     this.dialog.open(ErrorMessageDialogComponent, {
       data: {message: message},
@@ -314,6 +318,10 @@ export class ScheduleGenerationComponent implements OnInit {
       history: this.nursesHistory,
       hospitalDemand: this.hospitalDemands
     }
+    this.saveDetails()
+    CacheUtils.setGenerationRequestPreferences(this.nursesPreference)
+    CacheUtils.saveNurseHistory(this.nursesHistory)
+    CacheUtils.setDemandGenerationRequest(this.hospitalDemands)
     this.scheduleService.generateSchedule(request).subscribe({
       next: (sol: Solution)=>{
         const subscription: ContinuousVisualisationInterface = {

@@ -1,4 +1,4 @@
-import { Component,EventEmitter,HostListener,Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import { Component,EventEmitter,HostListener,Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import { WEIGHT_ALLOWED_INTEGERS } from 'src/app/constants/regex';
 import { dateDisplay } from 'src/app/models/DateDisplay';
 import { HospitalDemandElement } from 'src/app/models/GenerationRequest';
@@ -12,7 +12,7 @@ import { DateUtils } from 'src/app/utils/DateUtils';
   templateUrl: './hopspital-demand-creation.component.html',
   styleUrls: ['./hopspital-demand-creation.component.css']
 })
-export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
+export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnDestroy{
   regex = WEIGHT_ALLOWED_INTEGERS
 
   @Input() shifts!: string[];
@@ -79,6 +79,9 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     this.emitScheduleDemand()
   }
 
+  ngOnDestroy(): void {
+    this.saveDemand()    
+  }
 
   ngOnInit(): void {
     this.timetable = []
