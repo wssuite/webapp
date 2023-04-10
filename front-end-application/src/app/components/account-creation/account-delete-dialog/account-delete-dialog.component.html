@@ -1,0 +1,14 @@
+<img class="img" src="../../../../assets/delete.png">
+<h2 >Are you sure?</h2>
+<div class ="texte">
+   Do you really want to delete the account {{account}}? This process canot be undone.
+</div>
+<div class="buttonContainer">
+    <button  mat-raised-button [mat-dialog-close]="true">
+        Cancel
+    </button>
+    <button mat-raised-button  color="warn" class="flex-row-center-container" (click)="deleteAccount(account)">
+        Delete
+    </button>
+</div>
+

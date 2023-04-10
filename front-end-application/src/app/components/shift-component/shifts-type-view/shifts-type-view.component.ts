@@ -90,7 +90,7 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
       });
 
       dialog.afterClosed().subscribe(()=>{
-        this. getShiftsType();
+        this.getShiftsType();
       })
   }
 

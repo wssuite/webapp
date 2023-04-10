@@ -1,23 +1,30 @@
-.buttons-container{
-    margin-top: 20vh;
-    margin-left: 38vw;
-    display: flex;
+.title {
+    color: #1a3d66;
+    background-color: #d3dde9;
+    font-weight: bold;
+    font-size: xx-large;
+    padding: 1.5% 2.5% 3% 2.5%;
+    align-self: center;
 }
 
-.title {
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 2vh;
-    background-color: #EFF2F7;
-    height: 5vh;
+h2 {
+    color:#1a3d66;
+    font-size: large;
+    margin-bottom: 0px;
+}
+
+.inputField {
+    width: 100%;
+}
+
+.buttons-container{
+    position: relative;
+    float: right;
+    justify-content: space-between;
 }
 
 button {
-    margin: 1vh;
-    padding: 1vw;
+    margin-right: 1vw;
+    float: right;
 }
 
-.dialog-content{
-    margin-top: 5vh;
-    margin-left: 5vh;
-}

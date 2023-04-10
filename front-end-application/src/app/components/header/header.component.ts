@@ -121,7 +121,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     this.dialog.open(CreateProfileDialogComponent,{
       data: {profiles: this.profiles, closeDisplayed: closeDisplayed},
       disableClose: true,  
-      height: '64%',
+      height: '60%',
       width: '55%', 
       position: {top:'15vh',left: '23%', right: '25%'},
     })
