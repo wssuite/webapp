@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import {
   FormControl,
   FormGroupDirective,
@@ -31,9 +31,11 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: "./weight.component.html",
   styleUrls: ["./weight.component.css"],
 })
-export class WeightComponent implements OnInit{
+export class WeightComponent implements OnInit, OnChanges{
   @Input() weight!: string;
   @Input() label!: string;
+  @Input()  isDisabled: boolean;
+  @Output() isDisabledChange: EventEmitter<boolean>;
 
   localWeight: string;
 
@@ -47,10 +49,12 @@ export class WeightComponent implements OnInit{
 
   constructor() {
     this.weightChange = new EventEmitter<string>();
+    this.isDisabledChange = new EventEmitter<boolean>();
+    this.isDisabled =false;
     this.numberChecks = 0;
     this.disabled = false;
     this.localWeight = "";
-    this.inputCtrl = new FormControl({ value: this.weight, disabled: false }, [
+    this.inputCtrl = new FormControl({ value: this.weight, disabled: false}, [
       Validators.required,
       Validators.pattern(WEIGHT_ALLOWED_INTEGERS),
       Validators.min(WEIGHT_MIN_VALUE),
@@ -68,6 +72,19 @@ export class WeightComponent implements OnInit{
     }
     this.emitWeight();
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["isDisabled"] && changes["isDisabled"].currentValue) {
+      this.isDisabled = changes["isDisabled"].currentValue;   
+  }
+  if (this.isDisabled) {
+    this.inputCtrl = new FormControl({ value: this.localWeight, disabled: true });
+  }
+  else{
+    this.inputCtrl = new FormControl({ value: this.localWeight, disabled: false });
+  }
+}
+
 
   update() {
     this.numberChecks++;
@@ -93,7 +110,7 @@ export class WeightComponent implements OnInit{
   }
 
   updateFormControl(disabled: boolean): FormControl {
-    if (disabled) {
+    if (disabled || this.isDisabled) {
       return new FormControl({ value: this.localWeight, disabled: true });
     }
     return new FormControl({ value: this.weight, disabled: false }, [

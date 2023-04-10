@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import {
   FormControl,
   FormGroupDirective,
@@ -27,9 +27,11 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: "./numeric-input.component.html",
   styleUrls: ["./numeric-input.component.css"],
 })
-export class NumericInputComponent implements OnInit{
+export class NumericInputComponent implements OnInit, OnChanges{
   @Input() value!: string;
   @Output() valueChange: EventEmitter<string>;
+  @Input()  isDisabled: boolean;
+  @Output() isDisabledChange: EventEmitter<boolean>;
 
   inputCtrl: FormControl;
 
@@ -38,7 +40,9 @@ export class NumericInputComponent implements OnInit{
 
   constructor() {
     this.valueChange = new EventEmitter<string>();
-    this.inputCtrl = new FormControl({ value: this.value, disabled: false }, [
+    this.isDisabledChange = new EventEmitter<boolean>();
+    this.isDisabled = false;
+    this.inputCtrl = new FormControl({ value: this.value, disabled: false}, [
       Validators.required,
       Validators.pattern(NUMERIC_POSITIVE_NUMBERS),
       Validators.min(0),
@@ -49,12 +53,37 @@ export class NumericInputComponent implements OnInit{
 
   ngOnInit(): void {
       this.inputCtrl.setValue(this.value);
+      this.inputCtrl = this.updateFormControl(this.isDisabled);
       this.emitValue();
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["isDisabled"] && changes["isDisabled"].currentValue) {
+      this.isDisabled = changes["isDisabled"].currentValue;   
+  }
+  this.inputCtrl = this.updateFormControl(this.isDisabled);
+}
+
 
   emitValue() {
     this.valueChange.emit(this.value);
     this.emitErrorState();
+  }
+
+  
+  updateFormControl(disabled: boolean): FormControl {
+    if(disabled){
+      return new FormControl({ value: this.value, disabled: true}, [
+          Validators.required,
+          Validators.pattern(NUMERIC_POSITIVE_NUMBERS),
+          Validators.min(0),
+        ]);
+    }
+    return this.inputCtrl = new FormControl({ value: this.value, disabled: false}, [
+      Validators.required,
+      Validators.pattern(NUMERIC_POSITIVE_NUMBERS),
+      Validators.min(0),
+    ]);
   }
 
   emitErrorState() {

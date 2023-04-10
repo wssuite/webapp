@@ -25,8 +25,9 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
   skillDemandErrorState: boolean;
   saveDemandError: boolean;
   timetable: dateDisplay[];
-  editOn: boolean;
-  isdDisabled: boolean;
+  editOff: boolean;
+  isDisabled: boolean;
+  stillSelected: boolean;
   isEditing: boolean;
   hospitalDemands: Map<string, SkillDemandInterface>;
   selectedShift: Map<string, boolean>;
@@ -42,9 +43,10 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     this.demand = {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
     this.skillDemandErrorState = true;
     this.saveDemandError = false;
-    this.editOn = false;
-    this.isdDisabled = false;
+    this.editOff = true;
+    this.isDisabled = true;
     this.isEditing = false;
+    this.stillSelected = false;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -67,7 +69,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
 
   ngOnInit(): void {
     this.timetable = []
-    this.isdDisabled = false;
+    this.isDisabled = true;
     this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate);
     const initSkillDemand = {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
     for(let i = 0; i <= this.nbColumns; i++) {
@@ -105,30 +107,37 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
 
     }
     if(!this.isEditing){
-    this.editOn = false;
-    const demand = this.hospitalDemands.get(key);
-    if(demand != undefined) {
-    this.demand = {...demand};
-    }
-    for (const key of this.selectedShift.keys()){
-      if(this.selectedShift.get(key) === true){
-        this.editOn = true;
-        this.isdDisabled = true;
-        this.saveDemandError = true;
-        }
+      const demand = this.hospitalDemands.get(key);
+      if(demand != undefined) {
+      this.demand = {...demand};
       }
     }
+    this.stillSelected = false;
+    for (const key of this.selectedShift.keys()){
+      if(this.selectedShift.get(key) === true){
+        this.editOff = false;
+        this.saveDemandError = true;
+        this.stillSelected = true;
+      }
+    }
+
+    if(!this.stillSelected){
+      this.editOff = true;
+      this.isDisabled = true;
+      this.isEditing = false;
+    }
+
   }
 
   setEdition(){ 
-    this.isdDisabled = false;
+    this.isDisabled = false;
     this.isEditing = true;
   }
 
   save(){
-    this.editOn = false;
+    this.editOff = true;
+    this.isDisabled = true;
     this.isEditing = false;
-    this.isdDisabled = false;
     const demand = this.demand;
     for (const key of this.selectedShift.keys()){
       if(this.selectedShift.get(key) === true){
@@ -138,16 +147,6 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     }
     this.saveDemandError = false;
     this.emitScheduleDemand();
-  }
-
-  cancel(){
-    this.editOn = false;
-    this.isEditing = false;
-    this.isdDisabled = false;
-    for (const key of this.selectedShift.keys()){
-      this.selectedShift.set(key,false); 
-    }
-
   }
 
 
