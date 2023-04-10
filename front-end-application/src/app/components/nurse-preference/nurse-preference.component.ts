@@ -1,9 +1,10 @@
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
 import { dateDisplay } from "src/app/models/DateDisplay";
 import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { NurseInterface } from "src/app/models/Nurse";
+import { CacheUtils } from "src/app/utils/CacheUtils";
 import { DateUtils } from "src/app/utils/DateUtils";
 
 
@@ -24,7 +25,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   @Output() schedulePreference: EventEmitter<SchedulePreferenceElement[]>
 
   timetable: dateDisplay[];
-  preferences: Map<dateDisplay, Map<string,Map<string, {pref: string, weight: string}>>>;
+  preferences: Map<string, Map<string,Map<string, {pref: string, weight: string}>>>;
   nbColumns: number | undefined;
   
 
@@ -37,6 +38,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const preferencesClone = this.preferences;
     if (changes["nurses"] && changes["nurses"].currentValue) {
       this.nurses = changes["nurses"].currentValue;
     }
@@ -49,8 +51,21 @@ import { DateUtils } from "src/app/utils/DateUtils";
     if (changes["endDate"] && changes["endDate"].currentValue) {
       this.endDate = changes["endDate"].currentValue;
     }
+    console.log(preferencesClone)
     this.ngOnInit()
+    console.log(preferencesClone)
+    for(const date of this.timetable){
+      for(const nurse of this.nurses){
+        for(const shift of this.shifts){
+          const savedPref = preferencesClone.get(JSON.stringify(date))?.get(nurse.username)?.get(shift)
+          if(savedPref){
+            this.preferences.get(JSON.stringify(date))?.get(nurse.username)?.set(shift, savedPref)
+          }
+        }
+      }
+    }
     this.getButtonState();
+    this.emitSchedulePref()
   }
 
 
@@ -63,29 +78,44 @@ import { DateUtils } from "src/app/utils/DateUtils";
     //initiate preferences
     this.preferences = new Map()
     for(const date of this.timetable){
-      this.preferences.set(date, new Map());
+      this.preferences.set(JSON.stringify(date), new Map());
       for (const nurse of this.nurses) {
-        this.preferences.get(date)?.set(nurse.username, new Map())
+        this.preferences.get(JSON.stringify(date))?.set(nurse.username, new Map())
         for (const shift of this.shifts) {
-          this.preferences.get(date)?.get(nurse.username)?.set(shift, { pref: '', weight: '' })
+          this.preferences.get(JSON.stringify(date))?.get(nurse.username)?.set(shift, { pref: '', weight: '' })
         }
       }
     }
+    const savedPreferences = CacheUtils.getGenerationRequestPreferences()
+    if(savedPreferences){
+      savedPreferences.forEach((pref:SchedulePreferenceElement)=>{
+        this.timetable.forEach((time: dateDisplay)=>{
+          if(pref.date === time.date){
+            const prefElement = this.preferences.get(JSON.stringify(time))?.get(pref.username)?.get(pref.shift)
+            if(prefElement){
+              this.preferences.get(JSON.stringify(time))?.get(pref.username)?.set(pref.shift, {pref: pref.preference, weight: pref.weight})
+              this.weight = pref.weight
+            }
+          }
+        })
+      })
+    }
+    this.emitSchedulePref()
   }
 
   updatePreferences(date: dateDisplay, nurse: string, shift: string) {
-    if (!this.preferences.get(date)?.get(nurse)) {
-      this.preferences.get(date)?.set(nurse, new Map());
+    if (!this.preferences.get(JSON.stringify(date))?.get(nurse)) {
+      this.preferences.get(JSON.stringify(date))?.set(nurse, new Map());
     }
 
-    if (!this.preferences.get(date)?.get(nurse)?.get(shift)) {
-      this.preferences.get(date)?.get(nurse)?.set(shift,{ pref: '', weight: '' });
+    if (!this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)) {
+      this.preferences.get(JSON.stringify(date))?.get(nurse)?.set(shift,{ pref: '', weight: '' });
     }
-    let pref = this.preferences.get(date)?.get(nurse)?.get(shift)?.pref;
+    let pref = this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.pref;
     let weight =  this.weight;
 
-    if(this.weight ===  this.preferences.get(date)?.get(nurse)?.get(shift)?.weight){
-      if(this.preferences.get(date)?.get(nurse)?.get(shift)?.pref === 'ON') {
+    if(this.weight ===  this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.weight){
+      if(this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.pref === 'ON') {
         pref = 'OFF';
       } else {
         pref = '';
@@ -93,12 +123,12 @@ import { DateUtils } from "src/app/utils/DateUtils";
       }    
     } else { pref = 'ON';}
     
-    this.preferences.get(date)?.get(nurse)?.set(shift, { pref, weight });
+    this.preferences.get(JSON.stringify(date))?.get(nurse)?.set(shift, { pref, weight });
     this.emitSchedulePref();
   }
 
   showToolTip(date: dateDisplay,nurse: string, shift: string):string {
-    const preferenceObj = this.preferences.get(date)?.get(nurse)?.get(shift)
+    const preferenceObj = this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)
     if(preferenceObj === undefined){
       return "";
     }
@@ -107,10 +137,10 @@ import { DateUtils } from "src/app/utils/DateUtils";
 
   getButtonState(date?: dateDisplay, nurse?: string, shift?: string): string {
     if(date !== undefined && nurse !==  undefined && shift !==  undefined) {
-    if(this.preferences.get(date)?.get(nurse)?.get(shift)?.pref === 'ON') {
+    if(this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.pref === 'ON') {
       return "check"
     } 
-    if (this.preferences.get(date)?.get(nurse)?.get(shift)?.pref === 'OFF') {
+    if (this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.pref === 'OFF') {
       return "close"
     }
     return "check_box_outline_blank";
@@ -119,7 +149,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   }
 
   getButtonStyle(date: dateDisplay, nurse: string, shift: string) {
-    const pref = this.preferences.get(date)?.get(nurse)?.get(shift)?.pref;
+    const pref = this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.pref;
     if (pref === 'ON') {
       return {'background-color': 'rgb(228, 241, 226)' };
     } else if (pref === 'OFF') {
@@ -154,7 +184,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
     for(const date of this.timetable){
       for (const nurse of this.nurses) {
         for (const shift of this.shifts) {
-          const preferenceObj = this.preferences.get(date)?.get(nurse.username)?.get(shift)
+          const preferenceObj = this.preferences.get(JSON.stringify(date))?.get(nurse.username)?.get(shift)
           if( preferenceObj && (preferenceObj.pref === 'OFF' ||
               preferenceObj.pref === 'ON')){
             const schedule = {
@@ -170,5 +200,29 @@ import { DateUtils } from "src/app/utils/DateUtils";
       }
     }
     this.schedulePreference.emit(scedulePref);
+  }
+
+  @HostListener("window:beforeunload")
+  savePreferences(){
+    const scedulePref = [];
+    for(const date of this.timetable){
+      for (const nurse of this.nurses) {
+        for (const shift of this.shifts) {
+          const preferenceObj = this.preferences.get(JSON.stringify(date))?.get(nurse.username)?.get(shift)
+          if( preferenceObj && (preferenceObj.pref === 'OFF' ||
+              preferenceObj.pref === 'ON')){
+            const schedule = {
+              date: date.date, 
+              username: nurse.username, 
+              preference: preferenceObj.pref,
+              shift: shift,
+              weight: preferenceObj.weight
+            }
+            scedulePref.push(schedule);
+          }
+        }
+      }
+    }
+    CacheUtils.setGenerationRequestPreferences(scedulePref)
   }
 }

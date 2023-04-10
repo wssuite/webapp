@@ -72,9 +72,9 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
   openSkillCreationDialog(skill: SkillInterface) {
     const dialog = this.dialog.open(SkillCreationDialogComponent,  
       { disableClose: true,  
-        height: '30%',
+        height: '32%',
         width: '30%', 
-        position: {top:'10vh',left: '35%', right: '35%'},
+        position: {top:'30vh',left: '36%', right: '35%'},
         data: {skill:skill,skills:this.skills},
       });
     

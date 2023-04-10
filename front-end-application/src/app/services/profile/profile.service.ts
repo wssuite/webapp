@@ -72,6 +72,7 @@ export class ProfileService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      CacheUtils.removeSavedGenerationRequestItems(CacheUtils.getProfile())
       return this.httpClient.delete<HttpResponse<string>>(DELETE_PROFILE, {
         params: queryParams,
       })
