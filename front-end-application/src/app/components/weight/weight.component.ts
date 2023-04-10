@@ -67,6 +67,7 @@ export class WeightComponent implements OnInit, OnChanges{
   ngOnInit(): void {
     this.disabled = this.weight === "hard"? true: false;
     this.update();
+    this.updateHospitalDemandWeight(this.isDisabled);
     if(!this.disabled){
       this.inputCtrl.setValue(this.weight)
     }
@@ -77,12 +78,7 @@ export class WeightComponent implements OnInit, OnChanges{
     if (changes["isDisabled"] && changes["isDisabled"].currentValue) {
       this.isDisabled = changes["isDisabled"].currentValue;   
   }
-  if (this.isDisabled) {
-    this.inputCtrl = new FormControl({ value: this.localWeight, disabled: true });
-  }
-  else{
-    this.inputCtrl = new FormControl({ value: this.localWeight, disabled: false });
-  }
+  this.updateHospitalDemandWeight(this.isDisabled);
 }
 
 
@@ -104,13 +100,22 @@ export class WeightComponent implements OnInit, OnChanges{
     this.emitWeight();
   }
 
+  updateHospitalDemandWeight(disabled: boolean){
+    if (disabled) {
+      this.inputCtrl = new FormControl({ value: this.localWeight, disabled: true });
+    }
+    else{
+      this.inputCtrl = new FormControl({ value: this.localWeight, disabled: false });
+    }
+  }
+
   emitWeight() {
     this.weightChange.emit(this.weight);
     this.emitErrorState();
   }
 
   updateFormControl(disabled: boolean): FormControl {
-    if (disabled || this.isDisabled) {
+    if (disabled) {
       return new FormControl({ value: this.localWeight, disabled: true });
     }
     return new FormControl({ value: this.weight, disabled: false }, [
