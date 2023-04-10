@@ -79,9 +79,9 @@ export class ContractsGroupViewComponent implements OnInit, AfterViewInit{
   openContractGroupCreationDialog(contractGroup: ContractGroupInterface) {
     const dialog = this.dialog.open(ContractGroupCreationDialogComponent,  
       { disableClose: true,  
-        height: '85%',
+        height: '60%',
         width: '55%', 
-        position: {top:'5vh',left: '25%', right: '25%'},
+        position: {top:'20vh',left: '23%', right: '25%'},
         data: {contractGroup:contractGroup,contractGroups:this.contractGroups},
       });
     
