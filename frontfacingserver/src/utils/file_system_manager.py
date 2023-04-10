@@ -84,7 +84,7 @@ class FileSystemManager:
                 full_path,
                 v
             )
-            next_version = f"{curr_version}.{curr_minor_version + 1}"
+            next_version = f"{int(float(v))}.{curr_minor_version + 1}"
 
         full_path = os.path.join(full_path, next_version)
         FileSystemManager.create_dir_if_not_exist(full_path)
