@@ -57,6 +57,7 @@ class ScheduleHandler(BaseHandler):
             demand_json[profile],
             demand_json[start_date],
             demand_json[end_date],
+            v
         )
         detailed_demand = ScheduleDemandDetailed()
 
@@ -83,7 +84,7 @@ class ScheduleHandler(BaseHandler):
             start_date: demand.start_date,
             end_date: demand.end_date,
             profile: demand.profile,
-            version: str(next_version),
+            version: next_version,
             timestamp: time_str,
         }
         """This will be the case of a schedule regeneration"""
@@ -231,6 +232,21 @@ class ScheduleHandler(BaseHandler):
         solution = Schedule(sol_file)
         return solution.export()
 
+    def export_std_error(self, token, start, end, profile_name, v):
+        self.verify_profile_accessors_access(token, profile_name)
+        fs = FileSystemManager()
+        sol_dir_path = fs.get_solution_dir_path(profile_name, start, end, v)
+        err_dir_path = os.path.join(sol_dir_path, "error.txt")
+        try:
+            str_error = ""
+            with open(err_dir_path) as f:
+                lines = f.readlines()
+                for line in lines:
+                    str_error += f"{line}"
+            return str_error
+        except Exception:
+            raise ProjectBaseException("No errors were found")
+
     def __build_detailed_demand(self, demand, detailed_demand):
         nurse_groups = self.nurse_group_dao.fetch_all(demand.profile)
         """Get the nurses objects included in the demand"""
@@ -270,6 +286,16 @@ class ScheduleHandler(BaseHandler):
                 )
                 if shift_exist is True or preference.shift.lower() == "any":
                     detailed_demand.preferences.append(preference)
+
+        for element in demand.history:
+            element_id = username_id_dict.get(element.username)
+            if element_id is not None:
+                element.id = element_id
+                shift_exist = self.shift_dao.exist(
+                    element.shift, demand.profile
+                )
+                if shift_exist is True or element.shift.lower() == "any":
+                    detailed_demand.history.append(element)
 
         for element in demand.hospital_demand:
             skill_exist = self.skill_dao.exist(element.skill, demand.profile)

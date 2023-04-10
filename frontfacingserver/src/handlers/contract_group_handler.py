@@ -14,7 +14,6 @@ class ContractGroupHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         contract_group = ContractGroup().from_json(json)
-        self.verify_name_is_valid(contract_group.name)
         self.contract_group_insertion_verification(contract_group)
         self.contract_group_dao.insert_if_not_exist(contract_group.db_json())
 
@@ -32,25 +31,20 @@ class ContractGroupHandler(BaseHandler):
 
     def delete(self, token, name, profile_name):
         super().delete(token, name, profile_name)
-        usage = []
-        usage.extend(
-            [
+        nurse_groups_usage = [
                 group[nurse_group_name]
                 for group in self.nurse_group_dao.get_with_contract_groups(
                     [name], profile_name
                 )
-            ]
-        )
-        usage.extend(
-            [
+        ]
+        nurses_usage = [
                 nurse[nurse_username]
                 for nurse in self.nurse_dao.get_with_contract_groups(
                     [name], profile_name
                 )
-            ]
-        )
-        if len(usage) > 0:
-            raise ContractGroupDeletionError(name, usage)
+        ]
+        if len(nurses_usage) > 0 or len(nurse_groups_usage) > 0:
+            raise ContractGroupDeletionError(name, nurses_usage, nurse_groups_usage)
         self.contract_group_dao.remove(name, profile_name)
 
     def get_all_names(self, token, profile_name):

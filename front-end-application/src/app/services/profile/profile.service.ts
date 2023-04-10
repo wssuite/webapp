@@ -13,14 +13,10 @@ export class ProfileService {
 
 
   profileChanged: Subject<boolean>;
-  newProfileCreated: boolean;
-  editionFinished: boolean;
   newImportedProfileCreated: Subject<boolean>;
   
   constructor(private httpClient: HttpClient) { 
     this.profileChanged = new Subject();
-    this.newProfileCreated = false;
-    this.editionFinished = false;
     this.newImportedProfileCreated = new Subject()
   }
 
@@ -76,6 +72,7 @@ export class ProfileService {
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile());
+      CacheUtils.removeSavedGenerationRequestItems(CacheUtils.getProfile())
       return this.httpClient.delete<HttpResponse<string>>(DELETE_PROFILE, {
         params: queryParams,
       })

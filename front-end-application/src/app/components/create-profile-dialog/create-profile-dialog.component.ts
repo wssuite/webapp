@@ -24,18 +24,16 @@ export class CreateProfileDialogComponent {
   createEmptyProfile(){
     const dialog = this.dialog.open(CreateEmptyProfileDialogComponent, {
       data: {profiles: this.data.profiles},
-      height: '65%',
-      width: '55%', 
-      position: {top:'5vh',left: '25%', right: '25%'}
+      height: '30%',
+      width: '30%', 
+      position: {top:'30vh',left: '36%', right: '35%'}
     })
     dialog.afterClosed().subscribe(()=>{
-      this.service.editionFinished = true
       this.dialogRef.close()
     })
   }
 
   importProfile(){
-    this.service.editionFinished = false;
     this.dialogRef.close()
     this.router.navigate(["/" + IMPORT])
   }

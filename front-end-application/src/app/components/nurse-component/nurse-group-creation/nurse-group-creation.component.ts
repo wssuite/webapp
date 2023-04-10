@@ -188,7 +188,7 @@ export class NurseGroupCreationComponent implements OnInit, OnChanges {
   }
   
   removeNurse(nurse: string) {
-    const index = this.nurseGroup.contracts.indexOf(nurse);
+    const index = this.nurseGroup.nurses.indexOf(nurse);
     if (index > -1) {
       this.nurseGroup.nurses.splice(index, 1);
     }

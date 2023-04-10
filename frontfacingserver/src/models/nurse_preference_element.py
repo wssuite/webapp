@@ -6,6 +6,9 @@ from constants import (
     preference_shift,
     preference_weight,
     preference_pref,
+    history_date,
+    history_username,
+    history_shift,
 )
 from src.models.stringify import Stringify
 
@@ -22,4 +25,16 @@ class NursePreferenceElement(Jsonify, Stringify):
         return (
             f"{self.date},{self.id},{self.preference},"
             f"{self.shift},{self.weight}\n"
+        )
+
+
+class NurseHistoryElement(Jsonify, Stringify):
+    date = StringField(serialized_name=history_date)
+    username = StringField(serialized_name=history_username)
+    id = ""
+    shift = StringField(serialized_name=history_shift)
+
+    def to_string(self):
+        return (
+            f"{self.date},{self.id},{self.shift}\n"
         )

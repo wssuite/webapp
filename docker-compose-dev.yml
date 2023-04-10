@@ -27,7 +27,7 @@ services:
       - 5000:5000
       - 4200
     command: >
-     bash -c "systemctl start nginx &&
+     bash -c "service nginx start &&
       cd /ffs && /venv/bin/python app.py &
       cd /fe && npm start"
     networks:
@@ -42,6 +42,7 @@ services:
       - ./nginx/sites-available:/etc/nginx/sites-available
       - ./ssl/private/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key
       - ./ssl/certs/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt
+      - ./nginx/dhparam.pem:/etc/nginx/dhparam.pem
     restart: always
   
   worker1:

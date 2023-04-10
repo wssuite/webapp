@@ -11,7 +11,7 @@ class SkillAlreadyExists(ProjectBaseException):
 class CannotDeleteSkill(ProjectBaseException):
     def __init__(self, name, usage):
         skill = f"the skill {name}"
-        usage_str = self.get_usage_str(usage)
+        usage_str = self.get_usage_str("contracts", usage)
         msg = deletion_error.format(skill, usage_str)
         super(CannotDeleteSkill, self).__init__(msg)
 

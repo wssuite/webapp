@@ -92,7 +92,7 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
       { disableClose: true,  
         height: '85%',
         width: '55%', 
-        position: {top:'5vh',left: '25%', right: '25%'},
+        position: {top:'8vh',left: '25%', right: '25%'},
         data: {nurseGroup:nurseGroup,nurseGroups:this.nurseGroups},
       });
     

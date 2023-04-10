@@ -4,8 +4,16 @@ h2 {
     margin-bottom: 0px;
 }
 
+.inputContainer {
+    padding: 1.5%;
+}
+
 .nameForm {
     width: 100%;
+}
+
+.addContractGroupButton, .addContractButton {
+    margin-left: 1.5%;
 }
 
 .table-element-container {

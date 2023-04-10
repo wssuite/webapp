@@ -6,7 +6,7 @@ from constants import (
     nurse_name,
     contract_name,
     nurse_username,
-    nurse_group_name,
+    nurse_group_name, contract_group_name,
 )
 from src.utils.contracts_validator import ContractsValidator
 from src.exceptions.contract_exceptions import (
@@ -31,7 +31,6 @@ class ContractHandler(BaseHandler):
     def add(self, token, json):
         super().add(token, json)
         contract = Contract().from_json(json)
-        self.verify_name_is_valid(contract.name)
         self.contract_insertion_verification(contract)
         self.contract_dao.insert_one(contract.db_json())
 
@@ -95,25 +94,31 @@ class ContractHandler(BaseHandler):
 
     def delete(self, token, name, profile_name):
         super().delete(token, name, profile_name)
-        usage = []
-        usage.extend(
-            [
+        nurses_usage = [
                 nurse[nurse_username]
                 for nurse in self.nurse_dao.get_with_contracts(
                     [name], profile_name
                 )
-            ]
-        )
-        usage.extend(
-            [
+        ]
+        nurse_groups_usage = [
                 nurse_group[nurse_group_name]
                 for nurse_group in self.nurse_group_dao.get_with_contracts(
                     [name], profile_name
                 )
-            ]
-        )
-        if len(usage) > 0:
-            raise CannotDeleteContract(name, usage)
+        ]
+        contract_groups_usage = [
+            contract_group[contract_group_name]
+            for contract_group in self.nurse_group_dao.get_with_contracts(
+                [name], profile_name
+            )
+        ]
+        if (
+                len(nurses_usage) > 0
+                or len(nurse_groups_usage) > 0
+                or len(contract_groups_usage) > 0
+        ):
+            raise CannotDeleteContract(
+                name, nurses_usage, nurse_groups_usage, contract_groups_usage)
         self.contract_dao.remove(name, profile_name)
 
     def get_all(self, token, profile_name):
