@@ -85,7 +85,7 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
       { disableClose: true,  
         height: '65%',
         width: '50%', 
-        position: {top:'10vh',left: '25%', right: '25%'},
+        position: {top:'18vh',left: '26%', right: '25%'},
         data: {shiftType:shiftType, shiftsType:this.shiftsType}
       });
 

@@ -123,7 +123,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       disableClose: true,  
       height: '64%',
       width: '55%', 
-      position: {top:'10vh',left: '25%', right: '25%'},
+      position: {top:'15vh',left: '23%', right: '25%'},
     })
   }
 

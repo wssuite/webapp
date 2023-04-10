@@ -26,7 +26,7 @@ export class CreateProfileDialogComponent {
       data: {profiles: this.data.profiles},
       height: '30%',
       width: '30%', 
-      position: {top:'10vh',left: '35%', right: '35%'}
+      position: {top:'30vh',left: '36%', right: '35%'}
     })
     dialog.afterClosed().subscribe(()=>{
       this.dialogRef.close()

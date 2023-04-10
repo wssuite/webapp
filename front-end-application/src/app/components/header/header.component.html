@@ -44,7 +44,12 @@
                 </ng-template>
             </button>
             <mat-menu #notificationsMenu="matMenu">
+                <div *ngIf="notifications.length>0; else nothingToShow" > 
                 <button mat-menu-item *ngFor="let sol of notifications" (click)="viewSchedule(sol)">The schedule {{sol.startDate}}-{{sol.endDate}}-v{{sol.version}} is {{sol.state}}</button>
+                 </div>
+                <ng-template #nothingToShow>
+                    <mat-menu-item id="nothing-to-show">You don't have any notifications!</mat-menu-item>
+                </ng-template>
             </mat-menu>
         </div>
         <div class="icon-box">
