@@ -97,7 +97,6 @@ import { SidenavContractComponent } from './components/contract-component/sidena
 import { ContractsGroupViewComponent } from './components/contract-component/contracts-group-view/contracts-group-view.component';
 import { SchedulesGalleryComponent } from './components/schedules-gallery/schedule-view.component';
 import { NurseHistoryComponent } from './components/nurse-history/nurse-history.component';
-import { AccountDeleteDialogComponent } from './components/account-creation/account-delete-dialog/account-delete-dialog.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
@@ -167,7 +166,6 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     ContractsGroupViewComponent,
     SchedulesGalleryComponent,
     NurseHistoryComponent,
-    AccountDeleteDialogComponent,
     ConfirmationDialogComponent,
   ],
   imports: [

@@ -50,10 +50,10 @@
     </div>
 </div>
 <div mat-dialog-action class="buttons-container">
-    <button mat-raised-button color="warn" [mat-dialog-close]="true">
-        Cancel
-    </button>
     <button  mat-raised-button [disabled]="hasError()" color="primary"  (click)="createAccount()">
         Create
+    </button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">
+        Cancel
     </button>
 </div>
