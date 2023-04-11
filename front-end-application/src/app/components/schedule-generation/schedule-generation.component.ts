@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { Component, HostListener, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
@@ -11,7 +11,7 @@ import { NurseService } from "src/app/services/nurse/nurse.service"
 import { ShiftService } from "src/app/services/shift/shift.service";
 import { SkillService } from "src/app/services/shift/skill.service";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
-import { GenerationRequest, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+import { GenerationRequest, GenerationRequestDetails, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
@@ -28,8 +28,8 @@ export class ScheduleGenerationComponent implements OnInit {
   endDate: Date;
 
   range = new FormGroup({
-    start: new FormControl(null, Validators.required),
-    end: new FormControl(null, Validators.required),
+    start: new FormControl<Date>(new Date(), Validators.required),
+    end: new FormControl<Date>(new Date(), Validators.required),
   });
   inputControlForm = new FormGroup({
     name: new FormControl(null, Validators.required),
@@ -90,41 +90,80 @@ export class ScheduleGenerationComponent implements OnInit {
     this.connectedUser = false;
   }
   ngOnInit(): void {
+    this.nurses = []
+    this.skills = []
+    this.shifts = []
+    this.nursesUsername = []
     try{
+      const savedRequest = CacheUtils.getSavedGenerationRequest()
+      console.log(savedRequest)
+      if(savedRequest){
+        this.startDate = new Date(savedRequest.startDate);
+        this.endDate = new Date(savedRequest.endDate);
+        this.range.get("start")?.setValue(this.startDate)
+        this.range.get("end")?.setValue(this.endDate)
+        const dayDiffrences = DateUtils.nbDaysDifference(this.endDate, this.startDate)
+        console.log(dayDiffrences)
+        this.dateError = dayDiffrences % 7 !== 0
+      }
       this.shiftService.getShiftNames().subscribe({
         next: (shifts: string[])=>{
-          shifts.forEach((shift: string)=>{
-            this.possibleShifts.push(shift);
-          })
+          this.possibleShifts= shifts
           this.selectedShift=this.possibleShifts[0];
+          if(savedRequest){
+            savedRequest.shifts.forEach((shift: string)=>{
+              const index = this.possibleShifts.indexOf(shift)
+              if(index > -1){
+                this.possibleShifts.splice(index, 1)
+                this.shifts.push(shift)
+              }
+            })
+          }
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
         }
       })
-
-      if(this.scheduleService.socket === undefined){
-        this.scheduleService.connectSocket()
-      }
       this.nurseService.getAllNurse().subscribe({
         next: (nurses: NurseInterface[])=> {
           nurses.forEach((nurse: NurseInterface)=>{
-            this.possibleNurses.push(nurse);
             this.nursesUsername.push(nurse.username);
           })
+          this.possibleNurses = nurses
+          console.log(this.possibleNurses)
           this.selectedNurse = this.possibleNurses[0];
+          if(savedRequest){
+            savedRequest.nurses.forEach((nurse: NurseInterface)=>{
+              this.possibleNurses.forEach((pn: NurseInterface)=>{
+                if(pn.username === nurse.username){
+                  console.log("here")
+                  const index = this.possibleNurses.indexOf(pn)
+                  if(index > -1){
+                    this.possibleNurses.splice(index,1)
+                    this.nurses.push(pn)
+                  }
+                }
+              })
+            })
+          }
         },
         error: (error: HttpErrorResponse)=> {
           this.openErrorDialog(error.error);
         }
       })
-
       this.skillService.getAllSkills().subscribe({
         next:(skills: string[])=>{
-          skills.forEach((skill: string)=>{
-            this.possibleSkills.push(skill);
-          })
+          this.possibleSkills = skills
           this.selectedSkill = this.possibleSkills[0];
+          if(savedRequest){
+            savedRequest.skills.forEach((skill: string)=>{
+              const index = this.possibleSkills.indexOf(skill)
+              if(index > -1){
+                this.possibleSkills.splice(index , 1)
+                this.skills.push(skill)
+              }
+            })
+          }
         },
         error: (error: HttpErrorResponse)=>{
           this.openErrorDialog(error.error);
@@ -132,6 +171,7 @@ export class ScheduleGenerationComponent implements OnInit {
       })
       this.connectedUser = true
 
+      console.log(this.nurses)
     }catch(err){
       //Do nothing
     }
@@ -262,8 +302,8 @@ export class ScheduleGenerationComponent implements OnInit {
   }
 
   generateSchedule(){
-    const sd = DateUtils.arrangeDateString(this.startDate.toLocaleDateString().replaceAll("/", "-"))
-    const ed = DateUtils.arrangeDateString(this.endDate.toLocaleDateString().replaceAll("/", "-"))
+    const sd = DateUtils.arrangeDateString(this.startDate.toISOString().split("T")[0])
+    const ed = DateUtils.arrangeDateString(this.endDate.toISOString().split("T")[0])
     const requestNurses: string[] = []
     this.nurses.forEach((nurse: NurseInterface)=>{
       requestNurses.push(nurse.username)
@@ -315,5 +355,17 @@ export class ScheduleGenerationComponent implements OnInit {
   updateDemandsErrorState(e: boolean){
     this.demandsError = e;
   }
-  
+
+  @HostListener("window:beforeunload")
+  saveDetails(){
+    console.log(this.nurses)
+    const request : GenerationRequestDetails ={
+      startDate: this.startDate,
+      endDate: this.endDate,
+      nurses: this.nurses,
+      shifts: this.shifts,
+      skills: this.skills
+    }
+    CacheUtils.setGenerationRequest(request)
+  }
 }

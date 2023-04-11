@@ -36,11 +36,6 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
     this.minWeightLabel = "Min weight"
     this.minInputDisabled = false
     this.maxInputDisabled = false;
-    this.demand = {
-      maxValue: "0",
-      maxWeight: "0",
-      minValue: "0",
-      minWeight: "0"};
   }
 
   ngOnInit(): void {

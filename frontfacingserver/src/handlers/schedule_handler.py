@@ -57,6 +57,7 @@ class ScheduleHandler(BaseHandler):
             demand_json[profile],
             demand_json[start_date],
             demand_json[end_date],
+            v
         )
         detailed_demand = ScheduleDemandDetailed()
 
@@ -83,7 +84,7 @@ class ScheduleHandler(BaseHandler):
             start_date: demand.start_date,
             end_date: demand.end_date,
             profile: demand.profile,
-            version: str(next_version),
+            version: next_version,
             timestamp: time_str,
         }
         """This will be the case of a schedule regeneration"""
@@ -285,6 +286,16 @@ class ScheduleHandler(BaseHandler):
                 )
                 if shift_exist is True or preference.shift.lower() == "any":
                     detailed_demand.preferences.append(preference)
+
+        for element in demand.history:
+            element_id = username_id_dict.get(element.username)
+            if element_id is not None:
+                element.id = element_id
+                shift_exist = self.shift_dao.exist(
+                    element.shift, demand.profile
+                )
+                if shift_exist is True or element.shift.lower() == "any":
+                    detailed_demand.history.append(element)
 
         for element in demand.hospital_demand:
             skill_exist = self.skill_dao.exist(element.skill, demand.profile)
