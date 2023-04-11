@@ -1,5 +1,5 @@
 import { UserInfo } from "../models/Credentials";
-import { SchedulePreferenceElement } from "../models/GenerationRequest";
+import { GenerationRequestDetails, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement } from "../models/GenerationRequest";
 import { ContinuousVisualisationInterface, Solution } from "../models/Schedule";
 
 export const TOKEN_STRING = "token";
@@ -9,6 +9,10 @@ export const PROFILE_STRING = "profile";
 export const CURRENT_SCHEDULE = "schedule";
 export const NOTIFICATION_SUBSCRIPTION_STRING = "notifiSubscription";
 const CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING = "continuousVisualisation"
+export const GENERATION_REQUEST_STRING = "generationRequest";
+const NURSE_PREFERENCE_REQUEST_STRING = "preferences"
+const REQUEST_DEMAND_STRING = "demand";
+const REQUEST_HISTORY_STRING = "history"
 
 export class CacheUtils {
 
@@ -174,5 +178,59 @@ export class CacheUtils {
             return undefined
         }
         return JSON.parse(savedItem) as ContinuousVisualisationInterface;
+    }
+
+    public static setGenerationRequest(request: GenerationRequestDetails){
+        localStorage.setItem(GENERATION_REQUEST_STRING + this.getProfile(), JSON.stringify(request))
+    }
+
+    public static getSavedGenerationRequest(): GenerationRequestDetails| undefined{
+        const savedRequest = localStorage.getItem(GENERATION_REQUEST_STRING + this.getProfile())
+        if(!savedRequest){
+            return undefined
+        }
+        return JSON.parse(savedRequest) as GenerationRequestDetails
+    }
+
+    public static setGenerationRequestPreferences(preferences: SchedulePreferenceElement[]){
+        localStorage.setItem(NURSE_PREFERENCE_REQUEST_STRING + this.getProfile(), JSON.stringify(preferences))
+    }
+
+    public static getGenerationRequestPreferences(): SchedulePreferenceElement[] | undefined{
+        const savedPreferences = localStorage.getItem(NURSE_PREFERENCE_REQUEST_STRING + this.getProfile())
+        if(!savedPreferences){
+            return undefined
+        }
+        return JSON.parse(savedPreferences) as SchedulePreferenceElement[]
+    }
+
+    public static setDemandGenerationRequest(demand: HospitalDemandElement[]){
+        localStorage.setItem(REQUEST_DEMAND_STRING + this.getProfile(), JSON.stringify(demand))
+    }
+
+    public static getDemandGenerationRequest(): HospitalDemandElement[] | undefined {
+        const savedDemand = localStorage.getItem(REQUEST_DEMAND_STRING + this.getProfile())
+        if(!savedDemand){
+            return undefined
+        }
+        return JSON.parse(savedDemand) as HospitalDemandElement[]
+    }
+
+    public static saveNurseHistory(history: NurseHistoryElement[]){
+        localStorage.setItem(REQUEST_HISTORY_STRING + this.getProfile(), JSON.stringify(history))
+    }
+
+    public static getNurseHistory(): NurseHistoryElement[] | undefined {
+        const savedHistory = localStorage.getItem(REQUEST_HISTORY_STRING + this.getProfile())
+        if(!savedHistory){
+            return undefined
+        }
+        return JSON.parse(savedHistory) as NurseHistoryElement[]
+    }
+    public static removeSavedGenerationRequestItems(profile: string){
+        localStorage.removeItem(GENERATION_REQUEST_STRING + profile)
+        localStorage.removeItem(NURSE_PREFERENCE_REQUEST_STRING + profile)
+        localStorage.removeItem(REQUEST_DEMAND_STRING + profile)
+        localStorage.removeItem(REQUEST_HISTORY_STRING + profile)
     }
 }

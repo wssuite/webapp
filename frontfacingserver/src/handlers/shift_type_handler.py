@@ -38,25 +38,23 @@ class ShiftTypeHandler(BaseHandler):
 
     def delete(self, token, name, profile):
         super().delete(token, name, profile)
-        usage = []
-        usage.extend(
-            [
+        contracts_usage = [
                 contract[contract_name]
                 for contract in self.contract_dao.get_including_shifts(
                     [name], profile
                 )
-            ]
-        )
-        usage.extend(
-            [
+        ]
+        shift_groups_usage = [
                 group[shift_group_name]
                 for group in self.shift_group_dao.get_including_shift_types(
                     [name], profile
                 )
-            ]
-        )
-        if len(usage) > 1:
-            raise CannotDeleteShiftType(name, usage)
+        ]
+        if len(shift_groups_usage) > 1:
+            raise CannotDeleteShiftType(name, contracts_usage, shift_groups_usage)
+        if len(contracts_usage) > 0:
+            raise CannotDeleteShiftType(name, contracts_usage, shift_groups_usage)
+
         self.shift_type_dao.remove(name, profile)
         self.__remove_shift_type_from_work_shift_group(name, profile)
 

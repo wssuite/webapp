@@ -39,7 +39,7 @@ from constants import (
     assignment_shift,
     assignment_skill,
     schedule,
-    timestamp,
+    timestamp, schedule_history, history_date, history_username, history_shift,
 )
 from test.db_test_constants import build_db, random_hex, profile1
 from pyfakefs.fake_filesystem_unittest import TestCase
@@ -82,6 +82,7 @@ hospital_demand_dict = {
     ],
     schedule_skills: ["Nurse", "HeadNurse"],
     schedule_shifts: ["Early", "MidDay", "Late"],
+    schedule_history: []
 }
 
 
@@ -131,7 +132,7 @@ class TestScheduleHandler(TestCase):
             start_date: "2023-06-01",
             end_date: "2023-06-02",
             profile: profile1,
-            version: "1",
+            version: "1.0",
             state: "Waiting",
             timestamp: solution[timestamp],
         }
@@ -169,19 +170,19 @@ class TestScheduleHandler(TestCase):
             random_hex, hospital_demand_dict
         )
         solution = self.handler.regenerate_schedule(
-            random_hex, hospital_demand_dict, "1"
+            random_hex, hospital_demand_dict, "1.0"
         )
         expected_solution = {
             start_date: "2023-06-01",
             end_date: "2023-06-02",
             profile: profile1,
-            version: "2",
+            version: "1.1",
             state: "Waiting",
             timestamp: solution[timestamp],
         }
         self.assertEqual(expected_solution, solution)
         solution_detailed = self.handler.get_detailed_solution(
-            random_hex, "2023-06-01", "2023-06-02", profile1, "2"
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1.1"
         )
         expected_detailed = expected_solution.copy()
         expected_detailed[timestamp] = solution[timestamp]
@@ -190,7 +191,7 @@ class TestScheduleHandler(TestCase):
                 start_date: "2023-06-01",
                 end_date: "2023-06-02",
                 profile: profile1,
-                version: "1",
+                version: "1.0",
                 state: "Waiting",
                 timestamp: first_solution[timestamp],
             }
@@ -204,22 +205,22 @@ class TestScheduleHandler(TestCase):
     ):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
         solution = self.handler.regenerate_schedule(
-            random_hex, hospital_demand_dict, "1"
+            random_hex, hospital_demand_dict, "1.0"
         )
         expected_solution = {
             start_date: "2023-06-01",
             end_date: "2023-06-02",
             profile: profile1,
-            version: "2",
+            version: "1.1",
             state: "Waiting",
             timestamp: solution[timestamp],
         }
         self.assertEqual(expected_solution, solution)
         self.handler.remove_schedule(
-            random_hex, "2023-06-01", "2023-06-02", profile1, "1"
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1.0"
         )
         solution_detailed = self.handler.get_detailed_solution(
-            random_hex, "2023-06-01", "2023-06-02", profile1, "2"
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1.1"
         )
         expected_detailed = expected_solution.copy()
         expected_detailed[timestamp] = solution[timestamp]
@@ -240,7 +241,7 @@ class TestScheduleHandler(TestCase):
                 dataset_directory,
                 profile1,
                 "2023-06-01_2023-06-02",
-                "1",
+                "1.0",
                 "input.txt",
             )
         )
@@ -250,7 +251,7 @@ class TestScheduleHandler(TestCase):
                 dataset_directory,
                 profile1,
                 "2023-06-01_2023-06-02",
-                "1",
+                "1.0",
                 "sol",
                 "sol.txt",
             )
@@ -263,7 +264,7 @@ class TestScheduleHandler(TestCase):
                 dataset_directory,
                 profile1,
                 "2023-06-01_2023-06-02",
-                "1",
+                "1.0",
                 "input.txt",
             )
         )
@@ -273,7 +274,7 @@ class TestScheduleHandler(TestCase):
                 dataset_directory,
                 profile1,
                 "2023-06-01_2023-06-02",
-                "1",
+                "1.0",
                 "sol",
                 "sol.txt",
             )
@@ -283,7 +284,7 @@ class TestScheduleHandler(TestCase):
         HEADERS
         (0,Patrick)
         END
-        instance1,1,2023-06-01,2023-06-02
+        instance1,1.0,2023-06-01,2023-06-02
         Assignments = 1
         0,2023-06-01,Late,Nurse
         """
@@ -292,7 +293,7 @@ class TestScheduleHandler(TestCase):
             dataset_directory,
             profile1,
             "2023-06-01_2023-06-02",
-            "1",
+            "1.0",
             "sol.txt",
         )
         self.fs.create_file(solution_file, contents=text)
@@ -314,13 +315,13 @@ class TestScheduleHandler(TestCase):
             ],
         }
         solution_detailed = self.handler.get_detailed_solution(
-            random_hex, "2023-06-01", "2023-06-02", profile1, "1"
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1.0"
         )
         expected_detailed = {
             start_date: "2023-06-01",
             end_date: "2023-06-02",
             profile: profile1,
-            version: "1",
+            version: "1.0",
             state: "Waiting",
             timestamp: generation[timestamp],
             previous_versions: [],
@@ -366,7 +367,7 @@ Patrick,2023-06-01,Late,Nurse
     def test_get_latest_solutions(self, mock_post):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
         last_generation = self.handler.regenerate_schedule(
-            random_hex, hospital_demand_dict, "1"
+            random_hex, hospital_demand_dict, "1.0"
         )
         actual = self.handler.get_latest_solutions_versions(
             random_hex, profile1
@@ -375,7 +376,7 @@ Patrick,2023-06-01,Late,Nurse
             start_date: "2023-06-01",
             end_date: "2023-06-02",
             profile: profile1,
-            version: "2",
+            version: "1.1",
             state: "Waiting",
             timestamp: last_generation[timestamp],
         }
@@ -387,7 +388,10 @@ Patrick,2023-06-01,Late,Nurse
             random_hex, hospital_demand_dict
         )
         last_generation = self.handler.regenerate_schedule(
-            random_hex, hospital_demand_dict, "1"
+            random_hex, hospital_demand_dict, "1.0"
+        )
+        added_generation = self.handler.generate_schedule(
+            random_hex, hospital_demand_dict
         )
         actual = self.handler.get_all_solutions(random_hex, profile1)
         expected_solution = [
@@ -395,7 +399,7 @@ Patrick,2023-06-01,Late,Nurse
                 start_date: "2023-06-01",
                 end_date: "2023-06-02",
                 profile: profile1,
-                version: "1",
+                version: "1.0",
                 state: "Waiting",
                 timestamp: first_generation[timestamp],
             },
@@ -403,9 +407,17 @@ Patrick,2023-06-01,Late,Nurse
                 start_date: "2023-06-01",
                 end_date: "2023-06-02",
                 profile: profile1,
-                version: "2",
+                version: "1.1",
                 state: "Waiting",
                 timestamp: last_generation[timestamp],
+            },
+            {
+                start_date: "2023-06-01",
+                end_date: "2023-06-02",
+                profile: profile1,
+                version: "2.0",
+                state: "Waiting",
+                timestamp: added_generation[timestamp],
             },
         ]
         self.assertEqual(expected_solution, actual)
@@ -418,11 +430,11 @@ Patrick,2023-06-01,Late,Nurse
             dataset_directory,
             profile1,
             "2023-06-01_2023-06-02",
-            "1",
+            "1.0",
         )
         self.assertTrue(self.fs.exists(path))
         self.handler.remove_schedule(
-            random_hex, "2023-06-01", "2023-06-02", profile1, "1"
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1.0"
         )
         self.assertFalse(self.fs.exists(path))
 

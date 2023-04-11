@@ -29,7 +29,7 @@ class NurseNotFound(ProjectBaseException):
 class CannotDeleteNurse(ProjectBaseException):
     def __init__(self, name, usage):
         msg = f"the nurse {name}"
-        usage_str = self.get_usage_str(usage)
+        usage_str = self.get_usage_str("nurse groups", usage)
         super(CannotDeleteNurse, self).__init__(
             deletion_error.format(msg, usage_str)
         )

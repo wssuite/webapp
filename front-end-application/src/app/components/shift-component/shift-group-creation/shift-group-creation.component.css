@@ -8,6 +8,14 @@ h2 {
     width: 100%;
 }
 
+.formContainer {
+    padding: 1.5%;
+}
+
+.addShiftTypeButton, .addShiftButton {
+    margin-left: 1.5%;
+}
+
 .table-element-container {
     background-color: #d3dde9;
     color: #1a3d66;

@@ -17,7 +17,7 @@
             <th>
                 <mat-form-field appearance="fill">
                     <mat-label>Select a shift</mat-label>
-                    <mat-select>
+                    <mat-select [value]="getHistory(date, nurse)">
                       <mat-option *ngFor="let shift of possibleShifts" (click)="onShiftChange(date,nurse,shift)" [value]="shift">
                          {{shift}}
                       </mat-option>

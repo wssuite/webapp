@@ -1,5 +1,8 @@
 from src.models.hospital_demand_element import HospitalDemandElement
-from src.models.nurse_preference_element import NursePreferenceElement
+from src.models.nurse_preference_element import (
+    NursePreferenceElement,
+    NurseHistoryElement,
+)
 from src.models.jsonify import Jsonify
 from pykson import ObjectListField, ListField, StringField
 from constants import (
@@ -26,6 +29,8 @@ from constants import (
     preferences_section,
     header_section,
     skill_section,
+    schedule_history,
+    history_section,
 )
 from src.models.shift_group import ShiftGroup
 from src.models.shift import Shift
@@ -48,6 +53,7 @@ class ScheduleDemand(Jsonify):
         HospitalDemandElement, schedule_hospital_demand
     )
     preferences = ObjectListField(NursePreferenceElement, schedule_pref)
+    history = ObjectListField(NurseHistoryElement, schedule_history)
     nurses = ListField(str, serialized_name=schedule_nurses)
     skills = ListField(str, serialized_name=schedule_skills)
     shifts = ListField(str, serialized_name=schedule_shifts)
@@ -59,12 +65,16 @@ class ScheduleDemand(Jsonify):
         pref = []
         for element in self.preferences:
             pref.append(element.to_json())
+        history = []
+        for element in self.history:
+            history.append(element.to_json())
         return {
             schedule_nurses: self.nurses,
             schedule_skills: self.skills,
             schedule_shifts: self.shifts,
             schedule_pref: pref,
             profile: self.profile,
+            schedule_history: history,
             schedule_start_date: self.start_date,
             schedule_end_date: self.end_date,
             schedule_hospital_demand: h_d,
@@ -79,6 +89,7 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
     hospital_demand = ObjectListField(
         HospitalDemandElement, schedule_hospital_demand
     )
+    history = ObjectListField(NurseHistoryElement, schedule_history)
     preferences = ObjectListField(NursePreferenceElement, schedule_pref)
     nurses = ObjectListField(Nurse, serialized_name=schedule_nurses)
     shifts = ObjectListField(Shift, serialized_name=schedule_shifts)
@@ -105,6 +116,7 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
         self.skills = []
         self.shifts = []
         self.shift_groups = []
+        self.history = []
 
     def to_string(self):
         header_sec = self.__develop_header_section()
@@ -136,11 +148,14 @@ class ScheduleDemandDetailed(Jsonify, Stringify):
         preferences_sec = ScheduleDemandDetailed.__develop_section(
             self.preferences, preferences_section
         )
+        history_sec = ScheduleDemandDetailed.__develop_section(
+            self.history, history_section
+        )
         return (
             f"{header_sec}{info_sec}{skill_sec}{shift_sec}{shift_group_sec}"
             f"{shift_type_sec}{contract_sec}{contract_group_sec}"
             f"{nurse_sec}{hospital_demand_sec}"
-            f"{preferences_sec}"
+            f"{preferences_sec}{history_sec}"
         )
 
     @staticmethod
