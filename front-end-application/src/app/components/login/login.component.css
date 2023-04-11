@@ -1,4 +1,6 @@
 .loginContainer{
+    margin-top: 5%;
+    margin-right: 15%;
     display: inline;
     justify-items: flex-start;
     display: flex;
@@ -19,16 +21,29 @@ img{
 label{
     margin-right: 1vw;
     font-size: large;
+    color: #1a3d66;
 }
 
 mat-form-field{
     margin-bottom: 5vh;
 }
 
-button{
-    width: 13vw;
+::ng-deep #login-button{
+    width: 345px;
     padding: 2vw;
     font-size: 2vh;
+    border-radius: 50px;
+    color: white;
+    background-color: #1a3d66;
+}
+
+::ng-deep #login-button:disabled{
+    width: 345px;
+    padding: 2vw;
+    font-size: 2vh;
+    border-radius: 50px;
+    color: gray;
+    background-color: #b9c2cd;
 }
 
 .header {
