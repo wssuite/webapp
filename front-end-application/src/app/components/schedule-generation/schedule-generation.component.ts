@@ -61,6 +61,8 @@ export class ScheduleGenerationComponent implements OnInit {
   scheduleData!: ScheduleDataInterface;
   dateError: boolean
 
+  connectedUser: boolean
+
   constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService, 
     private nurseService: NurseService, private dialog: MatDialog, private scheduleService: ScheduleService
   ){
@@ -85,6 +87,7 @@ export class ScheduleGenerationComponent implements OnInit {
     this.nursesHistory = [];
     this.demandsError = [];
     this.dateError = true;
+    this.connectedUser = false;
   }
   ngOnInit(): void {
     this.nurses = []
@@ -166,6 +169,8 @@ export class ScheduleGenerationComponent implements OnInit {
           this.openErrorDialog(error.error);
         }
       })
+      this.connectedUser = true
+
       console.log(this.nurses)
     }catch(err){
       //Do nothing
