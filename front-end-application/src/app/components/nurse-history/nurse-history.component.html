@@ -1,0 +1,31 @@
+<div class="schedule-container">
+    <div class="nurse-name-table">
+      <table class="nurse-table">
+        <tr>
+          <th class="nurse-name-header">Nurse</th>
+        </tr>
+        <tr *ngFor="let nurse of nurses">
+          <td class="nurse-name-cell">{{nurse.name}} - {{nurse.username}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="timetable-table">
+      <div class="date-table" *ngFor="let date of timetable">
+        <caption class="date-header"> {{date.day}}  {{date.date}}</caption>
+        <table>
+          <tr *ngFor="let nurse of nurses">
+            <th>
+                <mat-form-field appearance="fill">
+                    <mat-label>Select a shift</mat-label>
+                    <mat-select [value]="getHistory(date, nurse)">
+                      <mat-option *ngFor="let shift of possibleShifts" (click)="onShiftChange(date,nurse,shift)" [value]="shift">
+                         {{shift}}
+                      </mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>

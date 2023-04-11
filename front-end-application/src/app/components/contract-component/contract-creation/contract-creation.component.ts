@@ -5,7 +5,7 @@ import { UNWANTED_PATTERNS_DESCRIPTION, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DESCRIPTION
 import { AlternativeShift } from "src/app/models/AlternativeShift";
 import { BooleanConstraint } from "src/app/models/BooleanConstraint";
 import { Contract } from "src/app/models/Contract";
-import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
+//import { MinMaxConstraint } from "src/app/models/MinMaxConstraint";
 import { MinMaxShiftConstraint } from "src/app/models/MinMaxShiftConstraint";
 import { ShiftConstraint } from "src/app/models/ShiftConstraint";
 import { UnwantedPatterns } from "src/app/models/UnwantedPatterns";
@@ -24,6 +24,7 @@ export class ContractCreationComponent implements OnInit{
   @Input() possibleShifts!: string[];
   @Input() possibleSkills!: string[];
   @Input() contracts!: string[]
+  @Input() imported: boolean
 
   possibleConstraints: string[];
   constraintsErrorState: boolean[];
@@ -46,7 +47,7 @@ export class ContractCreationComponent implements OnInit{
   constructor() {
     this.contractChange = new EventEmitter();
     this.errorState = new EventEmitter();
-
+    this.imported = false;
     this.possibleConstraints = CONSTRAINTS;
     this.constraintsErrorState = [];
     this.nameFormCtrl = new FormControl(null, Validators.required);
@@ -65,7 +66,7 @@ export class ContractCreationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.inputDisabled = this.contract.name === ""? false: true;
+    this.inputDisabled = this.contract.name === "" || this.imported? false: true;
     this.nameFormCtrl = new FormControl({value: this.contract.name, disabled: this.inputDisabled},
       Validators.required);
     this.contractStartName = this.contract.name;
@@ -103,19 +104,19 @@ export class ContractCreationComponent implements OnInit{
         break;
 
       case TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME:
-        constraint = new MinMaxConstraint(TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DESCRIPTION);
+        constraint = new MinMaxShiftConstraint(TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DESCRIPTION);
         break;
 
       case MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME:
-        constraint = new MinMaxConstraint(MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DESCRIPTION);
+        constraint = new MinMaxShiftConstraint(MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DESCRIPTION);
         break;
       
       case MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME:
-        constraint = new MinMaxConstraint(MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DESCRIPTION);
+        constraint = new MinMaxShiftConstraint(MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DESCRIPTION);
         break;
       
       case MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME:
-        constraint = new MinMaxConstraint(MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DESCRIPTION);
+        constraint = new MinMaxShiftConstraint(MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DESCRIPTION);
         break;
         
       case UNWANTED_SKILLS_DISPLAY_NAME:
@@ -152,7 +153,14 @@ export class ContractCreationComponent implements OnInit{
   }
 
   nameExist(): boolean {
-    return this.contracts.includes(this.contract.name);
+    const temp = [...this.contracts]
+    if(this.imported){
+      const index = temp.indexOf(this.contract.name)
+      if(index > -1){
+        temp.splice(index ,1)
+      }
+    }
+    return temp.includes(this.contract.name);
   }
 
   constraintHasErrorState(index:number){

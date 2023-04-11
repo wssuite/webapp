@@ -1,3 +1,5 @@
+import { NurseInterface } from "./Nurse";
+
 export interface SchedulePreferenceElement {
     date: string;
     username: string;
@@ -16,13 +18,28 @@ export interface HospitalDemandElement {
     maxWeight: string;
 }
 
+export interface NurseHistoryElement {
+    date: string;
+    username: string;
+    shift: string;
+}
+
 export interface GenerationRequest {
     startDate: string;
     endDate: string;
     profile: string;
     hospitalDemand: HospitalDemandElement[];
     preferences: SchedulePreferenceElement[];
+    history: NurseHistoryElement[];
     nurses: string[];
     skills: string[];
     shifts: string[];
+}
+
+export interface GenerationRequestDetails{
+    nurses: NurseInterface[];
+    skills: string[]
+    shifts: string[]
+    startDate: Date;
+    endDate: Date;
 }

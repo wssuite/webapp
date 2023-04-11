@@ -34,6 +34,7 @@ export class NumericInputComponent implements OnInit, OnChanges{
   @Output() isDisabledChange: EventEmitter<boolean>;
 
   inputCtrl: FormControl;
+  @Input() disabled: boolean;
 
   matcher: CustomErrorStateMatcher;
   @Output() errorState: EventEmitter<boolean>;
@@ -42,7 +43,8 @@ export class NumericInputComponent implements OnInit, OnChanges{
     this.valueChange = new EventEmitter<string>();
     this.isDisabledChange = new EventEmitter<boolean>();
     this.isDisabled = false;
-    this.inputCtrl = new FormControl({ value: this.value, disabled: false}, [
+    this.disabled = false;
+    this.inputCtrl = new FormControl({ value: this.value, disabled: false }, [
       Validators.required,
       Validators.pattern(NUMERIC_POSITIVE_NUMBERS),
       Validators.min(0),
@@ -51,19 +53,32 @@ export class NumericInputComponent implements OnInit, OnChanges{
     this.errorState = new EventEmitter();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const disabledChange = changes["disabled"]
+    if(disabledChange){
+      this.disabled = disabledChange.currentValue
+    }
+    this.inputCtrl = this.createFormControl()
+
+    if (changes["isDisabled"] && changes["isDisabled"].currentValue) {
+      this.isDisabled = changes["isDisabled"].currentValue;   
+    }
+    this.inputCtrl = this.updateFormControl(this.isDisabled);
+  }
+
   ngOnInit(): void {
       this.inputCtrl.setValue(this.value);
       this.inputCtrl = this.updateFormControl(this.isDisabled);
       this.emitValue();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes["isDisabled"] && changes["isDisabled"].currentValue) {
-      this.isDisabled = changes["isDisabled"].currentValue;   
+  createFormControl():FormControl{
+    return new FormControl({ value: this.value, disabled: this.disabled }, [
+      Validators.required,
+      Validators.pattern(NUMERIC_POSITIVE_NUMBERS),
+      Validators.min(0),
+    ]);
   }
-  this.inputCtrl = this.updateFormControl(this.isDisabled);
-}
-
 
   emitValue() {
     this.valueChange.emit(this.value);

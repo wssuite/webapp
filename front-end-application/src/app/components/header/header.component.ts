@@ -56,8 +56,8 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-      this.profileService.newImportedProfileCreated.subscribe((created: boolean)=>{
-        this.getProfiles(created);
+      this.profileService.newImportedProfileCreated.subscribe(()=>{
+        this.getProfiles(true);
       })
       this.scheduleService.socket.on(NOTIFICATION_UPDATE, (solution: Solution)=>{
         if(this.notifications.indexOf(solution) <= -1){
@@ -118,27 +118,12 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   }
 
   openCreateProfileDialog(closeDisplayed: boolean) {
-    const dialog = this.dialog.open(CreateProfileDialogComponent,{
+    this.dialog.open(CreateProfileDialogComponent,{
       data: {profiles: this.profiles, closeDisplayed: closeDisplayed},
       disableClose: true,  
-      height: '65%',
+      height: '64%',
       width: '55%', 
-      position: {top:'5vh',left: '25%', right: '25%'},
-    })
-    dialog.afterClosed().subscribe(()=>{
-      console.log("here")
-      /*this.profileService.editionFinished.subscribe((isFinished: boolean)=>{
-        console.log(isFinished)
-        if(isFinished){
-          console.log(isFinished)
-          this.profileService.newProfileCreated.subscribe((verdict: boolean)=>{
-            this.getProfiles(verdict);
-          })
-        }
-      })*/
-      if(this.profileService.editionFinished){
-        this.getProfiles(this.profileService.newProfileCreated);
-      }
+      position: {top:'15vh',left: '23%', right: '25%'},
     })
   }
 

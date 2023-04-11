@@ -2,16 +2,16 @@
     <div class="hospital-variables-container">
         <div class="min-value-container">
             <label>Min value: </label>
-            <app-numeric-input [(isDisabled)]="isDisabled" [(value)]="demand.minValue" (errorState)="updateMinValueErrorState($event)"></app-numeric-input>
+            <app-numeric-input [(isDisabled)]="isDisabled" [disabled]="minInputDisabled" [(value)]="demand.minValue" (errorState)="updateMinValueErrorState($event)"></app-numeric-input>
             <div class="weight-container">
-                <app-weight [(isDisabled)]="isDisabled" [(weight)]="demand.minWeight" [label]="minWeightLabel" (errorState)="updateMinWeightErrorState($event)"></app-weight>
+                <app-weight [(isDisabled)]="isDisabled"  [allowZero]="true" [(weight)]="demand.minWeight" [label]="minWeightLabel" (errorState)="updateMinWeightErrorState($event)"></app-weight>
             </div>
         </div>
         <br><br>
         <div class="max-value-container">
             <label>Max value: </label>
-            <app-numeric-input [(isDisabled)]="isDisabled" [(value)]="demand.maxValue" (errorState)="updateMaxValueErrorState($event)"></app-numeric-input>
-            <app-weight [(isDisabled)]="isDisabled" [(weight)]="demand.maxWeight" [label]="maxWeightLabel" (errorState)="updateMaxWeightErrorState($event)"></app-weight>
+            <app-numeric-input [(isDisabled)]="isDisabled" [disabled]="maxInputDisabled" [(value)]="demand.maxValue" (errorState)="updateMaxValueErrorState($event)"></app-numeric-input>
+            <app-weight [(isDisabled)]="isDisabled" [allowZero]="true" [(weight)]="demand.maxWeight" [label]="maxWeightLabel" (errorState)="updateMaxWeightErrorState($event)"></app-weight>
         </div>
     </div>
 </div>

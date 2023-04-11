@@ -5,7 +5,6 @@ import { BooleanConstraint } from 'src/app/models/BooleanConstraint';
 import { Constraint, ConstraintInterface } from 'src/app/models/Constraint';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
-import { MinMaxConstraint, MinMaxConstraintInterface } from 'src/app/models/MinMaxConstraint';
 import { MinMaxShiftConstraint, MinMaxShiftConstraintInterface } from 'src/app/models/MinMaxShiftConstraint';
 import { ShiftConstraint, ShiftConstraintInterface } from 'src/app/models/ShiftConstraint';
 import { UnwantedPatterns, UnwantedPatternsInterface} from 'src/app/models/UnwantedPatterns';
@@ -81,18 +80,18 @@ export class ContractService {
           break;
         
         case TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID:
-          constraint = new MinMaxConstraint(c.name, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME);
-          constraint.fromJson(c as MinMaxConstraintInterface);
+          constraint = new MinMaxShiftConstraint(c.name, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME);
+          constraint.fromJson(c as MinMaxShiftConstraintInterface);
           break;
         
         case MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID:
-          constraint = new MinMaxConstraint(c.name, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME);
-          constraint.fromJson(c as MinMaxConstraintInterface);
+          constraint = new MinMaxShiftConstraint(c.name, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME);
+          constraint.fromJson(c as MinMaxShiftConstraintInterface);
           break;
 
         case MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID:
-          constraint = new MinMaxConstraint(c.name, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME);
-          constraint.fromJson(c as MinMaxConstraintInterface);
+          constraint = new MinMaxShiftConstraint(c.name, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME);
+          constraint.fromJson(c as MinMaxShiftConstraintInterface);
           break;
         
         case UNWANTED_SKILLS_ID:
@@ -101,8 +100,8 @@ export class ContractService {
           break;
 
         case MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID:
-          constraint = new MinMaxConstraint(c.name, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME);
-          constraint.fromJson(c as MinMaxConstraintInterface);
+          constraint = new MinMaxShiftConstraint(c.name, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME);
+          constraint.fromJson(c as MinMaxShiftConstraintInterface);
           break;
 
         default: break;

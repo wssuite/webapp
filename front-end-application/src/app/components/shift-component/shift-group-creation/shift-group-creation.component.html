@@ -1,26 +1,45 @@
 <div class="shiftType-container" (mouseleave)="emitShiftGroup()"></div>
-<div class="content"  mat-dialog-content>
-    <div class="nameShiftContainer">
-    <h2>Shift group name </h2>
-    <hr>
-    <mat-form-field class = "nameForm" >
-      <mat-label>Enter shift group name</mat-label>
-      <input matInput [(ngModel)]="shiftGroup.name" [formControl]="nameShiftGroupFormCtrl" (keyup)="emitShiftGroup()">
-    </mat-form-field>
+<div class="content" mat-dialog-content>
+  <div class="nameShiftContainer">
+    <h2>Shift group name</h2>
+    <hr />
+    <div class="formContainer">
+      <mat-form-field class="nameForm">
+        <mat-label>Enter shift group name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="shiftGroup.name"
+          [formControl]="nameShiftGroupFormCtrl"
+          (keyup)="emitShiftGroup()"
+        />
+      </mat-form-field>
+      <mat-error *ngIf="nameExist() && shiftGroupStartName === ''"
+        >Shift group name is already used</mat-error
+      >
     </div>
-    <div class="shiftSection">
-      <h2 class="shiftSectionTitle">Shifts</h2>
-      <hr>
-      <div *ngIf="possibleShifts.length > 0">
+  </div>
+  <div class="shiftSection">
+    <h2 class="shiftSectionTitle">Shifts</h2>
+    <hr />
+    <div class="formContainer">
+      <div *ngIf="localShifts.length > 0">
         <mat-form-field appearance="fill">
           <mat-label>Select a shift</mat-label>
-          <mat-select  [(value)]="selectedShift" (selectionChanged)="emitShiftGroup()">
-            <mat-option *ngFor="let shift of possibleShifts" [value]="shift">
+          <mat-select
+            [(value)]="selectedShift"
+            (selectionChanged)="emitShiftGroup()"
+          >
+            <mat-option *ngFor="let shift of localShifts" [value]="shift">
               {{ shift }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button class="addShiftButton" (click)="addShift()">
+        <button
+          mat-raised-button
+          class="addShiftButton"
+          (click)="addShift()"
+          color="nurse-blue"
+        >
           add Shift
         </button>
       </div>
@@ -30,29 +49,39 @@
             <td class="shiftName">
               {{ shift }}
             </td>
-            <button
-              mat-icon-button
-              (click)="removeShift(shift)"
-            >
+            <button mat-icon-button (click)="removeShift(shift)">
               <mat-icon>cancel</mat-icon>
             </button>
           </div>
         </tr>
       </table>
     </div>
-    <div class="shiftTypeSection">
-      <h2 class="shiftTypeSectionTitle">Shifts Type</h2>
-      <hr>
-      <div *ngIf="possibleShiftsType.length > 0">
+  </div>
+  <div class="shiftTypeSection">
+    <h2 class="shiftTypeSectionTitle">Shifts Type</h2>
+    <hr />
+    <div class="formContainer">
+      <div *ngIf="localShiftTypes.length > 0">
         <mat-form-field appearance="fill">
           <mat-label>Select a shift type</mat-label>
-          <mat-select [(value)]="selectedShiftType" (selectionChanged)="emitShiftGroup()">
-            <mat-option *ngFor="let shiftType of possibleShiftsType" [value]="shiftType">
-              {{ shiftType}}
+          <mat-select
+            [(value)]="selectedShiftType"
+            (selectionChanged)="emitShiftGroup()"
+          >
+            <mat-option
+              *ngFor="let shiftType of localShiftTypes"
+              [value]="shiftType"
+            >
+              {{ shiftType }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button class="addShiftTypeButton" (click)="addShiftType()">
+        <button
+          mat-raised-button
+          class="addShiftTypeButton"
+          (click)="addShiftType()"
+          color="nurse-blue"
+        >
           add Shift Type
         </button>
       </div>
@@ -62,14 +91,12 @@
             <td class="shiftTypeName">
               {{ shiftType }}
             </td>
-            <button
-              mat-icon-button
-              (click)="removeShiftType(shiftType)"
-            >
+            <button mat-icon-button (click)="removeShiftType(shiftType)">
               <mat-icon>cancel</mat-icon>
             </button>
           </div>
         </tr>
       </table>
     </div>
+  </div>
 </div>

@@ -1,110 +1,148 @@
 <div class="nurseGroup-container" (mouseleave)="emitNurseGroup()"></div>
-<div class="content"  mat-dialog-content>
-
+<div class="content" mat-dialog-content>
   <div class="nameNurseGroupContainer">
     <h2>Name</h2>
-    <hr>
-    <mat-form-field class = "nameForm" appearance="fill">
-    <mat-label>Enter Group nurse Name</mat-label>
-    <input matInput [(ngModel)]="nurseGroup.name" [formControl]="nameNurseGroupFormCtrl" (keyup)="emitNurseGroup()">
-    </mat-form-field>
- </div>
- <div class="nurseSection">
-   <h2 class="NurseSectionTitle">Nurses</h2>
-   <hr>
-   <div *ngIf="possibleNurses.length > 0">
-     <mat-form-field appearance="fill">
-       <mat-label>Select a nurse</mat-label>
-       <mat-select [(value)]="selectedNurse" (selectionChange)="emitNurseGroup()">
-         <mat-option *ngFor="let nurse of possibleNurses" [value]="nurse">
-           {{ nurse }}
-         </mat-option>
-       </mat-select>
-     </mat-form-field>
-     <button mat-raised-button class="addNurseButton" (click)="addNurse()">
-       add nurse
-     </button>
-   </div>
-   <table class="nurseTable">
-     <tr *ngFor="let nurse of nurseGroup.nurses">
-      <div class="table-element-container flex-row-center-container">
-        <td class="nurseName">
-          {{ nurse }}
-        </td>
-        <button
-          mat-icon-button
-          (click)="removeNurse(nurse)"
-        >
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </div>
-     </tr>
-   </table>
- </div>
- 
-  <div class="contractSection">
-   <h2 class="contractSectionTitle">Contracts</h2>
-   <hr>
-   <div *ngIf="possibleContracts.length > 0">
-     <mat-form-field appearance="fill">
-       <mat-label>Select a contract</mat-label>
-       <mat-select [(value)]="selectedContract" (selectionChange)="emitNurseGroup()">
-         <mat-option *ngFor="let contract of possibleContracts" [value]="contract">
-           {{ contract }}
-         </mat-option>
-       </mat-select>
-     </mat-form-field>
-     <button mat-raised-button class="addContractButton" (click)="addContract()">
-       add contract
-     </button>
-   </div>
-   <table class="contractTable">
-     <tr *ngFor="let contract of nurseGroup.contracts">
-      <div class="table-element-container flex-row-center-container">
-        <td class="contractName">
-          {{ contract }}
-        </td>
-        <button
-          mat-icon-button
-          (click)="removeContract(contract)"
-        >
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </div>
-      </tr>
-   </table>
- </div>
- <div class="contractGroupSection">
-  <h2 class="contractSectionTitle">Group Contracts</h2>
-  <hr>
-  <div *ngIf="possibleContractsGroup.length > 0">
-    <mat-form-field appearance="fill">
-      <mat-label>Select a group contract</mat-label>
-      <mat-select [(ngModel)]="selectedContractGroup" (selectionChange)="emitNurseGroup()">
-        <mat-option *ngFor="let contractGroup of possibleContractsGroup" [value]="contractGroup">
-          {{ contractGroup }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button class="addContractGroupButton" (click)="addContractGroup()">
-      add group contract
-    </button>
+    <hr />
+    <div class="formContainer">
+      <mat-form-field class="nameForm" appearance="fill">
+        <mat-label>Enter Group nurse Name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="nurseGroup.name"
+          [formControl]="nameNurseGroupFormCtrl"
+          (keyup)="emitNurseGroup()"
+        />
+      </mat-form-field>
+      <mat-error *ngIf="nameExist() && nurseGroupStartname === ''"
+        >Nurse group name is already used</mat-error
+      >
+    </div>
   </div>
-  <table class="contractGroupTable">
-    <tr *ngFor="let contractGroup of nurseGroup.contract_groups">
-      <div class="table-element-container flex-row-center-container">
-        <td class="contractGroupName">
-          {{ contractGroup }}
-        </td>
+  <div class="nurseSection">
+    <h2 class="NurseSectionTitle">Nurses</h2>
+    <hr />
+    <div class="formContainer">
+      <div *ngIf="localNurses.length > 0">
+        <mat-form-field appearance="fill">
+          <mat-label>Select a nurse</mat-label>
+          <mat-select
+            [(value)]="selectedNurse"
+            (selectionChange)="emitNurseGroup()"
+          >
+            <mat-option *ngFor="let nurse of localNurses" [value]="nurse">
+              {{ nurse }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <button
-          mat-icon-button
-          (click)="removeContractGroup(contractGroup)"
+          mat-raised-button
+          class="addNurseButton"
+          (click)="addNurse()"
+          color="nurse-blue"
         >
-          <mat-icon>cancel</mat-icon>
+          add nurse
         </button>
       </div>
-    </tr>
-  </table>
-</div>
+      <table class="nurseTable">
+        <th *ngFor="let nurse of nurseGroup.nurses">
+          <div class="table-element-container flex-row-center-container">
+            <td class="nurseName">
+              {{ nurse }}
+            </td>
+            <button mat-icon-button (click)="removeNurse(nurse)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </th>
+      </table>
+    </div>
+  </div>
 
+  <div class="contractSection">
+    <h2 class="contractSectionTitle">Contracts</h2>
+    <hr />
+    <div class="formContainer">
+      <div *ngIf="localContracts.length > 0">
+        <mat-form-field appearance="fill">
+          <mat-label>Select a contract</mat-label>
+          <mat-select
+            [(value)]="selectedContract"
+            (selectionChange)="emitNurseGroup()"
+          >
+            <mat-option
+              *ngFor="let contract of localContracts"
+              [value]="contract"
+            >
+              {{ contract }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          class="addContractButton"
+          (click)="addContract()"
+          color="nurse-blue"
+        >
+          add contract
+        </button>
+      </div>
+      <table class="contractTable">
+        <th *ngFor="let contract of nurseGroup.contracts">
+          <div class="table-element-container flex-row-center-container">
+            <td class="contractName">
+              {{ contract }}
+            </td>
+            <button mat-icon-button (click)="removeContract(contract)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </th>
+      </table>
+    </div>
+  </div>
+  <div class="contractGroupSection">
+    <h2 class="contractSectionTitle">Group Contracts</h2>
+    <hr />
+    <div class="formContainer">
+      <div *ngIf="localContractGroups.length > 0">
+        <mat-form-field appearance="fill">
+          <mat-label>Select a group contract</mat-label>
+          <mat-select
+            [(ngModel)]="selectedContractGroup"
+            (selectionChange)="emitNurseGroup()"
+          >
+            <mat-option
+              *ngFor="let contractGroup of localContractGroups"
+              [value]="contractGroup"
+            >
+              {{ contractGroup }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          class="addContractGroupButton"
+          (click)="addContractGroup()"
+          color="nurse-blue"
+        >
+          add group contract
+        </button>
+      </div>
+      <table class="contractGroupTable">
+        <th *ngFor="let contractGroup of nurseGroup.contract_groups">
+          <div class="table-element-container flex-row-center-container">
+            <td class="contractGroupName">
+              {{ contractGroup }}
+            </td>
+            <button
+              mat-icon-button
+              (click)="removeContractGroup(contractGroup)"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </th>
+      </table>
+    </div>
+  </div>
 </div>

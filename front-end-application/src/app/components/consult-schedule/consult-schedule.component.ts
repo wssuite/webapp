@@ -121,6 +121,8 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         this.schedule = data;
         this.employeeSchedule = this.schedule.schedule
         if(this.schedule.schedule){
+          console.log(this.schedule.startDate)
+          console.log(this.schedule.endDate)
           this.startDate = new Date(this.schedule.schedule.startDate)
           this.endDate = new Date(this.schedule.schedule.endDate);
           this.nbColumns =
@@ -178,9 +180,9 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       return "";
     }
     const nextDay = new Date(
-      +this.startDate + (index + 1) * DateUtils.dayMultiplicationFactor
+      +this.startDate + (index) * DateUtils.dayMultiplicationFactor
     );
-    const local_string = nextDay.toLocaleDateString().replaceAll("/", "-");
+    const local_string = nextDay.toISOString().split("T")[0];
     return DateUtils.arrangeDateString(local_string);
   }
 
@@ -201,6 +203,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     for (let i = 0; i < this.nbColumns; i++) {
       indexes.push(i);
     }
+    console.log(indexes.length)
     return indexes;
   }
 
@@ -345,6 +348,21 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     this.service.exportProblemCurrentSchedule(this.schedule.version, this.schedule.startDate, this.schedule.endDate).subscribe({
       next: (data: {content: string})=>{
         const file = new File([data.content], CacheUtils.getProfile() + "_" + this.schedule.startDate + "_" + this.schedule.endDate + "_" + this.schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
+        saveAs(file);
+      }
+    })
+  }
+
+  exportError(){
+    const solution: ContinuousVisualisationInterface = {
+      startDate: this.schedule.startDate,
+      endDate: this.schedule.endDate,
+      version: this.schedule.version,
+      profile: this.schedule.profile
+    }
+    this.service.exportError(solution).subscribe({
+      next: (data: {content: string})=>{
+        const file = new File([data.content], CacheUtils.getProfile() + "_" + this.schedule.startDate + "_" + this.schedule.endDate + "_" + this.schedule.version + "error.txt", {type:"text/plain;charset=utf-8"});
         saveAs(file);
       }
     })

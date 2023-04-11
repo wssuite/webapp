@@ -37,7 +37,7 @@ login_required_error = "Please login before continuing"
 shifts_not_exist = (
     "Error the following shifts/shift types/shift " "groups don't exist {}"
 )
-deletion_error = "Cannot delete {0} because it is used in:\n{1}."
+deletion_error = "Cannot delete {0} because it is used by:\n{1}."
 contract_not_exist = "The contract {} doesn't exist"
 default_shift_group_deletion_error = (
     "The shift group {} cannot be deleted because it is a default group"

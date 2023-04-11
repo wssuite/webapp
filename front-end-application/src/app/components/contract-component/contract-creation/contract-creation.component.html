@@ -7,7 +7,7 @@
             [formControl]="nameFormCtrl"/>
         </mat-form-field>
         <mat-error *ngIf="nameExist() && contractStartName ===''">
-            Name is already used
+            Contract name is already used
         </mat-error>
     </div>
     <div class="constraints-section">
@@ -30,10 +30,10 @@
                         <app-min-max-consecutive-shift *ngSwitchCase="minMaxConsecutiveShiftTypeId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
                         <app-boolean-constraint *ngSwitchCase="identicalWeekendId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-boolean-constraint>
                         <app-boolean-constraint *ngSwitchCase="completeWeekendId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-boolean-constraint>
-                        <app-min-max-constraint *ngSwitchCase="totalNumberWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
-                        <app-min-max-constraint *ngSwitchCase="minMaxConsecutiveWorkingWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
-                        <app-min-max-constraint *ngSwitchCase="minMaxNbAssignmentsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
-                        <app-min-max-constraint *ngSwitchCase="minMaxWorkingHoursId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)"></app-min-max-constraint>
+                        <app-min-max-consecutive-shift *ngSwitchCase="totalNumberWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
+                        <app-min-max-consecutive-shift *ngSwitchCase="minMaxConsecutiveWorkingWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
+                        <app-min-max-consecutive-shift *ngSwitchCase="minMaxNbAssignmentsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
+                        <app-min-max-consecutive-shift *ngSwitchCase="minMaxWorkingHoursId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
                         <app-unwanted-skills *ngSwitchCase="unwantedSkillsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [skills]="possibleSkills"></app-unwanted-skills>
                         <div *ngSwitchDefault>Empty</div>
                     </ng-container>

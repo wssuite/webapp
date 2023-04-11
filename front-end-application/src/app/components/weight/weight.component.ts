@@ -10,7 +10,7 @@ import {
   WEIGHT_MAX_VALUE,
   WEIGHT_MIN_VALUE,
 } from "src/app/constants/constraints";
-import { WEIGHT_ALLOWED_INTEGERS } from "src/app/constants/regex";
+import { WEIGHT_ALLOWED_INTEGERS, WEIGHT_ALLOWED_ZERO } from "src/app/constants/regex";
 
 export class CustomErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -38,6 +38,7 @@ export class WeightComponent implements OnInit, OnChanges{
   @Output() isDisabledChange: EventEmitter<boolean>;
 
   localWeight: string;
+  @Input() allowZero: boolean
 
   @Output() weightChange: EventEmitter<string>;
   numberChecks: number;
@@ -54,7 +55,8 @@ export class WeightComponent implements OnInit, OnChanges{
     this.numberChecks = 0;
     this.disabled = false;
     this.localWeight = "";
-    this.inputCtrl = new FormControl({ value: this.weight, disabled: false}, [
+    this.allowZero = false
+    this.inputCtrl = new FormControl({ value: this.weight, disabled: false }, [
       Validators.required,
       Validators.pattern(WEIGHT_ALLOWED_INTEGERS),
       Validators.min(WEIGHT_MIN_VALUE),
@@ -118,10 +120,12 @@ export class WeightComponent implements OnInit, OnChanges{
     if (disabled) {
       return new FormControl({ value: this.localWeight, disabled: true });
     }
+    const patternToUse = this.allowZero? WEIGHT_ALLOWED_ZERO : WEIGHT_ALLOWED_INTEGERS
     return new FormControl({ value: this.weight, disabled: false }, [
       Validators.required,
-      Validators.pattern(WEIGHT_ALLOWED_INTEGERS),
-      Validators.min(0),
+      Validators.pattern(patternToUse),
+      Validators.min(-100),
+      Validators.max(100)
     ]);
   }
 
