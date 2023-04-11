@@ -15,7 +15,7 @@
       <button
         mat-raised-button
         class="buttonCreate"
-        color="primary"
+        color="nurse-blue"
         (click)="createNewNurse()"
       >
         Add new Nurse
@@ -97,11 +97,11 @@
     </div>
   </div>
   <ng-template #noNurses>
-    <div class="button-container">
+    <div class="noNurses">
+      <p>There is no nurse please add one</p>
       <button
         mat-raised-button
-        class="buttonCreate"
-        color="primary"
+        class="buttonCreateEmpty"
         (click)="createNewNurse()"
       >
         Add new Nurse

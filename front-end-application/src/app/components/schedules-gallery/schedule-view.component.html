@@ -2,6 +2,15 @@
     <app-header></app-header>
     <div *ngIf="this.schedules.length > 0; else noSchedules">
         <div class="generateScheduleButtonContainer">
+            <mat-form-field class="filter">
+                <mat-label>Filter</mat-label>
+                <input
+                  matInput
+                  (keyup)="applyFilter($event)"
+                  placeholder="Ex. 2023-03-11"
+                  #input
+                />
+              </mat-form-field>
             <button mat-raised-button class="buttonCreate" color="nurse-blue"  (click)="generateNewSchedule()">Generate new schedule</button>
         </div>
         <div class="mat-elevation-z8">
@@ -66,8 +75,9 @@
         </div>
     </div>
     <ng-template #noSchedules>
-        <div class="button-container">
-            <button mat-raised-button class="buttonCreate" color="primary"  (click)="generateNewSchedule()">Generate new schedule</button>
+        <div class="noSchedules">
+            <p>There is no schedule please generate one</p>
+            <button mat-raised-button class="buttonCreateEmpty"  (click)="generateNewSchedule()">Generate new schedule</button>
           </div>
     </ng-template>
 </div>

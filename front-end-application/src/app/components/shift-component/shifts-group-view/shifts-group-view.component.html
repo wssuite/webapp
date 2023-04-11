@@ -15,7 +15,7 @@
       <button
         mat-raised-button
         class="buttonCreate"
-        color="primary"
+        color="nurse-blue"
         (click)="createNewShiftGroup()"
       >
         Add new shift group
@@ -90,11 +90,11 @@
     </div>
   </div>
   <ng-template #noShiftGroups>
-    <div class="button-container">
+    <div class="noShiftGroups">
+      <p>There is no shift group please add one</p>
       <button
         mat-raised-button
-        class="buttonCreate"
-        color="primary"
+        class="buttonCreateEmpty"
         (click)="createNewShiftGroup()"
       >
         Add new shift group

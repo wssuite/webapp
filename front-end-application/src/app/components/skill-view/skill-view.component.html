@@ -1,6 +1,6 @@
 <div *ngIf="connectedUser; else elseBlock">
   <app-header></app-header>
-  <div >
+  <div>
     <app-sidenav-shift id="skill-nav-bar"></app-sidenav-shift>
     <div *ngIf="this.skills.length > 0; else noSkills">
       <div class="button-container">
@@ -16,7 +16,7 @@
         <button
           class="buttonCreate"
           mat-raised-button
-          color="primary"
+          color="nurse-blue"
           (click)="addNewSkill()"
         >
           Add new skill
@@ -69,11 +69,11 @@
       </div>
     </div>
     <ng-template #noSkills>
-      <div class="button-container">
+      <div class="noSkills">
+        <p>There is no skill please add one</p>
         <button
-          class="buttonCreate"
           mat-raised-button
-          color="primary"
+          class="buttonCreateEmpty"
           (click)="addNewSkill()"
         >
           Add new skill

@@ -15,7 +15,7 @@
       <button
         mat-raised-button
         class="buttonCreate"
-        color="primary"
+        color="nurse-blue"
         (click)="createNewShiftType()"
       >
         Add new shift type
@@ -81,11 +81,11 @@
     </div>
   </div>
   <ng-template #noShiftTypes>
-    <div class="button-container">
+    <div class="noShiftTypes">
+      <p>There is no shift type please add one</p>
       <button
         mat-raised-button
-        class="buttonCreate"
-        color="primary"
+        class="buttonCreateEmpty"
         (click)="createNewShiftType()"
       >
         Add new shift type

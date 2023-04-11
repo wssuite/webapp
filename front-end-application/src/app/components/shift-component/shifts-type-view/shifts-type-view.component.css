@@ -3,12 +3,28 @@
     margin-right: 2vw;
 }
 
-.buttonCreate{
+.noShiftTypes {
+    text-align: center;
+    align-items: center;
+    margin-top: 30vh;
+}
+
+p {
+    font-size: large;
+}
+
+.buttonCreateEmpty {
+    font-size: medium;
+    padding: 2vh 1vw;
+}
+
+.buttonCreate {
     margin-right: 2vw;
     height: 56px;
     width: 240px;
     font-size: large;
 }
+
 
 .button-container{
     display: flex;

@@ -15,7 +15,7 @@
       <button
         mat-raised-button
         class="buttonCreate"
-        color="primary"
+        color="nurse-blue"
         (click)="createNewContract()"
       >
         Add new Contract
@@ -75,11 +75,11 @@
     </div>
   </div>
   <ng-template #noContracts>
-    <div class="button-container">
+    <div class="noContracts">
+      <p>There is no contract please add one</p>
       <button
         mat-raised-button
-        class="buttonCreate"
-        color="primary"
+        class="buttonCreateEmpty"
         (click)="createNewContract()"
       >
         Add new Contract Group

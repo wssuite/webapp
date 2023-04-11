@@ -4,6 +4,15 @@
     margin-right: 2vw;
 }
 
+p {
+    font-size: large;
+}
+
+.buttonCreateEmpty {
+    font-size: medium;
+    padding: 2vh 1vw;
+}
+
 .buttonCreate {
     margin-right: 2vw;
     height: 56px;
@@ -11,10 +20,17 @@
     font-size: large;
 }
 
+
 .button-container{
     display: flex;
     justify-content: flex-end;
     margin-top: 2vh;
+}
+
+.noSkills {
+    text-align: center;
+    align-items: center;
+    margin-top: 30vh;
 }
 
 .filter{

@@ -3,11 +3,37 @@
     margin-right: 2vw;
 }
 
+p {
+    font-size: x-large;
+}
+
+.buttonCreateEmpty {
+    font-size: large;
+    padding: 2.5vh 2vw;
+}
+
+.buttonCreate {
+    margin-right: 2vw;
+    height: 56px;
+    width: 240px;
+    font-size: large;
+}
+
+.filter{
+    margin-right: 15px;
+}
+
+
+.noSchedules {
+    text-align: center;
+    align-items: center;
+    margin-top: 30vh;
+}
+
 .generateScheduleButtonContainer{
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-right: 5vw;
     margin-bottom: 2vh;
     margin-top: 2vh;
 }
