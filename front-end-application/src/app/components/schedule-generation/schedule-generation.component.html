@@ -163,27 +163,19 @@
   <app-nurse-preference [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)"></app-nurse-preference>
 </div>
 
-  <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
+<div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
     <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
     <button mat-raised-button (click)="addDemand()" color="primary" matTooltip="Add another demand" class="add-button">
       Add new demand
     </button>
     <hr>
-    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event,0)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
-    <table cellspacing="5">
-      <tr *ngFor="let element of hospitalDemands; let i= index">
-          <td>
-            <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event,i+1)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
-          </td>
-          <td>
-              <button mat-icon-button (click)="deleteDemand(element)" color="warn">
+      <div *ngFor="let element of hospitalDemands; let i= index">
+            <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="element" (errorState)="updateDemandsErrorState($event,i)"></app-hopspital-demand-creation>
+              <button mat-icon-button *ngIf="hospitalDemands.length > 1"  (click)="deleteDemand(element)" color="warn">
                   <mat-icon>delete</mat-icon>
               </button>
-          </td>
-      </tr>
-  </table>
-  
-  </div>
+      </div>
+</div>
 
   <div *ngIf= "nurses.length > 0" class="nurseHistorySection">
     <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>  

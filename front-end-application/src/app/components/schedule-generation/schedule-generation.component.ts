@@ -54,7 +54,7 @@ export class ScheduleGenerationComponent implements OnInit {
   skills: string[];
 
   hospitalDemands: HospitalDemandElement[][];
-  demandsError: boolean;
+  demandsError: boolean[];
   nursesPreference: SchedulePreferenceElement[];
   nursesHistory: NurseHistoryElement[];
 
@@ -80,10 +80,10 @@ export class ScheduleGenerationComponent implements OnInit {
     this.possibleShifts = [];
     this.selectedShift = this.possibleShifts[0];
     this.shifts = [];
-    this.hospitalDemands = [];
+    this.hospitalDemands = [[]];
     this.nursesPreference = [];
     this.nursesHistory = [];
-    this.demandsError = true;
+    this.demandsError = [];
     this.dateError = true;
   }
   ngOnInit(): void {
@@ -254,11 +254,16 @@ export class ScheduleGenerationComponent implements OnInit {
 
   
   addSkill() {
+    console.log(this.possibleSkills);
+    console.log(this.selectedSkill);
+    console.log(this.skills)
     const index = this.possibleSkills.indexOf(this.selectedSkill);
     if (index > -1) {
       this.possibleSkills.splice(index, 1);
+      console.log("allo")
     }
     this.skills = [...this.skills,this.selectedSkill];
+    console.log(this.skills);
     if (this.possibleSkills.length > 0) {
         this.selectedSkill = this.possibleSkills[0];
     }
@@ -345,7 +350,6 @@ export class ScheduleGenerationComponent implements OnInit {
   addDemand() {
     const hospitalDemand: HospitalDemandElement[] =  []
     this.hospitalDemands.push(hospitalDemand);
-    console.log(this.hospitalDemands[0]);
   }
 
   deleteDemand(element: HospitalDemandElement[]) {
@@ -369,9 +373,8 @@ export class ScheduleGenerationComponent implements OnInit {
     this.nursesHistory = history;
   }
 
-
-  updateDemandsErrorState(e: boolean){
-    this.demandsError = e;
+  updateDemandsErrorState(e: boolean, index: number){
+    this.demandsError[index] = e;
   }
 
   @HostListener("window:beforeunload")
