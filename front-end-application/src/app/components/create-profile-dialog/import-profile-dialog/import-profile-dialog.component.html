@@ -1,17 +1,23 @@
 <div *ngIf="connectedUser; else elseBlock" class="import-container">
+    <div class="header">
+        <h1 routerLink="/main-menu" >Nurse scheduler</h1>
+    </div>
     <div class="import-file-section">
         <input type="file" class="file-input"
             (change)="onFileSelected($event)" #fileUpload>
 
         <div class="file-upload">
             {{fileName || "No file uploaded"}}
-            <button mat-mini-fab color="primary" class="upload-btn"
+            <button mat-raised-button color="nurse-blue" class="upload-btn"
             (click)="fileUpload.click()">
+            Upload a profile
                 <mat-icon>attach_file</mat-icon>
             </button>
         </div>
-        <button class="download-template-btn" mat-raised-button (click)="downloadTemplate()">Download Template</button>
-        <button *ngIf="!validProfile" class="cancel-button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+        <div>
+            <button class="download-template-btn" mat-raised-button color="nurse-blue" (click)="downloadTemplate()">Download Template</button>
+            <button *ngIf="!validProfile" class="cancel-button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+        </div>
     </div>
     <div class="content-section" *ngIf="validProfile">
         <div class="name-section">
@@ -237,10 +243,10 @@
                 </mat-expansion-panel>
             </mat-expansion-panel>
         </mat-accordion>
-        <div class="action-buttons">
-            <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
-            <button mat-raised-button color="primary" class="save-btn" [disabled]="formHasError()" (click)="saveProfile()">Save</button>
-        </div>
+    </div>
+    <div class="action-buttons" *ngIf="validProfile">
+        <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+        <button mat-raised-button color="primary" class="save-btn" [disabled]="formHasError()" (click)="saveProfile()">Save</button>
     </div>
 </div>
 <ng-template #elseBlock>
