@@ -1,10 +1,18 @@
-FROM markbekhet/horaire-infirmiere:base-image-v2
+FROM ubuntu:jammy
 USER root
-COPY nginx/sites-available /etc/nginx/sites-available
+RUN apt-get update
+RUN apt-get install nginx -y
+RUN apt-get install curl -y
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash
+RUN apt-get install nodejs
+RUN apt-get install python3 -y
+RUN apt-get install python3-venv -y
+RUN python3 -m venv /venv
+
 RUN mkdir /fe
 COPY front-end-application/src/ /fe/src/
 COPY front-end-application/*.json /fe/
-RUN cd fe && npm ci
+RUN cd /fe && npm ci
 
 EXPOSE 4200
 RUN mkdir /ffs
