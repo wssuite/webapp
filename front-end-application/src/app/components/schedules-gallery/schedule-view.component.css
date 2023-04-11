@@ -1,6 +1,20 @@
-.mat-elevation-z8 {
-    margin-left: 2vw;
-    margin-right: 2vw;
+.mat-elevation-z8, .title {
+    margin-left: 3vw;
+    margin-right: 3vw;
+}
+
+h2 {
+    margin-left: 1vw;
+    margin-top: 3vh;
+    margin-bottom: 1vh;
+    font-size: 28px;
+    color: #214e83;
+}
+
+hr {
+    height: 3px;
+    border: none;
+    background-color: #214e83;
 }
 
 p {
@@ -13,7 +27,7 @@ p {
 }
 
 .buttonCreate {
-    margin-right: 2vw;
+    margin-right: 3vw;
     height: 56px;
     width: 240px;
     font-size: large;
