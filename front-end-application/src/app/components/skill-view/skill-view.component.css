@@ -1,4 +1,10 @@
-.buttonCreate{
+
+.mat-elevation-z8 {
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
+
+.buttonCreate {
     margin-right: 2vw;
     height: 56px;
     width: 240px;
