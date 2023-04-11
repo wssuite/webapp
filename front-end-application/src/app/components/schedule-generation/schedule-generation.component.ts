@@ -53,7 +53,7 @@ export class ScheduleGenerationComponent implements OnInit {
   selectedSkill: string;
   skills: string[];
 
-  hospitalDemands: HospitalDemandElement[];
+  hospitalDemands: HospitalDemandElement[][];
   demandsError: boolean;
   nursesPreference: SchedulePreferenceElement[];
 
@@ -273,7 +273,7 @@ export class ScheduleGenerationComponent implements OnInit {
       nurses: requestNurses,
       skills: this.skills,
       shifts: this.shifts,
-      hospitalDemand: this.hospitalDemands
+      hospitalDemand: this.convertDemand(this.hospitalDemands),
     }
     this.scheduleService.generateSchedule(request).subscribe({
       next: (sol: Solution)=>{
@@ -294,13 +294,36 @@ export class ScheduleGenerationComponent implements OnInit {
     })
   }
 
+  convertDemand(demands: HospitalDemandElement[][]): HospitalDemandElement[]{
+    const newDemand:HospitalDemandElement[] = [];
+    for (const demand of demands){
+      for(const skillDemand of demand)
+      newDemand.push(skillDemand);
+      }
+    return newDemand;
+  }
+
+  addDemand() {
+    const hospitalDemand: HospitalDemandElement[] =  []
+    this.hospitalDemands.push(hospitalDemand);
+    console.log(this.hospitalDemands[0]);
+  }
+
+  deleteDemand(element: HospitalDemandElement[]) {
+    const index = this.hospitalDemands.indexOf(element)
+    if (index > -1){
+    this.hospitalDemands.splice(index, 1);
+      for (let i = 0; i < this.hospitalDemands.length; i++)
+      this.updateDemands(this.hospitalDemands[i],i);
+    }
+  }
+
   updatePreferences(preferences: SchedulePreferenceElement[]) {
-    console.log(preferences);
     this.nursesPreference = preferences;
   }
 
-  updateDemands(demand: HospitalDemandElement[]){
-    this.hospitalDemands = demand;
+  updateDemands(demand: HospitalDemandElement[], index: number){
+    this.hospitalDemands[index] = demand;
   }
 
   updateDemandsErrorState(e: boolean){

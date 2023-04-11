@@ -165,8 +165,24 @@
 
   <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
     <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
+    <button mat-raised-button (click)="addDemand()" color="primary" matTooltip="Add another demand" class="add-button">
+      Add new demand
+    </button>
     <hr>
-    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
+    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event,0)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
+    <table cellspacing="5">
+      <tr *ngFor="let element of hospitalDemands; let i= index">
+          <td>
+            <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event,i+1)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
+          </td>
+          <td>
+              <button mat-icon-button (click)="deleteDemand(element)" color="warn">
+                  <mat-icon>delete</mat-icon>
+              </button>
+          </td>
+      </tr>
+  </table>
+  
   </div>
   <div class="generateScheduleButtonContainer">
     <button
@@ -182,4 +198,5 @@
   </div>
 </div>
 </div>
+
 
