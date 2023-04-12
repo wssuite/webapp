@@ -1,3 +1,8 @@
+.page-container {
+    margin-left: 7vw;
+    margin-right: 7vw;
+}
+
 .schedule-container{
     display: flex;
     flex-direction: row;
@@ -27,14 +32,18 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
+    font-weight: bold;
     width: 335px;
-    background-color: #A7C6EA;
+    padding : 2px;
+    background-color: #255792;
+    color: white;
 }
 
 .nurse-name-cell {
     padding-top: 2px;
     padding-bottom: 2px;
     background-color: rgb(235, 234, 234);
+    color: #1a3d66;
 }
 
 .checkbox-row {
@@ -48,4 +57,28 @@
 }
 .nurse-name-row{
     height: 50px
+}
+
+.btn-section{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 2vh;
+    margin-top: 2vh;
+}
+
+.btn-section > button {
+ margin-left: 1vw;
+}
+
+h2, h3 {
+    color: #1a3d66;
+}
+
+hr {
+    color: #8ea2ba;
+    background: hsl(213, 24%, 64%);
+    border: 0;
+    height: 1px;
+    margin-left: 0px;
 }
