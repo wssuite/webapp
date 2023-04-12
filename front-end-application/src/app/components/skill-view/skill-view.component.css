@@ -1,9 +1,25 @@
-.buttonCreate{
+
+.mat-elevation-z8 {
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
+
+p {
+    font-size: large;
+}
+
+.buttonCreateEmpty {
+    font-size: medium;
+    padding: 2vh 1vw;
+}
+
+.buttonCreate {
     margin-right: 2vw;
     height: 56px;
     width: 240px;
     font-size: large;
 }
+
 
 .button-container{
     display: flex;
@@ -11,14 +27,14 @@
     margin-top: 2vh;
 }
 
-.filter{
-    margin-right: 15px;
+.noSkills {
+    text-align: center;
+    align-items: center;
+    margin-top: 30vh;
 }
 
-#table-wrapper{
-    height: calc(100vh - 353px);
-    max-height: calc(100vh - 353px);
-    overflow: auto;
+.filter{
+    margin-right: 15px;
 }
 
 ::ng-deep #skill-nav-bar #skill-button {

@@ -11,6 +11,7 @@ import { ShiftCreationDialogComponent } from '../shift-creation-dialog/shift-cre
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -109,21 +110,32 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
 
   deleteShift(shiftName: string){
     try
-    { 
-      //call api service to push the contract
-      this.apiService.removeShift(shiftName).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            const index = this.shifts.indexOf(shiftName);
-            if (index > -1) {
-              this.shifts.splice(index, 1);
-              this.getShifts();
-            }
-          }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
+    {
+      const dialog = this.dialog.open(ConfirmationDialogComponent,  
+        { disableClose: true,  
+          height: '50%',
+          width: '28%', 
+          position: {top:'20vh',left: '38%', right: '25%'},
+          data: {message: "shift", elementName:shiftName}
+        });
+      dialog.afterClosed().subscribe((result: boolean)=>{
+        if(result){
+          //call api service to push the contract
+          this.apiService.removeShift(shiftName).subscribe({
+            error: (err: HttpErrorResponse)=> {
+              if(err.status === HttpStatusCode.Ok) {
+                const index = this.shifts.indexOf(shiftName);
+                if (index > -1) {
+                  this.shifts.splice(index, 1);
+                  this.getShifts();
+                }
+              }
+              else{
+                this.openErrorDialog(err.error)
+              }
+            } 
+          })
+        }
       })
     }
     catch(e){
