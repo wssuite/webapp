@@ -12,19 +12,24 @@
 .schedule-table {
     display: flex;
     overflow-x: scroll;
+    background-color: rgb(235, 234, 234);
 }
+
 
 .nurse-name-table {
     display: flex;
     width: 150px;
+    background-color: rgb(235, 234, 234);
 }
+
 
 .nurse-name-header {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding-top: 10px;
-    height: 2px;
+    height: 1.5vh;
+    background-color: #d3dde9;
 }
 
 .date-header {
@@ -35,26 +40,29 @@
     font-weight: bold;
     width: 335px;
     padding : 2px;
+    height: 4vh;
     background-color: #255792;
     color: white;
 }
 
 .nurse-name-cell {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    background-color: rgb(235, 234, 234);
+    padding-left: 1vw;
+    padding-right: 1vw;
+    text-align: center;
+    background-color: white;
     color: #1a3d66;
 }
 
 .checkbox-row {
-    height: 60px;
-    background-color: rgb(235, 234, 234);
+    background-color: white;
 }
 
 .checkbox-cell{
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    text-align: center;
 }
+
 .nurse-name-row{
     height: 50px
 }

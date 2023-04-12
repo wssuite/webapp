@@ -28,13 +28,13 @@
                 <table>
                     <tr>
                         <th *ngFor="let index of indexes" class="date-header">
-                            {{getDayString(index)}} {{getDateDayStringByIndex(index)}}  
+                            {{getDayString(index).substring(0, 3)}} {{getDateDayStringByIndex(index)}}  
                         </th>
                     </tr>
                     <tr class="checkbox-row" *ngFor="let sc of schedule.schedule.schedule">
-                        <td class="checkbox-cell" *ngFor="let index of indexes" class="schedule-cells">
-                            <div *ngIf="schedule.state !== inPrgressState; else inProgress">
-                                <button mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
+                        <td class="checkbox-cell" *ngFor="let index of indexes">
+                            <div class="button-cell" *ngIf="schedule.state !== inPrgressState; else inProgress">
+                                <button  mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
                                     [ngStyle]="getButtonStyle(sc.employee_name, index)" (click)="updatePreference(sc.employee_name, index)">
                                     <span>
                                         {{getEmployeeShiftSkill(sc.employee_name, index)}}
