@@ -88,7 +88,10 @@ table{
   color:#1a3d66;
 }
 
-.disabledNoOfCasesDiv{ pointer-events: none; opacity: 2.0;}
+.disabled {
+  opacity: 0.5; 
+  pointer-events: none; 
+}
 
  
 

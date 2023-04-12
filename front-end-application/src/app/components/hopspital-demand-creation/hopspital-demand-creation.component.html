@@ -34,7 +34,7 @@
 </div>
 
 <div class="min-max-value">
-    <app-min-max-hopspital-demand  [(demand)]="demand" (errorState)="updateSkillDemandErrorState($event)"></app-min-max-hopspital-demand>
+    <app-min-max-hopspital-demand [ngClass]="{'disabled': isDisabled}" [(demand)]="demand" (errorState)="updateSkillDemandErrorState($event)"></app-min-max-hopspital-demand>
   <button [disabled]="editOff" mat-raised-button color="primary" (click)="setEdition()">Edit</button>
   <div *ngIf="!skillDemandErrorState && !isDisabled"> 
     <button mat-raised-button (click)="save()">Save</button>
