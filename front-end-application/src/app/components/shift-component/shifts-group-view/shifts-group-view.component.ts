@@ -11,6 +11,7 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ShiftGroupCreationDialogComponent } from '../shift-group-creation-dialog/shift-group-creation-dialog.component';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-shifts-group-view',
@@ -104,20 +105,31 @@ export class ShiftGroupViewComponent implements OnInit, AfterViewInit{
   deleteShiftGroup(shiftGroupName: string){
     try
     { 
-      //call api service to push the contract
-      this.shiftGroupService.removeShiftGroup(shiftGroupName).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            const index = this.shiftsGroup.indexOf(shiftGroupName);
-            if (index > -1) {
-              this.shiftsGroup.splice(index, 1);
-              this.getShiftsGroup();
-            }
-          }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
+      const dialog = this.dialog.open(ConfirmationDialogComponent,  
+        { disableClose: true,  
+          height: '50%',
+          width: '28%', 
+          position: {top:'20vh',left: '38%', right: '25%'},
+          data: {message: "shift group", elementName: shiftGroupName}
+        });
+      dialog.afterClosed().subscribe((result: boolean)=>{
+        if(result){
+          //call api service to push the contract
+          this.shiftGroupService.removeShiftGroup(shiftGroupName).subscribe({
+            error: (err: HttpErrorResponse)=> {
+              if(err.status === HttpStatusCode.Ok) {
+                const index = this.shiftsGroup.indexOf(shiftGroupName);
+                if (index > -1) {
+                  this.shiftsGroup.splice(index, 1);
+                  this.getShiftsGroup();
+                }
+              }
+              else{
+                this.openErrorDialog(err.error)
+              }
+            } 
+          })
+        }
       })
     }
     catch(e){

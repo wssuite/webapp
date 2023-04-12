@@ -1,4 +1,24 @@
-.buttonCreate{
+.mat-elevation-z8 {
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
+
+.noShifts {
+    text-align: center;
+    align-items: center;
+    margin-top: 30vh;
+}
+
+p {
+    font-size: large;
+}
+
+.buttonCreateEmpty {
+    font-size: medium;
+    padding: 2vh 1vw;
+}
+
+.buttonCreate {
     margin-right: 2vw;
     height: 56px;
     width: 240px;
@@ -13,13 +33,6 @@
 
 .filter{
     margin-right: 15px;
-}
-
-#table-wrapper{
-    height: calc(100vh - 353px);
-    max-height: calc(100vh - 353px);
-    overflow: auto;
-
 }
 
 ::ng-deep #shifts-nav-bar #shift-button {

@@ -11,30 +11,81 @@ mat-expansion-panel{
 }
 
 .import-file-section{
-    margin-left:2vw;
-    margin-right:2vw;
-    margin-top: 2vh;
+    margin-left:5vw;
+    margin-right:5vw;
+    margin-top: 5vh;
     display: flex;
     justify-content: space-between;
 }
 
 .content-section{
-    margin-top: 2vh;
-    margin-left:2vw;
-    margin-right:2vw
+    margin-top: 5vh;
+    margin-left:5vw;
+    margin-right:5vw;
 }
 .label {
     margin-right: 1vw;
+    color:#1a3d66;
+    font-size: 200%;
+    font-weight: bolder;
 }
 .cancel-button{
-    right:0%;
-    float:right;
+    margin-left: 1vw;
 }
 .action-buttons{
-    margin-top: 2vh;
-    justify-content: space-between;
-    float:right;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 3vh;
+    margin-right: 5vw;
 }
 .save-btn{
     margin-left: 2vw;
+}
+
+h1, h2 {
+    color: #1a3d66;
+}
+
+.import-container {
+    background-color: #d3dde9;
+    padding-bottom: 10px;
+}
+
+.header {
+    background-color: #255792; 
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+
+.header > h1 {
+    margin-left: 5vw;
+    color: white;
+    font-size: 200%;
+}
+
+h1:hover{
+    cursor: pointer;
+}
+
+mat-action-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.remove-icon {
+    color:#1a3d66;
+    transform: scale(1.1);
+}
+
+.error-icon {
+    margin-right: 1vw;
+}
+
+.panel-title {
+    justify-content: space-between;
 }

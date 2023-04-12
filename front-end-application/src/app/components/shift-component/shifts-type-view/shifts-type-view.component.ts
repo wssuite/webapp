@@ -11,6 +11,7 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ShiftTypeCreationDialogComponent } from '../shift-type-creation-dialog/shift-type-creation-dialog.component';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -90,7 +91,7 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
       });
 
       dialog.afterClosed().subscribe(()=>{
-        this. getShiftsType();
+        this.getShiftsType();
       })
   }
 
@@ -108,19 +109,30 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
   deleteShiftType(shiftTypeName: string){
     try
     { 
-      //call api service to push the contract
-      this.shiftTypeService.removeShiftType(shiftTypeName).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            const index = this.shiftsType.indexOf(shiftTypeName);
-            if (index > -1) {
-              this.shiftsType.splice(index, 1);
-              this.getShiftsType();
-            }
-          }
-          else{
-            this.openErrorDialog(err.error)
-          }
+      const dialog = this.dialog.open(ConfirmationDialogComponent,  
+        { disableClose: true,  
+          height: '50%',
+          width: '28%', 
+          position: {top:'20vh',left: '38%', right: '25%'},
+          data: {message: "shift type", elementName:shiftTypeName}
+        });
+      dialog.afterClosed().subscribe((result: boolean)=>{
+        if(result){
+          //call api service to push the contract
+          this.shiftTypeService.removeShiftType(shiftTypeName).subscribe({
+            error: (err: HttpErrorResponse)=> {
+              if(err.status === HttpStatusCode.Ok) {
+                const index = this.shiftsType.indexOf(shiftTypeName);
+                if (index > -1) {
+                  this.shiftsType.splice(index, 1);
+                  this.getShiftsType();
+                }
+              }
+              else{
+                this.openErrorDialog(err.error)
+              }
+            } 
+          })
         } 
       })
     }

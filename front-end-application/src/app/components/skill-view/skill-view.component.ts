@@ -11,6 +11,7 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
 import { SkillCreationDialogComponent } from '../skill-creation-dialog/skill-creation-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-skill-view',
@@ -97,16 +98,27 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
   deleteSkill(skillName: string){
   try
   { 
-    //call api service to push the contract
-    this.skillService.deleteSkill(skillName).subscribe({
-      error: (err: HttpErrorResponse)=> {
-        if(err.status === HttpStatusCode.Ok) {
-          this.getSkills();
-        }
-        else{
-          this.openErrorDialog(err.error)
-        }
-      } 
+    const dialog = this.dialog.open(ConfirmationDialogComponent,  
+      { disableClose: true,  
+        height: '50%',
+        width: '28%', 
+        position: {top:'20vh',left: '38%', right: '25%'},
+        data: {message: "skill", elementName:skillName}
+      });
+    dialog.afterClosed().subscribe((result: boolean)=>{
+      if(result){
+        //call api service to push the contract
+        this.skillService.deleteSkill(skillName).subscribe({
+          error: (err: HttpErrorResponse)=> {
+            if(err.status === HttpStatusCode.Ok) {
+              this.getSkills();
+            }
+            else{
+              this.openErrorDialog(err.error)
+            }
+          } 
+        })
+      }
     })
   }
   catch(e){
