@@ -53,8 +53,8 @@ export class ScheduleGenerationComponent implements OnInit {
   selectedSkill: string;
   skills: string[];
 
-  hospitalDemands: HospitalDemandElement[][];
-  demandsError: boolean[];
+  hospitalDemands: HospitalDemandElement[];
+  demandsError: boolean;
   nursesPreference: SchedulePreferenceElement[];
   nursesHistory: NurseHistoryElement[];
 
@@ -82,10 +82,10 @@ export class ScheduleGenerationComponent implements OnInit {
     this.possibleShifts = [];
     this.selectedShift = this.possibleShifts[0];
     this.shifts = [];
-    this.hospitalDemands = [[]];
+    this.hospitalDemands = [];
     this.nursesPreference = [];
     this.nursesHistory = [];
-    this.demandsError = [];
+    this.demandsError = true;
     this.dateError = true;
     this.connectedUser = false;
   }
@@ -321,7 +321,7 @@ export class ScheduleGenerationComponent implements OnInit {
       nurses: requestNurses,
       skills: this.skills,
       shifts: this.shifts,
-      hospitalDemand: this.convertDemand(this.hospitalDemands),
+      hospitalDemand: this.hospitalDemands,
       history: this.nursesHistory,
     }
     this.scheduleService.generateSchedule(request).subscribe({
@@ -343,43 +343,21 @@ export class ScheduleGenerationComponent implements OnInit {
     })
   }
 
-  convertDemand(demands: HospitalDemandElement[][]): HospitalDemandElement[]{
-    const newDemand:HospitalDemandElement[] = [];
-    for (const demand of demands){
-      for(const skillDemand of demand)
-      newDemand.push(skillDemand);
-      }
-    return newDemand;
-  }
-
-  addDemand() {
-    const hospitalDemand: HospitalDemandElement[] =  []
-    this.hospitalDemands.push(hospitalDemand);
-  }
-
-  deleteDemand(element: HospitalDemandElement[]) {
-    const index = this.hospitalDemands.indexOf(element)
-    if (index > -1){
-    this.hospitalDemands.splice(index, 1);
-      for (let i = 0; i < this.hospitalDemands.length; i++)
-      this.updateDemands(this.hospitalDemands[i],i);
-    }
-  }
 
   updatePreferences(preferences: SchedulePreferenceElement[]) {
     this.nursesPreference = preferences;
   }
 
-  updateDemands(demand: HospitalDemandElement[], index: number){
-    this.hospitalDemands[index] = demand;
+  updateDemand(demand: HospitalDemandElement[]){
+    this.hospitalDemands = demand;
   }
   
   updateHistory(history: NurseHistoryElement[]){
     this.nursesHistory = history;
   }
 
-  updateDemandsErrorState(e: boolean, index: number){
-    this.demandsError[index] = e;
+  updateDemandsErrorState(e: boolean){
+    this.demandsError = e;
   }
 
   @HostListener("window:beforeunload")

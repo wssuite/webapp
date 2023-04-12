@@ -168,16 +168,8 @@
 
 <div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
     <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
-    <button mat-raised-button (click)="addDemand()" color="primary" matTooltip="Add another demand" class="add-button">
-      Add new demand
-    </button>
     <hr>
-      <div *ngFor="let element of hospitalDemands; let i= index">
-            <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="element" (errorState)="updateDemandsErrorState($event,i)"></app-hopspital-demand-creation>
-              <button mat-icon-button *ngIf="hospitalDemands.length > 1"  (click)="deleteDemand(element)" color="warn">
-                  <mat-icon>delete</mat-icon>
-              </button>
-      </div>
+    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemand($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
 </div>
 
       <div *ngIf= "nurses.length > 0 && skills.length > 0 && shifts.length > 0 && !dateError" class="nurseHistorySection">
