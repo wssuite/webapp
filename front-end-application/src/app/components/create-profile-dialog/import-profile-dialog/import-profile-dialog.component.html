@@ -38,7 +38,7 @@
             <mat-expansion-panel class="shifts-section">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon *ngIf="shiftSectionHasError()" color="warn">error</mat-icon>
+                        <mat-icon *ngIf="shiftSectionHasError()" color="warn" class="error-icon">error</mat-icon>
                         <h1>Shifts</h1>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -49,15 +49,17 @@
                 </mat-action-row>
                 <mat-exansion-panel *ngFor="let shift of profile.shifts; let i=index" class="shift-element">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon *ngIf="shiftHasError(i)" color="warn">error</mat-icon>
-                            {{shift.name}}
+                        <mat-panel-title class="panel-title"> 
+                            <div class=flex-row-center-container>
+                                <mat-icon *ngIf="shiftHasError(i)" color="warn" class="error-icon">error</mat-icon>
+                                <h2>{{shift.name}}</h2>
+                            </div>
+                            <button mat-icon-button (click)="removeShift(i)">
+                                <mat-icon class="remove-icon">cancel</mat-icon>
+                            </button>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-shift-creation [(shift)]="profile.shifts[i]" [imported]="imported" [shifts]="possibleShifts" (errorState)="updateShiftErrorState(i, $event)" ></app-shift-creation>
-                    <button mat-raised-button color="accent" (click)="removeShift(i)">
-                        Remove
-                    </button>
                 </mat-exansion-panel>
             </mat-expansion-panel>
 
