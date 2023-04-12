@@ -235,15 +235,17 @@
                 </mat-action-row>
                 <mat-expansion-panel *ngFor="let s of profile.skills; let i=index" class="skill-element">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon *ngIf="skillHasError(i)" color="warn">error</mat-icon>
-                            {{s.name}}
+                        <mat-panel-title class="panel-title">
+                            <div class=flex-row-center-container>
+                                <mat-icon *ngIf="skillHasError(i)" color="warn">error</mat-icon>
+                                <h2>{{s.name}}</h2>
+                            </div>
+                            <button mat-icon-button (click)="removeSkill(i)">
+                                <mat-icon class="remove-icon">cancel</mat-icon>
+                            </button>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-skill-creation [imported]="imported" [(skill)]="profile.skills[i]" [skills]="skills" (errorState)="updateSkillErrorState(i, $event)"></app-skill-creation>
-                    <button mat-raised-button color="accent" (click)="removeSkill(i)">
-                        Remove
-                    </button>
                 </mat-expansion-panel>
             </mat-expansion-panel>
         </mat-accordion>
