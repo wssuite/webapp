@@ -11,6 +11,7 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ContractGroupCreationDialogComponent } from '../contract-group-creation-dialog/contract-group-creation-dialog.component';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-contracts-group-view',
@@ -98,22 +99,31 @@ export class ContractsGroupViewComponent implements OnInit, AfterViewInit{
 
 
   deleteContractGroup(groupName: string){
-    try
-    { 
-      //call api service to push the contract
-      this.contractGroupService.removeContractGroup(groupName).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            const index = this.contractGroups.indexOf(groupName);
-            if (index > -1) {
-              this.contractGroups.splice(index, 1);
-              this.getContractGroups();
-            }
-          }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
+    try{
+      const dialog = this.dialog.open(ConfirmationDialogComponent,  
+        { disableClose: true,  
+          height: '50%',
+          width: '28%', 
+          position: {top:'20vh',left: '38%', right: '25%'},
+          data: {message: "contract group", elementName:groupName}
+        });
+      dialog.afterClosed().subscribe((result: boolean)=>{
+        if(result){
+          this.contractGroupService.removeContractGroup(groupName).subscribe({
+            error: (err: HttpErrorResponse)=> {
+              if(err.status === HttpStatusCode.Ok) {
+                const index = this.contractGroups.indexOf(groupName);
+                if (index > -1) {
+                  this.contractGroups.splice(index, 1);
+                  this.getContractGroups();
+                }
+              }
+              else{
+                this.openErrorDialog(err.error)
+              }
+            } 
+          })
+        }
       })
     }
     catch(e){

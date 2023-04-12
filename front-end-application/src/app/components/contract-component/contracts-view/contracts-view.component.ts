@@ -10,6 +10,7 @@ import { ContractCreationDialogComponent } from '../contract-creation-dialog/con
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-contracts-view',
@@ -105,16 +106,31 @@ export class ContractsViewComponent implements OnInit, AfterViewInit{
 
 
   deleteContract(contract:string){
-    this.contractService.deleteContract(contract).subscribe({
-      error:(error: HttpErrorResponse)=>{
-        if(error.status === HttpStatusCode.Ok){
-          this.getContracts();
+    try{
+      const dialog = this.dialog.open(ConfirmationDialogComponent,  
+        { disableClose: true,  
+          height: '50%',
+          width: '28%', 
+          position: {top:'20vh',left: '38%', right: '25%'},
+          data: {message: "contract", elementName:contract}
+        });
+      dialog.afterClosed().subscribe((result: boolean)=>{
+        if(result){
+          this.contractService.deleteContract(contract).subscribe({
+            error:(error: HttpErrorResponse)=>{
+              if(error.status === HttpStatusCode.Ok){
+                this.getContracts();
+              }
+              else {
+                this.openErrorDialog(error.error);
+              }
+            }
+          })
         }
-        else {
-          this.openErrorDialog(error.error);
-        }
-      }
-    })
+      })
+    } catch(err){
+      // Do nothing
+    }
   }
 
   applyFilter(event: Event) {
