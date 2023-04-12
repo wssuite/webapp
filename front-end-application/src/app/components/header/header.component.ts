@@ -16,6 +16,7 @@ import { CreateProfileDialogComponent } from '../create-profile-dialog/create-pr
 import { DuplicateProfileComponent } from '../create-profile-dialog/duplicate-profile/duplicate-profile.component';
 import { ShareProfileComponent } from '../create-profile-dialog/share-profile/share-profile.component';
 import { ErrorMessageDialogComponent } from '../error-message-dialog/error-message-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -176,14 +177,26 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   }
 
   deleteProfile(){
-    this.profileService.deleteProfile().subscribe({
-      error: (err: HttpErrorResponse)=>{
-        if(err.status !== HttpStatusCode.Ok){
-          this.openErrorDialog(err.error);
-        }
-        else{
-          this.getProfiles(true);
-        }
+    const dialog = this.dialog.open(ConfirmationDialogComponent,  
+      { disableClose: true,  
+        height: '50%',
+        width: '28%', 
+        position: {top:'20vh',left: '38%', right: '25%'},
+        data: {message: "profile", elementName:CacheUtils.getProfile()}
+      });
+    
+    dialog.afterClosed().subscribe((result: boolean)=>{
+      if(result){
+        this.profileService.deleteProfile().subscribe({
+          error: (err: HttpErrorResponse)=>{
+            if(err.status !== HttpStatusCode.Ok){
+              this.openErrorDialog(err.error);
+            }
+            else{
+              this.getProfiles(true);
+            }
+          }
+        })
       }
     })
   }
