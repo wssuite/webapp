@@ -14,6 +14,9 @@ mat-panel-title{
 
 .contract-container {
     margin-left: 1vw;
+    overflow-y: scroll;
+    max-height: 50vh;
+    scroll-behavior: smooth;
 }
 
 .constraint-container {
@@ -97,12 +100,8 @@ h2, h3, label, p {
     transform: scale(1.1);
 }
 
-
-
-/* .constraints-menu {
+.constraints-menu {
+    position: absolute;
+    bottom: 0px;
     padding: 1vh 1vw 3vh 1vw;
-    border-width: 5px;
-    border-color: #8ea2ba;
-    border-style: solid;
-    border-radius: 20px;
-} */
+}

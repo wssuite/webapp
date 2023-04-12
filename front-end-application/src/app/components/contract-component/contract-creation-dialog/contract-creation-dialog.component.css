@@ -1,13 +1,15 @@
 .dialog-container {
     width: 75vw;
-    height: 60vh;
+    height: 80vh;
 }
 
 .buttons-container {
-    margin-top: 1vh;
+    display: block;
     float:right;
+    position: absolute;
     right:0px;
     bottom: 0px;
+    margin: 4vh 2vw 2vh 0vw;
 }
 
 .contract-container{
@@ -15,14 +17,12 @@
     margin-bottom: 1vh;
     border-width: 10px;
     border-color: black;
-    overflow-y: scroll;
-    height: 50vh;
-    overflow-y: auto;
     overflow-x: hidden;
+    scroll-behavior: auto;
 }
 
 button {
-    margin-right: 2vw;
+    margin-right: 1vw;
 }
 
 .title {
