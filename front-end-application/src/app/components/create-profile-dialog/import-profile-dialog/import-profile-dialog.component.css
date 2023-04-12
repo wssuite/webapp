@@ -25,6 +25,9 @@ mat-expansion-panel{
 }
 .label {
     margin-right: 1vw;
+    color:#1a3d66;
+    font-size: 200%;
+    font-weight: bolder;
 }
 .cancel-button{
     margin-left: 1vw;
