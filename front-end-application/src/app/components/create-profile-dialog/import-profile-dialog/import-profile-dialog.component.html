@@ -142,7 +142,7 @@
             <mat-expansion-panel class="contractGroup-section">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon *ngIf="contractGroupSectionHasError()" color="warn">error</mat-icon>
+                        <mat-icon *ngIf="contractGroupSectionHasError()" color="warn" class="error-icon">error</mat-icon>
                         <h1>Contracts group</h1>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -153,15 +153,17 @@
                 </mat-action-row>
                 <mat-expansion-panel *ngFor="let c of profile.contractGroups; let i=index" class="contractGroup-element">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon *ngIf="contractGroupHasError(i)" color="warn">error</mat-icon>
-                            {{c.name}}
+                        <mat-panel-title class="panel-title">
+                            <div class=flex-row-center-container>
+                                <mat-icon *ngIf="contractGroupHasError(i)" color="warn" class="error-icon">error</mat-icon>
+                                <h2>{{c.name}}</h2>
+                            </div>
+                            <button mat-icon-button (click)="removeContractGroup(i)">
+                                <mat-icon class="remove-icon">cancel</mat-icon>
+                            </button>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-contract-group-creation [imported]="imported" [(contractGroup)]="profile.contractGroups[i]" [contractGroups]="contractsGroup" [possibleContracts]="possibleContracts" [selectedContract]="possibleContracts[0]"  (errorState)="updateContractGroupErrorState(i,$event)"></app-contract-group-creation>
-                    <button mat-raised-button color="accent" (click)="removeContractGroup(i)">
-                        Remove
-                    </button>
                 </mat-expansion-panel>
             </mat-expansion-panel>
 
@@ -224,7 +226,7 @@
             <mat-expansion-panel class="skills-section">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon *ngIf="skillSectionHasError()" color="warn">error</mat-icon>
+                        <mat-icon *ngIf="skillSectionHasError()" color="warn" class="error-icon">error</mat-icon>
                         <h1>Skills</h1>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
