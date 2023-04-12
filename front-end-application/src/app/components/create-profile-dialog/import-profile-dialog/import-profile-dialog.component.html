@@ -64,7 +64,7 @@
             <mat-expansion-panel class="shift-types-section">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon *ngIf="shiftTypeSectionHasError()" color="warn">error</mat-icon>
+                        <mat-icon *ngIf="shiftTypeSectionHasError()" color="warn"  class="error-icon">error</mat-icon>
                         <h1>Shift types</h1>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -75,22 +75,24 @@
                 </mat-action-row>
                 <mat-expansion-panel *ngFor="let shiftType of profile.shiftTypes; let i=index" class="shift-type-element">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon *ngIf="shiftTypeHasError(i)" color="warn">error</mat-icon>
-                            {{shiftType.name}}
+                        <mat-panel-title class="panel-title">
+                            <div class=flex-row-center-container>
+                                <mat-icon *ngIf="shiftTypeHasError(i)" color="warn"  class="error-icon">error</mat-icon>
+                                <h2>{{shiftType.name}}</h2>
+                            </div>
+                            <button mat-icon-button (click)="removeShiftType(i)">
+                                <mat-icon class="remove-icon">cancel</mat-icon>
+                            </button>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-shift-type-creation [imported]="imported" [(shiftType)]="profile.shiftTypes[i]" [possibleShifts]="possibleShifts" [selectedShift]="possibleShifts[0]" (errorState)="updateShiftTypeErrorState(i,$event)" [shiftsType]="possibleShiftTypes"></app-shift-type-creation>
-                    <button mat-raised-button color="accent" (click)="removeShiftType(i)">
-                        Remove
-                    </button>
                 </mat-expansion-panel>
             </mat-expansion-panel>
 
             <mat-expansion-panel class="shift-groups-section">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon *ngIf="shiftGroupSectionHasError()" color="warn">error</mat-icon>
+                        <mat-icon *ngIf="shiftGroupSectionHasError()" color="warn" class="error-icon">error</mat-icon>
                         <h1>Shift groups</h1>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -101,15 +103,17 @@
                 </mat-action-row>
                 <mat-expansion-panel *ngFor="let shiftGroup of profile.shiftGroups; let i=index" class="shift-group-element">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon *ngIf="shiftGroupHasError(i)" color="warn">error</mat-icon>
-                            {{shiftGroup.name}}
+                        <mat-panel-title class="panel-title">
+                            <div class=flex-row-center-container>
+                                <mat-icon *ngIf="shiftGroupHasError(i)" color="warn" class="error-icon">error</mat-icon>
+                                <h2>{{shiftGroup.name}}</h2>
+                            </div>
+                            <button mat-icon-button (click)="removeShiftGroup(i)">
+                                <mat-icon class="remove-icon">cancel</mat-icon>
+                            </button>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-shift-group-creation [imported]="imported" [(shiftGroup)]="profile.shiftGroups[i]" [possibleShifts]="possibleShifts" [selectedShift]="possibleShifts[0]" [possibleShiftsType]="possibleShiftTypes" [selectedShiftType]="possibleShiftTypes[0]" (errorState)="updateShiftGroupErrorState(i, $event)" [shiftsGroup]="possibleShiftGroups"></app-shift-group-creation>
-                    <button mat-raised-button color="accent" (click)="removeShiftGroup(i)">
-                        Remove
-                    </button>
                 </mat-expansion-panel>
             </mat-expansion-panel>
 
