@@ -30,8 +30,6 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
 export class NumericInputComponent implements OnInit, OnChanges{
   @Input() value!: string;
   @Output() valueChange: EventEmitter<string>;
-  @Input()  isDisabled: boolean;
-  @Output() isDisabledChange: EventEmitter<boolean>;
 
   inputCtrl: FormControl;
   @Input() disabled: boolean;
@@ -41,8 +39,6 @@ export class NumericInputComponent implements OnInit, OnChanges{
 
   constructor() {
     this.valueChange = new EventEmitter<string>();
-    this.isDisabledChange = new EventEmitter<boolean>();
-    this.isDisabled = false;
     this.disabled = false;
     this.inputCtrl = new FormControl({ value: this.value, disabled: false }, [
       Validators.required,
@@ -59,16 +55,11 @@ export class NumericInputComponent implements OnInit, OnChanges{
       this.disabled = disabledChange.currentValue
     }
     this.inputCtrl = this.createFormControl()
-
-    if (changes["isDisabled"] && changes["isDisabled"].currentValue) {
-      this.isDisabled = changes["isDisabled"].currentValue;   
-    }
-    this.inputCtrl = this.updateFormControl(this.isDisabled);
   }
 
   ngOnInit(): void {
-      this.inputCtrl.setValue(this.value);
-      this.inputCtrl = this.updateFormControl(this.isDisabled);
+    this.inputCtrl = this.createFormControl()
+    this.inputCtrl.setValue(this.value);
       this.emitValue();
   }
 
@@ -83,22 +74,6 @@ export class NumericInputComponent implements OnInit, OnChanges{
   emitValue() {
     this.valueChange.emit(this.value);
     this.emitErrorState();
-  }
-
-  
-  updateFormControl(disabled: boolean): FormControl {
-    if(disabled){
-      return new FormControl({ value: this.value, disabled: true}, [
-          Validators.required,
-          Validators.pattern(NUMERIC_POSITIVE_NUMBERS),
-          Validators.min(0),
-        ]);
-    }
-    return this.inputCtrl = new FormControl({ value: this.value, disabled: false}, [
-      Validators.required,
-      Validators.pattern(NUMERIC_POSITIVE_NUMBERS),
-      Validators.min(0),
-    ]);
   }
 
   emitErrorState() {

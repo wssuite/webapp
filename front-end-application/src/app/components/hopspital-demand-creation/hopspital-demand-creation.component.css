@@ -88,6 +88,8 @@ table{
   color:#1a3d66;
 }
 
+.disabledNoOfCasesDiv{ pointer-events: none; opacity: 2.0;}
+
  
 
 

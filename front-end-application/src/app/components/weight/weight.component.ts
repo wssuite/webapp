@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
   FormControl,
   FormGroupDirective,
@@ -31,11 +31,9 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: "./weight.component.html",
   styleUrls: ["./weight.component.css"],
 })
-export class WeightComponent implements OnInit, OnChanges{
+export class WeightComponent implements OnInit{
   @Input() weight!: string;
   @Input() label!: string;
-  @Input()  isDisabled: boolean;
-  @Output() isDisabledChange: EventEmitter<boolean>;
 
   localWeight: string;
   @Input() allowZero: boolean
@@ -50,8 +48,6 @@ export class WeightComponent implements OnInit, OnChanges{
 
   constructor() {
     this.weightChange = new EventEmitter<string>();
-    this.isDisabledChange = new EventEmitter<boolean>();
-    this.isDisabled =false;
     this.numberChecks = 0;
     this.disabled = false;
     this.localWeight = "";
@@ -69,20 +65,11 @@ export class WeightComponent implements OnInit, OnChanges{
   ngOnInit(): void {
     this.disabled = this.weight === "hard"? true: false;
     this.update();
-    this.updateHospitalDemandWeight(this.isDisabled);
     if(!this.disabled){
       this.inputCtrl.setValue(this.weight)
     }
     this.emitWeight();
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes["isDisabled"] && changes["isDisabled"].currentValue) {
-      this.isDisabled = changes["isDisabled"].currentValue;   
-  }
-  this.updateHospitalDemandWeight(this.isDisabled);
-}
-
 
   update() {
     this.numberChecks++;
@@ -100,15 +87,6 @@ export class WeightComponent implements OnInit, OnChanges{
     }
     this.inputCtrl = this.updateFormControl(this.disabled);
     this.emitWeight();
-  }
-
-  updateHospitalDemandWeight(disabled: boolean){
-    if (disabled) {
-      this.inputCtrl = new FormControl({ value: this.localWeight, disabled: true });
-    }
-    else{
-      this.inputCtrl = new FormControl({ value: this.localWeight, disabled: false });
-    }
   }
 
   emitWeight() {
