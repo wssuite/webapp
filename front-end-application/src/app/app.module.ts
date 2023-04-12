@@ -97,6 +97,7 @@ import { SidenavContractComponent } from './components/contract-component/sidena
 import { ContractsGroupViewComponent } from './components/contract-component/contracts-group-view/contracts-group-view.component';
 import { SchedulesGalleryComponent } from './components/schedules-gallery/schedule-view.component';
 import { NurseHistoryComponent } from './components/nurse-history/nurse-history.component';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -165,6 +166,7 @@ import { NurseHistoryComponent } from './components/nurse-history/nurse-history.
     ContractsGroupViewComponent,
     SchedulesGalleryComponent,
     NurseHistoryComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,

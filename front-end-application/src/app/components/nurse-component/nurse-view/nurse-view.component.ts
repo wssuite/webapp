@@ -12,6 +12,7 @@ import { CacheUtils } from "src/app/utils/CacheUtils";
 import { Exception } from "src/app/utils/Exception";
 import { ErrorMessageDialogComponent } from "../../error-message-dialog/error-message-dialog.component";
 import { NurseCreationDialogComponent } from "../nurse-creation-dialog/nurse-creation-dialog.component";
+import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "app-nurse-view",
@@ -110,20 +111,31 @@ export class NurseViewComponent implements OnInit, AfterViewInit{
   deleteNurse(nurseUsername: string){
     try
     { 
-      //call api service to push the contract
-      this.nurseService.removeNurse(nurseUsername).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            const index = this.nurses_username.indexOf(nurseUsername);
-            if (index > -1) {
-              this.nurses_username.splice(index, 1);
-              this.getNurses();
-            }
-          }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
+      const dialog = this.dialog.open(ConfirmationDialogComponent,  
+        { disableClose: true,  
+          height: '50%',
+          width: '28%', 
+          position: {top:'20vh',left: '38%', right: '25%'},
+          data: {message: "nurse", elementName:nurseUsername}
+        });
+      dialog.afterClosed().subscribe((result: boolean)=>{
+        if(result){
+          //call api service to push the contract
+          this.nurseService.removeNurse(nurseUsername).subscribe({
+            error: (err: HttpErrorResponse)=> {
+              if(err.status === HttpStatusCode.Ok) {
+                const index = this.nurses_username.indexOf(nurseUsername);
+                if (index > -1) {
+                  this.nurses_username.splice(index, 1);
+                  this.getNurses();
+                }
+              }
+              else{
+                this.openErrorDialog(err.error)
+              }
+            } 
+          })
+        }
       })
     }
     catch(e){

@@ -12,6 +12,7 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Router } from '@angular/router';
 import { CONSULT_SCHEDULE, SCHEDULE_GENERATION } from 'src/app/constants/app-routes';
 import { NOTIFICATION_UPDATE } from 'src/app/constants/socket-events';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-schedule-view',
@@ -88,19 +89,43 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
   }
 
   removeSolution(sol: Solution){
-    this.service.removeSolution(sol).subscribe({
-      error: (err: HttpErrorResponse)=>{
-        if(err.status === HttpStatusCode.Ok){
-          this.getSchedules()
+    try{
+      const dialog = this.dialog.open(ConfirmationDialogComponent,  
+        { disableClose: true,  
+          height: '50%',
+          width: '28%', 
+          position: {top:'20vh',left: '38%', right: '25%'},
+          data: {message: "contract", elementName:sol.startDate+ "-" + sol.endDate + "-" + sol.version}
+        });
+      dialog.afterClosed().subscribe((result: boolean)=>{
+        if(result){
+          this.service.removeSolution(sol).subscribe({
+            error: (err: HttpErrorResponse)=>{
+              if(err.status === HttpStatusCode.Ok){
+                this.getSchedules()
+              }
+              else{
+                this.openErrorDialog(err.error)
+              }
+            }
+          })
         }
-        else{
-          this.openErrorDialog(err.error)
-        }
-      }
-    })
+      })
+    } catch(err){
+      // Do nothing
+    }
   }
 
   generateNewSchedule(){
     this.router.navigate(["/" + SCHEDULE_GENERATION])
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }
