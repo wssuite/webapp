@@ -207,7 +207,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     return indexes;
   }
 
-  getEmployeeShiftSkill(employeeName: string, index: number): string {
+  getEmployeeShift(employeeName: string, index: number): string {
     let ret = "";
     const assignments = this.employeeAssignmentsMap.get(employeeName);
     if (assignments === undefined || assignments === null) {
@@ -216,7 +216,23 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     const date = this.getDateDayStringByIndex(index);
     for (const assignment of assignments) {
       if (assignment.date === date) {
-        ret = assignment.skill + "\n" + assignment.shift;
+        ret = assignment.shift.toUpperCase( )  ;
+        break;
+      }
+    }
+    return ret;
+  }
+
+  getEmployeeSkill(employeeName: string, index: number): string {
+    let ret = "";
+    const assignments = this.employeeAssignmentsMap.get(employeeName);
+    if (assignments === undefined || assignments === null) {
+      return ret;
+    }
+    const date = this.getDateDayStringByIndex(index);
+    for (const assignment of assignments) {
+      if (assignment.date === date) {
+        ret = assignment.skill ;
         break;
       }
     }

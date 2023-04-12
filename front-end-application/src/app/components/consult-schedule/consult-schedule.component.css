@@ -60,7 +60,17 @@
 .checkbox-cell{
     padding-top: 1vh;
     padding-bottom: 1vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
     text-align: center;
+}
+
+.employee-info {
+    display: block;
+}
+
+.info-button {
+    width: 100%;
 }
 
 .nurse-name-row{
