@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import {
   FormControl,
   FormGroupDirective,
@@ -31,7 +31,7 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: "./weight.component.html",
   styleUrls: ["./weight.component.css"],
 })
-export class WeightComponent implements OnInit{
+export class WeightComponent implements OnInit, OnChanges{
   @Input() weight!: string;
   @Input() label!: string;
 
@@ -69,6 +69,11 @@ export class WeightComponent implements OnInit{
       this.inputCtrl.setValue(this.weight)
     }
     this.emitWeight();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ngOnChanges(changes: SimpleChanges): void {
+      this.ngOnInit();
   }
 
   update() {

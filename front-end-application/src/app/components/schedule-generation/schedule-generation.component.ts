@@ -263,11 +263,16 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
 
   
   addSkill() {
+    console.log(this.possibleSkills);
+    console.log(this.selectedSkill);
+    console.log(this.skills)
     const index = this.possibleSkills.indexOf(this.selectedSkill);
     if (index > -1) {
       this.possibleSkills.splice(index, 1);
+      console.log("allo")
     }
     this.skills = [...this.skills,this.selectedSkill];
+    console.log(this.skills);
     if (this.possibleSkills.length > 0) {
         this.selectedSkill = this.possibleSkills[0];
     }
@@ -320,8 +325,8 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
       nurses: requestNurses,
       skills: this.skills,
       shifts: this.shifts,
+      hospitalDemand: this.hospitalDemands,
       history: this.nursesHistory,
-      hospitalDemand: this.hospitalDemands
     }
     this.saveDetails()
     CacheUtils.setGenerationRequestPreferences(this.nursesPreference)
@@ -346,18 +351,17 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     })
   }
 
+
   updatePreferences(preferences: SchedulePreferenceElement[]) {
-    console.log(preferences);
     this.nursesPreference = preferences;
   }
 
+  updateDemand(demand: HospitalDemandElement[]){
+    this.hospitalDemands = demand;
+  }
+  
   updateHistory(history: NurseHistoryElement[]){
     this.nursesHistory = history;
-    console.log(history);
-  }
-
-  updateDemands(demand: HospitalDemandElement[]){
-    this.hospitalDemands = demand;
   }
 
   updateDemandsErrorState(e: boolean){

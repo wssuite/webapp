@@ -166,11 +166,11 @@
       </app-nurse-preference>
     </div>
 
-      <div  *ngIf= "shifts.length > 0  && skills.length > 0 && !dateError && nurses.length > 0" class="HospitalDemandSection">
-        <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
-        <hr>
-        <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemands($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
-      </div>
+<div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
+    <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
+    <hr>
+    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemand($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
+</div>
 
       <div *ngIf= "nurses.length > 0 && skills.length > 0 && shifts.length > 0 && !dateError" class="nurseHistorySection">
         <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>  
@@ -196,4 +196,5 @@
 <ng-template #elseBlock>
   <app-not-connected></app-not-connected>
 </ng-template>
+
 
