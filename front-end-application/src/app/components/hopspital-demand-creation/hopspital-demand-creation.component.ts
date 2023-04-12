@@ -140,8 +140,8 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges{
     }
     if(!this.isEditing){
       const demand = this.hospitalDemands.get(key);
-      if(demand != undefined) {
-      this.demand = {...demand};
+      if(demand !== undefined) {
+        this.demand = {...demand};
       }
     }
     this.stillSelected = false;

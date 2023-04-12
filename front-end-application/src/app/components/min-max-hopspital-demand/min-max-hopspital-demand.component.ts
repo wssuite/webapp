@@ -12,7 +12,6 @@ import { SkillDemandInterface } from 'src/app/models/hospital-demand';
 export class MinMaxHopspitalDemandComponent implements OnInit{
   @Input() demand!: SkillDemandInterface;
   @Output() demandChange: EventEmitter<SkillDemandInterface>;
-  @Output() isDisabledChange: EventEmitter<boolean>;
   @Output() errorState: EventEmitter<boolean>;
 
   
@@ -29,7 +28,6 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
   constructor() {
     this.demandChange = new EventEmitter();
     this.errorState = new EventEmitter();
-    this.isDisabledChange = new EventEmitter();
     this.minValueErrorState = true;
     this.maxValueErrorState = true;
     this.maxWeightErrorState = true;
