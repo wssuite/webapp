@@ -40,7 +40,7 @@ mat-expansion-panel{
     margin-left: 2vw;
 }
 
-h1 {
+h1, h2 {
     color: #1a3d66;
 }
 
@@ -66,4 +66,23 @@ h1 {
 
 h1:hover{
     cursor: pointer;
+}
+
+mat-action-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.remove-icon {
+    color:#1a3d66;
+    transform: scale(1.1);
+}
+
+.error-icon {
+    margin-right: 1vw;
+}
+
+.panel-title {
+    justify-content: space-between;
 }

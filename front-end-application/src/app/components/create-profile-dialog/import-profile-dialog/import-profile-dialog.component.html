@@ -168,7 +168,7 @@
             <mat-expansion-panel class="nurses-section">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon *ngIf="nurseSectionHasError()" color="warn">error</mat-icon>
+                        <mat-icon *ngIf="nurseSectionHasError()" color="warn" class="error-icon">error</mat-icon>
                         <h1>Nurses</h1>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -179,22 +179,24 @@
                 </mat-action-row>
                 <mat-expansion-panel *ngFor="let n of profile.nurses; let i=index" class="nurse-element">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon *ngIf="nurseHasError(i)" color="warn">error</mat-icon>
-                            {{n.username}}
+                        <mat-panel-title class="panel-title">
+                            <div class=flex-row-center-container>
+                                <mat-icon class="error-icon" *ngIf="nurseHasError(i)" color="warn">error</mat-icon>
+                                <h2>{{n.username}}</h2>
+                            </div>
+                            <button mat-icon-button (click)="removeNurse(i)">
+                                <mat-icon class="remove-icon">cancel</mat-icon>
+                            </button>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-nurse-creation [imported]="imported" [(nurse)]="profile.nurses[i]" [possibleContracts]="contractNames" [possibleContractsGroup]="contractsGroup" [selectedContract]="contractNames[0]" [selectedContractGroup]="contractsGroup[0]"  [nurses]="nurses" (errorState)="updateNurseErrorState(i, $event)"></app-nurse-creation>
-                    <button mat-raised-button color="accent" (click)="removeNurse(i)">
-                        Remove
-                    </button>
                 </mat-expansion-panel>
             </mat-expansion-panel>
 
             <mat-expansion-panel class="nurse-groups-section">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon *ngIf="nurseGroupSectionHasError()" color="warn">error</mat-icon>
+                        <mat-icon *ngIf="nurseGroupSectionHasError()" color="warn" class="error-icon">error</mat-icon>
                         <h1>Nurse groups</h1>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -205,15 +207,17 @@
                 </mat-action-row>
                 <mat-expansion-panel *ngFor="let n of profile.nurseGroups; let i=index" class="nurse-group-element">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon *ngIf="nurseGroupHasError(i)" color="warn">error</mat-icon>
-                            {{n.name}}
+                        <mat-panel-title class="panel-title">
+                            <div class=flex-row-center-container>
+                                <mat-icon *ngIf="nurseGroupHasError(i)" color="warn" class="error-icon">error</mat-icon>
+                                <h2>{{n.name}}</h2>
+                            </div>
+                            <button mat-icon-button (click)="removeNurseGroup(i)">
+                                <mat-icon class="remove-icon">cancel</mat-icon>
+                            </button>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-nurse-group-creation [imported]="imported" [(nurseGroup)]="profile.nurseGroups[i]" [possibleContracts]="contractNames" [possibleContractsGroup]="contractsGroup" [selectedContract]="contractNames[0]" [selectedContractGroup]="contractsGroup[0]" [possibleNurses]="nurses" [selectedNurse]="nurses[0]" [nurseGroups]="nurseGroups" (errorState)="updateNurseGroupErrorState(i, $event)"></app-nurse-group-creation>
-                    <button mat-raised-button color="accent" (click)="removeNurseGroup(i)">
-                        Remove
-                    </button>
                 </mat-expansion-panel>
             </mat-expansion-panel>
 
