@@ -116,7 +116,7 @@
             <mat-expansion-panel class="contracts-section">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon *ngIf="contractSectionHasError()" color="warn">error</mat-icon>
+                        <mat-icon *ngIf="contractSectionHasError()" color="warn" class="error-icon">error</mat-icon>
                         <h1>Contracts</h1>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -127,15 +127,17 @@
                 </mat-action-row>
                 <mat-expansion-panel *ngFor="let c of contracts; let i=index" class="contract-element">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <mat-icon *ngIf="contractHasError(i)" color="warn">error</mat-icon>
-                            {{c.name}}
+                        <mat-panel-title class="panel-title">
+                            <div class=flex-row-center-container>
+                                <mat-icon *ngIf="contractHasError(i)" color="warn" class="error-icon">error</mat-icon>
+                                <h2>{{c.name}}</h2>
+                            </div>
+                            <button mat-icon-button (click)="removeContract(i)">
+                                <mat-icon class="remove-icon">cancel</mat-icon>
+                            </button>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-contract-creation [imported]="imported" [(contract)]="contracts[i]" [possibleShifts]="contractShifts" [possibleSkills]="skills" [contracts]="contractNames" (errorState)="updateContractErrorState(i, $event)"></app-contract-creation>
-                    <button mat-raised-button color="accent" (click)="removeContract(i)">
-                        Remove
-                    </button>
                 </mat-expansion-panel>
             </mat-expansion-panel>
 
