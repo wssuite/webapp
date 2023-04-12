@@ -19,6 +19,7 @@ RUN mkdir /ffs
 COPY frontfacingserver/src/ /ffs/src/
 COPY frontfacingserver/requirements.txt /ffs/
 COPY frontfacingserver/config.json /ffs/
+COPY frontfacingserver/template.csv /ffs/
 RUN echo '{"mongo_address" : "192.168.5.4", "haproxy_address": "192.168.5.5"}' > /ffs/config.json
 COPY frontfacingserver/*.py /ffs/
 RUN cd /ffs && /venv/bin/pip install -r requirements.txt
