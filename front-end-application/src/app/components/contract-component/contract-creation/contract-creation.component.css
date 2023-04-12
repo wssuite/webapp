@@ -16,14 +16,6 @@ mat-panel-title{
     margin-left: 1vw;
 }
 
-.delete-button {
-    float:right;
-    position: relative;
-    margin-right: 6vw;
-    margin-left: 2vw;
-    transform: scale(1.5);
-}
-
 .constraint-container {
     flex-direction: row;
     margin-bottom: 2vh;
@@ -32,12 +24,16 @@ mat-panel-title{
 }
 
 .constraints-container{
-    margin-top: 5vh;
+    margin-top: 1vh;
 }
 
 label {
     margin-right: 1vw;
     font-size: 20px;
+}
+
+.constraint-list {
+    margin-bottom: 0px;
 }
 
 .name-input, .constraint-select{
@@ -72,8 +68,6 @@ mat-expansion-panel {
     margin-right: 1vw;
     margin-top: 1vh;
     font-size: 2vh;
-    background-color: #006CC9;
-    color: white
 }
 
 .constraints{
@@ -86,3 +80,29 @@ mat-expansion-panel {
     width: 70vw;
 }
 
+h2, h3, label, p {
+    color: #1a3d66;
+}
+
+.error-icon {
+    margin-right: 1vw;
+}
+
+.panel-title {
+    justify-content: space-between;
+}
+
+.remove-icon {
+    color:#1a3d66;
+    transform: scale(1.1);
+}
+
+
+
+/* .constraints-menu {
+    padding: 1vh 1vw 3vh 1vw;
+    border-width: 5px;
+    border-color: #8ea2ba;
+    border-style: solid;
+    border-radius: 20px;
+} */

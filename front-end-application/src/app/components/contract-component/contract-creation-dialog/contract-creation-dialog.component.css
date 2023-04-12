@@ -1,26 +1,35 @@
 .dialog-container {
-    width: 80vw;
-    height: 90vh;
+    width: 75vw;
+    height: 60vh;
 }
+
 .buttons-container {
-    margin-top: 2vh;
+    margin-top: 1vh;
     float:right;
-    position: absolute;
     right:0px;
     bottom: 0px;
 }
 
 .contract-container{
-    margin-top: 5vh;
+    margin-top: 3vh;
     margin-bottom: 1vh;
     border-width: 10px;
     border-color: black;
     overflow-y: scroll;
-    height: 80vh;
+    height: 50vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 button {
     margin-right: 2vw;
+}
+
+.title {
+    color: #1a3d66;
+    background-color: #d3dde9;
+    font-weight: bold;
+    font-size: xx-large;
+    padding: 1% 2% 2% 2%;
+    align-self: center;
 }
