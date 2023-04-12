@@ -34,17 +34,25 @@
                     <tr class="checkbox-row" *ngFor="let sc of schedule.schedule.schedule">
                         <td class="checkbox-cell" *ngFor="let index of indexes">
                             <div class="button-cell" *ngIf="schedule.state !== inPrgressState; else inProgress">
-                                <button  mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
+                                <button class="info-button" mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
                                     [ngStyle]="getButtonStyle(sc.employee_name, index)" (click)="updatePreference(sc.employee_name, index)">
-                                    <span>
-                                        {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                                    <span class="employee-info">
+                                        <b>
+                                            {{getEmployeeShift(sc.employee_name, index)}} 
+                                        </b>
+                                    </span>
+                                    <span class="employee-info">
+                                        {{getEmployeeSkill(sc.employee_name, index)}}
                                     </span>
                                 </button>
                                 <ng-template #noPreference></ng-template>
                             </div>
                             <ng-template #inProgress>
-                                <span *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference">
-                                    {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                                <span class="employee-info" *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference">
+                                    <b>
+                                        {{getEmployeeShift(sc.employee_name, index)}} 
+                                    </b>
+                                    {{getEmployeeSkill(sc.employee_name, index)}}
                                 </span>
                                 <ng-template #noPreference></ng-template>
                             </ng-template>
