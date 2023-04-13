@@ -4,9 +4,9 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import * as saveAs from "file-saver";
-import { MAIN_MENU, VIEW_SCHEDULES } from "src/app/constants/app-routes";
+import {SCHEDULE_GENERATION} from "src/app/constants/app-routes";
 import { Assignment, EmployeeSchedule } from "src/app/models/Assignment";
-import { SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+import { GenerationRequestDetails, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from "src/app/models/Schedule";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
 import { CacheUtils } from "src/app/utils/CacheUtils";
@@ -14,6 +14,8 @@ import { DateUtils } from "src/app/utils/DateUtils";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
 import { IN_PROGRESS, WAITING } from "src/app/constants/schedule_states";
 import { NOTIFICATION_UPDATE, VISUALISATION_UPDATE } from "src/app/constants/socket-events";
+import { NurseInterface } from "src/app/models/Nurse";
+import { NurseService } from "src/app/services/nurse/nurse.service";
 
 interface PreferenceKeyInterface{
   nurse: string,
@@ -41,18 +43,28 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   dataSource: MatTableDataSource<Solution>
   preferences: Map<string, string>
   inPrgressState = IN_PROGRESS
+  nurses: NurseInterface[]
 
-  constructor(private service: ScheduleService, public dialog: MatDialog, private router: Router) {
+  constructor(private service: ScheduleService, public dialog: MatDialog, private router: Router, private nurseService: NurseService) {
     this.employeeAssignmentsMap = new Map();
     this.connectedUser = false;
     this.validSchedule = false;
     this.dataSource = new MatTableDataSource();
     this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.preferences = new Map();
+    this.nurses = []
   }
 
   ngOnInit(): void {
     try{
+      this.nurseService.getAllNurse().subscribe({
+        next: (nurses: NurseInterface[])=>{
+          this.nurses = nurses
+        },
+        error: (err: HttpErrorResponse)=>{
+          this.openErrorDialog(err.error);
+        }
+      })
       if(this.service.selectedScheduleToView){
         this.getDetailedSchedule(this.service.selectedScheduleToView);
       }
@@ -399,27 +411,27 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       }
     }
     console.log(this.schedule.problem.preferences)
-    this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
-      next: (sol: Solution)=> {
-        const subscription: ContinuousVisualisationInterface = {
-          startDate: sol.startDate,
-          endDate: sol.endDate,
-          profile: sol.profile,
-          version: sol.version
+    const problemNurses: NurseInterface[] = []
+    this.schedule.problem.nurses.forEach((username: string)=>{
+      this.nurses.forEach((nurse: NurseInterface)=>{
+        if(username === nurse.username){
+          problemNurses.push(nurse)
         }
-        CacheUtils.addNewNotifSubscription(subscription)
-        this.service.notificationSubscribe(subscription);
-        this.router.navigate(["/" + VIEW_SCHEDULES])
-      },
-      error: (err: HttpErrorResponse)=>{
-        if(err.status === HttpStatusCode.Ok){
-          this.router.navigate(["/" + MAIN_MENU]);
-        }
-        else{
-          this.openErrorDialog(err.error);
-        }
-      }
+      })
     })
+    const details : GenerationRequestDetails= {
+      nurses: problemNurses,
+      skills: this.schedule.problem.skills,
+      shifts: this.schedule.problem.shifts,
+      startDate: new Date(this.schedule.problem.startDate),
+      endDate: new Date(this.schedule.problem.endDate)
+    }
+    CacheUtils.setGenerationRequest(details)
+    CacheUtils.setGenerationRequestPreferences(this.schedule.problem.preferences)
+    CacheUtils.setDemandGenerationRequest(this.schedule.problem.hospitalDemand);
+    CacheUtils.saveNurseHistory(this.schedule.problem.history);
+    CacheUtils.setOldVersion(this.schedule.version)
+    this.router.navigate(["/" + SCHEDULE_GENERATION])
   }
 
   stopGeneration(){
