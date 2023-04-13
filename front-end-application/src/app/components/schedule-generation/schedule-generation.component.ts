@@ -59,7 +59,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   nursesHistory: NurseHistoryElement[];
 
   scheduleData!: ScheduleDataInterface;
-  dateError: boolean
+  //dateError: boolean
 
   connectedUser: boolean
 
@@ -86,7 +86,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     this.nursesPreference = [];
     this.nursesHistory = [];
     this.demandsError = true;
-    this.dateError = true;
+    //this.dateError = true;
     this.connectedUser = false;
   }
   ngOnInit(): void {
@@ -102,9 +102,6 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
         this.endDate = new Date(savedRequest.endDate);
         this.range.get("start")?.setValue(this.startDate)
         this.range.get("end")?.setValue(this.endDate)
-        const dayDiffrences = DateUtils.nbDaysDifference(this.endDate, this.startDate)
-        console.log(dayDiffrences)
-        this.dateError = dayDiffrences % 7 !== 0
       }
       this.shiftService.getShiftNames().subscribe({
         next: (shifts: string[])=>{
@@ -304,10 +301,10 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
       e.value != null && e.value != undefined
         ? (this.endDate = e.value)
         : (this.endDate = new Date());
-    const dayDiffrences = DateUtils.nbDaysDifference(this.endDate, this.startDate)
+    /*const dayDiffrences = DateUtils.nbDaysDifference(this.endDate, this.startDate)
     console.log(dayDiffrences)
     this.dateError = dayDiffrences % 7 !== 0
-    console.log(this.dateError)
+    console.log(this.dateError)*/
   }
 
   generateSchedule(){
@@ -379,5 +376,9 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
       skills: this.skills
     }
     CacheUtils.setGenerationRequest(request)
+  }
+
+  validRange(): boolean{
+    return DateUtils.nbDaysDifference(this.endDate, this.startDate) %7 === 0
   }
 }

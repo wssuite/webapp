@@ -4,10 +4,11 @@
             <mat-icon class="menu-icon">menu</mat-icon>
         </button>
         <mat-menu #navigationMenu="matMenu">
-            <button mat-menu-item routerLink="/schedules"><span>Schedule</span></button>
-            <button mat-menu-item routerLink="/contracts"><span>Contracts</span></button>
-            <button mat-menu-item routerLink="/nurse"><span>Nurse</span></button>
-            <button mat-menu-item routerLink="/shift"><span>Shift</span></button>
+            <button mat-menu-item routerLink="/main-menu"><mat-icon id="home-icon">home</mat-icon><span class="blue-string">Home</span></button>
+            <button mat-menu-item routerLink="/schedules"><img src="../../assets/calendar.png"/><span class="blue-string">Schedule</span></button>
+            <button mat-menu-item routerLink="/contracts"><img src="../../assets/contract.png"/><span class="blue-string">Contracts</span></button>
+            <button mat-menu-item routerLink="/nurse"><img src="../../assets/identification.png"/><span class="blue-string">Nurse</span></button>
+            <button mat-menu-item routerLink="/shift"><img src="../../assets/time.png"/><span class="blue-string">Shift</span></button>
         </mat-menu>
         <span><h1 routerLink="/main-menu">Nurse scheduler</h1></span>
     </div>
@@ -25,14 +26,11 @@
             <mat-icon>more_vert</mat-icon>
         </button>
           <mat-menu #profileMenu="matMenu">
-              <button mat-menu-item (click)="duplicate()"><mat-icon>file_copy</mat-icon><span>Duplicate</span></button>
-              <button mat-menu-item *ngIf="profile.creator === username" (click)="deleteProfile()"><mat-icon>delete</mat-icon><span>Remove</span></button>
-              <button mat-menu-item (click)="share()"><mat-icon>share</mat-icon><span>Share</span></button>
-              <button mat-menu-item (click)="export()"><mat-icon>cloud_download</mat-icon><span>Export</span></button>
-              <button mat-menu-item (click)="openCreateProfileDialog(true)">
-                <mat-icon>library_add</mat-icon>
-                <span> Create new profile</span>
-            </button>
+            <button mat-menu-item (click)="openCreateProfileDialog(true)"><mat-icon class="blue-string">library_add</mat-icon><span class="blue-string"> Create new profile</span></button>
+            <button mat-menu-item (click)="duplicate()"><mat-icon class="blue-string">file_copy</mat-icon><span class="blue-string">Duplicate</span></button>
+            <button mat-menu-item *ngIf="profile.creator === username" (click)="deleteProfile()"><mat-icon class="blue-string">delete</mat-icon><span class="blue-string">Remove</span></button>
+            <button mat-menu-item (click)="share()"><mat-icon class="blue-string">share</mat-icon><span class="blue-string">Share</span></button>
+            <button mat-menu-item (click)="export()"><mat-icon class="blue-string">cloud_download</mat-icon><span class="blue-string">Export</span></button>
           </mat-menu>
     </div>
     <div class="end-buttons">
@@ -58,12 +56,12 @@
             </button>
             <mat-menu #menu="matMenu" class="account-dropdown">
                 <button mat-menu-item (click)="logout()">
-                    <mat-icon>logout</mat-icon>
-                    <span>Logout</span>
+                    <mat-icon class="blue-string">logout</mat-icon>
+                    <span class="blue-string">Logout</span>
                 </button>
                 <button *ngIf="isAdmin" mat-menu-item (click)="goToCreateAccount()">
-                    <mat-icon>person_add</mat-icon>
-                    <span> Create new user</span>
+                    <mat-icon class="blue-string">person_add</mat-icon>
+                    <span class="blue-string"> Create new user</span>
                 </button>
             </mat-menu>
         </div>    

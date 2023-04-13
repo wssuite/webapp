@@ -83,3 +83,19 @@ mat-icon {
     padding-right: 10px;
     color:#255792;
 }
+
+.blue-string {
+    color: #1a3d66;
+}
+
+img {
+    height: max-content;
+    width: 15px;
+}
+
+#home-icon {
+    color: #006CC9;
+    margin-right: -5px;
+    margin-left: -5px;
+    transform: scale(0.9);
+}

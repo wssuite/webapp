@@ -1,14 +1,16 @@
 <div *ngIf="connectedUser; else notConnected">
-    <div *ngIf="validSchedule === true else elseBlock">
+    <app-header [showProfile]='false'></app-header>
+    <div *ngIf="validSchedule === true else elseBlock" class="page-container">
         <div class="btn-section">
-            <button mat-raised-button (click)="exportCurrentScheduleProblem()">Download problem</button>
-            <button *ngIf="schedule.state !== inPrgressState" mat-raised-button (click)="regenerateSchedule()">Regenerate Schedule</button>
-            <button *ngIf="schedule.state === 'Success' && employeeSchedule" mat-raised-button (click)="exportSchedule()">Export Schedule</button>
-            <button *ngIf="schedule.state === inPrgressState" mat-raised-button (click)="stopGeneration()">Stop generation></button>
-            <button *ngIf="schedule.state === 'Failed'" mat-raised-button (click)="exportError()">Export error</button>
+            <button mat-raised-button (click)="exportCurrentScheduleProblem()" color='nurse-blue'>Download problem</button>
+            <button *ngIf="schedule.state !== inPrgressState" mat-raised-button color='nurse-blue' (click)="regenerateSchedule()">Regenerate Schedule</button>
+            <button *ngIf="schedule.state === 'Success' && employeeSchedule" mat-raised-button color='nurse-blue' (click)="exportSchedule()">Export Schedule</button>
+            <button *ngIf="schedule.state === inPrgressState" mat-raised-button color='nurse-blue' (click)="stopGeneration()">Stop generation></button>
+            <button *ngIf="schedule.state === 'Failed'" mat-raised-button color='nurse-blue' (click)="exportError()">Export error</button>
         </div>
-        <h1>The state of your schedule is: {{schedule.state}}</h1>
-        <h1>Start date: {{schedule.startDate}}- end date: {{schedule.endDate}}- Version: {{schedule.version}}</h1>
+        <h2>Schedule from {{schedule.startDate}} to {{schedule.endDate}} | version: {{schedule.version}}</h2>
+        <hr>
+        <h3>The status of your schedule is: {{schedule.state}}</h3>
         <!--Modify this block to a table like the preferences table-->
         <div class="schedule-container" *ngIf="employeeSchedule && schedule.state!=='Failed'">
             <!-- create a table to hold the column with the employee names-->
@@ -26,23 +28,31 @@
                 <table>
                     <tr>
                         <th *ngFor="let index of indexes" class="date-header">
-                            {{getDayString(index)}} {{getDateDayStringByIndex(index)}}  
+                            {{getDayString(index).substring(0, 3)}} {{getDateDayStringByIndex(index)}}  
                         </th>
                     </tr>
                     <tr class="checkbox-row" *ngFor="let sc of schedule.schedule.schedule">
-                        <td class="checkbox-cell" *ngFor="let index of indexes" class="schedule-cells">
-                            <div *ngIf="schedule.state !== inPrgressState; else inProgress">
-                                <button mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
+                        <td class="checkbox-cell" *ngFor="let index of indexes">
+                            <div class="button-cell" *ngIf="schedule.state !== inPrgressState; else inProgress">
+                                <button class="info-button" mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
                                     [ngStyle]="getButtonStyle(sc.employee_name, index)" (click)="updatePreference(sc.employee_name, index)">
-                                    <span>
-                                        {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                                    <span class="employee-info">
+                                        <b>
+                                            {{getEmployeeShift(sc.employee_name, index)}} 
+                                        </b>
+                                    </span>
+                                    <span class="employee-info">
+                                        {{getEmployeeSkill(sc.employee_name, index)}}
                                     </span>
                                 </button>
                                 <ng-template #noPreference></ng-template>
                             </div>
                             <ng-template #inProgress>
-                                <span *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference">
-                                    {{getEmployeeShiftSkill(sc.employee_name, index)}}
+                                <span class="employee-info" *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference">
+                                    <b>
+                                        {{getEmployeeShift(sc.employee_name, index)}} 
+                                    </b>
+                                    {{getEmployeeSkill(sc.employee_name, index)}}
                                 </span>
                                 <ng-template #noPreference></ng-template>
                             </ng-template>
@@ -53,7 +63,7 @@
         </div>
         <br>
         <!-- history section-->
-        <h1>Previous Versions</h1>
+        <h2>Previous Versions</h2>
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
                 <ng-container matColumnDef="CreationDate">
