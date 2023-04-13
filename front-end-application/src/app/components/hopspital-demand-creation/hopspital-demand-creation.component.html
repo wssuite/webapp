@@ -20,9 +20,14 @@
         </tr>
         <tr class="min-max-row"*ngFor="let skill of skills">
           <td  class="min-max-cell" *ngFor="let shift of shifts" class="schedule-cells">
-            <button  class="min-max" 
+            <button  *ngIf="getWeight(date, skill, shift) !== ''" class="min-max" 
               [ngStyle]="getButtonStyle(date, skill, shift)"
               matTooltip="{{showToolTip(date, skill, shift)}}" 
+              (click)="setSelection(date, skill, shift)"
+              >{{displayValue(date, skill, shift)}} 
+            </button>
+            <button  *ngIf="getWeight(date, skill, shift) === ''" class="min-max" 
+              [ngStyle]="getButtonStyle(date, skill, shift)"
               (click)="setSelection(date, skill, shift)"
               >{{displayValue(date, skill, shift)}} 
             </button>

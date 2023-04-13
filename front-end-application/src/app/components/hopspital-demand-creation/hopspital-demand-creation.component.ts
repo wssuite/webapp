@@ -194,6 +194,20 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     return "The Max weight is "+ preferenceObj.maxWeight + " and the min weight is " + preferenceObj.minWeight;
   }
 
+  getWeight(date: dateDisplay,skill: string, shift: string): string {
+    const key = JSON.stringify({date:date,skill:skill,shift:shift});
+    const preferenceObj = this.hospitalDemands.get(key);
+    if(preferenceObj === undefined){
+      return "";
+    }
+    if(preferenceObj.maxWeight === "0" && preferenceObj.minWeight === "0"){
+      return "";
+    }
+    else{
+      return "The Max weight is "+ preferenceObj.maxWeight + " and the min weight is " + preferenceObj.minWeight;
+    }
+  }
+
   getDateDayStringByIndex(index: number): string {
     if (this.startDate == undefined) {
       return "";
