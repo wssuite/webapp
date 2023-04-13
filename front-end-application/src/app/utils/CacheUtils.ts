@@ -181,7 +181,12 @@ export class CacheUtils {
     }
 
     public static setGenerationRequest(request: GenerationRequestDetails){
-        localStorage.setItem(GENERATION_REQUEST_STRING + this.getProfile(), JSON.stringify(request))
+        try{
+            localStorage.setItem(GENERATION_REQUEST_STRING + this.getProfile(), JSON.stringify(request))
+        }
+        catch(err){
+            // Do nothing
+        }
     }
 
     public static getSavedGenerationRequest(): GenerationRequestDetails| undefined{
@@ -193,7 +198,11 @@ export class CacheUtils {
     }
 
     public static setGenerationRequestPreferences(preferences: SchedulePreferenceElement[]){
-        localStorage.setItem(NURSE_PREFERENCE_REQUEST_STRING + this.getProfile(), JSON.stringify(preferences))
+        try{
+            localStorage.setItem(NURSE_PREFERENCE_REQUEST_STRING + this.getProfile(), JSON.stringify(preferences))
+        } catch(err){
+            // Do nothing
+        }
     }
 
     public static getGenerationRequestPreferences(): SchedulePreferenceElement[] | undefined{
@@ -205,7 +214,11 @@ export class CacheUtils {
     }
 
     public static setDemandGenerationRequest(demand: HospitalDemandElement[]){
-        localStorage.setItem(REQUEST_DEMAND_STRING + this.getProfile(), JSON.stringify(demand))
+        try{
+            localStorage.setItem(REQUEST_DEMAND_STRING + this.getProfile(), JSON.stringify(demand))
+        }catch(err){
+            // Do nothing
+        }
     }
 
     public static getDemandGenerationRequest(): HospitalDemandElement[] | undefined {
@@ -217,7 +230,12 @@ export class CacheUtils {
     }
 
     public static saveNurseHistory(history: NurseHistoryElement[]){
-        localStorage.setItem(REQUEST_HISTORY_STRING + this.getProfile(), JSON.stringify(history))
+        try{
+            localStorage.setItem(REQUEST_HISTORY_STRING + this.getProfile(), JSON.stringify(history))
+        }
+        catch(err){
+            // Do nothing
+        }
     }
 
     public static getNurseHistory(): NurseHistoryElement[] | undefined {

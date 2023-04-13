@@ -1,8 +1,53 @@
+.mat-elevation-z8, .title {
+    margin-left: 3vw;
+    margin-right: 3vw;
+}
+
+h2 {
+    margin-left: 1vw;
+    margin-top: 3vh;
+    margin-bottom: 1vh;
+    font-size: 28px;
+    color: #214e83;
+}
+
+hr {
+    height: 3px;
+    border: none;
+    background-color: #214e83;
+}
+
+p {
+    font-size: x-large;
+}
+
+.buttonCreateEmpty {
+    font-size: large;
+    padding: 2.5vh 2vw;
+}
+
+.buttonCreate {
+    margin-right: 3vw;
+    height: 56px;
+    width: 240px;
+    font-size: large;
+}
+
+.filter{
+    margin-right: 15px;
+}
+
+
+.noSchedules {
+    text-align: center;
+    align-items: center;
+    margin-top: 30vh;
+}
+
 .generateScheduleButtonContainer{
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-right: 5vw;
     margin-bottom: 2vh;
     margin-top: 2vh;
 }

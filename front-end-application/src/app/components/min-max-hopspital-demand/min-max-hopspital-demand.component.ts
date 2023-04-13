@@ -75,14 +75,14 @@ export class MinMaxHopspitalDemandComponent implements OnInit{
 
   updateMinWeightErrorState(e: boolean) {
     this.minWeightErrorState = e;
-    this.emitSkillDemand();
     this.minInputDisabled = this.demand.minWeight === "0"
+    this.emitSkillDemand();
   }
 
   updateMaxWeightErrorState(e: boolean) {
     this.maxWeightErrorState = e;
-    this.emitSkillDemand();
     this.maxInputDisabled = this.demand.maxWeight === "0"
+    this.emitSkillDemand();
   }
 
 }

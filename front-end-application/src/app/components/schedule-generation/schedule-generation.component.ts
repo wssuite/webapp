@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, HostListener, OnInit } from "@angular/core";
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
@@ -23,7 +23,7 @@ import { ContinuousVisualisationInterface, Solution } from "src/app/models/Sched
   templateUrl: "./schedule-generation.component.html",
   styleUrls: ["./schedule-generation.component.css"],
 })
-export class ScheduleGenerationComponent implements OnInit {
+export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   startDate: Date;
   endDate: Date;
 
@@ -61,6 +61,8 @@ export class ScheduleGenerationComponent implements OnInit {
   scheduleData!: ScheduleDataInterface;
   dateError: boolean
 
+  connectedUser: boolean
+
   constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService, 
     private nurseService: NurseService, private dialog: MatDialog, private scheduleService: ScheduleService
   ){
@@ -85,6 +87,7 @@ export class ScheduleGenerationComponent implements OnInit {
     this.nursesHistory = [];
     this.demandsError = true;
     this.dateError = true;
+    this.connectedUser = false;
   }
   ngOnInit(): void {
     this.nurses = []
@@ -166,10 +169,16 @@ export class ScheduleGenerationComponent implements OnInit {
           this.openErrorDialog(error.error);
         }
       })
+      this.connectedUser = true
+
       console.log(this.nurses)
     }catch(err){
       //Do nothing
     }
+  }
+
+  ngOnDestroy(): void {
+    this.saveDetails()    
   }
 
   openErrorDialog(message: string) {
@@ -254,11 +263,16 @@ export class ScheduleGenerationComponent implements OnInit {
 
   
   addSkill() {
+    console.log(this.possibleSkills);
+    console.log(this.selectedSkill);
+    console.log(this.skills)
     const index = this.possibleSkills.indexOf(this.selectedSkill);
     if (index > -1) {
       this.possibleSkills.splice(index, 1);
+      console.log("allo")
     }
     this.skills = [...this.skills,this.selectedSkill];
+    console.log(this.skills);
     if (this.possibleSkills.length > 0) {
         this.selectedSkill = this.possibleSkills[0];
     }
@@ -311,9 +325,13 @@ export class ScheduleGenerationComponent implements OnInit {
       nurses: requestNurses,
       skills: this.skills,
       shifts: this.shifts,
+      hospitalDemand: this.hospitalDemands,
       history: this.nursesHistory,
-      hospitalDemand: this.hospitalDemands
     }
+    this.saveDetails()
+    CacheUtils.setGenerationRequestPreferences(this.nursesPreference)
+    CacheUtils.saveNurseHistory(this.nursesHistory)
+    CacheUtils.setDemandGenerationRequest(this.hospitalDemands)
     this.scheduleService.generateSchedule(request).subscribe({
       next: (sol: Solution)=>{
         const subscription: ContinuousVisualisationInterface = {
@@ -333,18 +351,17 @@ export class ScheduleGenerationComponent implements OnInit {
     })
   }
 
+
   updatePreferences(preferences: SchedulePreferenceElement[]) {
-    console.log(preferences);
     this.nursesPreference = preferences;
   }
 
+  updateDemand(demand: HospitalDemandElement[]){
+    this.hospitalDemands = demand;
+  }
+  
   updateHistory(history: NurseHistoryElement[]){
     this.nursesHistory = history;
-    console.log(history);
-  }
-
-  updateDemands(demand: HospitalDemandElement[]){
-    this.hospitalDemands = demand;
   }
 
   updateDemandsErrorState(e: boolean){

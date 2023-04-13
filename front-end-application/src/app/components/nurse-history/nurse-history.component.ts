@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WEIGHT_ALLOWED_INTEGERS } from 'src/app/constants/regex';
 import { dateDisplay } from 'src/app/models/DateDisplay';
@@ -15,7 +15,7 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
   templateUrl: './nurse-history.component.html',
   styleUrls: ['./nurse-history.component.css']
 })
-export class NurseHistoryComponent  implements OnInit, OnChanges{
+export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
   regex = WEIGHT_ALLOWED_INTEGERS
 
   @Input() nurses!: NurseInterface[];
@@ -80,6 +80,9 @@ export class NurseHistoryComponent  implements OnInit, OnChanges{
     this.emitNurseHistory()
   }
 
+  ngOnDestroy(): void {
+    this.saveHistory()    
+  }
 
   ngOnInit(): void {
     this.timetable = []

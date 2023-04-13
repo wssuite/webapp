@@ -1,3 +1,4 @@
+<div class="title" mat-dialog-title>Share Profile</div>
 <div class="share-container">
     <div class="share-section">
         <label>Share with:</label>
@@ -24,15 +25,17 @@
         </button>
     </div>
     <div class="aceesors-section">
-        <h1>Users who have access</h1>
-        <table cellspacing="10">
+        <h2>Allowed Users:</h2>
+        <table cellspacing="10" class="table">
             <tr *ngFor="let acessor of accessors" >
+                <div class="table-element-container flex-row-center-container">        
                 <td *ngIf="acessor !== currentUser">
                     <span>{{acessor}}</span>
                 </td>
                 <td *ngIf="acessor !== currentUser">
-                    <button mat-raised-button color="accent" (click)="revoke(acessor)">Revoke access</button>
+                    <button mat-icon-button (click)="revoke(acessor)"><mat-icon>cancel</mat-icon></button>
                 </td>
+                </div>
             </tr>
         </table>
     </div>

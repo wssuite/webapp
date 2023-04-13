@@ -88,6 +88,11 @@ table{
   color:#1a3d66;
 }
 
+.disabled {
+  opacity: 0.5; 
+  pointer-events: none; 
+}
+
  
 
 

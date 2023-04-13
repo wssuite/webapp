@@ -1,0 +1,13 @@
+<img class="img" src="../../../../assets/delete.png">
+<h2 >Are you sure?</h2>
+<div class ="texte">
+   Do you really want to delete {{message}} {{elementName}}? This process cannot be undone.
+</div>
+<div class="buttonContainer">
+    <button  mat-raised-button (click)="dismiss()">
+        Cancel
+    </button>
+    <button mat-raised-button  color="warn" class="flex-row-center-container" (click)="confirm()">
+        Delete
+    </button>
+</div>

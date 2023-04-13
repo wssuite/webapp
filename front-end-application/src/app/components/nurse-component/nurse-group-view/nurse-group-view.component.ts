@@ -11,6 +11,7 @@ import { NurseGroupCreationDialogComponent } from '../nurse-group-creation-dialo
 import { MatPaginator } from "@angular/material/paginator";
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-nurse-group0view',
@@ -110,22 +111,33 @@ export class NurseGroupViewComponent implements OnInit, AfterViewInit {
 
   deleteNurseGroup(groupName: string){
     try
-    { 
-      //call api service to push the contract
-      this.nurseGroupService.removeNurseGroup(groupName).subscribe({
-        error: (err: HttpErrorResponse)=> {
-          if(err.status === HttpStatusCode.Ok) {
-            const index = this.nurseGroups.indexOf(groupName);
-            if (index > -1) {
-              this.nurseGroups.splice(index, 1);
-              this.getNurseGroups();
-            }
-          }
-          else{
-            this.openErrorDialog(err.error)
-          }
-        } 
-      })
+    {
+      const dialog = this.dialog.open(ConfirmationDialogComponent,  
+        { disableClose: true,  
+          height: '50%',
+          width: '28%', 
+          position: {top:'20vh',left: '38%', right: '25%'},
+          data: {message: "nurse group", elementName:groupName}
+        });
+      dialog.afterClosed().subscribe((result: boolean)=>{
+        if(result){
+          //call api service to push the contract
+          this.nurseGroupService.removeNurseGroup(groupName).subscribe({
+            error: (err: HttpErrorResponse)=> {
+              if(err.status === HttpStatusCode.Ok) {
+                const index = this.nurseGroups.indexOf(groupName);
+                if (index > -1) {
+                  this.nurseGroups.splice(index, 1);
+                  this.getNurseGroups();
+                }
+              }
+              else{
+                this.openErrorDialog(err.error)
+              }
+            } 
+          })
+        }
+      }) 
     }
     catch(e){
       console.log("error")
