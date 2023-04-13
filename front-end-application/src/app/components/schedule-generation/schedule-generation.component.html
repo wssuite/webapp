@@ -36,7 +36,7 @@
             >Invalid end date</mat-error
           >
         </mat-form-field>
-        <mat-error *ngIf="dateError"
+        <mat-error *ngIf="!validRange()"
           >The planning horizon must be a multiple of seven days</mat-error
         >
       </div>
@@ -158,7 +158,7 @@
         </th>
       </table>
     </div>
-    <div *ngIf= "shifts.length > 0  && nurses.length > 0 && !dateError && skills.length > 0" class="nursePreferenceSection">
+    <div *ngIf= "shifts.length > 0  && nurses.length > 0 && validRange() && skills.length > 0" class="nursePreferenceSection">
       <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>  
       <hr>
       <app-nurse-preference 
@@ -166,13 +166,13 @@
       </app-nurse-preference>
     </div>
 
-<div  *ngIf= "shifts.length > 0  && skills.length > 0" class="HospitalDemandSection">
+<div  *ngIf= "shifts.length > 0  && skills.length > 0 && validRange() && nurses.length > 0" class="HospitalDemandSection">
     <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
     <hr>
     <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemand($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
 </div>
 
-      <div *ngIf= "nurses.length > 0 && skills.length > 0 && shifts.length > 0 && !dateError" class="nurseHistorySection">
+      <div *ngIf= "nurses.length > 0 && skills.length > 0 && shifts.length > 0 && validRange()" class="nurseHistorySection">
         <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>  
         <hr>
         <app-nurse-history  [nurses]="nurses" [startDate]="startDate"  (nursesHistory)=" updateHistory($event)"></app-nurse-history>
@@ -184,7 +184,7 @@
           color="primary"
           class="generateScheduleButton"
           (click)="generateSchedule()"
-          [disabled]=" dateError || nurses.length === 0 || shifts.length === 0 || demandsError
+          [disabled]=" !validRange() || nurses.length === 0 || shifts.length === 0 || demandsError
           "
         >
           Generate schedule
