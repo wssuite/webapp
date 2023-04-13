@@ -8,6 +8,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Enter a date range</mat-label>
           <mat-date-range-input
+            [style.color]="!validRange() ? 'red': ''"
             [formGroup]="range"
             [rangePicker]="picker"
             seperator="to"
