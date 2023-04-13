@@ -4,7 +4,7 @@ RUN apt-get update
 RUN apt-get install nginx -y
 RUN apt-get install curl -y
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash
-RUN apt-get install nodejs
+RUN apt-get install nodejs -y
 RUN apt-get install python3 -y
 RUN apt-get install python3-venv -y
 RUN python3 -m venv /venv

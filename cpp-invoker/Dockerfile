@@ -1,7 +1,7 @@
 FROM markbekhet/horaire-infirmiere:ui-multiplatform
 USER root
 RUN apt-get --allow-releaseinfo-change update
-RUN apt-get install cpulimit
+RUN apt-get install cpulimit -y
 RUN apt-get update
 RUN apt-get install python3-venv -y
 RUN python3 -m venv /venv
