@@ -138,6 +138,14 @@ import { DateUtils } from "src/app/utils/DateUtils";
     return "The weight is "+ preferenceObj.weight
   }
 
+  getWeight(date: dateDisplay,nurse: string, shift: string):string{
+    const preferenceObj = this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)
+    if(preferenceObj === undefined){
+      return "";
+    }
+    return preferenceObj.weight;
+  }
+
   getButtonState(date?: dateDisplay, nurse?: string, shift?: string): string {
     if(date !== undefined && nurse !==  undefined && shift !==  undefined) {
     if(this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.pref === 'ON') {
