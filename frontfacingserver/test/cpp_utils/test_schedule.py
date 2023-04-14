@@ -24,8 +24,8 @@ REPORT
 {"status":"OPTIMAL",
 "cost":"400",
 "runTime":"0.078255",
-"TotalCostUnderstaffing":"-1",
-}
+"TotalCostUnderstaffing":"-1"}
+END
 """
 
 
@@ -83,9 +83,9 @@ class TestSchedule(TestCase):
 Patrick,2010-06-01,Late,Nurse
 Patrick,2010-06-05,Early,Nurse
 REPORT
-status:OPTIMAL
-cost:400
-runTime:0.078255
-TotalCostUnderstaffing:-1
+{"status":"OPTIMAL",
+"cost":"400",
+"runTime":"0.078255",
+"TotalCostUnderstaffing":"-1"}
 """
         self.assertEqual(expected_text, schedule.export())

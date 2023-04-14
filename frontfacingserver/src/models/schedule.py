@@ -1,3 +1,5 @@
+import json
+
 from src.models.assignment import Assignment
 import re
 from constants import (
@@ -16,8 +18,6 @@ regex_assignments = (
 
 regex_headers = r"\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9]+)\)\n"
 
-regex_report = r"\"([a-zA-Z0-9\.\-]+)\":\s*\"([a-zA-Z0-9\.\-]+)\""
-
 
 class Schedule(CSVExporter):
     def __init__(self, file_name):
@@ -26,13 +26,14 @@ class Schedule(CSVExporter):
         self.end_date = ""
         self.id_dict = {}
         self.report = ""
+        self.report_obj = {}
+        is_report = False
         is_assignments = False
         with open(file_name) as stream:
             reader = stream.readlines()
             for row in reader:
                 match_regex_assignments = re.search(regex_assignments, row)
                 match_regex_headers = re.search(regex_headers, row)
-                match_regex_report = re.search(regex_report, row)
                 """the assignments block will be after the headers bloc"""
                 if match_regex_assignments:
                     if is_assignments is True:
@@ -60,8 +61,14 @@ class Schedule(CSVExporter):
                 elif row.upper().__contains__(assignments_string.upper()):
                     is_assignments = True
 
-                if match_regex_report:
-                    self.report += f"{match_regex_report.group(1)}:{match_regex_report.group(2)}\n"
+                if is_report is True and row.upper().__contains__("END") is False:
+                    self.report += row
+
+                if row.upper().__contains__("REPORT"):
+                    is_report = True
+
+        self.report_obj = json.loads(self.report)
+        print(self.report_obj)
 
     def filter_by_name(self):
         dict_filtered_name = {}

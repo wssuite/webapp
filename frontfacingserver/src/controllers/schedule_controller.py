@@ -196,6 +196,6 @@ def get_statistics():
         statistics = schedule_handler.get_statistics(
             token, start, end, profile_name, v
         )
-        return {"content": statistics}
+        return statistics
     except ProjectBaseException as e:
         return Response(e.args, 500)
