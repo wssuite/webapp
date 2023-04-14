@@ -5,6 +5,7 @@
             <button mat-raised-button (click)="exportCurrentScheduleProblem()" color='nurse-blue'>Download problem</button>
             <button *ngIf="schedule.state !== inPrgressState" mat-raised-button color='nurse-blue' (click)="regenerateSchedule()">Regenerate Schedule</button>
             <button *ngIf="schedule.state === 'Success' && employeeSchedule" mat-raised-button color='nurse-blue' (click)="exportSchedule()">Export Schedule</button>
+            <button *ngIf="schedule.state === 'Success' && employeeSchedule" mat-raised-button color='nurse-blue' (click)="viewReport()">View Report</button>
             <button *ngIf="schedule.state === inPrgressState" mat-raised-button color='nurse-blue' (click)="stopGeneration()">Stop generation></button>
             <button *ngIf="schedule.state === 'Failed'" mat-raised-button color='nurse-blue' (click)="exportError()">Export error</button>
         </div>

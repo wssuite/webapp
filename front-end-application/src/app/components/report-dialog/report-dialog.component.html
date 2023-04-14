@@ -1,0 +1,8 @@
+<div class="title" mat-dialog-title>Schedule Report</div>
+<div class="dialog-container">
+    <table cellspacing="20">
+        <tr *ngFor="let line of statistics">
+            <td *ngFor="let data of line">{{data}}</td>
+        </tr>
+    </table>
+</div>
