@@ -26,7 +26,6 @@ class Schedule(CSVExporter):
         self.end_date = ""
         self.id_dict = {}
         self.report = ""
-        self.report_obj = {}
         is_report = False
         is_assignments = False
         with open(file_name) as stream:
@@ -67,8 +66,8 @@ class Schedule(CSVExporter):
                 if row.upper().__contains__("REPORT"):
                     is_report = True
 
-        self.report_obj = json.loads(self.report)
-        print(self.report_obj)
+    def get_statistics(self):
+        return json.loads(self.report)
 
     def filter_by_name(self):
         dict_filtered_name = {}
