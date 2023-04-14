@@ -299,6 +299,14 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     CacheUtils.setDemandGenerationRequest(scheduleDemand);
   }
 
+  getDisplayedDate(date: string){
+    try{
+      const dateSplitted = date.split("-")
+      return `${dateSplitted[1]}/${dateSplitted[2]}`
+    }catch(err){
+      return ""
+    }
+  }
 }
 
 

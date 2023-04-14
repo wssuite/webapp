@@ -180,6 +180,11 @@ import { DateUtils } from "src/app/utils/DateUtils";
     return DateUtils.arrangeDateString(local_string);
   }
 
+  getDisplayedDate(date: string){
+    const dateSplitted = date.split("-")
+    return `${dateSplitted[1]}/${dateSplitted[2]}`
+  }
+
   getDayString(index: number): string {
     if (this.startDate == undefined) {
       return "";
