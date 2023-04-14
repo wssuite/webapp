@@ -339,12 +339,18 @@ class TestScheduleHandler(TestCase):
     def test_export_schedule(self, mock_post):
         self.handler.generate_schedule(random_hex, hospital_demand_dict)
         text = """
-        HEADERS
-        (0,Patrick)
-        END
-        instance1,2023-06-01,2023-06-02
-        Assignments = 1
-        0,2023-06-01,Late,Nurse
+HEADERS
+(0,Patrick)
+END
+instance1,2023-06-01,2023-06-02
+Assignments = 1
+0,2023-06-01,Late,Nurse
+REPORT
+{"status":"OPTIMAL",
+"cost":"400",
+"runTime":"0.078255",
+"TotalCostUnderstaffing":"-1",
+}
         """
         solution_file = self.fs.joinpaths(
             base_directory,
@@ -357,8 +363,49 @@ class TestScheduleHandler(TestCase):
         self.fs.create_file(solution_file, contents=text)
         expected_text = """ASSIGNMENTS
 Patrick,2023-06-01,Late,Nurse
+REPORT
+status:OPTIMAL
+cost:400
+runTime:0.078255
+TotalCostUnderstaffing:-1
 """
         solution = self.handler.export_schedule(
+            random_hex, "2023-06-01", "2023-06-02", profile1, "1"
+        )
+        self.assertEqual(expected_text, solution)
+
+    @patch("requests.post", return_value=mock_succeed_response())
+    def test_export_statistics(self, mock_post):
+        self.handler.generate_schedule(random_hex, hospital_demand_dict)
+        text = """
+    HEADERS
+    (0,Patrick)
+    END
+    instance1,2023-06-01,2023-06-02
+    Assignments = 1
+    0,2023-06-01,Late,Nurse
+    REPORT
+    {"status":"OPTIMAL",
+    "cost":"400",
+    "runTime":"0.078255",
+    "TotalCostUnderstaffing":"-1",
+    }
+            """
+        solution_file = self.fs.joinpaths(
+            base_directory,
+            dataset_directory,
+            profile1,
+            "2023-06-01_2023-06-02",
+            "1",
+            "sol.txt",
+        )
+        self.fs.create_file(solution_file, contents=text)
+        expected_text = """status:OPTIMAL
+cost:400
+runTime:0.078255
+TotalCostUnderstaffing:-1
+"""
+        solution = self.handler.get_statistics(
             random_hex, "2023-06-01", "2023-06-02", profile1, "1"
         )
         self.assertEqual(expected_text, solution)

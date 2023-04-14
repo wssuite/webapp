@@ -16,6 +16,8 @@ regex_assignments = (
 
 regex_headers = r"\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9]+)\)\n"
 
+regex_report = r"\"([a-zA-Z0-9\.\-]+)\":\s*\"([a-zA-Z0-9\.\-]+)\""
+
 
 class Schedule(CSVExporter):
     def __init__(self, file_name):
@@ -23,12 +25,14 @@ class Schedule(CSVExporter):
         self.start_date = ""
         self.end_date = ""
         self.id_dict = {}
+        self.report = ""
         is_assignments = False
         with open(file_name) as stream:
             reader = stream.readlines()
             for row in reader:
                 match_regex_assignments = re.search(regex_assignments, row)
                 match_regex_headers = re.search(regex_headers, row)
+                match_regex_report = re.search(regex_report, row)
                 """the assignments block will be after the headers bloc"""
                 if match_regex_assignments:
                     if is_assignments is True:
@@ -47,12 +51,17 @@ class Schedule(CSVExporter):
                     else:
                         self.start_date = match_regex_assignments.group(3)
                         self.end_date = match_regex_assignments.group(4)
+
                 elif match_regex_headers:
                     self.id_dict[
                         match_regex_headers.group(1)
                     ] = match_regex_headers.group(2)
+
                 elif row.upper().__contains__(assignments_string.upper()):
                     is_assignments = True
+
+                if match_regex_report:
+                    self.report += f"{match_regex_report.group(1)}:{match_regex_report.group(2)}\n"
 
     def filter_by_name(self):
         dict_filtered_name = {}
@@ -85,4 +94,6 @@ class Schedule(CSVExporter):
         ret_string = "ASSIGNMENTS\n"
         for assignment in self.assignments_list:
             ret_string += assignment.export()
+        ret_string += "REPORT\n"
+        ret_string += self.report
         return ret_string

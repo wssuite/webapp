@@ -183,3 +183,19 @@ def export_error():
         return {"content": error_str}
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/GetStatistics", method=["GET"])
+def get_statistics():
+    try:
+        token = request.args[user_token]
+        start = request.args[start_date]
+        end = request.args[end_date]
+        profile_name = request.args[profile]
+        v = request.args[version]
+        statistics = schedule_handler.get_statistics(
+            token, start, end, profile_name, v
+        )
+        return {"content": statistics}
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
