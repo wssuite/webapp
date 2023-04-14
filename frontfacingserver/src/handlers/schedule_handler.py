@@ -232,6 +232,14 @@ class ScheduleHandler(BaseHandler):
         solution = Schedule(sol_file)
         return solution.export()
 
+    def get_statistics(self, token, start, end, profile_name,v):
+        self.verify_profile_accessors_access(token, profile_name)
+        fs = FileSystemManager()
+        sol_dir_path = fs.get_solution_dir_path(profile_name, start, end, v)
+        sol_file = os.path.join(sol_dir_path, "sol.txt")
+        solution = Schedule(sol_file)
+        return solution.report_obj
+
     def export_std_error(self, token, start, end, profile_name, v):
         self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()

@@ -1,3 +1,5 @@
+import json
+
 from src.models.assignment import Assignment
 import re
 from constants import (
@@ -23,6 +25,9 @@ class Schedule(CSVExporter):
         self.start_date = ""
         self.end_date = ""
         self.id_dict = {}
+        self.report = ""
+        self.report_obj = {}
+        is_report = False
         is_assignments = False
         with open(file_name) as stream:
             reader = stream.readlines()
@@ -47,12 +52,23 @@ class Schedule(CSVExporter):
                     else:
                         self.start_date = match_regex_assignments.group(3)
                         self.end_date = match_regex_assignments.group(4)
+
                 elif match_regex_headers:
                     self.id_dict[
                         match_regex_headers.group(1)
                     ] = match_regex_headers.group(2)
+
                 elif row.upper().__contains__(assignments_string.upper()):
                     is_assignments = True
+
+                if is_report is True and row.upper().__contains__("END") is False:
+                    self.report += row
+
+                if row.upper().__contains__("REPORT"):
+                    is_report = True
+
+        self.report_obj = json.loads(self.report)
+        print(self.report_obj)
 
     def filter_by_name(self):
         dict_filtered_name = {}
@@ -85,4 +101,6 @@ class Schedule(CSVExporter):
         ret_string = "ASSIGNMENTS\n"
         for assignment in self.assignments_list:
             ret_string += assignment.export()
+        ret_string += "REPORT\n"
+        ret_string += self.report
         return ret_string
