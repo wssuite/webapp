@@ -185,7 +185,7 @@ def export_error():
         return Response(e.args, 500)
 
 
-@mod.route("/GetStatistics", method=["GET"])
+@mod.route("/GetStatistics", methods=["GET"])
 def get_statistics():
     try:
         token = request.args[user_token]
