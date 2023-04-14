@@ -4,7 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import * as saveAs from "file-saver";
-import {SCHEDULE_GENERATION} from "src/app/constants/app-routes";
+import {MAIN_MENU, SCHEDULE_GENERATION, VIEW_SCHEDULES} from "src/app/constants/app-routes";
 import { Assignment, EmployeeSchedule } from "src/app/models/Assignment";
 import { GenerationRequestDetails, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
 import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from "src/app/models/Schedule";
@@ -396,7 +396,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     })
   }
 
-  regenerateSchedule() {
+  regenerateSchedule(showDetails: boolean) {
     for(const pref of this.preferences){
       if(pref[1]!== ""){
         const keyInterface = JSON.parse(pref[0]) as PreferenceKeyInterface
@@ -411,27 +411,53 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       }
     }
     console.log(this.schedule.problem.preferences)
-    const problemNurses: NurseInterface[] = []
-    this.schedule.problem.nurses.forEach((username: string)=>{
-      this.nurses.forEach((nurse: NurseInterface)=>{
-        if(username === nurse.username){
-          problemNurses.push(nurse)
+    if(showDetails){
+      const problemNurses: NurseInterface[] = []
+      this.schedule.problem.nurses.forEach((username: string)=>{
+        this.nurses.forEach((nurse: NurseInterface)=>{
+          if(username === nurse.username){
+            problemNurses.push(nurse)
+          }
+        })
+      })
+      const details : GenerationRequestDetails= {
+        nurses: problemNurses,
+        skills: this.schedule.problem.skills,
+        shifts: this.schedule.problem.shifts,
+        startDate: new Date(this.schedule.problem.startDate),
+        endDate: new Date(this.schedule.problem.endDate)
+      }
+    
+      CacheUtils.setGenerationRequest(details)
+      CacheUtils.setGenerationRequestPreferences(this.schedule.problem.preferences)
+      CacheUtils.setDemandGenerationRequest(this.schedule.problem.hospitalDemand);
+      CacheUtils.saveNurseHistory(this.schedule.problem.history);
+      CacheUtils.setOldVersion(this.schedule.version)
+      this.router.navigate(["/" + SCHEDULE_GENERATION])
+    }
+    else{
+      this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
+        next:(sol: Solution)=> {
+          const subscription: ContinuousVisualisationInterface = {
+            startDate: sol.startDate,
+            endDate: sol.endDate,
+            profile: sol.profile,
+            version: sol.version
+          }
+          CacheUtils.addNewNotifSubscription(subscription)
+          this.service.notificationSubscribe(subscription);
+          this.router.navigate(["/" + VIEW_SCHEDULES])
+        },
+        error: (err: HttpErrorResponse)=>{
+          if(err.status === HttpStatusCode.Ok){
+            this.router.navigate(["/" + MAIN_MENU]);
+          }
+          else{
+            this.openErrorDialog(err.error);
+          }
         }
       })
-    })
-    const details : GenerationRequestDetails= {
-      nurses: problemNurses,
-      skills: this.schedule.problem.skills,
-      shifts: this.schedule.problem.shifts,
-      startDate: new Date(this.schedule.problem.startDate),
-      endDate: new Date(this.schedule.problem.endDate)
     }
-    CacheUtils.setGenerationRequest(details)
-    CacheUtils.setGenerationRequestPreferences(this.schedule.problem.preferences)
-    CacheUtils.setDemandGenerationRequest(this.schedule.problem.hospitalDemand);
-    CacheUtils.saveNurseHistory(this.schedule.problem.history);
-    CacheUtils.setOldVersion(this.schedule.version)
-    this.router.navigate(["/" + SCHEDULE_GENERATION])
   }
 
   stopGeneration(){
