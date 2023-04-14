@@ -12,27 +12,26 @@ export class ReportDialogComponent implements OnInit{
 
   statistics: string[][]
   reportExample: Map<string, string>
-  /*reportExample = "status:OPTIMAL\n"+
-  "cost:400\n"+
-  "runTime:0.078255\n"+
-  "TotalCostUnderstaffing:-1\n"*/
 
   constructor(public dailogRef: MatDialogRef<ReportDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ContinuousVisualisationInterface,
     private service: ScheduleService){
       this.statistics = []
       this.reportExample = new Map()
-      this.reportExample.set("status", "Optimal")
-      this.reportExample.set("cost", "400")
-      this.reportExample.set("runTime", "0.078255")
-      this.reportExample.set("TotalCostUnderstaffing","-1")
     }
 
   ngOnInit(): void {
-    // call endpoint
-    this.reportExample.forEach((value: string, key: string)=>{
-      const line = [key, value]
-      this.statistics.push(line)
+    this.service.getResport(this.data).subscribe({
+      next: (report: Map<string, string>)=>{
+        console.log(report)
+        for(const [key, value] of Object.entries(report)){
+          this.reportExample.set(key, value)
+        }
+        this.reportExample.forEach((value: string, key: string)=>{
+          const line = [key, value]
+          this.statistics.push(line)
+        })
+      }
     })
   }
 
