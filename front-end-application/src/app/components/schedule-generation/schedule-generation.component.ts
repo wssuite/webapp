@@ -1,10 +1,10 @@
-import { HttpErrorResponse } from "@angular/common/http";
+import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
 import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-import { VIEW_SCHEDULES } from "src/app/constants/app-routes";
+import { MAIN_MENU, VIEW_SCHEDULES } from "src/app/constants/app-routes";
 import { ScheduleDataInterface } from "src/app/models/hospital-demand"
 import { NurseInterface } from "src/app/models/Nurse";
 import { NurseService } from "src/app/services/nurse/nurse.service"
@@ -62,6 +62,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   //dateError: boolean
 
   connectedUser: boolean
+  oldVersion: string | null | undefined;
 
   constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService, 
     private nurseService: NurseService, private dialog: MatDialog, private scheduleService: ScheduleService
@@ -95,6 +96,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     this.shifts = []
     this.nursesUsername = []
     try{
+      this.oldVersion = CacheUtils.getOldVersion()
       const savedRequest = CacheUtils.getSavedGenerationRequest()
       console.log(savedRequest)
       if(savedRequest){
@@ -169,13 +171,15 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
       this.connectedUser = true
 
       console.log(this.nurses)
+      console.log("the old version is: " + this.oldVersion)
     }catch(err){
       //Do nothing
     }
   }
 
   ngOnDestroy(): void {
-    this.saveDetails()    
+    this.saveDetails()
+    CacheUtils.removeOldVersion()
   }
 
   openErrorDialog(message: string) {
@@ -293,7 +297,6 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
       e.value != null && e.value != undefined
         ? (this.startDate = e.value)
         : (this.startDate = new Date());
-    //this.endDate = new Date(+this.startDate + (7 * DateUtils.dayMultiplicationFactor))
   }
 
   updateEndDate(e: MatDatepickerInputEvent<Date>) {
@@ -301,10 +304,6 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
       e.value != null && e.value != undefined
         ? (this.endDate = e.value)
         : (this.endDate = new Date());
-    /*const dayDiffrences = DateUtils.nbDaysDifference(this.endDate, this.startDate)
-    console.log(dayDiffrences)
-    this.dateError = dayDiffrences % 7 !== 0
-    console.log(this.dateError)*/
   }
 
   generateSchedule(){
@@ -329,23 +328,49 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     CacheUtils.setGenerationRequestPreferences(this.nursesPreference)
     CacheUtils.saveNurseHistory(this.nursesHistory)
     CacheUtils.setDemandGenerationRequest(this.hospitalDemands)
-    this.scheduleService.generateSchedule(request).subscribe({
-      next: (sol: Solution)=>{
-        const subscription: ContinuousVisualisationInterface = {
-          startDate: sol.startDate,
-          endDate: sol.endDate,
-          profile: sol.profile,
-          version: sol.version
+    if(this.oldVersion){
+      this.scheduleService.regenerateSchedule(this.oldVersion, request).subscribe({
+        next: (sol: Solution)=> {
+          const subscription: ContinuousVisualisationInterface = {
+            startDate: sol.startDate,
+            endDate: sol.endDate,
+            profile: sol.profile,
+            version: sol.version
+          }
+          CacheUtils.addNewNotifSubscription(subscription)
+          this.scheduleService.notificationSubscribe(subscription);
+          this.router.navigate(["/" + VIEW_SCHEDULES])
+          CacheUtils.removeOldVersion()
+        },
+        error: (err: HttpErrorResponse)=>{
+          if(err.status === HttpStatusCode.Ok){
+            this.router.navigate(["/" + MAIN_MENU]);
+          }
+          else{
+            this.openErrorDialog(err.error);
+          }
         }
-        CacheUtils.addNewNotifSubscription(subscription)
-        this.scheduleService.notificationSubscribe(subscription);
-        this.router.navigate(["/" + VIEW_SCHEDULES])
-      },
-      error: (err: HttpErrorResponse)=>{
-        this.openErrorDialog(err.error);
-      }
-      
-    })
+      })
+    }
+    else{
+      this.scheduleService.generateSchedule(request).subscribe({
+        next: (sol: Solution)=>{
+          const subscription: ContinuousVisualisationInterface = {
+            startDate: sol.startDate,
+            endDate: sol.endDate,
+            profile: sol.profile,
+            version: sol.version
+          }
+          CacheUtils.addNewNotifSubscription(subscription)
+          this.scheduleService.notificationSubscribe(subscription);
+          this.router.navigate(["/" + VIEW_SCHEDULES])
+        },
+        error: (err: HttpErrorResponse)=>{
+          this.openErrorDialog(err.error);
+        }
+        
+      })
+    }
   }
 
 
