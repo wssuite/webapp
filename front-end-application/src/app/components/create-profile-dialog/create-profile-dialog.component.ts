@@ -20,20 +20,20 @@ export class CreateProfileDialogComponent {
     private router: Router
   ){}
 
-  height: string = '30%';
+  height: string = '31%';
   width: string = '30%';
   left: string = '36%';
   top: string = '30vh';
 
+@HostListener('window:resize', ['$event'])
   onResize() {
-    console.log("window" )
     if (window.innerWidth <= 1200) {
       this.height = '50%';
       this.width = '50%';
       this.left = '28%';
       this.top = '20vh';
     } else {
-      this.height = '30%';
+      this.height = '31%';
       this.width = '30%';
       this.left = '36%';
       this.top = '30vh';
