@@ -8,9 +8,21 @@ mat-checkbox {
 
 .weight-container{
     display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
     margin: 1vh;
     background-color: #EFF2F7;
-    border-radius: 12px;
-    padding: 2vh;
-    padding-bottom: 4vh 
+    /* border-radius: 12px; */
+    /* padding: 2%;
+    padding-bottom: 4%  */
+}
+
+.error-icon{
+    margin-right: 1%;
+    margin-top: 2%;
+}
+
+.icon-placeholder {
+    height: 48px;
+    width: 48px;
 }
