@@ -8,9 +8,9 @@ mat-form-field {
 }
 
 .pattern-group {
-    padding: 10px;
-    border-style: solid;
-    border-color: rgb(161, 158, 158);
-    border-width: 1px;
-    border-radius: 16px;
+    padding: 5vh;
+    background-color: #d3dde9;
+    color: #1a3d66;
+    border-radius: 4px;
+    margin: 5px;
 }
