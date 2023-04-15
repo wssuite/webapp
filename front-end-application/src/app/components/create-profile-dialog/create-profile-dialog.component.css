@@ -1,5 +1,5 @@
 img{
-    width: 23vw;
+    width: 42%;
     height: inherit;
     padding: 7.8% 3%;
     background-color: #d3dde9;
@@ -16,9 +16,16 @@ img{
     padding: 2%;
 }
 
-.title-container {
+/* .title-container {
     padding-top: 5vh;
-}
+} */
+
+.text-container {
+    padding: 2%;
+    width: 60vw;
+    margin: 0 auto;
+  }
+  
 
 h1, h4{
     text-align: center;
@@ -28,65 +35,25 @@ h1, h4{
     font-size: larger;
     font-weight: bold;
     height: 50px;
-    width: 240px;
+    width: 70%;
 }
 
 .import-section, .create-empty-section {
-    margin-top: 5vh;
+    margin-top: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .button-container {
-    padding-top:1vh;
-    padding-bottom: 6vh;
+    padding-top:2%;
+    padding-bottom: 12%;
 }
 
 .close-button{
     float:right;
     bottom: 0%;
     right: 0%;
-    position: absolute;
-    margin-bottom: 3vh;
-    margin-right: 3vh;
+    margin-bottom: 3%;
+    margin-right: 3%;
 }
-
-
-/* h1, h2{
-    text-align: center;
-}
-
-
-p{
-    font-size: large;
-    font-weight: bold;
-    margin-bottom: 2vh;
-}
-
-.action-button{
-    font-size: larger;
-    font-weight: bold;
-    height: 50px;
-    width: 240px;
-}
-
-.import-section, .create-empty-section {
-    margin-top: 5vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.close-button{
-    float:right;
-    bottom: 0%;
-    right: 0%;
-    position: absolute;
-    margin-bottom: 3vh;
-    margin-right: 3vh;
-}
-
-.profile-container{
-    margin-top: 5vh;
-} */

@@ -1,27 +1,53 @@
 <div class="profile-container">
-    <img src="../../../assets/background.png">
-   
-    <div class="text-container">
-        <div *ngIf="data.profiles.length === 0; else elseBlock" class="text-container">
-            <h1>Welcome to Nurse Scheduler application!</h1>
-            <h4>Create or import a hospital profile to get started</h4>
-        </div>
-       
-        <ng-template #elseBlock calss="text-container">
-            <h1>Create or import a hospital profile to get started</h1>
-        </ng-template>
-        <div class="button-container">
-            <div class="create-empty-section">
-                <button mat-raised-button color="nurse-blue" (click)="createEmptyProfile()" class="action-button"  matTooltip="You can create an empty profile by specifying only the profile's name"
-                matTooltipPosition="right" [mat-dialog-close]="true">Create profile</button>
-            </div>
-            <div class="import-section">
-                <button mat-raised-button color="nurse-blue" (click)="importProfile()" class="action-button" matTooltip="You can also import a profile from a file"
-                matTooltipPosition="right">Import profile</button>
-        
-            </div>
-        </div>
-        
+  <img src="../../../assets/background.png" />
+
+  <div class="text-container">
+    <div
+      *ngIf="data.profiles.length === 0; else elseBlock"
+      class="text-container"
+    >
+      <h1>Welcome to Nurse Scheduler application!</h1>
+      <h4>Create or import a hospital profile to get started</h4>
     </div>
-    <button mat-raised-button *ngIf="data.closeDisplayed" class="close-button" color="warn" [mat-dialog-close]="true">Close</button>
+
+    <ng-template #elseBlock class="text-container">
+      <h1>Create or import a hospital profile to get started</h1>
+    </ng-template>
+    <div class="button-container">
+      <div class="create-empty-section">
+        <button
+          mat-raised-button
+          color="nurse-blue"
+          (click)="createEmptyProfile()"
+          class="action-button"
+          matTooltip="You can create an empty profile by specifying only the profile's name"
+          matTooltipPosition="right"
+          [mat-dialog-close]="true"
+        >
+          Create profile
+        </button>
+      </div>
+      <div class="import-section">
+        <button
+          mat-raised-button
+          color="nurse-blue"
+          (click)="importProfile()"
+          class="action-button"
+          matTooltip="You can also import a profile from a file"
+          matTooltipPosition="right"
+        >
+          Import profile
+        </button>
+      </div>
+    </div>
+    <button
+      mat-raised-button
+      *ngIf="data.closeDisplayed"
+      class="close-button"
+      color="warn"
+      [mat-dialog-close]="true"
+    >
+      Close
+    </button>
+  </div>
 </div>
