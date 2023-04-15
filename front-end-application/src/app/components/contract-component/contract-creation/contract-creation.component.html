@@ -1,4 +1,5 @@
-<div class="contract-container"  #contractContainer (mouseleave)="emitContract()">
+<div class="contract-container-page" (mouseleave)="emitContract()">
+    <div class="contract-container" #contractContainer>
     <div class="name-section">
         <label>Contract name: </label>
         <mat-form-field appearance="fill" class="name-input">
@@ -48,15 +49,17 @@
             </div>
 
         </div>
-        <div class="constraints-menu">
-            <h2>Choose a constraint to be added </h2>
-            <div class="constraints">        
-                <div *ngFor="let constraint of possibleConstraints; let i= index">
-                    <button class="constraint-button" mat-raised-button color="nurse-blue" (click)="addConstraint(constraint)">
-                        {{ constraint }}
-                    </button>
-                </div>
-            </div>
+        
+    </div>
+</div>
+<div class="constraints-menu">
+    <h2>Choose a constraint to be added </h2>
+    <div class="constraints">        
+        <div *ngFor="let constraint of possibleConstraints; let i= index">
+            <button class="constraint-button" mat-raised-button color="nurse-blue" (click)="addConstraint(constraint)">
+                {{ constraint }}
+            </button>
         </div>
     </div>
+</div>
 </div>
