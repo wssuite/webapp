@@ -1,14 +1,16 @@
 <div class="profile-container">
-  <img src="../../../assets/background.png" />
+  <mat-card class="img-container">
+    <img src="../../../assets/background.png" />
+  </mat-card>
 
-  <div class="text-container">
+  <mat-card class="info-container">
     <div
       *ngIf="data.profiles.length === 0; else elseBlock"
       class="text-container"
     >
       <h1>Welcome to Nurse Scheduler application!</h1>
-      <h4>Create or import a hospital profile to get started</h4>
-    </div>
+      <h3>Create or import a hospital profile to get started</h3>
+  </div>
 
     <ng-template #elseBlock class="text-container">
       <h1>Create or import a hospital profile to get started</h1>
@@ -27,7 +29,7 @@
           Create profile
         </button>
       </div>
-      <div class="import-section">
+      <div class="import-section" id="import-profil-button">
         <button
           mat-raised-button
           color="nurse-blue"
@@ -49,5 +51,5 @@
     >
       Close
     </button>
-  </div>
+  </mat-card>
 </div>
