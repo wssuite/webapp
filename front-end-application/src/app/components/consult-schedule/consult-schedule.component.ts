@@ -207,7 +207,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     return indexes;
   }
 
-  getEmployeeShiftSkill(employeeName: string, index: number): string {
+  getEmployeeShift(employeeName: string, index: number): string {
     let ret = "";
     const assignments = this.employeeAssignmentsMap.get(employeeName);
     if (assignments === undefined || assignments === null) {
@@ -216,7 +216,23 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     const date = this.getDateDayStringByIndex(index);
     for (const assignment of assignments) {
       if (assignment.date === date) {
-        ret = assignment.skill + "\n" + assignment.shift;
+        ret = assignment.shift.toUpperCase( )  ;
+        break;
+      }
+    }
+    return ret;
+  }
+
+  getEmployeeSkill(employeeName: string, index: number): string {
+    let ret = "";
+    const assignments = this.employeeAssignmentsMap.get(employeeName);
+    if (assignments === undefined || assignments === null) {
+      return ret;
+    }
+    const date = this.getDateDayStringByIndex(index);
+    for (const assignment of assignments) {
+      if (assignment.date === date) {
+        ret = assignment.skill ;
         break;
       }
     }
@@ -247,10 +263,10 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     const pref = this.getPreference(name, index);
     if(pref !== undefined){
       if(pref === "ON"){
-        return {'background-color': 'green', "height":"60px"};
+        return {'background-color': 'rgba(76, 175, 80, 0.2)', "height":"60px"};
       }
       else if(pref === "OFF"){
-        return {'background-color': 'red', "height":"60px" };
+        return {'background-color': 'rgba(227, 50, 39, 0.2)', "height":"60px" };
       }
       return { 'background-color': 'rgb(235, 234, 234)', "height":"60px" };
     }

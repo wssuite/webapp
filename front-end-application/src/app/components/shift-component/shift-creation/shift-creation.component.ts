@@ -127,7 +127,7 @@ export class ShiftCreationComponent implements OnInit{
     if (!this.startTimeFormCtrl.disabled) {
       timepicker.open();
     }
-    timepicker.timeChanged.subscribe((time: string)=>{
+    timepicker.timeSet.subscribe((time: string)=>{
       console.log("time changed")
       this.shift.startTime = time
       this.setEndTime()
