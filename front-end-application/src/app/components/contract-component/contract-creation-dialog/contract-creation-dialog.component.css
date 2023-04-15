@@ -1,12 +1,11 @@
 .dialog-container {
     width: 75vw;
-    height: 80vh;
+    height: 80%;
 }
 
 .buttons-container {
-    display: block;
     float:right;
-    position: absolute;
+    position: relative;
     right:0px;
     bottom: 0px;
     margin: 4vh 2vw 2vh 0vw;

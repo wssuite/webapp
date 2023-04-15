@@ -54,8 +54,8 @@
 </div>
 <div class="constraints-menu">
     <h2>Choose a constraint to be added </h2>
-    <div class="constraints">        
-        <div *ngFor="let constraint of possibleConstraints; let i= index">
+    <div class="constraints flex-row-center-container">        
+        <div *ngFor="let constraint of possibleConstraints; let i= index" class="button-container">
             <button class="constraint-button" mat-raised-button color="nurse-blue" (click)="addConstraint(constraint)">
                 {{ constraint }}
             </button>

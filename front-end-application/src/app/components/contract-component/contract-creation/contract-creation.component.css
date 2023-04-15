@@ -68,9 +68,12 @@ mat-expansion-panel {
 }
 
 .constraint-button{
-    margin-right: 1vw;
-    margin-top: 1vh;
-    font-size: 2vh;
+    margin-top: 1%;
+    width: max-content;
+}
+
+.button-container{
+    margin-right: 1%;
 }
 
 .constraints{
