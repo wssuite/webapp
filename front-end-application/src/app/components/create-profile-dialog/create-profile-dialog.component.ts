@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, HostListener, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {Router } from '@angular/router';
 import { IMPORT } from 'src/app/constants/app-routes';
@@ -17,16 +17,37 @@ export class CreateProfileDialogComponent {
     public dialogRef: MatDialogRef<CreateProfileDialogComponent>,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data:{profiles: BaseProfile[], closeDisplayed: boolean},
-    private router: Router, private service: ProfileService
+    private router: Router
   ){}
+
+  height: string = '30%';
+  width: string = '30%';
+  left: string = '36%';
+  top: string = '30vh';
+
+  onResize() {
+    console.log("window" )
+    if (window.innerWidth <= 1200) {
+      this.height = '50%';
+      this.width = '50%';
+      this.left = '28%';
+      this.top = '20vh';
+    } else {
+      this.height = '30%';
+      this.width = '30%';
+      this.left = '36%';
+      this.top = '30vh';
+    }
+  }
 
 
   createEmptyProfile(){
+    this.onResize();
     const dialog = this.dialog.open(CreateEmptyProfileDialogComponent, {
       data: {profiles: this.data.profiles},
-      height: '30%',
-      width: '30%', 
-      position: {top:'30vh',left: '36%', right: '35%'}
+      height: this.height,
+      width: this.width, 
+      position: {top: this.top,left: this.left, right: '35%'}
     })
     dialog.afterClosed().subscribe(()=>{
       this.dialogRef.close()
