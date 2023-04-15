@@ -194,6 +194,20 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     return "The Max weight is "+ preferenceObj.maxWeight + " and the min weight is " + preferenceObj.minWeight;
   }
 
+  getWeight(date: dateDisplay,skill: string, shift: string): string {
+    const key = JSON.stringify({date:date,skill:skill,shift:shift});
+    const preferenceObj = this.hospitalDemands.get(key);
+    if(preferenceObj === undefined){
+      return "";
+    }
+    if(preferenceObj.maxWeight === "0" && preferenceObj.minWeight === "0"){
+      return "";
+    }
+    else{
+      return "The Max weight is "+ preferenceObj.maxWeight + " and the min weight is " + preferenceObj.minWeight;
+    }
+  }
+
   getDateDayStringByIndex(index: number): string {
     if (this.startDate == undefined) {
       return "";
@@ -285,6 +299,24 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     CacheUtils.setDemandGenerationRequest(scheduleDemand);
   }
 
+  getDisplayedDate(date: string){
+    try{
+      const dateSplitted = date.split("-")
+      return `${dateSplitted[1]}/${dateSplitted[2]}`
+    }catch(err){
+      return ""
+    }
+  }
+
+  cancel(){
+    this.editOff = true
+    this.isDisabled = true;
+    this.isEditing = false;
+    this.stillSelected = false;
+    for(const key of this.selectedShift.keys()){
+      this.selectedShift.set(key, false)
+    }
+  }
 }
 
 
