@@ -5,8 +5,8 @@
 }
 
 .skill-name-table {
-  height: calc(100%-15px);
-  max-height: calc(100%-15px); 
+  height: calc(100% - 15px);
+  max-height: calc(100% - 15px); 
   width:max-content;
   max-width: 100%;
 }
@@ -80,8 +80,8 @@ button:hover{
 .skill-table{
   width:max-content;
   max-width: 100%;
-  height: calc(100%-15px);
-  max-height: calc(100%-15px); 
+  height: calc(100% - 15px);
+  max-height: calc(100% - 15px); 
 }
 
 table{
