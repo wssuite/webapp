@@ -197,6 +197,14 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     const local_string = nextDay.toISOString().split("T")[0];
     return DateUtils.arrangeDateString(local_string);
   }
+  getDisplayedDate(date: string){
+    try{
+      const dateSplitted = date.split("-")
+      return `${dateSplitted[1]}/${dateSplitted[2]}`
+    }catch(err){
+      return ""
+    }
+  }
 
   getDayString(index: number): string {
     if (this.startDate == undefined) {

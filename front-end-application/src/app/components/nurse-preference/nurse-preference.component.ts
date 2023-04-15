@@ -138,6 +138,14 @@ import { DateUtils } from "src/app/utils/DateUtils";
     return "The weight is "+ preferenceObj.weight
   }
 
+  getWeight(date: dateDisplay,nurse: string, shift: string):string{
+    const preferenceObj = this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)
+    if(preferenceObj === undefined){
+      return "";
+    }
+    return preferenceObj.weight;
+  }
+
   getButtonState(date?: dateDisplay, nurse?: string, shift?: string): string {
     if(date !== undefined && nurse !==  undefined && shift !==  undefined) {
     if(this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.pref === 'ON') {
@@ -170,6 +178,11 @@ import { DateUtils } from "src/app/utils/DateUtils";
     );
     const local_string = nextDay.toISOString().split("T")[0];
     return DateUtils.arrangeDateString(local_string);
+  }
+
+  getDisplayedDate(date: string){
+    const dateSplitted = date.split("-")
+    return `${dateSplitted[1]}/${dateSplitted[2]}`
   }
 
   getDayString(index: number): string {
