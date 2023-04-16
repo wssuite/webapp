@@ -4,19 +4,24 @@
   align-items: center;
 }
 
-.skill-name-table {
+/* .skill-name-table {
   height: calc(100%-15px);
   max-height: calc(100%-15px); 
   width:max-content;
   max-width: 100%;
-}
+} */
 
 .skill-name-header {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   /* padding-top: 5px; */
-  height: 5px;
+  height: 5%;
+  margin-top: 3%;
+}
+
+.filler {
+  height:0px
 }
 
 .skill-name-cell {
@@ -81,8 +86,8 @@ button:hover{
 .skill-table{
   width:max-content;
   max-width: 100%;
-  height: calc(100%-15px);
-  max-height: calc(100%-15px); 
+  height: calc(100% - 15px);
+  max-height: calc(100% - 15px); 
 }
 
 table{
@@ -111,4 +116,16 @@ table{
 
 .error-message {
   margin-top: 1%;
+}
+
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1700px) {
+.filler{
+  height: 7px;
+  max-height: 7px;
+
+}
+
+
 }
