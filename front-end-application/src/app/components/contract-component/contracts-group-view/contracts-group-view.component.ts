@@ -34,6 +34,11 @@ export class ContractsGroupViewComponent implements OnInit, AfterViewInit{
     this.dataSource = new MatTableDataSource();
   }
 
+  height: string = '60%';
+  width: string = '55%';
+  left: string = '23%';
+  top: string = '20vh';
+
   ngOnInit(): void {
     try{
       this.getContractGroups();
@@ -77,12 +82,27 @@ export class ContractsGroupViewComponent implements OnInit, AfterViewInit{
     })
   }
 
+  onResize() {
+    if (window.innerWidth <= 1200) {
+      this.height = '80%';
+      this.width = '55%';
+      this.left = '23%';
+      this.top = '10vh';
+    } else {
+      this.height = '60%';
+      this.width = '55%';
+      this.left = '23%';
+      this.top = '20vh';
+    }
+  }
+
   openContractGroupCreationDialog(contractGroup: ContractGroupInterface) {
+    this.onResize();
     const dialog = this.dialog.open(ContractGroupCreationDialogComponent,  
       { disableClose: true,  
-        height: '60%',
-        width: '55%', 
-        position: {top:'20vh',left: '23%', right: '25%'},
+        height: this.height,
+        width: this.width, 
+        position: {top:this.top,left: this.left, right: '25%'},
         data: {contractGroup:contractGroup,contractGroups:this.contractGroups},
       });
     
