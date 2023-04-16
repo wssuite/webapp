@@ -25,7 +25,6 @@ export class CreateProfileDialogComponent {
   left: string = '36%';
   top: string = '30vh';
 
-@HostListener('window:resize', ['$event'])
   onResize() {
     if (window.innerWidth <= 1200) {
       this.height = '50%';

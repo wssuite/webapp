@@ -45,6 +45,11 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       this.showProfile = true;
     }
 
+    height: string = '31%';
+    width: string = '30%';
+    left: string = '36%';
+    top: string = '30vh';
+
   ngOnInit(): void {
     try{
       this.getProfiles(false);
@@ -163,13 +168,28 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     this.profileService.emitProfileChange();
   }
 
+  onResize() {
+    if (window.innerWidth <= 1200) {
+      this.height = '50%';
+      this.width = '50%';
+      this.left = '28%';
+      this.top = '20vh';
+    } else {
+      this.height = '31%';
+      this.width = '30%';
+      this.left = '36%';
+      this.top = '30vh';
+    }
+  }
+
   duplicate() {
+    this.onResize();
     const dialog = this.dialog.open(DuplicateProfileComponent,{
       data: {profiles: this.profiles},
       disableClose: true,  
-      height: '65%',
-      width: '55%', 
-      position: {top:'5vh',left: '25%', right: '25%'},
+      height: this.height,
+      width: this.width, 
+      position: {top:this.top, left: this.left, right: '25%'},
     })
     dialog.afterClosed().subscribe(()=>{
       this.getProfiles(true);
