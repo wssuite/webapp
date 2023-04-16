@@ -17,3 +17,21 @@ mat-form-field {
 .pattern-element{
     margin: 1vw 2vw 1vw 2vw;
 }
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1200px) {
+   
+    .pattern-group {
+        display: flex;
+        flex-direction: column;
+        width: max-content;
+    }
+
+    .pattern-element {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: max-content;
+    }
+    
+}

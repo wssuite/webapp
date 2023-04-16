@@ -22,17 +22,27 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    background-color: #d3dde9;
+    color: #1a3d66;
 }
 
 .pattern-cell{
     display: block;
     padding: 2vh;
-    background-color: #d3dde9;
-    color: #1a3d66;
     border-radius: 12px;
     margin: 5px;
 }
 
 table{ 
     width: 100%;
+}
+
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1200px) {
+   
+table{ 
+    width: max-content;
+}
+
 }

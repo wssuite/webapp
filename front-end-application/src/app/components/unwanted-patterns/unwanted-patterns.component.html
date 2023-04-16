@@ -2,12 +2,14 @@
     <table cellspacing="5">
         <tr *ngFor="let element of constraint.patternElements; let i= index">
             <td class="pattern-cell">
-                <div class="pattern">
-                    <app-pattern-element [(element)]="constraint.patternElements[i]" [possibleShifts]="possibleShifts" (errorState)="changePatternErrorState(i, $event)"></app-pattern-element>
+                <mat-card class="pattern">
+                        <mat-card-content>
+                            <app-pattern-element [(element)]="constraint.patternElements[i]" [possibleShifts]="possibleShifts" (errorState)="changePatternErrorState(i, $event)"></app-pattern-element>
+                        </mat-card-content>    
                     <button *ngIf="constraint.patternElements.length > 1" mat-icon-button (click)="removePattern(element)" class="delete-pattern-button">
                         <mat-icon class="delete-pattern-icon">cancel</mat-icon>
                     </button>
-                </div>
+                </mat-card>
             </td>
         </tr>
     </table>
