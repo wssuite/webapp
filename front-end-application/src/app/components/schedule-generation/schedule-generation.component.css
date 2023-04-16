@@ -72,7 +72,40 @@ hr {
 .generateScheduleButtonContainer{
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
-    margin-right: 5vw;
-    margin-bottom: 2vh;
+    justify-content: center;
+    margin-bottom: 2%;
+    margin-top: 2%;
+
+}
+
+.info-div{
+    color: #1a3d66;
+    background-color: #EFF2F7;
+    padding: 1%;
+    width: max-content;
+}
+
+.info-icon {
+    margin-right:2%;
+    margin-left:2%;
+}
+
+
+.generateScheduleButton {
+    height: 60px;
+    padding: 10px;
+    font-size: medium;
+    font-weight: bold;
+    padding-left: 14px;
+    padding-right: 14px;
+    margin-right: 2vw;
+    margin-bottom: 2%;
+}
+
+@media all and (max-width: 1200px) {
+
+    .info-icon {
+       display: none;
+    }
+
 }
