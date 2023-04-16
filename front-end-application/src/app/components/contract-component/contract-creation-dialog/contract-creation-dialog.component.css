@@ -44,7 +44,17 @@ button {
     }
 
     button {
+        line-height: 10px;
         font-size: xx-small;
+        height: 26px;
+        max-height: 26px;
     }
 
+    .buttons-container {
+        float:right;
+        position: relative;
+        right:0px;
+        bottom: 0px;
+        margin: 1% 2vw 2vh 1%;
+    }
 }

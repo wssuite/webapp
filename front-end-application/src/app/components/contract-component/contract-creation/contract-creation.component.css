@@ -115,26 +115,27 @@ h2, h3, label, p {
     }
 
     label{
-        font-size: 14px;
+        font-size: small;
     }
 
     h2, h3, p {
         font-size: small;
     }
 
-    button {
+    .constraint-button {
         font-size: xx-small;
         height: 20px;
+        max-height: 20px;
     }
 
     .contract-container {
         margin-left: 1vw;
         overflow-y: scroll;
-        max-height: 150px;
+        max-height: 300px;
         scroll-behavior: smooth;
     }
 
     .constraints-menu {
-        padding: 1% 1% 2% 1%;
+        padding: 2% 1% 2% 1%;
     }
 }
