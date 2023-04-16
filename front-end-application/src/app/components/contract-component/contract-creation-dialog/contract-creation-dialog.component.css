@@ -8,7 +8,7 @@
     position: relative;
     right:0px;
     bottom: 0px;
-    margin: 4vh 2vw 2vh 0vw;
+    margin: 3% 2% 2% 0%;
 }
 
 .contract-container{
@@ -22,6 +22,8 @@
 
 button {
     margin-right: 1vw;
+    margin-bottom: 1%;
+    margin-top: 1%;
 }
 
 .title {
@@ -34,7 +36,7 @@ button {
 }
 
 /* EXPERIMENTAL */
-@media all and (max-width: 1200px) {
+@media all and (max-width: 1700px) {
     .title {
         color:  #1a3d66;
         background-color: #d3dde9;
@@ -48,6 +50,9 @@ button {
         font-size: xx-small;
         height: 26px;
         max-height: 26px;
+        margin-bottom: 1%;
+        margin-top: 1%;
+
     }
 
     .buttons-container {
@@ -55,6 +60,6 @@ button {
         position: relative;
         right:0px;
         bottom: 0px;
-        margin: 1% 2vw 2vh 1%;
+        margin: 0% 2% 2% 1%;
     }
 }

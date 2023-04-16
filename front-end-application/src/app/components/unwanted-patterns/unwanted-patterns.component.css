@@ -34,7 +34,7 @@
 }
 
 table{ 
-    width: 100%;
+    width: max-content;
 }
 
 
@@ -42,7 +42,7 @@ table{
 @media all and (max-width: 1200px) {
    
 table{ 
-    width: max-content;
+    width: min-content;
 }
 
 .add-button{

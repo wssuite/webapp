@@ -8,10 +8,7 @@ mat-form-field {
 }
 
 .pattern-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: max-content;
+    display: column;
 }
 
 .pattern-element{
@@ -32,6 +29,11 @@ mat-form-field {
         flex-direction: row;
         flex-wrap: wrap;
         width: max-content;
+    }
+
+    label {
+        margin-right: 1%;
+        font-size: smaller;
     }
     
 }
