@@ -2,10 +2,7 @@
   <mat-icon class="info-icon">info</mat-icon>
   <p>Enter the weight that will be associated to nurses' preferences in the box below. First click will mark a shift as working (ON). Second click will mark a shift as not working (OFF).  Third click will clear the weight associated to the shift.</p>
 </div>
-  <div class="preference-weight-container">
-    <app-weight class="weight" [(weight)]="weight" [label]="weightLabel"></app-weight>
-  </div>
-  
+
 <div class="schedule-container">
   <div class="nurse-name-table">
     <table class="nurse-table">
@@ -19,7 +16,7 @@
   </div>
   <div class="timetable-table">
     <div class="date-table" *ngFor="let date of timetable">
-      <caption class="date-header"> {{date.day}}  {{date.date}}</caption>
+      <caption class="date-header"> {{date.day.substring(0,3)}}  {{getDisplayedDate(date.date)}}</caption>
       <table>
         <tr>
           <th class="shift-header"*ngFor="let shift of shifts">
@@ -28,9 +25,14 @@
         </tr>
         <tr class="checkbox-row"*ngFor="let nurse of nurses">
           <td  class="checkbox-cell" *ngFor="let shift of shifts" class="schedule-cells">
-            <button class="checkbox" (click)="updatePreferences(date, nurse.username, shift)" 
+            <button *ngIf="getWeight(date, nurse.username, shift) !== ''" class="checkbox" (click)="updatePreferences(date, nurse.username, shift)" 
               [disabled]="!weight || (!weight.match(regex) && weight !=='hard')" 
               matTooltip="{{showToolTip(date, nurse.username, shift)}}" 
+              [ngStyle]="getButtonStyle(date, nurse.username, shift)">
+              <mat-icon>{{getButtonState(date, nurse.username, shift)}}</mat-icon>
+            </button>            
+            <button *ngIf="getWeight(date, nurse.username, shift) === ''" class="checkbox" (click)="updatePreferences(date, nurse.username, shift)" 
+              [disabled]="!weight || (!weight.match(regex) && weight !=='hard')"  
               [ngStyle]="getButtonStyle(date, nurse.username, shift)">
               <mat-icon>{{getButtonState(date, nurse.username, shift)}}</mat-icon>
             </button>
@@ -39,4 +41,8 @@
       </table>
     </div>
   </div>
+  <br>
+</div>
+<div class="preference-weight-container">
+  <app-weight class="weight" [(weight)]="weight" [label]="weightLabel"></app-weight>
 </div>

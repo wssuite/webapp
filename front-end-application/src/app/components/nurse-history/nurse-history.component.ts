@@ -187,6 +187,15 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
     this.emitErrorState(); 
   }
 
+  getDisplayedDate(date: string){
+    try{
+      const dateSplitted = date.split("-")
+      return `${dateSplitted[1]}/${dateSplitted[2]}`
+    }catch(err){
+      return ""
+    }
+  }
+  
   @HostListener("window:beforeunload")
   saveHistory(){
     const nurseHistory = [];
