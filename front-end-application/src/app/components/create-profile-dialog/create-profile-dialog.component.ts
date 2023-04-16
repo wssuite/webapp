@@ -20,10 +20,10 @@ export class CreateProfileDialogComponent {
     private router: Router
   ){}
 
-  height: string = '31%';
-  width: string = '30%';
-  left: string = '36%';
-  top: string = '30vh';
+  height = '31%';
+  width = '30%';
+  left = '36%';
+  top = '30vh';
 
   onResize() {
     if (window.innerWidth <= 1200) {

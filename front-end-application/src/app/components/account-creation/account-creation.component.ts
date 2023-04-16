@@ -39,10 +39,10 @@ export class AccountCreationComponent implements OnInit{
     this.dataSource = new MatTableDataSource();
   }
 
-  height: string =  '60%';
-  width: string = '35%';
-  left: string = '35%';
-  top: string = '10vh';
+  height =  '60%';
+  width = '35%';
+  left = '35%';
+  top = '10vh';
   
   ngOnInit(): void {
     try{

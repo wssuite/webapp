@@ -34,10 +34,10 @@ export class ContractsGroupViewComponent implements OnInit, AfterViewInit{
     this.dataSource = new MatTableDataSource();
   }
 
-  height: string = '60%';
-  width: string = '55%';
-  left: string = '23%';
-  top: string = '20vh';
+  height = '60%';
+  width = '55%';
+  left = '23%';
+  top = '20vh';
 
   ngOnInit(): void {
     try{

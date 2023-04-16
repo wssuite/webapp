@@ -46,10 +46,10 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
     this.dataSource = new MatTableDataSource();
   }
 
-  height: string = '65%';
-  width: string = '50%';
-  left: string = '26%';
-  top: string= '18vh';
+  height = '65%';
+  width = '50%';
+  left = '26%';
+  top = '18vh';
 
   ngOnInit(): void {
     try{

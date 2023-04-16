@@ -43,10 +43,10 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
     this.dataSource = new MatTableDataSource();
   }
 
-  height: string = '32%';
-  width: string = '30%';
-  left: string = '36%';
-  top: string = '30vh';
+  height = '32%';
+  width = '30%';
+  left = '36%';
+  top = '30vh';
 
   ngOnInit(): void {
        try{
