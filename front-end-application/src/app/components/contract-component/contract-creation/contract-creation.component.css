@@ -106,3 +106,35 @@ h2, h3, label, p {
 .constraints-menu {
     padding: 1vh 1vw 3vh 1vw;
 }
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1200px) {
+    .name-input, .constraint-select{
+        width:30%;
+        font-size: 10px;
+    }
+
+    label{
+        font-size: 14px;
+    }
+
+    h2, h3, p {
+        font-size: small;
+    }
+
+    button {
+        font-size: xx-small;
+        height: 20px;
+    }
+
+    .contract-container {
+        margin-left: 1vw;
+        overflow-y: scroll;
+        max-height: 150px;
+        scroll-behavior: smooth;
+    }
+
+    .constraints-menu {
+        padding: 1% 1% 2% 1%;
+    }
+}

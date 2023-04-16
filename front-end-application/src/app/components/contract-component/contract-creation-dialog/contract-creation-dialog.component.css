@@ -32,3 +32,19 @@ button {
     padding: 1% 2% 2% 2%;
     align-self: center;
 }
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1200px) {
+    .title {
+        color:  #1a3d66;
+        background-color: #d3dde9;
+        font-weight: bold;
+        font-size: large;
+        padding: 1% 1% 1% 1%;
+    }
+
+    button {
+        font-size: xx-small;
+    }
+
+}
