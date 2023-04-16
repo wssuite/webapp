@@ -11,7 +11,7 @@
   </div>
   <div class="timetable-table">
     <div class="date-table" *ngFor="let date of timetable">
-      <caption class="date-header"> {{date.day}}  {{date.date}}</caption>
+      <caption class="date-header"> {{date.day.substring(0,3)}}  {{getDisplayedDate(date.date)}}</caption>
       <table>
         <tr>
           <th class="shift-header"*ngFor="let shift of shifts">
@@ -20,9 +20,14 @@
         </tr>
         <tr class="min-max-row"*ngFor="let skill of skills">
           <td  class="min-max-cell" *ngFor="let shift of shifts" class="schedule-cells">
-            <button  class="min-max" 
+            <button  *ngIf="getWeight(date, skill, shift) !== ''" class="min-max" 
               [ngStyle]="getButtonStyle(date, skill, shift)"
               matTooltip="{{showToolTip(date, skill, shift)}}" 
+              (click)="setSelection(date, skill, shift)"
+              >{{displayValue(date, skill, shift)}} 
+            </button>
+            <button  *ngIf="getWeight(date, skill, shift) === ''" class="min-max" 
+              [ngStyle]="getButtonStyle(date, skill, shift)"
               (click)="setSelection(date, skill, shift)"
               >{{displayValue(date, skill, shift)}} 
             </button>
@@ -35,12 +40,15 @@
 
 <div class="min-max-value">
     <app-min-max-hopspital-demand [ngClass]="{'disabled': isDisabled}" [(demand)]="demand" (errorState)="updateSkillDemandErrorState($event)"></app-min-max-hopspital-demand>
-  <button [disabled]="editOff" mat-raised-button color="primary" (click)="setEdition()">Edit</button>
-  <div *ngIf="!skillDemandErrorState && !isDisabled"> 
-    <button mat-raised-button (click)="save()">Save</button>
-    <div *ngIf="saveDemandError" >
-      <mat-icon color="warn">error</mat-icon>
-      <label>Preferences must be saved</label>
+  <button *ngIf="!isEditing" [disabled]="editOff" mat-raised-button color="primary" (click)="setEdition()">Edit</button>
+  <div class="edition-buttons">
+    <button *ngIf="isEditing" class="cancel-btn" mat-raised-button color="accent" (click)="cancel()">Cancel</button>
+    <div *ngIf="!skillDemandErrorState && !isDisabled"> 
+      <button mat-raised-button (click)="save()">Save</button>
+      <div *ngIf="saveDemandError" >
+        <mat-icon color="warn">error</mat-icon>
+        <label>Preferences must be saved</label>
+      </div>
     </div>
   </div>
 </div>
