@@ -186,7 +186,7 @@
 
       <div class="generateScheduleButtonContainer">
         <button
-          mat-raised-button
+          *ngIf="!oldVersion" mat-raised-button
           color="primary"
           class="generateScheduleButton"
           (click)="generateSchedule()"
@@ -194,6 +194,16 @@
           "
         >
           Generate schedule
+        </button>
+        <button
+          *ngIf="oldVersion" mat-raised-button
+          color="primary"
+          class="generateScheduleButton"
+          (click)="generateSchedule()"
+          [disabled]=" !validRange() || nurses.length === 0 || shifts.length === 0 || demandsError
+          "
+        >
+          Regenerate schedule
         </button>
       </div>
     </div>

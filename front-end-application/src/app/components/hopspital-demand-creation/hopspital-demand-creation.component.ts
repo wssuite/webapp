@@ -307,6 +307,16 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
       return ""
     }
   }
+
+  cancel(){
+    this.editOff = true
+    this.isDisabled = true;
+    this.isEditing = false;
+    this.stillSelected = false;
+    for(const key of this.selectedShift.keys()){
+      this.selectedShift.set(key, false)
+    }
+  }
 }
 
 

@@ -94,6 +94,13 @@ table{
   pointer-events: none; 
 }
 
+.edition-buttons{
+  display: flex;
+  margin-left: 1vw;
+}
+.cancel-btn{
+  margin-right: 1vw;
+}
  
 .centered-container {
   display: flex;
