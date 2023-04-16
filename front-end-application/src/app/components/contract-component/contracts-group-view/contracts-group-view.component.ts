@@ -84,14 +84,14 @@ export class ContractsGroupViewComponent implements OnInit, AfterViewInit{
 
   onResize() {
     if (window.innerWidth <= 1200) {
-      this.height = '80%';
+      this.height = '75%';
       this.width = '55%';
-      this.left = '23%';
+      this.left = '26%';
       this.top = '10vh';
     } else {
-      this.height = '60%';
-      this.width = '55%';
-      this.left = '23%';
+      this.height = '55%';
+      this.width = '45%';
+      this.left = '30%';
       this.top = '20vh';
     }
   }
