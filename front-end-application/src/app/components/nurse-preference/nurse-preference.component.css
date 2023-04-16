@@ -87,3 +87,16 @@
     justify-content: center;
     margin-right: 7vw;
     }
+
+    /* EXPERIMENTAL */
+@media all and (max-width: 1700px) {
+  .nurse-name-header {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: 30px;
+    height: 5px;
+    
+  }
+
+}
