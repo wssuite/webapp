@@ -1,36 +1,21 @@
 # Front Facing server
 
-## Project structure
+## Install dependencies
+To install the dependencies used in this server use the following command:
 
-For this project, the source code of the functionalities
-is in the src directory and the test directory contains all different tests.
+     pip install -r requirements.txt
 
-There is an empty __init__.py file in each directory containing test classes.
-That helps pytest discover all test files and to run all the tests.
+## Automatic tests
 
-## For Gitlab docker containers
-To build an image:
-    docker build -t registry.gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/frontfacingserver:<TAG> .
+Some tests are developped for the server. The tests use mongomock to emulate MongoDB and pyfakefs to emulate a filesystem.
 
-To push an image:
-    docker push registry.gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/frontfacingserver:<TAG>
+To run the tests use the following command:
 
+     pytest .
 
-## Run the server
-To run the server there are two options:
+You can also run the coverage using the following commands:
     
-    1- Locally with python
-    2- Docker
- # Locally with python
-    Before running the server, the developper needs to install the dependencies:
-    To do so follow the tutorial in [1] to install a virtual environment:
-    [1] https://medium.com/co-learning-lounge/create-virtual-environment-python-windows-2021-d947c3a3ca78
-    Install the requirements: pip install -r requirements.txt
-    Run the server: python app.py
+     coverage run -m pytest .
+     coverage report -m
 
- Note: Those instructions were tested on linux, solution for Windows may be different
-
-To verify that the server is running correctly, in the browser go to:
-    http://localhost:5000/index
-
-A hello world message will appear 
+Note: the tests were developped using Unix, some tests related to the filesystem can fail on Windows because of the differences in the filsystem annotation.
