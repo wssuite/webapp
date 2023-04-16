@@ -1,12 +1,54 @@
 .additional-items {
     display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: start;
-    float: right;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .add-button{
-    margin-top: 10px;
-    margin-left: 10px;
+    height: 56px;
+    width: 240px;
+    font-size: large;
+}
+
+.delete-pattern-button {
+    margin-top: 0px;
+}
+
+.delete-pattern-icon { 
+    color: #1a3d66;
+}   
+
+.pattern{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #d3dde9;
+    color: #1a3d66;
+}
+
+.pattern-cell{
+    display: block;
+    padding: 2vh;
+    border-radius: 12px;
+    margin: 5px;
+}
+
+table{ 
+    width: max-content;
+}
+
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1200px) {
+   
+table{ 
+    width: min-content;
+}
+
+.add-button{
+    height: 36px;
+    width: 130px;
+    font-size: smaller;
+}
+
 }

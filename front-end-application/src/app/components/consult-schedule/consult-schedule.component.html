@@ -33,7 +33,7 @@
                 <table>
                     <tr>
                         <th *ngFor="let index of indexes" class="date-header">
-                            {{getDayString(index).substring(0, 3)}} {{getDateDayStringByIndex(index)}}  
+                            {{getDayString(index).substring(0, 3)}} {{getDisplayedDate(getDateDayStringByIndex(index))}}  
                         </th>
                     </tr>
                     <tr class="checkbox-row" *ngFor="let sc of schedule.schedule.schedule">

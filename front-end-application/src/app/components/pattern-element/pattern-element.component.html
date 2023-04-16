@@ -1,8 +1,10 @@
 <div (mouseleave)="emitElement()" class="pattern-group">
-    <label> Days: </label>
-    <app-button-multiselect [(elements)]="element.days" [allPossibleElements]="possibleDays" [customSelectors]="customSelectorDays" (selectionChanged)="emitElement()"></app-button-multiselect>
-    <br>
-    <br>
-    <label>Shift: </label>
-    <app-button-multiselect [(elements)]="element.shifts" [allPossibleElements]="possibleShifts" [customSelectors]="customSelectorShifts" (selectionChanged)="emitElement()"></app-button-multiselect>
+    <div class="pattern-element"> 
+        <label> Days: </label>
+        <app-button-multiselect [(elements)]="element.days" [allPossibleElements]="possibleDays" [customSelectors]="customSelectorDays" (selectionChanged)="emitElement()"></app-button-multiselect>
+    </div>
+    <div class="pattern-element">
+        <label>Shift: </label>
+        <app-button-multiselect [(elements)]="element.shifts" [allPossibleElements]="possibleShifts" [customSelectors]="customSelectorShifts" (selectionChanged)="emitElement()"></app-button-multiselect>
+    </div>
 </div>

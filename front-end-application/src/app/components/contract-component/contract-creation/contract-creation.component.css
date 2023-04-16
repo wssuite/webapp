@@ -14,14 +14,9 @@ mat-panel-title{
 
 .contract-container {
     margin-left: 1vw;
-}
-
-.delete-button {
-    float:right;
-    position: relative;
-    margin-right: 6vw;
-    margin-left: 2vw;
-    transform: scale(1.5);
+    overflow-y: scroll;
+    max-height: 50vh;
+    scroll-behavior: smooth;
 }
 
 .constraint-container {
@@ -32,12 +27,16 @@ mat-panel-title{
 }
 
 .constraints-container{
-    margin-top: 5vh;
+    margin-top: 1vh;
 }
 
 label {
     margin-right: 1vw;
     font-size: 20px;
+}
+
+.constraint-list {
+    margin-bottom: 0px;
 }
 
 .name-input, .constraint-select{
@@ -69,11 +68,15 @@ mat-expansion-panel {
 }
 
 .constraint-button{
-    margin-right: 1vw;
-    margin-top: 1vh;
-    font-size: 2vh;
-    background-color: #006CC9;
-    color: white
+    font-size: small;
+    height: 38px;
+    max-height: 38px;
+    margin-top: 1%;
+    width: max-content;
+}
+
+.button-container{
+    margin-right: 1%;
 }
 
 .constraints{
@@ -86,3 +89,56 @@ mat-expansion-panel {
     width: 70vw;
 }
 
+h2, h3, label, p {
+    color: #1a3d66;
+}
+
+.error-icon {
+    margin-right: 1vw;
+}
+
+.panel-title {
+    justify-content: space-between;
+}
+
+.remove-icon {
+    color:#1a3d66;
+    transform: scale(1.1);
+}
+
+.constraints-menu {
+    padding: 1vh 1vw 3vh 1vw;
+}
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1700px) {
+    .name-input, .constraint-select{
+        width:30%;
+        font-size: 10px;
+    }
+
+    label{
+        font-size: small;
+    }
+
+    h2, h3, p {
+        font-size: small;
+    }
+
+    .constraint-button {
+        font-size: xx-small;
+        height: 20px;
+        max-height: 20px;
+    }
+
+    .contract-container {
+        margin-left: 1vw;
+        overflow-y: scroll;
+        max-height: 300px;
+        scroll-behavior: smooth;
+    }
+
+    .constraints-menu {
+        padding: 2% 1% 2% 1%;
+    }
+}
