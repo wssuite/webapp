@@ -45,4 +45,10 @@ table{
     width: max-content;
 }
 
+.add-button{
+    height: 36px;
+    width: 130px;
+    font-size: smaller;
+}
+
 }

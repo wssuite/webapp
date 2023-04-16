@@ -10,8 +10,10 @@
     flex-direction: column;
 }
 
-button{
-    margin-right: 1vw;
+.add-button{
+    height: 56px;
+    width: 240px;
+    font-size: large;
     margin-left: 1vw;
 }
 
@@ -31,4 +33,16 @@ app-weight{
     position: relative;
     align-items: start;
     float: right;
+}
+
+
+@media all and (max-width: 1200px) {
+
+.add-button{
+    height: 36px;
+    width: 130px;
+    font-size: smaller;
+    margin-left: 1vw;
+}
+
 }
