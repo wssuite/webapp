@@ -31,7 +31,7 @@ export const MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME =
 
 export const UNWANTED_SKILLS_ID="unwantedSkills";
 export const UNWANTED_SKILLS_DISPLAY_NAME = "Unwanted Skills";
-export const MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME = "Minimum and Maximum of working hours in four weeks"
+export const MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME = "Minimum and Maximum of Working Hours in Four Weeks"
 export const MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID = "MinMaxHoursInFourWeeks";
 
 export const CONSTRAINTS = [

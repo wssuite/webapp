@@ -1,11 +1,14 @@
 <div class="schedule-container">
     <div class="nurse-name-table">
-      <table class="nurse-table">
+      <table cellspacing="22px" class="nurse-table">
         <tr>
           <th class="nurse-name-header">Nurse</th>
         </tr>
         <tr *ngFor="let nurse of nurses">
           <td class="nurse-name-cell">{{nurse.name}} - {{nurse.username}}</td>
+        </tr>
+        <tr>
+          <td class="table-footer"></td>
         </tr>
       </table>
     </div>

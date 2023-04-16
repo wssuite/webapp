@@ -1,3 +1,15 @@
 button{
     margin: 5px;
 }
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1200px) {
+   
+    button{
+        line-height: 10px;
+        font-size: xx-small;
+        height: 20px;
+        max-height: 20px;   
+    }
+    
+}

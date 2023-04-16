@@ -10,13 +10,13 @@
                 </mat-select>
             </mat-form-field>
             <button *ngIf="constraint.skills.length > 1" mat-icon-button color="warn" (click)="deleteSkill(i)">
-                <mat-icon>delete</mat-icon>
+                <mat-icon>cancel</mat-icon>
             </button>
         </div>
     </div>
     <div class="additional-items">
-        <button mat-raised-button (click)="addSkill()" color="primary">
-            Add another skill
+        <button mat-raised-button (click)="addSkill()" color="nurse-blue" class="add-button">
+            Add skill
         </button>
         <app-weight [(weight)]="constraint.weight" (errorState)="updateWeightErrorState($event)" [label]="weightLabel"></app-weight>
     </div>
