@@ -44,8 +44,13 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
     this.shiftsType = [];
     this.displayedColumns =  ['name', 'shifts','actions'];
     this.dataSource = new MatTableDataSource();
-
   }
+
+  height: string = '65%';
+  width: string = '50%';
+  left: string = '26%';
+  top: string= '18vh';
+
   ngOnInit(): void {
     try{
       this.getShiftsType();
@@ -81,12 +86,27 @@ export class ShiftsTypeViewComponent implements OnInit, AfterViewInit{
     
   }
 
+  onResize() {
+    if (window.innerWidth <= 1200) {
+      this.height = '80%';
+      this.width = '50%';
+      this.left = '26%';
+      this.top = '10vh';
+    } else {
+      this.height = '65%';
+      this.width = '50%';
+      this.left = '26%';
+      this.top = '18vh';
+    }
+  }
+
   openShiftTypeCreationDialog(shiftType: ShiftTypeInterface) {
+    this.onResize();
     const dialog = this.dialog.open(ShiftTypeCreationDialogComponent,  
       { disableClose: true,  
-        height: '65%',
-        width: '50%', 
-        position: {top:'18vh',left: '26%', right: '25%'},
+        height: this.height,
+        width: this.width, 
+        position: {top:this.top,left: this.left, right: '25%'},
         data: {shiftType:shiftType, shiftsType:this.shiftsType}
       });
 
