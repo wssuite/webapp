@@ -63,7 +63,8 @@
   background-color: white;
   border-radius: 30px;
   padding: 20px;
-  width: 70%
+  width: 70%;
+  margin-top: 2%;
 }
 
 button{
@@ -94,5 +95,13 @@ table{
 }
 
  
+.centered-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-right: 7vw;
+}
 
-
+.error-message {
+  margin-top: 1%;
+}

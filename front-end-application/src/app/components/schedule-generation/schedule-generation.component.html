@@ -162,7 +162,10 @@
       </table>
     </div>
     <div *ngIf= "shifts.length > 0  && nurses.length > 0 && validRange() && skills.length > 0" class="nursePreferenceSection">
-      <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>  
+      <div class="nurse-preferences-div">
+        <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>  
+        <mat-icon class="help-icon" matTooltip="Enter the weight that will be associated to nurses' preferences in the box below. First click will mark a shift as working (ON). Second click will mark a shift as not working (OFF).  Third click will clear the weight associated to the shift." matTooltipPosition="right" >help</mat-icon>
+      </div>
       <hr>
       <app-nurse-preference 
         [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)">

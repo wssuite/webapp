@@ -102,6 +102,18 @@ hr {
     margin-bottom: 2%;
 }
 
+.help-icon{
+    margin-left:1%;
+    margin-bottom: 0.2%;
+    color: #1a3d66;
+}
+
+.nurse-preferences-div{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
 @media all and (max-width: 1200px) {
 
     .info-icon {

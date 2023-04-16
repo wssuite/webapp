@@ -37,17 +37,17 @@
     </div>
   </div>
 </div>
-
-<div class="min-max-value">
+<div class="centered-container">
+<mat-card class="min-max-value">
     <app-min-max-hopspital-demand [ngClass]="{'disabled': isDisabled}" [(demand)]="demand" (errorState)="updateSkillDemandErrorState($event)"></app-min-max-hopspital-demand>
   <button *ngIf="!isEditing" [disabled]="editOff" mat-raised-button color="primary" (click)="setEdition()">Edit</button>
   <div *ngIf="!skillDemandErrorState && !isDisabled"> 
     <button mat-raised-button (click)="save()">Save</button>
-    <div *ngIf="saveDemandError" >
+    <div *ngIf="saveDemandError" class="flex-row-center-container error-message">
       <mat-icon color="warn">error</mat-icon>
-      <label>Preferences must be saved</label>
+      <label>Changes must be saved</label>
     </div>
   </div>
+</mat-card>
 </div>
-
 
