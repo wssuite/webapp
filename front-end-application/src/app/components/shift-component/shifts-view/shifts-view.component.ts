@@ -46,6 +46,11 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
 
   }
 
+  height: string = '58%';
+  width: string = '45%';
+  left: string = '28%';
+  top: string = '21vh';
+
   ngOnInit(): void {
     try{
       this.getShifts();
@@ -82,13 +87,28 @@ export class ShiftsViewComponent implements OnInit, AfterViewInit {
     })
   }
 
+  onResize() {
+    if (window.innerWidth <= 1200) {
+      this.height = '80%';
+      this.width = '45%';
+      this.left = '28%';
+      this.top = '10vh';
+    } else {
+      this.height = '58%';
+      this.width = '45%';
+      this.left = '28%';
+      this.top = '21vh';
+    }
+  }
+
   
   openShiftCreationDialog(shift: ShiftInterface) {
+    this.onResize();
     const dialog = this.dialog.open(ShiftCreationDialogComponent,  
       { disableClose: true,  
-        height: '58%',
-        width: '45%', 
-        position: {top:'21vh',left: '28%', right: '25%'},
+        height: this.height,
+        width: this.width, 
+        position: {top:this.top,left: this.left, right: '25%'},
         data: {shift:shift,shifts:this.shifts},
       });
     
