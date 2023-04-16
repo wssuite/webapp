@@ -19,10 +19,24 @@ mat-checkbox {
 
 .error-icon{
     margin-right: 1%;
-    margin-top: 2%;
 }
 
 .icon-placeholder {
     height: 48px;
     width: 48px;
+}
+
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1200px) {
+    mat-card {
+        max-width: 400px;
+    }
+
+    .wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
 }

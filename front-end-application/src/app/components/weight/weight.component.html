@@ -1,7 +1,9 @@
 <mat-card class="weight-container">
   <mat-card-content class="flex-row-center-container">
-  <mat-icon class="error-icon" *ngIf="inputCtrl.hasError('pattern')" color="warn">error</mat-icon>
-  <label> {{ label }} : </label>
+  <div class="flex-row-center-container">
+    <mat-icon class="error-icon" *ngIf="inputCtrl.hasError('pattern')" color="warn">error</mat-icon>
+    <label> {{ label }} : </label>
+  </div>
   <mat-form-field appearance="fill">
     <mat-label >Enter the weight</mat-label>
     <input
