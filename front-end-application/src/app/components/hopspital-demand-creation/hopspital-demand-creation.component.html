@@ -2,6 +2,9 @@
   <div class="skill-name-table">
     <table class="skill-table">
       <tr>
+        <td  class="filler"></td>
+      </tr>
+      <tr>
         <th class="skill-name-header">Skill</th>
       </tr>
       <tr *ngFor="let skill of skills">
@@ -37,8 +40,8 @@
     </div>
   </div>
 </div>
-
-<div class="min-max-value">
+<div class="centered-container">
+<mat-card class="min-max-value">
     <app-min-max-hopspital-demand [ngClass]="{'disabled': isDisabled}" [(demand)]="demand" (errorState)="updateSkillDemandErrorState($event)"></app-min-max-hopspital-demand>
   <button *ngIf="!isEditing" [disabled]="editOff" mat-raised-button color="primary" (click)="setEdition()">Edit</button>
   <div class="edition-buttons">
@@ -51,6 +54,6 @@
       </div>
     </div>
   </div>
+</mat-card>
 </div>
-
 

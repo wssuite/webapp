@@ -8,9 +8,32 @@ mat-form-field {
 }
 
 .pattern-group {
-    padding: 10px;
-    border-style: solid;
-    border-color: rgb(161, 158, 158);
-    border-width: 1px;
-    border-radius: 16px;
+    display: column;
+}
+
+.pattern-element{
+    margin: 1vw 2vw 1vw 2vw;
+}
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1200px) {
+   
+    .pattern-group {
+        display: flex;
+        flex-direction: column;
+        width: max-content;
+    }
+
+    .pattern-element {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: max-content;
+    }
+
+    label {
+        margin-right: 1%;
+        font-size: smaller;
+    }
+    
 }
