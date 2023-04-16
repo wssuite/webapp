@@ -35,6 +35,9 @@ app-weight{
     float: right;
 }
 
+mat-icon{
+    color: #1a3d66;
+}
 
 @media all and (max-width: 1200px) {
 
