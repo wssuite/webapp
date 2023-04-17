@@ -1,62 +1,76 @@
 <div class="contractGroup-container" (mouseleave)="emitContractGroup()"></div>
-<div class="nameContractGroupContainer">
-  <h2>Name</h2>
-  <hr />
-  <div class="nameForm">
-    <mat-form-field class="nameField" appearance="fill">
-      <mat-label>Enter Contract Group Name</mat-label>
-      <input
-        matInput
-        [(ngModel)]="contractGroup.name"
-        [formControl]="nameContractGroupFormCtrl"
-        (keyup)="emitContractGroup()"
-      />
-    </mat-form-field>
-    <mat-error *ngIf="nameExist() && contractGroupStartname === ''">
-      Contract group name is already used
-    </mat-error>
-  </div>
-</div>
-<div class="contractSection">
-  <h2 class="contractSectionTitle">Contracts</h2>
-  <hr />
-  <div class="contractContainer">
-    <div *ngIf="possibleContracts.length > 0">
-      <mat-form-field appearance="fill">
-        <mat-label>Select a contract</mat-label>
-        <mat-select [(value)]="selectedContract">
-          <mat-option
-            *ngFor="let contract of possibleContracts"
-            [value]="contract"
-          >
-            {{ contract }}
-          </mat-option>
-        </mat-select>
+<div class="content" mat-dialog-content>
+  <div class="nameContractGroupContainer">
+    <h2>Name</h2>
+    <hr />
+    <div class="nameForm">
+      <mat-form-field class="nameField" appearance="fill">
+        <mat-label>Enter Contract Group Name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="contractGroup.name"
+          [formControl]="nameContractGroupFormCtrl"
+          (keyup)="emitContractGroup()"
+        />
       </mat-form-field>
-      <button
-        mat-raised-button
-        class="addContractButton"
-        (click)="addContract()"
-        color="nurse-blue"
-      >
-        add contract
-      </button>
+      <mat-error *ngIf="nameExist() && contractGroupStartname === ''">
+        Contract group name is already used
+      </mat-error>
     </div>
-    <table class="contractTable">
-      <th *ngFor="let contract of contractGroup.contracts">
-        <div class="table-element-container flex-row-center-container">
-          <td class="contractName">
-            {{ contract }}
-          </td>
-          <button
-            mat-icon-button
-            class="removeContractButton"
-            (click)="removeContract(contract)"
-          >
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </div>
-      </th>
-    </table>
+  </div>
+  <div class="contractSection">
+    <h2 class="contractSectionTitle">Contracts</h2>
+    <hr />
+    <div class="contractContainer">
+      <div *ngIf="possibleContracts.length > 0">
+        <mat-form-field appearance="fill">
+          <mat-label>Select a contract</mat-label>
+          <mat-select [(value)]="selectedContract">
+            <mat-option
+              *ngFor="let contract of possibleContracts"
+              [value]="contract"
+            >
+              {{ contract }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          class="addContractButton"
+          (click)="addContract()"
+          color="nurse-blue"
+        >
+          add contract
+        </button>
+      </div>
+      <!-- <table class="contractTable">
+        <th *ngFor="let contract of contractGroup.contracts">
+          <div class="table-element-container flex-row-center-container">
+            <td class="contractName">
+              {{ contract }}
+            </td>
+            <button
+              mat-icon-button
+              class="removeContractButton"
+              (click)="removeContract(contract)"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </th>
+      </table> -->
+      <table class="contractTable">
+        <th *ngFor="let contract of contractGroup.contracts">
+          <div class="table-element-container flex-row-center-container">
+            <td class="contractName">
+              {{ contract }}
+            </td>
+            <button mat-icon-button (click)="removeContract(contract)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </th>
+      </table>
+    </div>
   </div>
 </div>

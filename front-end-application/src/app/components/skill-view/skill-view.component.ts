@@ -43,6 +43,11 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
     this.dataSource = new MatTableDataSource();
   }
 
+  height = '32%';
+  width = '30%';
+  left = '36%';
+  top = '30vh';
+
   ngOnInit(): void {
        try{
       this.getSkills();
@@ -70,12 +75,28 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
   })
   }
 
+  onResize() {
+    if (window.innerWidth <= 1200) {
+      this.height = '50%';
+      this.width = '50%';
+      this.left = '28%';
+      this.top = '20vh';
+    } else {
+      this.height = '31%';
+      this.width = '30%';
+      this.left = '36%';
+      this.top = '30vh';
+    }
+  }
+
   openSkillCreationDialog(skill: SkillInterface) {
+    this.onResize();
     const dialog = this.dialog.open(SkillCreationDialogComponent,  
-      { disableClose: true,  
-        height: '32%',
-        width: '30%', 
-        position: {top:'30vh',left: '36%', right: '35%'},
+      { 
+        disableClose: true,  
+        height: this.height,
+        width: this.width, 
+        position: {top:this.top, left: this.left, right: '35%'},
         data: {skill:skill,skills:this.skills},
       });
     

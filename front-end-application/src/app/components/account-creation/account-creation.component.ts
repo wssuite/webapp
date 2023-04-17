@@ -38,6 +38,11 @@ export class AccountCreationComponent implements OnInit{
     this.displayedColumns =  ['Account','actions'];
     this.dataSource = new MatTableDataSource();
   }
+
+  height =  '60%';
+  width = '35%';
+  left = '35%';
+  top = '10vh';
   
   ngOnInit(): void {
     try{
@@ -69,12 +74,27 @@ export class AccountCreationComponent implements OnInit{
     })
   }
 
+  onResize() {
+    if (window.innerWidth <= 1200) {
+      this.height = '85%';
+      this.width = '45%';
+      this.left = '30%';
+      this.top = '8vh';
+    } else {
+      this.height =  '60%';
+      this.width = '35%';
+      this.left = '35%';
+      this.top = '10vh';
+    }
+  }
+
   openCreateAccountDialog(){
+    this.onResize();
     const dialog = this.dialog.open(AccountCreationDialogComponent,  
       { disableClose: true,  
-        height: '60%',
-        width: '35%', 
-        position: {top:'10vh',left: '35%', right: '25%'},
+        height: this.height,
+        width: this.width, 
+        position: {top:this.top,left: this.left, right: '25%'},
         data: {name: '', startTime: '', endTime: ''}
       });
     dialog.afterClosed().subscribe(()=>{
