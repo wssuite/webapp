@@ -34,6 +34,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   notifications: Solution[];
   newNotificationAdded: boolean;
   @Input() showProfile!: boolean; 
+  @Input() enableProfileSwitch!: boolean; 
   
   constructor(private accountService: AccountService, private router: Router,
     private dialog: MatDialog, private profileService: ProfileService, 
@@ -43,6 +44,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       this.notifications = []
       this.newNotificationAdded = false;
       this.showProfile = true;
+      this.enableProfileSwitch = true;
     }
 
     height = '31%';

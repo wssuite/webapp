@@ -16,13 +16,18 @@
         <!-- <label class="profile-label">Profile: </label> -->
         <mat-form-field class="profile-dropdown" appearance="fill">
             <mat-label>Hospital Profile</mat-label>
-            <mat-select  [(value)]="profile" (selectionChange)="handleSelectionChange()">
+            <mat-select *ngIf="enableProfileSwitch" [(value)]="profile" (selectionChange)="handleSelectionChange()">
+                <mat-option *ngFor="let profile of profiles" [value]="profile">
+                    {{profile.profile}}
+                </mat-option>
+            </mat-select>
+            <mat-select *ngIf="!enableProfileSwitch" [(value)]="profile" (selectionChange)="handleSelectionChange()" [disabled]='true'>
                 <mat-option *ngFor="let profile of profiles" [value]="profile">
                     {{profile.profile}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-icon-button [matMenuTriggerFor]="profileMenu" aria-label="Example icon-button with a menu">
+        <button *ngIf="enableProfileSwitch" mat-icon-button [matMenuTriggerFor]="profileMenu" aria-label="Example icon-button with a menu">
             <mat-icon>more_vert</mat-icon>
         </button>
           <mat-menu #profileMenu="matMenu">
