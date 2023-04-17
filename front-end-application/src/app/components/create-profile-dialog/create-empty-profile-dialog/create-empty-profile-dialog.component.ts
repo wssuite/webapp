@@ -53,6 +53,11 @@ export class CreateEmptyProfileDialogComponent {
     })
   }
 
+  close(){
+    this.api.emitNewProfileCreation(false)
+    this.dialogRef.close()
+  }
+
   hasError():boolean{
     return this.nameCtrl.hasError('required') || this.nameExist() || this.nameCtrl.hasError('pattern');
   }

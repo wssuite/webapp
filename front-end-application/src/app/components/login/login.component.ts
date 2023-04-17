@@ -42,6 +42,7 @@ export class LoginComponent {
     this.apiService.login(credentials).subscribe({
       next: (value: UserInfo)=>{
         CacheUtils.pushUserInfo(value);
+        CacheUtils.setFirstLogin(true)
         this.router.navigate(["/" + MAIN_MENU]);
       },
       error: (err: HttpErrorResponse)=> {
