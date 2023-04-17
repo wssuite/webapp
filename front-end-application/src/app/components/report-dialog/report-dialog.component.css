@@ -7,22 +7,11 @@
     align-self: center;
 }
 
-table{
-    margin-top: 5vh;
-    float: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.mat-elevation-z8 {
+    margin-top: 3vh;
+    margin-left: 2vw;
+    margin-right: 2vw;
 }
-
-tr{
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-td{
-    margin-bottom: 2vh;
-    margin-right: 10vw;
-    margin-left: 10vw;
+th,td{
+    text-align: center;
 }
