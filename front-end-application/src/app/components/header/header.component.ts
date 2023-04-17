@@ -52,10 +52,14 @@ export class HeaderComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
     try{
-      this.getProfiles(false);
+      //this.validProfile = false;
+      //this.profiles = []
+      const firstLogin = CacheUtils.getFirstLogin()
+      this.getProfiles(false || firstLogin);
       this.isAdmin = CacheUtils.getIsAdmin();
       this.username = CacheUtils.getUsername();
       this.connectedUser= true;
+      CacheUtils.setFirstLogin(false);
     } catch(err){
       this.connectedUser = false;
     }
@@ -87,13 +91,17 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   getProfiles(useLatProfile: boolean){
     this.profileService.getAllProfiles().subscribe({
       next:(profiles: BaseProfile[])=>{
+        console.log(profiles)
         this.profiles = profiles;
+        console.log(this.profiles)
         if(this.profiles.length === 0){
           this.openCreateProfileDialog(false);
         }
         else{
           if(useLatProfile){
-            this.profile = this.profiles[this.profiles.length - 1]
+            console.log(this.profiles)
+            this.profile = this.profiles[profiles.length - 1]
+            console.log(this.profile)
             CacheUtils.setProfile(this.profile.profile);
             this.validProfile = true;
             this.profileService.emitProfileChange();
