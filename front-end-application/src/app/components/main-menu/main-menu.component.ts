@@ -30,14 +30,6 @@ export class MainMenuComponent implements OnInit{
     }
   }
 
-
-  getAlignmentDirection(button:MainMenuButton ,index: number): string {
-    if(button.title === "User"){
-      return "center";
-    }
-    return index % 2 === 0 ? "start" : "end";
-  }
-
   redirect(button: MainMenuButton) {
     switch (button.title) {
       case "Schedule":

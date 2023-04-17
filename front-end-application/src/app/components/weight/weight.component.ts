@@ -73,7 +73,9 @@ export class WeightComponent implements OnInit, OnChanges{
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: SimpleChanges): void {
-      this.ngOnInit();
+    this.weight = changes["weight"].currentValue;
+    this.disabled = this.weight === "hard"? true: false;
+    this.inputCtrl = this.updateFormControl(this.disabled)
   }
 
   update() {

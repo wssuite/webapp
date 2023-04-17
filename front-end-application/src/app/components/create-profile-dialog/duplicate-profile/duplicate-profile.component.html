@@ -1,7 +1,9 @@
+<div class="title" mat-dialog-title >Duplicate profile</div>
 <div class="empty-profile-container">
+    <h2>Profile name</h2>
+    <hr>
     <div class="name-input">
-        <label>Profile name: </label>
-        <mat-form-field appearance="fill">
+        <mat-form-field class="nameField" appearance="fill">
             <mat-label>Enter a name</mat-label>
             <input
             matInput
@@ -17,7 +19,7 @@
         </mat-error>
     </div>
     <div class="buttons-container">
-        <button mat-raised-button color="primary" (click)="create()" [disabled]="hasError()">Submit</button>
         <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancel</button>
+        <button mat-raised-button color="primary" (click)="create()" [disabled]="hasError()">Submit</button>
     </div>
 </div>

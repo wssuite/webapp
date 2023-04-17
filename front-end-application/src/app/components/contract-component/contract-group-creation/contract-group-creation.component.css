@@ -10,16 +10,17 @@ h2 {
     padding: 1.5%;
 }
 
-.contractContainer {
-    padding: 1.5%;
-}
-
 .nameField {
     width: 100%;
 }
 
 .addContractButton {
     margin-left: 1.5%;
+}
+
+.contractTable {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .table-element-container {
