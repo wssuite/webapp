@@ -2,66 +2,108 @@
 
 ## Getting started
 
-To clone the git repository including all the subdirectories please use the following command:
+To clone the git repository, please use the following command:
 
-	 git clone --recurse-submodules https://gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/LOG89XX-10.git
+	 git clone https://github.com/wssuite/webapp.git
 
-To get the submodules as they were with the branch in use, use the following command:
 
-	 git submodule update --init
-
-## Using docker-compose
+## Using docker compose
 
 There are two docker-compose files in this repository:
 
 	docker-compose.yml : for deployment that uses an image pre-build
 	docker-compose-dev.yml: for testing reasons during development
 
-Those files prepare the environment ex. creating the network and volumes necessary,
-for the docker containers to work properly.
+Those files prepare the environment ex. creating the network and volumes necessary, for the docker containers to work properly.
 
-To use the docker-compose file, make sure to have docker and docker-compose installed on your computer.
+To use the docker-compose files, make sure to have docker and docker-compose installed on your computer.
 
+## 1- Using docker-compose-dev.yml
 To start the docker containers:
 
-	 docker-compose -f <docker-compose-filename> up -d --build
+	 docker compose -f docker-compose-dev.yml up -d --build
+
+The -d flag will make the docker containers run in detached mode
+
+The --build flag will make docker compose build the images from the sources specified in docker-compose-dev.yml file. 
 
 To stop the docker containers:
 
-	 docker-compose -f <docker-compose-filename> down -v --rmi local
+	 docker compose -f docker-compose-dev.yml down -v --rmi local
 
+--rmi local deletes all images created locally (not pulled from the internet)
 
-Note: with docker-compose-dev.yml the images will be built each time that you launch docker-compose.
-That may take time.
+-v deletes all volumes used by docker-compose
 
-## Concerning the Dockerfiles in the gitsubmodules
-The dockerfile is currently built on a custom made docker image: 
-markbekhet/horaire-infirmiere:base-image-v2
+It is possible to force recreate the build of a service using the following command:
 
-This image has nginx, openssl, python3 , node18.x installed and it has a self signed ssl certificate.
+	 docker compose -f docker-compose-dev.yml up -d --force-recreate --no-deps --build <SERVICE_NAME>
 
-The ssl certificate is good for one year, starting from 14/02/2023.
+This command is useful to catch the latest changes of the code while developping as the different services need to communicate together.
 
-In order for the deployment to work correctly, the ssl certificate must be updated before 14/02/2023 and
-a new image should be created to be used
+## 2- Using docker-compose.yml
 
-To update the ssl certaficate use the following command before running docker compose:
+To start the docker containers:
 
-	(echo CA & echo QC & echo M & echo company & echo section & echo someone & echo happy@example.com) |\
-	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/private/nginx-selfsigned.key \
-	-out ssl/certs/nginx-selfsigned.crt
+	 docker compose up -d
+
+The -d flag will make the docker containers run in detached mode
+
+To stop the docker containers:
+
+	 docker compose down -v
+
+-v deletes all volumes used by docker-compose
+
+## The SSL certificate
+
+Our solution uses a self-signed ssl certificate to activate HTTPS.
+
+To update the SSL certificate use the following command
+
+	 (echo CA & echo QC & echo M & echo company & echo section & echo someone & echo happy@example.com) |\
+	 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/private/nginx-selfsigned.key \
+	 -out ssl/certs/nginx-selfsigned.crt
 	
 
-After those commands, update the Dockerfile to use new image and the https protocol will be used.
-
-## Front-end Development
-For the front-end development, AKA the gitmodule front-end-application, the developpers may need to restart
-only the web-app service, for this
-use the following command:
-
-	docker-compose -f docker-compose-dev.yml up -d --force-recreate --no-deps --build frontfacingserver_webapp
-
 ## Running a single service
+
 The developer can also run a single service if it doesn't depend on other services for example mongodb service
 
     docker-compose -f docker-compose-dev.yml up mongodb
+
+## Using the application
+
+Head to https://localhost, a default user admin is was created with the credentials:
+	 username: admin
+	 password: admin
+
+The application allows the admin to create other users.
+
+The first action prompted is to create a hospital profile. In order to do that, the user can either use the format defined in the file template.csv in the frontfacing server directory, or create an empty profile by entering the profile name.
+
+## Application functionalities
+
+The user can then create/modify/delete the following profile components:
+
+1- Skill: Defined by a name
+
+2- Shift: Defined by a name, start time and end time
+
+3- Shift type: Defined by a name, and can have multiple shifts
+
+4- Shift Group: Defined by a name, and can have multiple shifts and shift types
+
+5- Contract: Defined by a name and a set of constraints. Currently, the application supports 11 constraints.
+
+6- Contract Group: Defined by its name, and can include multiple contracts.
+
+7- Nurse: Defined by a name, a username and a set of contracts.
+
+8- Nurse Group: Defined by a name, and can include multiple nurses and multiple contracts and contract groups.
+
+After defining the profile components, the user can then request a schedule generation. Once a schedule is generated or failed to generate, the user can export the definition of the problem passed to the C++ code, export the error if the generation failed or export the schedule in case the generation succeeds.
+
+A generated schedule can always be deleted. The user can also ask for a schedule regeneration by using the button regenerate schedule.
+
+Finally, the user can export/share a profile and he can delete the profile if he is the owner.
