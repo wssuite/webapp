@@ -1,5 +1,5 @@
 <div *ngIf="connectedUser; else notConnected">
-    <app-header [showProfile]='false'></app-header>
+    <app-header [showProfile]='true' [enableProfileSwitch]='false'></app-header>
     <div *ngIf="validSchedule === true else elseBlock" class="page-container">
         <div class="btn-section">
             <button mat-raised-button (click)="exportCurrentScheduleProblem()" color='nurse-blue'>Download problem</button>
