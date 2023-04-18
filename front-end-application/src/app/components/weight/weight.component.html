@@ -1,6 +1,9 @@
-<div class="weight-container">
-  <mat-icon *ngIf="inputCtrl.hasError('pattern')" color="warn">error</mat-icon>
-  <label> {{ label }} : </label>
+<mat-card class="weight-container">
+  <mat-card-content class="flex-row-center-container">
+  <div class="flex-row-center-container">
+    <mat-icon class="error-icon" *ngIf="inputCtrl.hasError('pattern')" color="warn">error</mat-icon>
+    <label> {{ label }} : </label>
+  </div>
   <mat-form-field appearance="fill">
     <mat-label >Enter the weight</mat-label>
     <input
@@ -8,7 +11,7 @@
       [(ngModel)]="weight"
       [errorStateMatcher]="matcher"
       [formControl]="inputCtrl"
-      placeholder="Ex: 2.0"
+      placeholder="Ex: 50"
       (keyup)="emitWeight()"
     />
     <mat-error
@@ -21,8 +24,8 @@
       Please enter a non-zero integer between -100 and 100.
     </mat-error>
   </mat-form-field>
-  <br />
   <mat-checkbox [(ngModel)]="disabled" (change)="update()"
     >Constraint must be respected (hard)</mat-checkbox
   >
-</div>
+  </mat-card-content>
+</mat-card>

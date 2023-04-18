@@ -1,4 +1,4 @@
-FROM markbekhet/horaire-infirmiere:ui-multiplatform
+FROM legraina/nurse-scheduler:ui
 USER root
 RUN apt-get --allow-releaseinfo-change update
 RUN apt-get install cpulimit -y

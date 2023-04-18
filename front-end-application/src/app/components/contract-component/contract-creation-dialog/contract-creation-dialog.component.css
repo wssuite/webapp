@@ -1,26 +1,65 @@
 .dialog-container {
-    width: 80vw;
-    height: 90vh;
+    width: 75vw;
+    height: 80%;
 }
+
 .buttons-container {
-    margin-top: 2vh;
     float:right;
-    position: absolute;
+    position: relative;
     right:0px;
     bottom: 0px;
+    margin: 3% 2% 2% 0%;
 }
 
 .contract-container{
-    margin-top: 5vh;
+    margin-top: 3vh;
     margin-bottom: 1vh;
     border-width: 10px;
     border-color: black;
-    overflow-y: scroll;
-    height: 80vh;
-    overflow-y: auto;
     overflow-x: hidden;
+    scroll-behavior: auto;
 }
 
 button {
-    margin-right: 2vw;
+    margin-right: 1vw;
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+.title {
+    color: #1a3d66;
+    background-color: #d3dde9;
+    font-weight: bold;
+    font-size: xx-large;
+    padding: 1% 2% 2% 2%;
+    align-self: center;
+}
+
+/* EXPERIMENTAL */
+@media all and (max-width: 1700px) {
+    .title {
+        color:  #1a3d66;
+        background-color: #d3dde9;
+        font-weight: bold;
+        font-size: large;
+        padding: 1% 1% 1% 1%;
+    }
+
+    button {
+        line-height: 10px;
+        font-size: xx-small;
+        height: 26px;
+        max-height: 26px;
+        margin-bottom: 1%;
+        margin-top: 1%;
+
+    }
+
+    .buttons-container {
+        float:right;
+        position: relative;
+        right:0px;
+        bottom: 0px;
+        margin: 0% 2% 2% 1%;
+    }
 }

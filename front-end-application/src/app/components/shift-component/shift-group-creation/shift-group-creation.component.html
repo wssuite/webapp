@@ -44,7 +44,7 @@
         </button>
       </div>
       <table class="shiftTable">
-        <tr *ngFor="let shift of shiftGroup.shifts">
+        <th *ngFor="let shift of shiftGroup.shifts">
           <div class="table-element-container flex-row-center-container">
             <td class="shiftName">
               {{ shift }}
@@ -53,7 +53,7 @@
               <mat-icon>cancel</mat-icon>
             </button>
           </div>
-        </tr>
+        </th>
       </table>
     </div>
   </div>
@@ -86,7 +86,7 @@
         </button>
       </div>
       <table class="shiftTypeTable">
-        <tr *ngFor="let shiftType of shiftGroup.shiftTypes">
+        <th *ngFor="let shiftType of shiftGroup.shiftTypes">
           <div class="table-element-container flex-row-center-container">
             <td class="shiftTypeName">
               {{ shiftType }}
@@ -95,7 +95,7 @@
               <mat-icon>cancel</mat-icon>
             </button>
           </div>
-        </tr>
+        </th>
       </table>
     </div>
   </div>

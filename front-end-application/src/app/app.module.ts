@@ -98,6 +98,7 @@ import { ContractsGroupViewComponent } from './components/contract-component/con
 import { SchedulesGalleryComponent } from './components/schedules-gallery/schedule-view.component';
 import { NurseHistoryComponent } from './components/nurse-history/nurse-history.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +168,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     SchedulesGalleryComponent,
     NurseHistoryComponent,
     ConfirmationDialogComponent,
+    ReportDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { ALTERNATIVE_SHIFT_DISPLAY_NAME, ALTERNATIVE_SHIFT_ID, COMPLETE_WEEKEND_DISPLAY_NAME, COMPLETE_WEEKEND_ID, CONSTRAINTS, FREE_DAYS_AFTER_SHIFT_DISPLAY_NAME, FREE_DAYS_AFTER_SHIFT_ID, IDENTICAL_WEEKEND_DISPLAY_NAME, IDENTICAL_WEEKEND_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DISPLAY_NAME, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DISPLAY_NAME, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DISPLAY_NAME, TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID, UNWANTED_PATTERNS_DISPLAY_NAME, UNWANTED_PATTERNS_ID, UNWANTED_SKILLS_DISPLAY_NAME, UNWANTED_SKILLS_ID } from "src/app/constants/constraints";
 import { UNWANTED_PATTERNS_DESCRIPTION, TOTAL_WEEKENDS_IN_FOUR_WEEKS_DESCRIPTION, ALTERNATIVE_SHIFT_DESCRIPTION, FREE_DAYS_AFTER_SHIFT_DESCRIPTION, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DESCRIPTION, IDENTICAL_WEEKEND_DESCRIPTION, COMPLETE_WEEKEND_DESCRIPTION, MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_DESCRIPTION, MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_DESCRIPTION, UNWANTED_SKILLS_DESCRIPTION, MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_DESCRIPTION } from "src/app/constants/constraintsDescriptions";
@@ -25,6 +25,7 @@ export class ContractCreationComponent implements OnInit{
   @Input() possibleSkills!: string[];
   @Input() contracts!: string[]
   @Input() imported: boolean
+  @ViewChild('contractContainer') contractContainer!:ElementRef;
 
   possibleConstraints: string[];
   constraintsErrorState: boolean[];
@@ -74,6 +75,7 @@ export class ContractCreationComponent implements OnInit{
       this.constraintsErrorState.push(true)
     }
     this.emitContract()
+    this.scrollDown();
   }
   
   addConstraint(name: string) {
@@ -128,6 +130,7 @@ export class ContractCreationComponent implements OnInit{
     this.contract.constraints.push(constraint);
     this.constraintsErrorState.push(true);
     this.emitContract();
+    this.scrollDown();
   }
 
   updateConstraintErrorState(index: number, e: boolean) {
@@ -165,5 +168,11 @@ export class ContractCreationComponent implements OnInit{
 
   constraintHasErrorState(index:number){
     return this.constraintsErrorState[index];
+  }
+
+  private scrollDown(){
+    setTimeout(()=>{
+      this.contractContainer.nativeElement.scrollTop = this.contractContainer.nativeElement.scrollHeight;
+    }, 200)
   }
 }

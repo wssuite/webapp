@@ -1,4 +1,4 @@
-<div class="title" mat-dialog-title>New profile</div>
+<div class="title" mat-dialog-title >New profile</div>
 <div class="empty-profile-container">
     <h2>Profile name</h2>
     <hr>
@@ -19,7 +19,7 @@
         </mat-error>
     </div>
     <div class="buttons-container">
-        <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancel</button>
+        <button mat-raised-button color="warn" (click)="close()" [mat-dialog-close]="true">Cancel</button>
         <button mat-raised-button color="primary" (click)="create()" [disabled]="hasError()">Submit</button>
     </div>
 </div>
