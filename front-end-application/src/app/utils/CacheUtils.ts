@@ -13,7 +13,8 @@ export const GENERATION_REQUEST_STRING = "generationRequest";
 const NURSE_PREFERENCE_REQUEST_STRING = "preferences"
 const REQUEST_DEMAND_STRING = "demand";
 const REQUEST_HISTORY_STRING = "history"
-const OLD_VERSION_STRING = "oldVersion"
+const OLD_VERSION_STRING = "oldVersion";
+const FIRST_LOGIN = "firstLogin";
 
 export class CacheUtils {
 
@@ -260,5 +261,17 @@ export class CacheUtils {
     }
     public static removeOldVersion(){
         localStorage.removeItem(OLD_VERSION_STRING)
+    }
+    
+    public static setFirstLogin(login: boolean){
+        localStorage.setItem(FIRST_LOGIN, JSON.stringify(login))
+    }
+
+    public static getFirstLogin(): boolean {
+        const firstLogin = localStorage.getItem(FIRST_LOGIN);
+        if(!firstLogin){
+            return true;
+        }
+        return JSON.parse(firstLogin) as boolean
     }
 }
