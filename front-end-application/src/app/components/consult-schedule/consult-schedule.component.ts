@@ -14,6 +14,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
 import { IN_PROGRESS, WAITING } from "src/app/constants/schedule_states";
 import { NOTIFICATION_UPDATE, VISUALISATION_UPDATE } from "src/app/constants/socket-events";
+import { ReportDialogComponent } from "../report-dialog/report-dialog.component";
 import { NurseInterface } from "src/app/models/Nurse";
 import { NurseService } from "src/app/services/nurse/nurse.service";
 
@@ -505,6 +506,17 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       error:(err: HttpErrorResponse)=>{
         this.openErrorDialog(err.error)
       }
+    })
+  }
+  viewReport(){
+    this.dialog.open(ReportDialogComponent, {
+      data: {startDate: this.schedule.startDate,
+        endDate: this.schedule.endDate,
+        profile: this.schedule.profile,
+        version: this.schedule.version,},
+        height: '60%',
+        width: '55%', 
+        position: {top:'8vh',left: '25%', right: '25%'},
     })
   }
 }
