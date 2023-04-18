@@ -1,44 +1,110 @@
 version: '3'
 
-networks:
-  schedule_generator:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.5.0/24
-          gateway: 192.168.5.1
-
 services:
   mongodb:
     image: mongo:latest
+    container_name: mongo
     ports:
       - 27017:27017
-    networks:
-      schedule_generator:
-        ipv4_address: 192.168.5.4
     volumes:
       - mongo_data:/data/db
-    restart: on-failure
-  
+    restart: always
+
   frontfacingserver_webapp:
-    image:  markbekhet/horaire-infirmiere:prototype
+    image: markbekhet/horaire-infirmiere:web-app-1.1
+    container_name: webapp
     ports: 
       - 443:443
       - 5000:5000
+      - 4200
     command: >
-     bash -c "systemctl start nginx &&
+     bash -c "service nginx start &&
       cd /ffs && /venv/bin/python app.py &
       cd /fe && npm start"
-    networks:
-      schedule_generator:
-        ipv4_address: 192.168.5.2
-    volumes:
-      - dataset:/app/dataset
     depends_on:
       - mongodb
-    restart: on-failure
+    volumes:
+      - dataset:/ffs/dataset
+      - ./nginx/snippets/self-signed.conf:/etc/nginx/snippets/self-signed.conf
+      - ./nginx/snippets/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf
+      - ./nginx/sites-available:/etc/nginx/sites-available
+      - ./nginx/proxy_params:/etc/nginx/proxy_params
+      - ./ssl/private/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key
+      - ./ssl/certs/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt
+      - ./nginx/dhparam.pem:/etc/nginx/dhparam.pem
+    restart: always
+  
+  worker1:
+    image: markbekhet/horaire-infirmiere:cpp-invoker-1.1
+    container_name: worker1
+    ports:
+      - 5000
+    entrypoint: >
+      bash -c "cd /invoker && /venv/bin/python app.py worker1:5000"
+    volumes:
+      - dataset:/invoker/dataset
+      - running-worker1:/invoker/running
+      - ./default-cpp-param.txt:/invoker/default.txt
+      - ./config-cpp-invoker.json:/invoker/config.json
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
 
+  worker2:
+    image: markbekhet/horaire-infirmiere:cpp-invoker-1.1
+    container_name: worker2
+    ports:
+      - 5000
+    entrypoint: >
+      bash -c "cd /invoker && /venv/bin/python app.py worker2:5000"
+    volumes:
+      - dataset:/invoker/dataset
+      - running-worker2:/invoker/running
+      - ./default-cpp-param.txt:/invoker/default.txt
+      - ./config-cpp-invoker.json:/invoker/config.json
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+    
+  worker3:
+    image: markbekhet/horaire-infirmiere:cpp-invoker-1.1
+    container_name: worker3
+    ports:
+      - 5000
+    entrypoint: >
+      bash -c "cd /invoker && /venv/bin/python app.py worker3:5000"
+    volumes:
+      - dataset:/invoker/dataset
+      - running-worker3:/invoker/running
+      - ./default-cpp-param.txt:/invoker/default.txt
+      - ./config-cpp-invoker.json:/invoker/config.json
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+
+
+  haproxy:
+    image: haproxy
+    container_name: haproxy
+    depends_on:
+      - worker1
+      - worker2
+      - worker3
+    ports:
+      - 80:80
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    restart: always
+  
 volumes:
   dataset:
-  mongo_data:    
-
+  mongo_data:
+  running-worker1:
+  running-worker2:
+  running-worker3:
