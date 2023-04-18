@@ -1,27 +1,18 @@
 version: '3'
 
-networks:
-  schedule_generator:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.5.0/24
-          gateway: 192.168.5.1
-
 services:
   mongodb:
     image: mongo:latest
+    container_name: mongo
     ports:
       - 27017:27017
-    networks:
-      schedule_generator:
-        ipv4_address: 192.168.5.4
     volumes:
       - mongo_data:/data/db
     restart: always
 
   frontfacingserver_webapp:
     build:  .
+    container_name: webapp
     ports: 
       - 443:443
       - 5000:5000
@@ -30,9 +21,6 @@ services:
      bash -c "service nginx start &&
       cd /ffs && /venv/bin/python app.py &
       cd /fe && npm start"
-    networks:
-      schedule_generator:
-        ipv4_address: 192.168.5.2
     depends_on:
       - mongodb
     volumes:
@@ -40,6 +28,7 @@ services:
       - ./nginx/snippets/self-signed.conf:/etc/nginx/snippets/self-signed.conf
       - ./nginx/snippets/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf
       - ./nginx/sites-available:/etc/nginx/sites-available
+      - ./nginx/proxy_params:/etc/nginx/proxy_params
       - ./ssl/private/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key
       - ./ssl/certs/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt
       - ./nginx/dhparam.pem:/etc/nginx/dhparam.pem
@@ -47,14 +36,11 @@ services:
   
   worker1:
     build: ./cpp-invoker/.
-    networks:
-      schedule_generator:
-        ipv4_address: 192.168.5.6
+    container_name: worker1
     ports:
       - 5000
     entrypoint: >
-      bash -c "
-      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000"
+      bash -c "cd /invoker && /venv/bin/python app.py worker1:5000"
     volumes:
       - dataset:/invoker/dataset
       - running-worker1:/invoker/running
@@ -68,14 +54,11 @@ services:
 
   worker2:
     build: ./cpp-invoker/.
-    networks:
-      schedule_generator:
-        ipv4_address: 192.168.5.7
+    container_name: worker2
     ports:
       - 5000
     entrypoint: >
-      bash -c "
-      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000"
+      bash -c "cd /invoker && /venv/bin/python app.py worker2:5000"
     volumes:
       - dataset:/invoker/dataset
       - running-worker2:/invoker/running
@@ -89,14 +72,11 @@ services:
     
   worker3:
     build: ./cpp-invoker/.
-    networks:
-      schedule_generator:
-        ipv4_address: 192.168.5.8
+    container_name: worker3
     ports:
       - 5000
     entrypoint: >
-      bash -c "
-      cd /invoker && /venv/bin/python app.py 192.168.5.8:5000"
+      bash -c "cd /invoker && /venv/bin/python app.py worker3:5000"
     volumes:
       - dataset:/invoker/dataset
       - running-worker3:/invoker/running
@@ -111,9 +91,7 @@ services:
 
   haproxy:
     image: haproxy
-    networks:
-      schedule_generator:
-        ipv4_address: 192.168.5.5
+    container_name: haproxy
     depends_on:
       - worker1
       - worker2

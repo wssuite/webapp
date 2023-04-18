@@ -2,10 +2,25 @@ server {
     listen 443 ssl;
     listen [::]:443 ssl;
     include snippets/self-signed.conf;
-    include snippets/ssl-params.conf;  
+    include snippets/ssl-params.conf;
+    server_name localhost;
+
+    location /api/ {
+        proxy_pass  http://webapp:5000/;
+        include proxy_params;
+    }
+
+    location /socket.io/ {
+        proxy_pass  http://webapp:5000/socket.io/;
+        include proxy_params;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
 
     location / {
-        proxy_pass  http://127.0.0.1:4200;
+        proxy_pass  http://webapp:4200;
+        include proxy_params;
     }
 }
 server {

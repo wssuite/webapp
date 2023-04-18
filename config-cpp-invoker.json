@@ -1,5 +1,5 @@
 {
     "max_nb_processes": "2",
-    "timeout": "780",
-    "main_server_address": "192.168.5.2:5000" 
+    "timeout": "300",
+    "main_server_address": "webapp:5000" 
 }

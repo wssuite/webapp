@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:5000";
+export const BASE_URL = "/api/";
 export const TEST_URL = BASE_URL + "/index/";
 export const SCHEDULE_URL = BASE_URL + "/schedule";
 export const GENERATE_SCHEDULE = SCHEDULE_URL + "/generate";
@@ -125,3 +125,5 @@ export const FETCH_CONTRACT_GROUP_BY_NAME = CONTRACT_GROUP_URL + FETCH_BY_NAMES;
 export const REMOVE_CONTRACT_GROUP_URL = CONTRACT_GROUP_URL + REMOVE_STRING;
 export const FETCH_ALL_CONTRACT_GROUP_NAME = CONTRACT_GROUP_URL + FETCH_NAMES;
 export const UPDATE_CONTRACT_GROUP_URL = CONTRACT_GROUP_URL + UPDATE;
+
+export const SOCKET_URL = "/socket/"
