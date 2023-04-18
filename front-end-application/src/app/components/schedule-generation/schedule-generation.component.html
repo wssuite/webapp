@@ -1,5 +1,5 @@
 <div *ngIf="connectedUser; else elseBlock">
-  <app-header [showProfile]='false'></app-header>
+  <app-header [showProfile]='true' [enableProfileSwitch]='false'></app-header>
   <div class="schedule-generation-container">
     <div class="problemDefinitionContainer">
       <div class="PlanningHorizonContainer">
@@ -162,7 +162,7 @@
       </table>
     </div>
     <div *ngIf= "shifts.length > 0  && nurses.length > 0 && validRange() && skills.length > 0" class="nursePreferenceSection">
-      <div class="nurse-preferences-div">
+      <div class="help-div">
         <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>  
         <mat-icon class="help-icon" matTooltip="Enter the weight that will be associated to nurses' preferences in the box below. First click will mark a shift as working (ON). Second click will mark a shift as not working (OFF).  Third click will clear the weight associated to the shift." matTooltipPosition="right" >help</mat-icon>
       </div>
@@ -173,13 +173,19 @@
     </div>
 
 <div  *ngIf= "shifts.length > 0  && skills.length > 0 && validRange() && nurses.length > 0" class="HospitalDemandSection">
-    <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>  
+  <div class="help-div">
+    <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>
+    <mat-icon class="help-icon" matTooltip="Select a shift to input the hospital demand. Enter values and and weight in the box below." matTooltipPosition="right" >help</mat-icon>
+  </div>  
     <hr>
     <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemand($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
 </div>
 
       <div *ngIf= "nurses.length > 0 && skills.length > 0 && shifts.length > 0 && validRange()" class="nurseHistorySection">
-        <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>  
+        <div class="help-div">
+          <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>  
+          <mat-icon class="help-icon" matTooltip="Select shifts worked by each nurse in the previous planning horizon." matTooltipPosition="right">help</mat-icon>
+        </div>
         <hr>
         <app-nurse-history  [nurses]="nurses" [startDate]="startDate"  (nursesHistory)=" updateHistory($event)"></app-nurse-history>
       </div>
