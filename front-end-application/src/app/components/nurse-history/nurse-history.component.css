@@ -4,14 +4,14 @@
     align-items: center;
   }
   
-  .nurse-name-table {
+  /*.nurse-name-table {
     /* display: flex;
-    width: 150px; */
+    width: 150px; 
     height: calc(100% - 20px);
     max-height: calc(100% - 20px); 
     width:max-content;
     max-width: 100%;
-  }
+  }*/
   
   .nurse-name-header {
     white-space: nowrap;
@@ -31,6 +31,13 @@
    .nurse-table{
     width:max-content;
     max-width: 100%;
+    height: calc(100% - 5px);
+    max-height: calc(100% - 5px); 
+  }  
+  
+  .nurse-name-table{
+  height: calc(100% - 5px);
+  max-height: calc(100% - 5px); 
     height: calc(100% - 10px);
     max-height: calc(100% - 10px); 
   }  
