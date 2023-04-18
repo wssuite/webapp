@@ -112,6 +112,9 @@ export class SkillViewComponent implements OnInit, AfterViewInit{
 
   openErrorDialog(message: string) {
   this.dialog.open(ErrorMessageDialogComponent, {
+      height: '45%',
+      width: '45%', 
+      position: {top:'20vh',left: '30%', right: '25%'},
       data: {message: message},
     })
   }

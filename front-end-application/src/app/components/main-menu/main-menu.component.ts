@@ -32,13 +32,13 @@ export class MainMenuComponent implements OnInit{
 
   redirect(button: MainMenuButton) {
     switch (button.title) {
-      case "Schedule":
+      case "Schedules":
         this.router.navigate(["/" + VIEW_SCHEDULES]);
         break;
-      case "Nurse":
+      case "Nurses":
         this.router.navigate(["/" + NURSE]);
         break;
-      case "Shift":
+      case "Shifts & Skills":
         this.router.navigate(["/" + SHIFT]);
         break;
       case "Contracts":
