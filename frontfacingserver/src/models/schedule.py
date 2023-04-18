@@ -1,5 +1,3 @@
-import json
-
 from src.models.assignment import Assignment
 import re
 from constants import (
@@ -67,7 +65,7 @@ class Schedule(CSVExporter):
                     is_report = True
 
     def get_statistics(self):
-        return json.loads(self.report)
+        return eval(self.report)
 
     def filter_by_name(self):
         dict_filtered_name = {}
