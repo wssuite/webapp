@@ -1,6 +1,6 @@
 <div (mouseleave)="emitSkillDemand()" class="min-min-hospital-demand-container">
     <div class="hospital-variables-container">
-        <div class="min-value-container">
+        <div class="min-value-container flex-row-center-container">
             <label>Min value: </label>
             <app-numeric-input  [disabled]="minInputDisabled" [(value)]="demand.minValue" (errorState)="updateMinValueErrorState($event)"></app-numeric-input>
             <div class="weight-container">
@@ -8,7 +8,7 @@
             </div>
         </div>
         <br><br>
-        <div class="max-value-container">
+        <div class="max-value-container flex-row-center-container">
             <label>Max value: </label>
             <app-numeric-input  [disabled]="maxInputDisabled" [(value)]="demand.maxValue" (errorState)="updateMaxValueErrorState($event)"></app-numeric-input>
             <app-weight  [allowZero]="true" [(weight)]="demand.maxWeight" [label]="maxWeightLabel" (errorState)="updateMaxWeightErrorState($event)"></app-weight>

@@ -34,6 +34,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   notifications: Solution[];
   newNotificationAdded: boolean;
   @Input() showProfile!: boolean; 
+  @Input() enableProfileSwitch!: boolean; 
   
   constructor(private accountService: AccountService, private router: Router,
     private dialog: MatDialog, private profileService: ProfileService, 
@@ -43,14 +44,24 @@ export class HeaderComponent implements OnInit, AfterViewInit{
       this.notifications = []
       this.newNotificationAdded = false;
       this.showProfile = true;
+      this.enableProfileSwitch = true;
     }
+
+    height = '31%';
+    width = '30%';
+    left = '36%';
+    top = '30vh';
 
   ngOnInit(): void {
     try{
-      this.getProfiles(false);
+      //this.validProfile = false;
+      //this.profiles = []
+      const firstLogin = CacheUtils.getFirstLogin()
+      this.getProfiles(false || firstLogin);
       this.isAdmin = CacheUtils.getIsAdmin();
       this.username = CacheUtils.getUsername();
       this.connectedUser= true;
+      CacheUtils.setFirstLogin(false);
     } catch(err){
       this.connectedUser = false;
     }
@@ -82,13 +93,17 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   getProfiles(useLatProfile: boolean){
     this.profileService.getAllProfiles().subscribe({
       next:(profiles: BaseProfile[])=>{
+        console.log(profiles)
         this.profiles = profiles;
+        console.log(this.profiles)
         if(this.profiles.length === 0){
           this.openCreateProfileDialog(false);
         }
         else{
           if(useLatProfile){
-            this.profile = this.profiles[this.profiles.length - 1]
+            console.log(this.profiles)
+            this.profile = this.profiles[profiles.length - 1]
+            console.log(this.profile)
             CacheUtils.setProfile(this.profile.profile);
             this.validProfile = true;
             this.profileService.emitProfileChange();
@@ -149,6 +164,9 @@ export class HeaderComponent implements OnInit, AfterViewInit{
 
   openErrorDialog(message: string){
     this.dialog.open(ErrorMessageDialogComponent, {
+      height: '45%',
+      width: '45%', 
+      position: {top:'20vh',left: '30%', right: '25%'},
       data:{message: message},
     })    
   }
@@ -163,13 +181,28 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     this.profileService.emitProfileChange();
   }
 
+  onResize() {
+    if (window.innerWidth <= 1200) {
+      this.height = '50%';
+      this.width = '50%';
+      this.left = '28%';
+      this.top = '20vh';
+    } else {
+      this.height = '31%';
+      this.width = '30%';
+      this.left = '36%';
+      this.top = '30vh';
+    }
+  }
+
   duplicate() {
+    this.onResize();
     const dialog = this.dialog.open(DuplicateProfileComponent,{
       data: {profiles: this.profiles},
       disableClose: true,  
-      height: '65%',
-      width: '55%', 
-      position: {top:'5vh',left: '25%', right: '25%'},
+      height: this.height,
+      width: this.width, 
+      position: {top:this.top, left: this.left, right: '25%'},
     })
     dialog.afterClosed().subscribe(()=>{
       this.getProfiles(true);

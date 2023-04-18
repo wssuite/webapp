@@ -16,6 +16,12 @@ h2 {
     margin-left: 1.5%;
 }
 
+.contractGroupTable, .contractTable, .nurseTable {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
 
 .table-element-container {
     background-color: #d3dde9;
