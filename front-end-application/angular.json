@@ -30,7 +30,7 @@
             "scripts": [],
             "allowedCommonJsDependencies":[
               "file-saver",
-              "x-material-timepicker",
+              "ngx-material-timepicker",
               "luxon"
             ]
           },
