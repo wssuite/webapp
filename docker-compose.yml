@@ -11,7 +11,7 @@ services:
     restart: always
 
   frontfacingserver_webapp:
-    image: markbekhet/horaire-infirmiere:web-app-1.1
+    image: markbekhet/horaire-infirmiere:web-app-1.2
     container_name: webapp
     ports: 
       - 443:443

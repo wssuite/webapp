@@ -114,8 +114,10 @@ class ProfileHandler(BaseHandler):
 
     def save_import(self, token, json):
         d_p = DetailedProfile().from_json(json)
+        profile_created = False
         try:
             self.create_profile(token, d_p.name)
+            profile_created = True
             for skill in d_p.skills:
                 self.verify_name_is_valid(skill.name)
                 self.skill_dao.insert_one_if_not_exist(skill.db_json())
@@ -161,7 +163,8 @@ class ProfileHandler(BaseHandler):
                     nurse_group.db_json()
                 )
         except ProjectBaseException as e:
-            self.delete_profile(token, d_p.name)
+            if profile_created is True:
+                self.delete_profile(token, d_p.name)
             raise e
 
     def export_profile(self, token, profile_to_export):
