@@ -15,7 +15,7 @@ services:
     container_name: webapp
     ports: 
       - 443:443
-      - 5000:5000
+      - 8080:8080
       - 4200
     command: >
      bash -c "service nginx start &&
