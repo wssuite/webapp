@@ -23,10 +23,11 @@ server {
         include proxy_params;
     }
 }
+
 server {
     listen 80;
     listen [::]:80;
     server_name _;
 
-    return 302 https://127.0.0.1:433$request_uri;
+    return 301 https://$host$request_uri;
 }

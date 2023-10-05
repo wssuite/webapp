@@ -1,4 +1,4 @@
-FROM legraina/nurse-scheduler:ui
+FROM legraina/nurse-scheduler:ui-1.0
 USER root
 RUN apt-get --allow-releaseinfo-change update
 RUN apt-get install cpulimit -y

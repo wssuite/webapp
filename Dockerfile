@@ -14,7 +14,6 @@ COPY front-end-application/src/ /fe/src/
 COPY front-end-application/*.json /fe/
 RUN cd /fe && npm ci
 
-EXPOSE 4200
 RUN mkdir /ffs
 COPY frontfacingserver/src/ /ffs/src/
 COPY frontfacingserver/requirements.txt /ffs/
@@ -23,4 +22,5 @@ COPY frontfacingserver/template.csv /ffs/
 RUN echo '{"mongo_address" : "mongo", "haproxy_address": "haproxy"}' > /ffs/config.json
 COPY frontfacingserver/*.py /ffs/
 RUN cd /ffs && /venv/bin/pip install -r requirements.txt
-EXPOSE 5000
+
+EXPOSE 80 443 4200 5000
