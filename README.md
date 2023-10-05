@@ -1,4 +1,7 @@
-## LOG89xx-10
+## Nurse Scheduler interface
+
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/legraina/ns_app_front)](https://hub.docker.com/repository/docker/legraina/ns_app_front/)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/legraina/ns_app_scheduler)](https://hub.docker.com/repository/docker/legraina/ns_app_scheduler/)
 
 ## Getting started
 
@@ -25,7 +28,7 @@ To start the docker containers:
 
 The -d flag will make the docker containers run in detached mode
 
-The --build flag will make docker compose build the images from the sources specified in docker-compose-dev.yml file. 
+The --build flag will make docker compose build the images from the sources specified in docker-compose-dev.yml file.
 
 To stop the docker containers:
 
@@ -64,7 +67,7 @@ To update the SSL certificate use the following command
 	 (echo CA & echo QC & echo M & echo company & echo section & echo someone & echo happy@example.com) |\
 	 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/private/nginx-selfsigned.key \
 	 -out ssl/certs/nginx-selfsigned.crt
-	
+
 
 ## Running a single service
 
