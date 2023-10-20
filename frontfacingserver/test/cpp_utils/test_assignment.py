@@ -4,7 +4,7 @@ from constants import (
     assignment_date,
     assignment_skill,
     assignment_shift,
-    assignment_employee_name,
+    assignment_employee_uname,
 )
 
 
@@ -18,7 +18,7 @@ class TestAssignment(TestCase):
     def test_assignment_creation(self):
         assignment = Assignment(self.assignment_info)
         self.assertEqual(assignment.date, self.assignment_info[0])
-        self.assertEqual(assignment.employee_name, self.assignment_info[1])
+        self.assertEqual(assignment.employee_uname, self.assignment_info[1])
         self.assertEqual(assignment.shift, self.assignment_info[2])
         self.assertEqual(assignment.skill, self.assignment_info[3])
 
@@ -26,7 +26,7 @@ class TestAssignment(TestCase):
         assignment = Assignment(self.assignment_info)
         assignment_json = {
             assignment_date: self.assignment_info[0],
-            assignment_employee_name: self.assignment_info[1],
+            assignment_employee_uname: self.assignment_info[1],
             assignment_shift: self.assignment_info[2],
             assignment_skill: self.assignment_info[3],
         }

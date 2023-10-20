@@ -5,7 +5,7 @@ from constants import (
     assignment_skill,
     assignment_date,
     assignment_shift,
-    assignment_employee_name,
+    assignment_employee_uname,
     start_date,
     end_date,
     schedule_string,
@@ -49,17 +49,17 @@ class TestSchedule(TestCase):
             end_date: "2010-06-28",
             schedule_string: [
                 {
-                    assignment_employee_name: "Patrick",
+                    assignment_employee_uname: "Patrick",
                     assignments_string: [
                         {
                             assignment_date: "2010-06-01",
-                            assignment_employee_name: "Patrick",
+                            assignment_employee_uname: "Patrick",
                             assignment_shift: "Late",
                             assignment_skill: "Nurse",
                         },
                         {
                             assignment_date: "2010-06-05",
-                            assignment_employee_name: "Patrick",
+                            assignment_employee_uname: "Patrick",
                             assignment_shift: "Early",
                             assignment_skill: "Nurse",
                         },

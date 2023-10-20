@@ -73,11 +73,6 @@ class ScheduleHandler(BaseHandler):
         with open(input_txt, "w") as f1:
             f1.write(detailed_demand.to_string())
 
-        os.mkdir(os.path.join(full_path, "sol"))
-        instance_path = os.path.join(full_path, "sol")
-        instance_txt = os.path.join(instance_path, "sol.txt")
-        with open(instance_txt, "w") as f2:
-            f2.write(detailed_demand.to_string())
         time = datetime.datetime.now().astimezone()
         time_str = str(time).split(".")[0]
         solution_json = {

@@ -14,7 +14,7 @@ nurse_group_contract_groups = nurse_contract_groups
 
 """assignment fields"""
 assignment_date = "date"
-assignment_employee_name = "employee_name"
+assignment_employee_uname = "employee_uname"
 assignment_shift = "shift"
 assignment_skill = "skill"
 assignments_string = "assignments"
@@ -238,3 +238,4 @@ previous_versions = "previousVersions"
 worker_host = "worker"
 schedule = "schedule"
 problem = "problem"
+format = "format"

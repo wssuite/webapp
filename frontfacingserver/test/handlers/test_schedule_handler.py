@@ -33,7 +33,7 @@ from constants import (
     previous_versions,
     problem,
     schedule_string,
-    assignment_employee_name,
+    assignment_employee_uname,
     assignments_string,
     assignment_date,
     assignment_shift,
@@ -308,11 +308,11 @@ END
             end_date: "2023-06-02",
             schedule_string: [
                 {
-                    assignment_employee_name: "Patrick",
+                    assignment_employee_uname: "Patrick",
                     assignments_string: [
                         {
                             assignment_date: "2023-06-01",
-                            assignment_employee_name: "Patrick",
+                            assignment_employee_uname: "Patrick",
                             assignment_shift: "Late",
                             assignment_skill: "Nurse",
                         },

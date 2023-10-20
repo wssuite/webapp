@@ -8,6 +8,7 @@ from constants import (
     start_date,
     end_date,
     version,
+    format,
     ok_message,
 )
 from src.dao.abstract_dao import DBConnection
@@ -26,9 +27,7 @@ from .. import socketio
                 |
                 |_ sol.txt
 
-    The content of the file sol.txt must respect the format agreed
-    with the client, please consult the following link:
-    https://gitlab.com/polytechnique-montr-al/log89xx/23-1/equipe-10/LOG89XX-10/-/blob/dataset/file-format/dataset/examples/sol-instance1.txt
+    The content of the file sol.txt must respect the format of the ui
 """
 
 schedule_handler = ScheduleHandler(DBConnection.get_connection())
@@ -55,13 +54,13 @@ def export_problem():
         path = schedule_handler.get_input_problem_path(
             token, profile_name, start, end, v
         )
-        problem_str = ""
-        with open(path) as file:
-            lines = file.readlines()
-            for line in lines:
-                problem_str += line
 
-        return {"content": problem_str}
+        if format in request.args and request.args[format] == "json":
+            # replace .txt by .json
+            path = path.rsplit(".", 1)[0] + ".json"
+
+        with open(path) as file:
+            return {"content": file.read()}
     except ProjectBaseException as e:
         return Response(e.args, 500)
 
