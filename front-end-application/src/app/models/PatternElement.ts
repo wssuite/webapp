@@ -10,7 +10,7 @@ export class PatternElement {
     }
 
     validatePattern(p: PatternElement): void{
-        let sameDays= true;
+        let sameDays = true;
         let sameShifts =true;
         p.days.forEach((day: string)=>{
             if(!this.days.includes(day)){
@@ -22,9 +22,9 @@ export class PatternElement {
                 sameShifts = false;
             }
         })
-        if(sameDays && sameShifts){
-            throw new Exception("Repetitive day shift pattern");
-        }
+        // if(sameDays && sameShifts){
+        //     throw new Exception("Repetitive day shift pattern");
+        // }
     }
 
     toJson(): PatternElementInterface{

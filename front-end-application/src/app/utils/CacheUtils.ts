@@ -262,7 +262,7 @@ export class CacheUtils {
     public static removeOldVersion(){
         localStorage.removeItem(OLD_VERSION_STRING)
     }
-    
+
     public static setFirstLogin(login: boolean){
         localStorage.setItem(FIRST_LOGIN, JSON.stringify(login))
     }

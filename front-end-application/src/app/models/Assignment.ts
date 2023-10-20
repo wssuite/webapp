@@ -1,11 +1,11 @@
 export interface Assignment {
   date: string;
-  employee_name: string;
+  employee_uname: string;
   shift: string;
   skill: string;
 }
 export interface EmployeeAssignments {
-  employee_name: string;
+  employee_uname: string;
   assignments: Assignment[];
 }
 

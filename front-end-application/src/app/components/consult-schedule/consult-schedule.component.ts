@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import * as saveAs from "file-saver";
 import {MAIN_MENU, SCHEDULE_GENERATION, VIEW_SCHEDULES} from "src/app/constants/app-routes";
 import { Assignment, EmployeeSchedule } from "src/app/models/Assignment";
-import { GenerationRequestDetails, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+import { GenerationRequestDetails, SchedulePreferenceElement, NurseHistoryElement } from "src/app/models/GenerationRequest";
 import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from "src/app/models/Schedule";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
 import { CacheUtils } from "src/app/utils/CacheUtils";
@@ -35,11 +35,14 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   employeeSchedule!: EmployeeSchedule;
   connectedUser: boolean;
   employeeAssignmentsMap: Map<string, Assignment[]>;
+  historyAssignmentsMap: Map<string, NurseHistoryElement[]>;
   endDate: Date | undefined;
   startDate: Date | undefined;
   validSchedule: boolean;
   nbColumns: number | undefined;
+  nbHistoryColumns: number;
   indexes: number[] | undefined;
+  isButtonDisabled: boolean[] | undefined;
   displayedColumns: string[];
   dataSource: MatTableDataSource<Solution>
   preferences: Map<string, string>
@@ -47,6 +50,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   nurses: NurseInterface[]
 
   constructor(private service: ScheduleService, public dialog: MatDialog, private router: Router, private nurseService: NurseService) {
+    this.historyAssignmentsMap = new Map();
     this.employeeAssignmentsMap = new Map();
     this.connectedUser = false;
     this.validSchedule = false;
@@ -54,6 +58,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.preferences = new Map();
     this.nurses = []
+    this.nbHistoryColumns = 0;
   }
 
   ngOnInit(): void {
@@ -66,14 +71,10 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
           this.openErrorDialog(err.error);
         }
       })
-      if(this.service.selectedScheduleToView){
-        this.getDetailedSchedule(this.service.selectedScheduleToView);
-      }
-      else{
-        const currentSchedule = CacheUtils.getCurrentSchedule()
-        if(currentSchedule){
-          this.getDetailedSchedule(currentSchedule);
-        }
+      const currentSchedule = this.service.selectedScheduleToView ?
+          this.service.selectedScheduleToView : CacheUtils.getCurrentSchedule();
+      if(currentSchedule){
+        this.getDetailedSchedule(currentSchedule);
       }
       this.connectedUser = true;
       if(this.service.socket === undefined){
@@ -94,7 +95,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         profile: this.schedule.profile,
         version: this.schedule.version
       })
-    }  
+    }
   }
 
   ngAfterViewInit(): void {
@@ -136,11 +137,21 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         if(this.schedule.schedule){
           console.log(this.schedule.startDate)
           console.log(this.schedule.endDate)
-          this.startDate = new Date(this.schedule.schedule.startDate)
-          this.endDate = new Date(this.schedule.schedule.endDate);
+          const schedStartDate = new Date(this.schedule.startDate)
+          this.endDate = new Date(this.schedule.endDate);
+          // update history startDate
+          this.startDate = schedStartDate;
+          for (const assignment of this.schedule.problem.history) {
+            const d = new Date(assignment.date);
+            if (d < this.startDate) {
+              this.startDate = d;
+            }
+          }
           this.nbColumns =
             DateUtils.nbDaysDifference(this.endDate, this.startDate);
-            this.indexes = this.getIndexes();
+          this.nbHistoryColumns = DateUtils.nbDaysDifference(schedStartDate, this.startDate) - 1;
+          this.isButtonDisabled = this.getButtonDisabled();
+          this.indexes = this.getIndexes();
           if(data.state === IN_PROGRESS){
             const obj: ContinuousVisualisationInterface = {
               startDate: this.schedule.startDate,
@@ -150,6 +161,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
             }
             this.service.subscribeContinuousVisulation(obj)
           }
+          this.setHistoryAssignments();
           this.updateAssignments(this.schedule.schedule);
           if(data.state !== IN_PROGRESS){
             const savedPrefrences = CacheUtils.getPreferences(schedule);
@@ -169,14 +181,26 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     })
   }
 
+  setHistoryAssignments(){
+    this.historyAssignmentsMap = new Map();
+    for (const historyElement of this.schedule.problem.history) {
+      let elements = this.historyAssignmentsMap.get(historyElement.username)
+      if(elements === undefined) {
+        this.historyAssignmentsMap.set(historyElement.username, [historyElement]);
+      } else {
+        elements.push(historyElement);
+      }
+    }
+  }
+
   updateAssignments(schedule:EmployeeSchedule){
     for (const sch of schedule.schedule) {
-      this.employeeAssignmentsMap.set(sch.employee_name, sch.assignments);
+      this.employeeAssignmentsMap.set(sch.employee_uname, sch.assignments);
       if(this.schedule.state !== IN_PROGRESS){
-        for(const assignement of sch.assignments){
-          //console.log(assignement.date)
-          this.preferences.set(JSON.stringify({nurse: assignement.employee_name,
-            shift: assignement.shift, date:assignement.date}),"");
+        for(const assignment of sch.assignments){
+          //console.log(assignment.date)
+          this.preferences.set(JSON.stringify({nurse: assignment.employee_uname,
+            shift: assignment.shift, date:assignment.date}),"");
         }
       }
     }
@@ -185,7 +209,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   openErrorDialog(message: string){
     this.dialog.open(ErrorMessageDialogComponent, {
       height: '45%',
-      width: '45%', 
+      width: '45%',
       position: {top:'20vh',left: '30%', right: '25%'},
       data: {message: message}
     })
@@ -201,6 +225,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     const local_string = nextDay.toISOString().split("T")[0];
     return DateUtils.arrangeDateString(local_string);
   }
+
   getDisplayedDate(date: string){
     try{
       const dateSplitted = date.split("-")
@@ -219,6 +244,23 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     ).getDay();
     return DateUtils.days[nextDay] + "\n";
   }
+
+  getButtonDisabled() {
+    const diabled: boolean[] = [];
+    if (this.nbColumns == undefined || this.nbHistoryColumns == undefined) {
+      return [];
+    }
+    let i = 0;
+    for (; i < this.nbHistoryColumns; i++) {
+      diabled.push(true);
+    }
+    for (; i < this.nbColumns; i++) {
+      diabled.push(false);
+    }
+    console.log(diabled.length)
+    return diabled;
+  }
+
   getIndexes() {
     const indexes: number[] = [];
     if (this.nbColumns == undefined) {
@@ -233,14 +275,19 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   getEmployeeShift(employeeName: string, index: number): string {
     let ret = "";
-    const assignments = this.employeeAssignmentsMap.get(employeeName);
+    let assignments;
+    if (index < this.nbHistoryColumns) {
+      assignments = this.historyAssignmentsMap.get(employeeName);
+    } else {
+      assignments = this.employeeAssignmentsMap.get(employeeName);
+    }
     if (assignments === undefined || assignments === null) {
       return ret;
     }
     const date = this.getDateDayStringByIndex(index);
     for (const assignment of assignments) {
       if (assignment.date === date) {
-        ret = assignment.shift.toUpperCase( )  ;
+        ret = assignment.shift.toUpperCase();
         break;
       }
     }
@@ -249,6 +296,9 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   getEmployeeSkill(employeeName: string, index: number): string {
     let ret = "";
+    if(index < this.nbHistoryColumns) {
+      return ret;
+    }
     const assignments = this.employeeAssignmentsMap.get(employeeName);
     if (assignments === undefined || assignments === null) {
       return ret;
@@ -264,16 +314,19 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   getPreference(name: string, index: number): string|undefined{
-    const date = this.getDateDayStringByIndex(index);
+    if(index < this.nbHistoryColumns) {
+      return "HIST";
+    }
     const assignments = this.employeeAssignmentsMap.get(name);
     //console.log(assignments === undefined)
     if(assignments === undefined){
       return undefined
     }
+    const date = this.getDateDayStringByIndex(index);
     let shift = "";
-    for(const assignement of assignments){
-      if(assignement.date === date) {
-        shift = assignement.shift;
+    for(const assignment of assignments){
+      if(assignment.date === date) {
+        shift = assignment.shift;
         break;
       }
     }
@@ -281,6 +334,14 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       shift: shift,
       date: date})
     return this.preferences.get(key)
+  }
+
+  getHeaderStyle(index: number) {
+    if (index < this.nbHistoryColumns) {
+      return {'background-color': '#ffa500'};
+    } else {
+      return {'background-color': '#255792'};
+    }
   }
 
   getButtonStyle(name: string, index: number){
@@ -292,12 +353,18 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       else if(pref === "OFF"){
         return {'background-color': 'rgba(227, 50, 39, 0.2)', "height":"60px" };
       }
+      else if(pref === "HIST"){
+        return {'background-color': 'rgba(255, 165, 0, 0.2)', "height":"60px" };
+      }
       return { 'background-color': 'rgb(235, 234, 234)', "height":"60px" };
     }
     return { 'background-color': 'rgb(235, 234, 234)' , "height":"60px"};
   }
 
   updatePreference(name: string, index: number): void {
+    if(index < this.nbHistoryColumns) {
+      return undefined
+    }
     const date = this.getDateDayStringByIndex(index);
     const assignments = this.employeeAssignmentsMap.get(name);
     //console.log(assignments === undefined)
@@ -305,9 +372,9 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       return undefined
     }
     let shift = "";
-    for(const assignement of assignments){
-      if(assignement.date === date) {
-        shift = assignement.shift;
+    for(const assignment of assignments){
+      if(assignment.date === date) {
+        shift = assignment.shift;
         break;
       }
     }
@@ -375,19 +442,18 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     this.getDetailedSchedule(schedule);
   }
 
-  exportProblem(schedule: Solution) {
-    this.service.exportProblem(schedule).subscribe({
-      next: (data: {content: string})=>{
-        const file = new File([data.content], CacheUtils.getProfile() + "_" + schedule.startDate + "_" + schedule.endDate + "_" + schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
-        saveAs(file);
-      }
-    })
+  exportProblem(schedule: Solution, format: string = "txt") {
+    this.exportThisProblem(schedule.version, schedule.startDate, schedule.endDate, format)
   }
 
-  exportCurrentScheduleProblem() {
-    this.service.exportProblemCurrentSchedule(this.schedule.version, this.schedule.startDate, this.schedule.endDate).subscribe({
+  exportCurrentScheduleProblem(format: string = "txt") {
+    this.exportThisProblem(this.schedule.version, this.schedule.startDate, this.schedule.endDate, format)
+  }
+
+  exportThisProblem(version: string, startDate: string, endDate: string, format: string) {
+    this.service.exportProblem(version, startDate, endDate, format).subscribe({
       next: (data: {content: string})=>{
-        const file = new File([data.content], CacheUtils.getProfile() + "_" + this.schedule.startDate + "_" + this.schedule.endDate + "_" + this.schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
+        const file = new File([data.content], CacheUtils.getProfile() + "_" + startDate + "_" + endDate + "_" + version + "." + format, {type:"text/plain;charset=utf-8"});
         saveAs(file);
       }
     })
@@ -439,7 +505,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         startDate: new Date(this.schedule.problem.startDate),
         endDate: new Date(this.schedule.problem.endDate)
       }
-    
+
       CacheUtils.setGenerationRequest(details)
       CacheUtils.setGenerationRequestPreferences(this.schedule.problem.preferences)
       CacheUtils.setDemandGenerationRequest(this.schedule.problem.hospitalDemand);
@@ -515,7 +581,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         profile: this.schedule.profile,
         version: this.schedule.version,},
         height: '60%',
-        width: '55%', 
+        width: '55%',
         position: {top:'8vh',left: '25%', right: '25%'},
     })
   }

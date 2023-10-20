@@ -5,7 +5,7 @@ import {Socket, io} from "socket.io-client";
 import { ALL_SOLUTIONS, DETAILED_SOLUTION_URL,
   EXPORT_PROBLEM_URL, EXPORT_SOLUTION_URL, EXPRORT_ERROR_URL, GENERATE_SCHEDULE,
   GET_STATISTIC_URL,
-  LATEST_SOLUTIONS, 
+  LATEST_SOLUTIONS,
   REGENERATE_SCHEDULE_URL,REMOVE_SOLUTION, STOP_GENERATION_URL} from 'src/app/constants/api-constants';
 import { SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, VISUALISATION_SUBSCRIPTION, VISUALISATION_UNSUBSCRIPTION } from 'src/app/constants/socket-events';
 import { GenerationRequest } from 'src/app/models/GenerationRequest';
@@ -16,11 +16,11 @@ import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUti
   providedIn: 'root'
 })
 export class ScheduleService {
-  
+
   selectedScheduleToView!: Solution
   socket!: Socket;
 
-  constructor(private httpClient: HttpClient) { 
+  constructor(private httpClient: HttpClient) {
     this.socket = io()
     const notifSubscriptions = CacheUtils.getNotifSubscriptions()
     for(const sub of notifSubscriptions){
@@ -33,7 +33,7 @@ export class ScheduleService {
     console.log(this.socket)
   }
 
-  
+
   generateSchedule(request: GenerationRequest): Observable<Solution>{
     try{
       let queryParams = new HttpParams();
@@ -61,31 +61,20 @@ export class ScheduleService {
     }
   }
 
-  exportProblem(schedule: Solution): Observable<{content: string}> {
-    try{
-      let queryParams = new HttpParams();
-      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
-      queryParams = queryParams.append("startDate", schedule.startDate)
-      queryParams = queryParams.append("endDate", schedule.endDate)
-      queryParams = queryParams.append("version", schedule.version)
-      return this.httpClient.get<{content: string}>(EXPORT_PROBLEM_URL, {
-        params: queryParams,
-      })
-    }
-    catch(err){
-      throw new Error("user not logged in");
-    }
+  exportProblemSchedule(schedule: Solution, format: string = "txt"): Observable<{content: string}> {
+    return this.exportProblem(schedule.version, schedule.startDate, schedule.endDate, format);
   }
 
-  exportProblemCurrentSchedule(version: string, startDate: string, endDate: string): Observable<{content: string}> {
+  exportProblem(version: string, startDate: string, endDate: string, format: string = "txt"): Observable<{content: string}> {
     try{
+      console.log("exportProblem format: " + format);
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
       queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
       queryParams = queryParams.append("startDate", startDate)
       queryParams = queryParams.append("endDate", endDate)
       queryParams = queryParams.append("version", version)
+      queryParams = queryParams.append("format", format)
       return this.httpClient.get<{content: string}>(EXPORT_PROBLEM_URL, {
         params: queryParams,
       })
