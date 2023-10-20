@@ -10,8 +10,8 @@ services:
       - mongo_data:/data/db
     restart: always
 
-  frontfacingserver_webapp:
-    image: legraina/ns_app_front
+  webapp:
+    image: legraina/ns_webapp_front
     container_name: webapp
     ports:
       - 443:443
@@ -36,12 +36,11 @@ services:
     restart: always
 
   worker1:
-    image: legraina/ns_app_scheduler
+    image: legraina/ns_webapp_scheduler
     container_name: worker1
     ports:
       - 5000
-    entrypoint: >
-      bash -c "cd /invoker && /venv/bin/python app.py worker1:5000"
+    command: worker1:5000
     volumes:
       - dataset:/invoker/dataset
       - running-worker1:/invoker/running
@@ -54,12 +53,11 @@ services:
           cpus: '2'
 
   worker2:
-    image: legraina/ns_app_scheduler
+    image: legraina/ns_webapp_scheduler
     container_name: worker2
     ports:
       - 5000
-    entrypoint: >
-      bash -c "cd /invoker && /venv/bin/python app.py worker2:5000"
+    command: worker2:5000
     volumes:
       - dataset:/invoker/dataset
       - running-worker2:/invoker/running
@@ -72,12 +70,11 @@ services:
           cpus: '2'
 
   worker3:
-    image: legraina/ns_app_scheduler
+    image: legraina/ns_webapp_scheduler
     container_name: worker3
     ports:
       - 5000
-    entrypoint: >
-      bash -c "cd /invoker && /venv/bin/python app.py worker3:5000"
+    command: worker3:5000
     volumes:
       - dataset:/invoker/dataset
       - running-worker3:/invoker/running
