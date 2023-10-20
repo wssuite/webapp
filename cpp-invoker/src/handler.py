@@ -7,6 +7,7 @@ import subprocess
 import multiprocessing
 from .protected_dict import ProtectedDict
 import shlex
+import sys
 
 base_directory = os.getcwd()
 running_dir = os.path.join(base_directory, 'running')
@@ -45,9 +46,9 @@ def run_scheduler(path, counter):
         json=info_json
     )
     cmd = (
-        "./bin/staticscheduler --dir {0}/ --instance sol --param "
-        "default.txt --sol {0} --timeout {1} --origin ui".format(
-            path, data['timeout'])
+        "./bin/staticscheduler --dir {0}/ --instance input.txt --param {1} "
+        "--sol {0} --timeout {2} --origin ui".format(
+            path, data["cpp_params"], data['timeout'])
     )
     cmd_split = shlex.split(cmd)
     print(cmd_split)

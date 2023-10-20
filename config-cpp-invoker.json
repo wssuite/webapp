@@ -1,5 +1,6 @@
 {
     "max_nb_processes": "2",
     "timeout": "300",
-    "main_server_address": "webapp:5000" 
+    "main_server_address": "webapp:5000",
+    "cpp_params": "params/default.txt"
 }
