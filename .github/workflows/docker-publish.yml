@@ -7,9 +7,13 @@ on:
   pull_request:
     branches: [ main ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   push_front_to_dockerhub:
-    name: Publish Docker app front image
+    name: Publish front image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout github repo
@@ -49,7 +53,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   push_scheduler_to_dockerhub:
-    name: Publish Docker app scheduler image
+    name: Publish scheduler image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout github repo
