@@ -113,14 +113,14 @@ MinMaxConsecutiveWeekends,1.0,5.0,3.0,hard,Early
 {
 contractName,Nurses contracts
 constraints
-unwantedSkills,hard,1,HeadNurse
+UnwantedSkills,hard,1,HeadNurse
 TotalWeekendsInFourWeeks,1.0,5.0,5.0,hard,Early
 IdentShiftTypesDuringWeekend,hard
 }
 {
 contractName,Head nurses contracts
 constraints
-unwantedSkills,hard,1,Nurse
+UnwantedSkills,hard,1,Nurse
 TotalWeekendsInFourWeeks,1.0,5.0,3.0,hard,Early
 IdentShiftTypesDuringWeekend,hard
 }
@@ -130,7 +130,7 @@ constraints
 MinMaxConsecutiveShiftType,1.0,hard,3.0,hard,Late
 CompleteWeekends,5.0
 AlternativeShift,hard,MidDay
-unwantedPatterns,hard,2,Monday|Friday;Late,Tuesday|Saturday;Early|MidDay
+UnwantedPatterns,hard,2,Monday|Friday;Late,Tuesday|Saturday;Early|MidDay
 }
 {
 contractName,eves contract
@@ -138,7 +138,7 @@ constraints
 MinMaxConsecutiveShiftType,1.0,hard,3.0,hard,Late
 CompleteWeekends,5.0
 AlternativeShift,hard,Late
-unwantedPatterns,hard,2,Monday|Friday;Late,Tuesday|Saturday;Early|MidDay
+UnwantedPatterns,hard,2,Monday|Friday;Late,Tuesday|Saturday;Early|MidDay
 }
 END
 CONTRACT_GROUPS

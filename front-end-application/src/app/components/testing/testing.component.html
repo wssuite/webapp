@@ -32,14 +32,14 @@
 <p>The max value is: {{minMaxConsecutiveShift.maxValue}} and the max weight is :{{minMaxConsecutiveShift.maxWeight}}</p>
 <mat-expansion-panel>
     <mat-expansion-panel-header>
-        <mat-panel-title>{{unwantedPatternsConstraint.displayName}}</mat-panel-title>
+        <mat-panel-title>{{UnwantedPatternsConstraint.displayName}}</mat-panel-title>
     </mat-expansion-panel-header>
-    <app-unwanted-patterns [(constraint)]="unwantedPatternsConstraint" (errorState)="undateUnwantedPatternsErrorState($event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
+    <app-unwanted-patterns [(constraint)]="UnwantedPatternsConstraint" (errorState)="undateUnwantedPatternsErrorState($event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
 </mat-expansion-panel>
-<p>The constraint has {{unwantedPatternsConstraint.patternElements.length}} elements
-    The constraint has an error: {{unwantedPatternsErrorState}}
+<p>The constraint has {{UnwantedPatternsConstraint.patternElements.length}} elements
+    The constraint has an error: {{UnwantedPatternsErrorState}}
 </p>
-<p *ngFor="let pattern of unwantedPatternsConstraint.patternElements">The chosen days are: {{pattern.days}}</p>
+<p *ngFor="let pattern of UnwantedPatternsConstraint.patternElements">The chosen days are: {{pattern.days}}</p>
 <mat-expansion-panel>
     <mat-expansion-panel-header>
         <mat-panel-title>{{booleanConstraint.displayName}}</mat-panel-title>
@@ -86,10 +86,10 @@ Max value is : {{ minMaxConstraint.maxValue }} and its value is:
 
 <mat-expansion-panel>
   <mat-expansion-panel-header>
-      <mat-panel-title>{{ unwantedSkillsConstraint.displayName }}</mat-panel-title>
+      <mat-panel-title>{{ UnwantedSkillsConstraint.displayName }}</mat-panel-title>
     </mat-expansion-panel-header>
     <app-unwanted-skills
-      [constraint]="unwantedSkillsConstraint"
+      [constraint]="UnwantedSkillsConstraint"
       (errorState)="updateSkillsErrorState($event)"
       [skills]="SKILLS"
     ></app-unwanted-skills>
@@ -98,6 +98,6 @@ Max value is : {{ minMaxConstraint.maxValue }} and its value is:
   The constraint has an Error: {{unWantedSkillsErrorState}}
 </p>
 <p>
-The number of skills in the constraint is : {{ unwantedSkillsConstraint.skills.length }} and the weight is:
-{{ unwantedSkillsConstraint.weight }}
+The number of skills in the constraint is : {{ UnwantedSkillsConstraint.skills.length }} and the weight is:
+{{ UnwantedSkillsConstraint.weight }}
 </p>

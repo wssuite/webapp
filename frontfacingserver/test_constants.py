@@ -145,7 +145,7 @@ contract_group_with_contradiction = {
 }
 
 unwanted_skills_contract = {
-    contract_name: "unwantedSkillsContract",
+    contract_name: "UnwantedSkillsContract",
     profile: profile1,
     contract_constraints: [
         {

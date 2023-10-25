@@ -32,7 +32,7 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <ng-container [ngSwitch]="constraint.name">
-                        <app-unwanted-patterns *ngSwitchCase="unwantedPatternsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
+                        <app-unwanted-patterns *ngSwitchCase="UnwantedPatternsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-unwanted-patterns>
                         <app-alternative-shift *ngSwitchCase="alternativeShiftId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-alternative-shift>
                         <app-shift-constraint *ngSwitchCase="freeDaysAfterShiftId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-shift-constraint>
                         <app-min-max-consecutive-shift *ngSwitchCase="minMaxConsecutiveShiftTypeId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
@@ -42,7 +42,7 @@
                         <app-min-max-consecutive-shift *ngSwitchCase="minMaxConsecutiveWorkingWeekendsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
                         <app-min-max-consecutive-shift *ngSwitchCase="minMaxNbAssignmentsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
                         <app-min-max-consecutive-shift *ngSwitchCase="minMaxWorkingHoursId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [possibleShifts]="possibleShifts"></app-min-max-consecutive-shift>
-                        <app-unwanted-skills *ngSwitchCase="unwantedSkillsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [skills]="possibleSkills"></app-unwanted-skills>
+                        <app-unwanted-skills *ngSwitchCase="UnwantedSkillsId" [(constraint)]="contract.constraints[i]" (errorState)="updateConstraintErrorState(i,$event)" [skills]="possibleSkills"></app-unwanted-skills>
                         <div *ngSwitchDefault>Empty</div>
                     </ng-container>
                 </mat-expansion-panel>

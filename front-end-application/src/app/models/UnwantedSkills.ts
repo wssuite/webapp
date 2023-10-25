@@ -28,7 +28,7 @@ export class UnwantedSkills extends Constraint{
         })
     }
     
-    toJson(): unwantedSkillsInterface {
+    toJson(): UnwantedSkillsInterface {
         return {
             name: this.name,
             skills: this.skills,
@@ -58,13 +58,13 @@ export class UnwantedSkills extends Constraint{
         return sameSkills && this.weight === c.weight;
     }
 
-    fromJson(c: unwantedSkillsInterface): void {
+    fromJson(c: UnwantedSkillsInterface): void {
         this.skills = c.skills;
         this.weight = c.weight;
     }
 }
 
-export interface unwantedSkillsInterface {
+export interface UnwantedSkillsInterface {
     name: string;
     skills: string[];
     weight: string;

@@ -249,7 +249,7 @@ Rest
 Day,Early
 Night
 contracts,
-name,unwantedSkillsContract
+name,UnwantedSkillsContract
 unwanted skills,Nurse,hard
 
 name,minConsContract

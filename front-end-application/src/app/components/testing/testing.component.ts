@@ -37,8 +37,8 @@ export class TestingComponent {
   booleanConstraint: BooleanConstraint;
   booleanConstraintErrorState: boolean;
 
-  unwantedPatternsConstraint: UnwantedPatterns;
-  unwantedPatternsErrorState: boolean;
+  UnwantedPatternsConstraint: UnwantedPatterns;
+  UnwantedPatternsErrorState: boolean;
 
   integerConstraint: IntegerConstraint;
   integerConstraintErrorState:boolean;
@@ -46,7 +46,7 @@ export class TestingComponent {
   minMaxConstraint: MinMaxConstraint;
   minMaxErrorConstraint: boolean;
 
-  unwantedSkillsConstraint: UnwantedSkills;
+  UnwantedSkillsConstraint: UnwantedSkills;
   unWantedSkillsErrorState: boolean;
 
   SKILLS = ["Nurse", "headNurse", "Physiatre"];
@@ -59,9 +59,9 @@ export class TestingComponent {
     this.shiftTypeConstraintErrorState = true;
     this.minMaxConsecutiveShift = new MinMaxShiftConstraint(MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID, MIN_MAX_CONSECUTIVE_SHIFT_TYPE_DISPLAY_NAME);
     this.minMaxShiftConstraintErrorState = true;
-    this.unwantedPatternsConstraint = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
-    this.unwantedPatternsErrorState = true;
-    this.unwantedSkillsConstraint = new UnwantedSkills(UNWANTED_SKILLS_ID, UNWANTED_SKILLS_DISPLAY_NAME);
+    this.UnwantedPatternsConstraint = new UnwantedPatterns(UNWANTED_PATTERNS_ID,UNWANTED_PATTERNS_DISPLAY_NAME);
+    this.UnwantedPatternsErrorState = true;
+    this.UnwantedSkillsConstraint = new UnwantedSkills(UNWANTED_SKILLS_ID, UNWANTED_SKILLS_DISPLAY_NAME);
     this.unWantedSkillsErrorState = true;
     this.booleanConstraint = new BooleanConstraint(
       IDENTICAL_WEEKEND_ID,
@@ -80,7 +80,7 @@ export class TestingComponent {
 
 
   updateUnwantedPatternsErrorState(e: boolean) {
-    this.unwantedPatternsErrorState = e
+    this.UnwantedPatternsErrorState = e
   }
   
   updateAlternativeConstraintErrorState(e: boolean){
@@ -96,7 +96,7 @@ export class TestingComponent {
   }
 
   undateUnwantedPatternsErrorState(e:boolean) {
-    this.unwantedPatternsErrorState = e;
+    this.UnwantedPatternsErrorState = e;
   }
   
   updateMinMaxShiftConstraintErrorState(e:boolean) {
