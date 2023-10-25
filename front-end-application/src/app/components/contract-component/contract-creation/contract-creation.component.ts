@@ -30,7 +30,7 @@ export class ContractCreationComponent implements OnInit{
   possibleConstraints: string[];
   constraintsErrorState: boolean[];
   nameFormCtrl: FormControl;
-  unwantedPatternsId: string;
+  UnwantedPatternsId: string;
   alternativeShiftId: string;
   freeDaysAfterShiftId: string;
   minMaxConsecutiveShiftTypeId: string;
@@ -40,7 +40,7 @@ export class ContractCreationComponent implements OnInit{
   minMaxConsecutiveWorkingWeekendsId: string;
   minMaxNbAssignmentsId: string;
   inputDisabled: boolean;
-  unwantedSkillsId: string;
+  UnwantedSkillsId: string;
   minMaxWorkingHoursId: string;
   contractStartName!: string;
 
@@ -52,7 +52,7 @@ export class ContractCreationComponent implements OnInit{
     this.possibleConstraints = CONSTRAINTS;
     this.constraintsErrorState = [];
     this.nameFormCtrl = new FormControl(null, Validators.required);
-    this.unwantedPatternsId = UNWANTED_PATTERNS_ID;
+    this.UnwantedPatternsId = UNWANTED_PATTERNS_ID;
     this.alternativeShiftId = ALTERNATIVE_SHIFT_ID;
     this.freeDaysAfterShiftId = FREE_DAYS_AFTER_SHIFT_ID;
     this.minMaxConsecutiveShiftTypeId = MIN_MAX_CONSECUTIVE_SHIFT_TYPE_ID;
@@ -61,7 +61,7 @@ export class ContractCreationComponent implements OnInit{
     this.totalNumberWeekendsId = TOTAL_WEEKENDS_IN_FOUR_WEEKS_ID;
     this.minMaxConsecutiveWorkingWeekendsId = MIN_MAX_CONSECUTIVE_WORKING_WEEKENDS_ID;
     this.minMaxNbAssignmentsId = MIN_MAX_NUM_ASSIGNMENTS_IN_FOUR_WEEKS_ID;
-    this.unwantedSkillsId = UNWANTED_SKILLS_ID;
+    this.UnwantedSkillsId = UNWANTED_SKILLS_ID;
     this.minMaxWorkingHoursId = MIN_MAX_WORKING_HOURS_IN_FOUR_WEEKS_ID
     this.inputDisabled = false;
   }

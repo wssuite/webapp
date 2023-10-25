@@ -4,7 +4,7 @@ from constants import (
     start_date,
     end_date,
     schedule_string,
-    assignment_employee_name,
+    assignment_employee_uname,
     assignments_string,
 )
 from src.models.exporter import CSVExporter
@@ -34,13 +34,13 @@ class Schedule(CSVExporter):
                 """the assignments block will be after the headers bloc"""
                 if match_regex_assignments:
                     if is_assignments is True:
-                        employee_name = self.id_dict.get(
+                        employee_uname = self.id_dict.get(
                             match_regex_assignments.group(1)
                         )
 
                         groups = [
                             match_regex_assignments.group(2),
-                            employee_name,
+                            employee_uname,
                             match_regex_assignments.group(3),
                             match_regex_assignments.group(4),
                         ]
@@ -70,19 +70,19 @@ class Schedule(CSVExporter):
     def filter_by_name(self):
         dict_filtered_name = {}
         for assignment in self.assignments_list:
-            if assignment.employee_name not in dict_filtered_name:
+            if assignment.employee_uname not in dict_filtered_name:
                 list_assignments = [assignment.to_json()]
-                dict_filtered_name[assignment.employee_name] = list_assignments
+                dict_filtered_name[assignment.employee_uname] = list_assignments
             else:
                 list_assignments = dict_filtered_name.get(
-                    assignment.employee_name
+                    assignment.employee_uname
                 )
                 list_assignments.append(assignment.to_json())
-                dict_filtered_name[assignment.employee_name] = list_assignments
+                dict_filtered_name[assignment.employee_uname] = list_assignments
         schedule = []
         for key in dict_filtered_name.keys():
             ret_element = {
-                assignment_employee_name: key,
+                assignment_employee_uname: key,
                 assignments_string: dict_filtered_name.get(key),
             }
             schedule.append(ret_element)

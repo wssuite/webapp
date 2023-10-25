@@ -1,14 +1,18 @@
-FROM legraina/nurse-scheduler:ui-1.0
+FROM legraina/nurse-scheduler
+
 USER root
-RUN apt-get --allow-releaseinfo-change update
-RUN apt-get install cpulimit -y
-RUN apt-get update
-RUN apt-get install python3-venv -y
-RUN python3 -m venv /venv
-RUN /venv/bin/pip install Flask
-RUN /venv/bin/pip install requests
-RUN mkdir /invoker
-COPY *.py /invoker/.
-COPY src/ /invoker/src/
+RUN apt-get --allow-releaseinfo-change update && \
+    apt-get install cpulimit python3-venv -y && \
+    python3 -m venv /venv && \
+    /venv/bin/pip install Flask requests
+
+COPY . /invoker/.
+
+# Set the working directory
+WORKDIR /invoker/
 RUN cp -r /home/dantzig/ns/bin /invoker/.
+
+# Entrypoint for the invoker
+ENTRYPOINT [ "/venv/bin/python", "app.py" ]
+
 EXPOSE 5000

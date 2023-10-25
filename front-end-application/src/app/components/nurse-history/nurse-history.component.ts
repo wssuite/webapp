@@ -22,7 +22,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
   @Input() startDate!: Date;
   @Output() nursesHistory: EventEmitter<NurseHistoryElement[]>;
   @Output() errorState: EventEmitter<boolean>;
-  
+
 
   saveHistoryError: boolean;
   timetable: dateDisplay[];
@@ -31,7 +31,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
   possibleShifts!: string[];
   shiftsLoaded: boolean;
 
- 
+
   constructor(private shiftService: ShiftService,private dialog: MatDialog,  ) {
     this.nursesHistory = new EventEmitter();
     this.errorState = new EventEmitter();
@@ -50,14 +50,14 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
     }
     if (changes["startDate"] && changes["startDate"].currentValue) {
       this.startDate = changes["startDate"].currentValue;
-      
+
     }
     //this.ngOnInit()
     this.timetable = []
     this.nbColumns = 7;
     for(let i = 0; i < this.nbColumns; i++) {
       this.timetable.push({date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
-      
+
     }
     this.timetable.reverse();
     //initiate demands
@@ -81,7 +81,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
   }
 
   ngOnDestroy(): void {
-    this.saveHistory()    
+    this.saveHistory()
   }
 
   ngOnInit(): void {
@@ -89,7 +89,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
     this.nbColumns = 7;
     for(let i = 0; i < this.nbColumns; i++) {
       this.timetable.push({date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
-      
+
     }
     this.timetable.reverse();
     //initiate demands
@@ -105,6 +105,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
     try{
       this.shiftService.getShiftNames().subscribe({
         next: (shifts: string[])=>{
+          shifts.push("");
           this.possibleShifts = shifts
           this.shiftsLoaded = true;
           const savedHistory = CacheUtils.getNurseHistory()
@@ -162,7 +163,11 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
 
   onShiftChange(date: dateDisplay, nurse: NurseInterface, shift: string){
     const key = JSON.stringify({date:date,nurse:nurse});
-    this.nurseHistory.set(key, shift);
+    if(shift === undefined || shift === "") {
+      this.nurseHistory.delete(key);
+    } else {
+      this.nurseHistory.set(key, shift);
+    }
     this.emitNurseHistory();
   }
 
@@ -184,7 +189,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
       }
     }
     this.nursesHistory.emit(nurseHistory);
-    this.emitErrorState(); 
+    this.emitErrorState();
   }
 
   getDisplayedDate(date: string){
@@ -195,7 +200,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
       return ""
     }
   }
-  
+
   @HostListener("window:beforeunload")
   saveHistory(){
     const nurseHistory = [];
@@ -223,7 +228,7 @@ export class NurseHistoryComponent  implements OnInit, OnChanges, OnDestroy{
 openErrorDialog(message: string) {
   this.dialog.open(ErrorMessageDialogComponent, {
     height: '45%',
-    width: '45%', 
+    width: '45%',
     position: {top:'20vh',left: '30%', right: '25%'},
     data: {message: message},
   })

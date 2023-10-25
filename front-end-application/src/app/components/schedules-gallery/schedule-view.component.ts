@@ -35,7 +35,7 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
     this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.dataSource = new MatTableDataSource();
   }
-  
+
   ngOnInit(): void {
     try{
       this.getSchedules();
@@ -71,7 +71,7 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
   openErrorDialog(message: string) {
     this.dialog.open(ErrorMessageDialogComponent, {
       height: '45%',
-      width: '45%', 
+      width: '45%',
       position: {top:'20vh',left: '30%', right: '25%'},
       data: {message: message}
     })
@@ -83,7 +83,7 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
   }
 
   exportProblem(schedule: Solution) {
-    this.service.exportProblem(schedule).subscribe({
+    this.service.exportProblemSchedule(schedule, "txt").subscribe({
       next: (data: {content: string})=>{
         const file = new File([data.content], CacheUtils.getProfile() + "_" + schedule.startDate + "_" + schedule.endDate + "_" + schedule.version + ".txt", {type:"text/plain;charset=utf-8"});
         saveAs(file);
@@ -93,10 +93,10 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
 
   removeSolution(sol: Solution){
     try{
-      const dialog = this.dialog.open(ConfirmationDialogComponent,  
-        { disableClose: true,  
+      const dialog = this.dialog.open(ConfirmationDialogComponent,
+        { disableClose: true,
           height: '50%',
-          width: '28%', 
+          width: '28%',
           position: {top:'20vh',left: '38%', right: '25%'},
           data: {message: "contract", elementName:sol.startDate+ "-" + sol.endDate + "-" + sol.version}
         });

@@ -10,7 +10,7 @@ services:
       - mongo_data:/data/db
     restart: always
 
-  frontfacingserver_webapp:
+  webapp:
     build:  .
     container_name: webapp
     ports:
@@ -38,14 +38,13 @@ services:
   worker1:
     build: ./cpp-invoker/.
     container_name: worker1
+    hostname: worker1
     ports:
       - 5000
-    entrypoint: >
-      bash -c "cd /invoker && /venv/bin/python app.py worker1:5000"
+    command: worker1:5000
     volumes:
       - dataset:/invoker/dataset
       - running-worker1:/invoker/running
-      - ./default-cpp-param.txt:/invoker/default.txt
       - ./config-cpp-invoker.json:/invoker/config.json
     restart: always
     deploy:
@@ -56,14 +55,13 @@ services:
   worker2:
     build: ./cpp-invoker/.
     container_name: worker2
+    hostname: worker2
     ports:
       - 5000
-    entrypoint: >
-      bash -c "cd /invoker && /venv/bin/python app.py worker2:5000"
+    command: worker2:5000
     volumes:
       - dataset:/invoker/dataset
       - running-worker2:/invoker/running
-      - ./default-cpp-param.txt:/invoker/default.txt
       - ./config-cpp-invoker.json:/invoker/config.json
     restart: always
     deploy:
@@ -74,14 +72,13 @@ services:
   worker3:
     build: ./cpp-invoker/.
     container_name: worker3
+    hostname: worker3
     ports:
       - 5000
-    entrypoint: >
-      bash -c "cd /invoker && /venv/bin/python app.py worker3:5000"
+    command: worker3:5000
     volumes:
       - dataset:/invoker/dataset
       - running-worker3:/invoker/running
-      - ./default-cpp-param.txt:/invoker/default.txt
       - ./config-cpp-invoker.json:/invoker/config.json
     restart: always
     deploy:

@@ -24,40 +24,41 @@
                     <tr>
                         <th class="nurse-name-header"></th>
                     </tr>
-                    <tr class="nurse-name-row" *ngFor="let sc of employeeSchedule.schedule">
-                        <td class="nurse-name-cell">{{sc.employee_name}}</td>
+                    <tr class="nurse-name-row" *ngFor="let n of nurses">
+                        <td class="nurse-name-cell">{{n.name}}</td>
                     </tr>
                 </table>
             </div>
             <div class="schedule-table">
                 <table>
                     <tr>
-                        <th *ngFor="let index of indexes" class="date-header">
-                            {{getDayString(index).substring(0, 3)}} {{getDisplayedDate(getDateDayStringByIndex(index))}}  
+                        <th *ngFor="let index of indexes" class="date-header" [ngStyle]="getHeaderStyle(index)">
+                            {{getDayString(index).substring(0, 3)}} {{getDisplayedDate(getDateDayStringByIndex(index))}}
                         </th>
                     </tr>
-                    <tr class="checkbox-row" *ngFor="let sc of schedule.schedule.schedule">
+                    <tr class="checkbox-row" *ngFor="let n of nurses">
                         <td class="checkbox-cell" *ngFor="let index of indexes">
                             <div class="button-cell" *ngIf="schedule.state !== inPrgressState; else inProgress">
-                                <button class="info-button" mat-raised-button *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference" 
-                                    [ngStyle]="getButtonStyle(sc.employee_name, index)" (click)="updatePreference(sc.employee_name, index)">
+                                <button class="info-button" mat-raised-button *ngIf="getPreference(n.username, index) !== undefined; else noPreference"
+                                    [ngStyle]="getButtonStyle(n.username, index)" (click)="updatePreference(n.username, index)"
+                                    [disabled]="isButtonDisabled === undefined || isButtonDisabled[index]">
                                     <span class="employee-info">
                                         <b>
-                                            {{getEmployeeShift(sc.employee_name, index)}} 
+                                            {{getEmployeeShift(n.username, index)}}
                                         </b>
                                     </span>
                                     <span class="employee-info">
-                                        {{getEmployeeSkill(sc.employee_name, index)}}
+                                        {{getEmployeeSkill(n.username, index)}}
                                     </span>
                                 </button>
                                 <ng-template #noPreference></ng-template>
                             </div>
                             <ng-template #inProgress>
-                                <span class="employee-info" *ngIf="getPreference(sc.employee_name, index) !== undefined; else noPreference">
+                                <span class="employee-info" *ngIf="getPreference(n.username, index) !== undefined; else noPreference">
                                     <b>
-                                        {{getEmployeeShift(sc.employee_name, index)}} 
+                                        {{getEmployeeShift(n.username, index)}}
                                     </b>
-                                    {{getEmployeeSkill(sc.employee_name, index)}}
+                                    {{getEmployeeSkill(n.username, index)}}
                                 </span>
                                 <ng-template #noPreference></ng-template>
                             </ng-template>
@@ -116,8 +117,8 @@
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    
-                <!-- Row shown when there is no matching data. 
+
+                <!-- Row shown when there is no matching data.
                 <tr class="mat-row" *matNoDataRow>
                 <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                 </tr> -->
