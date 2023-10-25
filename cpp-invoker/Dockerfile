@@ -1,4 +1,4 @@
-FROM legraina/nurse-scheduler:master
+FROM legraina/nurse-scheduler
 
 USER root
 RUN apt-get --allow-releaseinfo-change update && \
