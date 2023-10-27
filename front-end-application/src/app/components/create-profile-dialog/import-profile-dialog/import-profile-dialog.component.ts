@@ -16,6 +16,8 @@ import { ContractService } from 'src/app/services/contract/contract.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ALLOWED_PROFILE_NAMES } from 'src/app/constants/regex';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
+
 
 @Component({
   selector: 'app-import-profile-dialog',
@@ -111,7 +113,7 @@ export class ImportProfileComponent implements OnInit{
       next: (data: DetailedProfile)=> {
         this.profile = data
         this.profileNameCtrl.setValue(this.profile.profile)
-        this.readArrays();  
+        this.readArrays();
         this.validProfile = true;
       },
       error: (err: HttpErrorResponse)=>{
@@ -124,11 +126,11 @@ export class ImportProfileComponent implements OnInit{
       }
     })
   }
-  
+
   openErrorDialog(message: string){
     this.dialog.open(ErrorMessageDialogComponent, {
       height: '45%',
-      width: '45%', 
+      width: '45%',
       position: {top:'20vh',left: '30%', right: '25%'},
       data:{message: message}
     })
@@ -406,7 +408,7 @@ export class ImportProfileComponent implements OnInit{
      this.nurseSectionHasError() || this.nurseGroupSectionHasError()
       || this.contractSectionHasError() || this.shiftGroupSectionHasError()
       || this.shiftSectionHasError() || this.shiftTypeSectionHasError() ||
-      this.nameExist() || this.profileNameCtrl.hasError("required") 
+      this.nameExist() || this.profileNameCtrl.hasError("required")
       || this.containsWhiteSpace()
   }
 
