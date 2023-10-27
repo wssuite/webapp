@@ -35,6 +35,7 @@ class TXTImporter(BaseImporter):
         contract_groups = []
         nurses = []
         nurse_groups = []
+        problem = {}
         with open(file_name, "r") as file:
             lines = iter(file.readlines())
             line = next(lines, None)
@@ -42,6 +43,8 @@ class TXTImporter(BaseImporter):
                 if "SCHEDULING_PERIOD" in line:
                     line = next(lines)
                     profile_name, version, start, end = sanitize_array(line.split(','))
+                    problem["startDate"] = start
+                    problem["endDate"] = end
                     next(lines)  # skip END
                 elif "SKILLS" in line:
                     line = next(lines).strip()
@@ -49,6 +52,7 @@ class TXTImporter(BaseImporter):
                         new_skill = Skill().read_skill(line, profile_name)
                         skills.append(new_skill)
                         line = next(lines).strip()
+                    problem["skills"] = [sk.username for sk in skills]
                 elif "SHIFTS" in line:
                     line = next(lines).strip()
                     while "END" not in line:
@@ -99,6 +103,7 @@ class TXTImporter(BaseImporter):
                         new_nurse.name = new_nurse.username
                         nurses.append(new_nurse)
                         line = next(lines).strip()
+                    problem["nurses"] = [n.username for n in nurses]
 
                 # parse next line
                 line = next(lines, None)
@@ -114,142 +119,6 @@ class TXTImporter(BaseImporter):
         profile.nurse_groups = []
         profile.skills = skills
         return profile.to_json()
-
-    @staticmethod
-    def read_contracts(profile_name, contracts_string):
-        if contracts_string == "":
-            return []
-        contracts = []
-        contract_objects = []
-        lines = contracts_string.split("\n")
-        contract_string = ""
-        for line in lines:
-            if not skip_line(line):
-                tokens = sanitize_array(line.split(","))
-                tokens_wrapper = Wrapper(tokens)
-                if tokens_wrapper.get_by_index(0) == "contractName":
-                    if contract_string != "":
-                        contracts.append(contract_string)
-                    contract_string = line
-                else:
-                    contract_string += "\n" + line
-
-        contracts.append(contract_string)
-        for contract in contracts:
-            new_contract = Contract().read_contract(profile_name, contract)
-            contract_objects.append(new_contract)
-
-        return contract_objects
-
-    @staticmethod
-    def create_shifts(shifts_string, profile_name):
-        if shifts_string == "":
-            return []
-
-        shifts = []
-        lines = shifts_string.split("\n")
-        for line in lines:
-            if not skip_line(line):
-                new_shift = Shift().read_shift(line, profile_name)
-                shifts.append(new_shift)
-
-        return shifts
-
-    @staticmethod
-    def create_shift_types(shift_types_string, profile_name):
-        if shift_types_string == "":
-            return []
-
-        shift_types = []
-        lines = shift_types_string.split("\n")
-        for line in lines:
-            if not skip_line(line):
-                new_shift_type = ShiftType().read_shift_type(
-                    line, profile_name
-                )
-                shift_types.append(new_shift_type)
-
-        return shift_types
-
-    @staticmethod
-    def create_shift_groups(
-        shift_groups_string, profile_name, shift_types_names
-    ):
-        if shift_groups_string == "":
-            return []
-
-        shift_groups = []
-        lines = shift_groups_string.split("\n")
-        for line in lines:
-            if not skip_line(line):
-                new_shift_group = ShiftGroup().read_shift_group(
-                    line, profile_name, shift_types_names
-                )
-                shift_groups.append(new_shift_group)
-
-        return shift_groups
-
-    @staticmethod
-    def create_nurses(nurses_string, profile_name, contract_groups):
-        if nurses_string == "":
-            return []
-        nurses = []
-        lines = nurses_string.split("\n")
-        for line in lines:
-            if not skip_line(line):
-                new_nurse = Nurse().read_nurse(
-                    line, profile_name, contract_groups
-                )
-                nurses.append(new_nurse)
-
-        return nurses
-
-    @staticmethod
-    def create_nurse_groups(
-        nurse_group_string, profile_name, contracts, contract_groups
-    ):
-        if nurse_group_string == "":
-            return []
-        groups = []
-        lines = nurse_group_string.split("\n")
-        for line in lines:
-            if not skip_line(line):
-                new_group = NurseGroup().read_nurse_group(
-                    line, profile_name, contracts, contract_groups
-                )
-                groups.append(new_group)
-
-        return groups
-
-    @staticmethod
-    def create_skills(skills_string, profile_name):
-        if skills_string == "":
-            return []
-        skills = []
-        lines = skills_string.split("\n")
-        for line in lines:
-            if not skip_line(line):
-                tokens = sanitize_array(line.split(","))
-                for token in tokens:
-                    new_skill = Skill().read_skill(token, profile_name)
-                    skills.append(new_skill)
-
-        return skills
-
-    @staticmethod
-    def read_contract_groups(contract_groups_string, profile_name):
-        if contract_groups_string == "":
-            return []
-        groups = []
-        lines = contract_groups_string.split("\n")
-        for line in lines:
-            if not skip_line(line):
-                new_group = ContractGroup().read_contract_group(
-                    line, profile_name
-                )
-                groups.append(new_group)
-
-        return groups
 
 
 if __name__ == "__main__":
