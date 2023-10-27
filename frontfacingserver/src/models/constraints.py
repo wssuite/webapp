@@ -66,7 +66,7 @@ class ContractConstraint(BaseConstraint, StringReader, CSVExporter):
     def get_skills(self):
         return []
 
-    def read_line(self, line):
+    def read_line(self, line, format="csv"):
         pass
 
 
@@ -81,11 +81,12 @@ class ContractIntegerConstraint(ContractConstraint):
     def repr(self):
         return self.name
 
-    def read_line(self, line):
+    def read_line(self, line, format="csv"):
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
-        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.name = wrapper.get_by_index(0) if format == "txt" \
+            else bind_map[wrapper.get_by_index(0).lower()]
         self.value = wrapper.get_by_index(1)
         self.weight = wrapper.get_by_index(2)
         return self
@@ -110,11 +111,12 @@ class ContractIntegerShiftConstraint(ContractIntegerConstraint):
     def get_shift(self):
         return [self.shift]
 
-    def read_line(self, line):
+    def read_line(self, line, format="csv"):
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
-        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.name = wrapper.get_by_index(0) if format == "txt" \
+            else bind_map[wrapper.get_by_index(0).lower()]
         self.shift = wrapper.get_by_index(1)
         self.value = wrapper.get_by_index(2)
         self.weight = wrapper.get_by_index(3)
@@ -141,11 +143,12 @@ class ContractMinMaxConstraint(ContractConstraint):
     def repr(self):
         return self.name
 
-    def read_line(self, line):
+    def read_line(self, line, format="csv"):
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
-        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        self.name = wrapper.get_by_index(0) if format == "txt" \
+            else bind_map[wrapper.get_by_index(0).lower()]
         self.minValue = wrapper.get_by_index(1)
         self.minWeight = wrapper.get_by_index(2)
         self.maxValue = wrapper.get_by_index(3)
@@ -178,16 +181,22 @@ class ContractMinMaxShiftConstraint(ContractMinMaxConstraint):
     def get_shift(self):
         return [self.shift]
 
-    def read_line(self, line):
+    def read_line(self, line, format="csv"):
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
-        self.name = bind_map[wrapper.get_by_index(0).lower()]
-        self.shift = wrapper.get_by_index(1)
-        self.minValue = wrapper.get_by_index(2)
-        self.minWeight = wrapper.get_by_index(3)
-        self.maxValue = wrapper.get_by_index(4)
-        self.maxWeight = wrapper.get_by_index(5)
+        if format == "txt":
+            self.name = wrapper.get_by_index(0)
+            self.shift = wrapper.get_by_index(-1)
+            i = 0
+        else:
+            self.name = bind_map[wrapper.get_by_index(0).lower()]
+            self.shift = wrapper.get_by_index(1)
+            i = 1
+        self.minValue = wrapper.get_by_index(i + 1)
+        self.minWeight = wrapper.get_by_index(i + 2)
+        self.maxValue = wrapper.get_by_index(i + 3)
+        self.maxWeight = wrapper.get_by_index(i + 4)
         return self
 
     def to_string(self):
@@ -214,11 +223,14 @@ class ContractBooleanConstraint(ContractConstraint):
     def repr(self):
         return self.name
 
-    def read_line(self, line):
+    def read_line(self, line, format="csv"):
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
-        self.name = bind_map[wrapper.get_by_index(0).lower()]
+        if format == "txt":
+            self.name = wrapper.get_by_index(0)
+        else:
+            self.name = bind_map[wrapper.get_by_index(0).lower()]
         self.weight = wrapper.get_by_index(1)
         return self
 
@@ -254,22 +266,28 @@ class ContractUnwantedPatterns(ContractConstraint):
             unwanted_pattern_elements: array,
         }
 
-    def read_line(self, line):
+    def read_line(self, line, format="csv"):
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
-        self.name = bind_map[wrapper.get_by_index(0).lower()]
         self.pattern_elements = []
-        i = 1
+        if format == "txt":
+            self.name = tokens[0]
+            self.weight = tokens[1]
+            for p in tokens[3:]:
+                pat = PatternElement().read_line(p.replace(";", ","))
+                self.pattern_elements.append(pat)
+        else:
+            self.name = bind_map[wrapper.get_by_index(0).lower()]
+            self.weight = wrapper.get_by_index(-1)
+            i = 1
+            while i < len(tokens) - 1:
+                new_line = (
+                    wrapper.get_by_index(i) + "," + wrapper.get_by_index(i + 1)
+                )
+                self.pattern_elements.append(PatternElement().read_line(new_line))
+                i += 2
 
-        while i < len(tokens) - 1:
-            new_line = (
-                wrapper.get_by_index(i) + "," + wrapper.get_by_index(i + 1)
-            )
-            self.pattern_elements.append(PatternElement().read_line(new_line))
-            i += 2
-
-        self.weight = wrapper.get_by_index(len(tokens) - 1)
         return self
 
     def get_shift(self):
@@ -309,13 +327,18 @@ class ContractAlternativeShift(ContractConstraint):
     def get_shift(self):
         return [self.shift]
 
-    def read_line(self, line):
+    def read_line(self, line, format="csv"):
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
-        self.name = bind_map[wrapper.get_by_index(0).lower()]
-        self.shift = wrapper.get_by_index(1)
-        self.weight = wrapper.get_by_index(2)
+        if format == "txt":
+            self.name = wrapper.get_by_index(0)
+            self.weight = wrapper.get_by_index(1)
+            self.shift = wrapper.get_by_index(2)
+        else:
+            self.name = bind_map[wrapper.get_by_index(0).lower()]
+            self.shift = wrapper.get_by_index(1)
+            self.weight = wrapper.get_by_index(2)
         return self
 
     def to_string(self):
@@ -340,15 +363,20 @@ class ContractUnwantedSkills(ContractConstraint):
     def get_skills(self):
         return self.unwanted_skills
 
-    def read_line(self, line):
+    def read_line(self, line, format="csv"):
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
         wrapper = Wrapper(tokens)
-        self.name = bind_map[wrapper.get_by_index(0).lower()]
-        for i in range(1, len(tokens) - 1):
-            self.unwanted_skills.append(wrapper.get_by_index(i))
-
-        self.weight = wrapper.get_by_index(len(tokens) - 1)
+        if format == "txt":
+            self.name = wrapper.get_by_index(0)
+            for i in range(3, len(tokens)):
+                self.unwanted_skills.append(wrapper.get_by_index(i))
+            self.weight = wrapper.get_by_index(1)
+        else:
+            self.name = bind_map[wrapper.get_by_index(0).lower()]
+            for i in range(1, len(tokens) - 1):
+                self.unwanted_skills.append(wrapper.get_by_index(i))
+            self.weight = wrapper.get_by_index(-1)
         return self
 
     def to_string(self):

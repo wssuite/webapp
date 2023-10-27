@@ -30,6 +30,7 @@ from constants import (
     unwanted_skills,
     contract_skills,
     bind_map,
+    export_bind_map,
     min_max_hours_in_four_weeks,
 )
 
@@ -64,10 +65,17 @@ class ContractConstraintCreator:
         ]().from_json(data)
 
     def create_contract_constraint_from_string(self, line):
+        # for problem description format
+        if line.strip() == "constraints":
+            return None
+
         tokens = line.split(",")
         tokens = sanitize_array(tokens)
-        name = bind_map[tokens[0].lower()]
-        return self.dict_contract_constraints[name]().read_line(line)
+        name = tokens[0]
+        if name in bind_map:
+            name = bind_map[name.lower()]
+            return self.dict_contract_constraints[name]().read_line(line, name)
+        return self.dict_contract_constraints[name]().read_line(line, "txt")
 
 
 class Contract(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
@@ -132,7 +140,8 @@ class Contract(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
             if not skip_line(lines[i]):
                 try:
                     constraint = self.read_line(lines[i])
-                    self.constraints.append(constraint)
+                    if constraint:
+                        self.constraints.append(constraint)
                 except KeyError:
                     continue
 

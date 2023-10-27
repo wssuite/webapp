@@ -34,14 +34,13 @@ class ShiftGroup(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
 
     def read_shift_group(self, line, profile_name, shift_types):
         self.profile = profile_name
-        self.read_line(line)
-        for shift in self.shifts:
-            if shift in shift_types:
+        temp = self.read_line(line)
+        for shift in temp:
+            if shift in shift_types and shift not in self.shift_types:
                 self.shift_types.append(shift)
+            else:
+                self.shifts.append(shift)
 
-        temp = self.shifts
-        self.shifts = []
-        self.shifts = [s for s in temp if s not in self.shift_types]
         return self
 
     def read_line(self, line):
@@ -52,8 +51,8 @@ class ShiftGroup(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
         self.shifts = []
         self.shift_types = []
         # temporary placing the given shifts inside the shifts array
-        for i in range(1, len(tokens)):
-            self.shifts.append(wrapper.get_by_index(i))
+        return [wrapper.get_by_index(i) for i in range(1, len(tokens))
+                if not wrapper.get_by_index(i).isdigit()]
 
     def to_string(self):
         shifts_string = extract_string_from_simple_object_array(self.shifts)
