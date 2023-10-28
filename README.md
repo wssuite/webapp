@@ -64,10 +64,13 @@ Our solution uses a self-signed ssl certificate to activate HTTPS.
 
 To update the SSL certificate use the following command
 
-	 (echo CA & echo QC & echo M & echo company & echo section & echo someone & echo happy@example.com) |\
-	 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/private/nginx-selfsigned.key \
-	 -out ssl/certs/nginx-selfsigned.crt
+```
+(echo CA & echo QC & echo M & echo company & echo section & echo someone & echo happy@example.com) |\
+	 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout front/nginx/ssl/private/nginx-selfsigned.key \
+	 -out front/nginx/ssl/certs/nginx-selfsigned.crt
+```
 
+Then, the certificate needs to be mounted in the container with a volume at the same path, i.e. /etc/nginx/ssl/...
 
 ## Running a single service
 
@@ -83,7 +86,8 @@ Head to https://localhost, a default user admin is was created with the credenti
 
 The application allows the admin to create other users.
 
-The first action prompted is to create a hospital profile. In order to do that, the user can either use the format defined in the file template.csv in the frontfacing server directory, or create an empty profile by entering the profile name.
+The first action prompted is to create a hospital profile. In order to do that, the user can either use the format defined in the file template.csv in the api directory, or create an empty profile by entering the profile name.
+You can also directly import a problem file like the one (template.txt) also provided in the api directory.
 
 ## Application functionalities
 

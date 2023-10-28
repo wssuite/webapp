@@ -1,6 +1,6 @@
 import datetime
 import json
-import os.path
+import os
 from typing import Type
 
 import requests
@@ -36,6 +36,12 @@ from constants import (
 from src.utils.file_system_manager import FileSystemManager, base_directory
 
 
+file = open("config.json")
+data = json.load(file)
+HAPROXY_ADDRESS = os.getenv("HAPROXY_ADDRESS", data["haproxy_address"])
+file.close()
+
+
 class ScheduleHandler(BaseHandler):
     def __init__(self, mongo):
         super().__init__(mongo)
@@ -47,7 +53,7 @@ class ScheduleHandler(BaseHandler):
         config = open("config.json")
         data = json.load(config)
         config.close()
-        generate_url = f"http://{data['haproxy_address']}/solver/schedule"
+        generate_url = f"http://{HAPROXY_ADDRESS}/solver/schedule"
 
         """Get th path for next version"""
         (

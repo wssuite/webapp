@@ -11,11 +11,16 @@ import sys
 
 base_directory = os.getcwd()
 running_dir = os.path.join(base_directory, 'running')
+if not os.path.exists(running_dir):
+    os.makedirs(running_dir)
 running_fm = FileManager(os.path.join(running_dir, 'running.json'))
 waiting_fm = FileManager(os.path.join(running_dir, 'waiting.json'))
 
 file = open("config.json")
 data = json.load(file)
+API_ADDRESS = os.getenv("API_ADDRESS", data["api_address"])
+TIMEOUT = os.getenv("TIMEOUT", data["timeout"])
+CPP_PARAMS = os.getenv("CPP_PARAMS", data["cpp_params"])
 file.close()
 
 running_shared_dict = ProtectedDict()
@@ -42,13 +47,13 @@ def run_scheduler(path, counter):
     running_fm.add_item(path, counter)
 
     requests.post(
-        f"http://{data['main_server_address']}/schedule/updateStatus",
+        f"http://{API_ADDRESS}/schedule/updateStatus",
         json=info_json
     )
     cmd = (
         "./bin/staticscheduler --dir {0}/ --instance input.txt --param {1} "
         "--sol {0} --timeout {2} --origin ui".format(
-            path, data["cpp_params"], data['timeout'])
+            path, CPP_PARAMS, TIMEOUT)
     )
     cmd_split = shlex.split(cmd)
     print(cmd_split)
@@ -85,7 +90,7 @@ def callback(path, status, error: bytes, out:bytes):
         info_json["state"] = "Failed"
 
     requests.post(
-        f"http://{data['main_server_address']}/schedule/updateStatus",
+        f"http://{API_ADDRESS}/schedule/updateStatus",
         json=info_json
     )
     running_fm.pop_item_by_key(path)
@@ -125,6 +130,6 @@ def handle_stop_event(full_path):
     running_fm.pop_item_by_key(full_path)
     info_json["state"] = "Stopped"
     requests.post(
-        f"http://{data['main_server_address']}/schedule/updateStatus",
+        f"http://{API_ADDRESS}/schedule/updateStatus",
         json=info_json
     )

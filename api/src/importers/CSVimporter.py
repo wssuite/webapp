@@ -50,18 +50,16 @@ class CSVImporter(BaseImporter):
         file = open(file_name, "r")
         lines = file.readlines()
         i = 0
-        tokens = sanitize_array(lines[i].split(","))
-        while "profile" not in tokens[0]:
+        line = ""
+        while skip_line(line) or not line.startswith("profile,"):
+            line = lines[i].strip()
             i += 1
-            tokens = sanitize_array(lines[i].split(","))
 
-        i = i + 1
         profile_name = Wrapper(sanitize_array(lines[i].split(","))).get_by_index(1)
-        i = i + 1
-        j = i
+        i += 1
         current_section = ""
         string = ""
-        while j in range(i, len(lines)):
+        for j in range(i, len(lines)):
             if not skip_line(lines[j]):
                 tokens = sanitize_array(lines[j].split(","))
                 if tokens[0].lower() in sections_marker:
@@ -71,7 +69,6 @@ class CSVImporter(BaseImporter):
                     string = sections_map[current_section]
                 else:
                     string += lines[j]
-            j += 1
 
         if current_section != "":
             sections_map[current_section] = string
