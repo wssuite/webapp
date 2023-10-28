@@ -4,8 +4,9 @@ import { Component, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Subscription} from 'rxjs';
 import * as saveAs from 'file-saver';
-import { MAIN_MENU } from 'src/app/constants/app-routes';
+import { MAIN_MENU, SCHEDULE_GENERATION } from 'src/app/constants/app-routes';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { ContractGroupInterface } from 'src/app/models/ContractGroup';
 import { NurseGroupInterface, NurseInterface } from 'src/app/models/Nurse';
@@ -28,8 +29,7 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
 export class ImportProfileComponent implements OnInit{
 
   fileName: string;
-  profile!: DetailedProfile;
-  problem!: GenerationRequest;
+  profile!: DetailedProblemProfile;
   validProfile: boolean;
   profileNames: string[]
   connectedUser: boolean;
@@ -54,20 +54,20 @@ export class ImportProfileComponent implements OnInit{
   contractsGroupErrorState: boolean[];
   nursesErrorState: boolean[];
   nurseGroupsErrorState: boolean[];
-  skillsErrorState: boolean[]
+  skillsErrorState: boolean[];
 
   constructor( private profileService: ProfileService,
     private dialog: MatDialog, private router: Router,
-     private contractService: ContractService){
-      this.fileName = '';
-      this.validProfile = false;
-      this.profileNames = [];
-      this.connectedUser = false;
+    private contractService: ContractService){
+      this.fileName = ''
+      this.validProfile = false
+      this.profileNames = []
+      this.connectedUser = false
       this.profileNameCtrl = new FormControl(null, [Validators.required,
         Validators.pattern(ALLOWED_PROFILE_NAMES)])
-      this.contracts = [];
-      this.contractsGroup = [];
-      this.possibleContracts = [];
+      this.contracts = []
+      this.contractsGroup = []
+      this.possibleContracts = []
       this.possibleShifts = []
       this.possibleShiftTypes = []
       this.contractShifts = []
@@ -84,7 +84,7 @@ export class ImportProfileComponent implements OnInit{
       this.nursesErrorState = []
       this.nurseGroupsErrorState = []
       this.skillsErrorState = []
-      this.contractsGroupErrorState =[]
+      this.contractsGroupErrorState = []
     }
 
   ngOnInit(): void {
@@ -114,7 +114,6 @@ export class ImportProfileComponent implements OnInit{
     this.profileService.import(formData).subscribe({
       next: (data: DetailedProblemProfile)=> {
         this.profile = data
-        this.problem = data.problem
         this.profileNameCtrl.setValue(this.profile.profile)
         this.readArrays();
         this.validProfile = true;
@@ -557,11 +556,14 @@ export class ImportProfileComponent implements OnInit{
       error: (err: HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
           this.profileService.emitNewProfileCreation(true);
-          this.profileService.profileChanged.subscribe(()=>{
-            if (this.problem) {
+          const profileSubscription: Subscription = this.profileService.profileChanged.subscribe(()=>{
+            if (this.profile.problem) {
               this.saveGenerationRequest();
+              this.router.navigate(["/" + SCHEDULE_GENERATION])
+            } else {
+              this.router.navigate(["/" + MAIN_MENU])
             }
-            this.router.navigate(["/" + MAIN_MENU])
+            profileSubscription.unsubscribe()
           })
         }
         else{
@@ -574,15 +576,15 @@ export class ImportProfileComponent implements OnInit{
   saveGenerationRequest() {
     const details : GenerationRequestDetails= {
       nurses: this.profile.nurses,
-      skills: this.problem.skills,
-      shifts: this.problem.shifts,
-      startDate: new Date(this.problem.startDate),
-      endDate: new Date(this.problem.endDate)
+      skills: this.profile.problem.skills,
+      shifts: this.profile.problem.shifts,
+      startDate: new Date(this.profile.problem.startDate),
+      endDate: new Date(this.profile.problem.endDate)
     }
     CacheUtils.setGenerationRequest(details)
-    CacheUtils.setGenerationRequestPreferences(this.problem.preferences)
-    CacheUtils.setDemandGenerationRequest(this.problem.hospitalDemand);
-    CacheUtils.saveNurseHistory(this.problem.history);
+    CacheUtils.setGenerationRequestPreferences(this.profile.problem.preferences)
+    CacheUtils.setDemandGenerationRequest(this.profile.problem.hospitalDemand);
+    CacheUtils.saveNurseHistory(this.profile.problem.history);
     CacheUtils.removeOldVersion()
   }
 
