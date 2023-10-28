@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 from src.importers.importer import BaseImporter
 from src.models.contract import Contract
@@ -22,6 +23,11 @@ nurses_section_marker = "nurses"
 nurse_groups_section_marker = "nurse groups"
 
 
+def date_to_js(sdate):
+    date = datetime.fromisoformat(sdate)
+    return date.strftime('%Y-{}-{}').format(date.month, date.day)
+
+
 class TXTImporter(BaseImporter):
     def can_read_file(self, file_name):
         return file_name.endswith(".txt")
@@ -34,6 +40,7 @@ class TXTImporter(BaseImporter):
         contracts = []
         contract_groups = []
         nurses = []
+        nurse_names = {}
         nurse_groups = []
         problem = {}
         with open(file_name, "r") as file:
@@ -41,27 +48,28 @@ class TXTImporter(BaseImporter):
             line = next(lines, None)
             while line is not None:
                 if "SCHEDULING_PERIOD" in line:
-                    line = next(lines)
-                    profile_name, version, start, end = sanitize_array(line.split(','))
-                    problem["startDate"] = start
-                    problem["endDate"] = end
+                    line = next(lines).strip()
+                    profile_name, version, start, end = line.split(',')
+                    problem["startDate"] = date_to_js(start)
+                    problem["endDate"] = date_to_js(end)
                     next(lines)  # skip END
                 elif "SKILLS" in line:
                     line = next(lines).strip()
-                    while "END" not in line:
+                    while not line.startswith("END"):
                         new_skill = Skill().read_skill(line, profile_name)
                         skills.append(new_skill)
                         line = next(lines).strip()
-                    problem["skills"] = [sk.username for sk in skills]
+                    problem["skills"] = [sk.name for sk in skills]
                 elif "SHIFTS" in line:
                     line = next(lines).strip()
-                    while "END" not in line:
+                    while not line.startswith("END"):
                         new_shift = Shift().read_shift(line, profile_name)
                         shifts.append(new_shift)
                         line = next(lines).strip()
+                    problem["shifts"] = [s.name for s in shifts]
                 elif "SHIFT_TYPES" in line:
                     line = next(lines).strip()
-                    while "END" not in line:
+                    while not line.startswith("END"):
                         new_shift_type = ShiftType().read_shift_type(
                             line, profile_name
                         )
@@ -70,7 +78,7 @@ class TXTImporter(BaseImporter):
                 elif "SHIFT_GROUPS" in line:
                     line = next(lines).strip()
                     shift_type_names = [s.name for s in shift_types]
-                    while "END" not in line:
+                    while not line.startswith("END"):
                         new_shift_group = ShiftGroup().read_shift_group(
                             line, profile_name, shift_type_names
                         )
@@ -78,7 +86,7 @@ class TXTImporter(BaseImporter):
                         line = next(lines).strip()
                 elif "CONTRACTS" in line:
                     line = next(lines)
-                    while "END" not in line:
+                    while not line.startswith("END"):
                         if "{" in line:
                             contract = ""
                             line = next(lines)
@@ -90,20 +98,78 @@ class TXTImporter(BaseImporter):
                         line = next(lines)
                 elif "CONTRACT_GROUPS" in line:
                     line = next(lines).strip()
-                    while "END" not in line:
+                    while not line.startswith("END"):
                         c = ContractGroup().read_line(line)
                         contract_groups.append(c)
                         line = next(lines).strip()
                 elif "EMPLOYEES" in line:
                     line = next(lines).strip()
-                    while "END" not in line:
+                    while not line.startswith("END"):
                         new_nurse = Nurse().read_nurse(
                             line, profile_name, contract_groups
                         )
                         new_nurse.name = new_nurse.username
                         nurses.append(new_nurse)
+                        nurse_names[line.split(',')[0]] = new_nurse.username
                         line = next(lines).strip()
-                    problem["nurses"] = [n.username for n in nurses]
+                    problem["nurses"] = list(nurse_names.values())
+                elif "HOSPITAL_DEMAND" in line:
+                    line = next(lines).strip()
+                    if "hospitalDemand" in problem:
+                        print("Ignore subsequent hospital demand")
+                        while not line.startswith("END"):
+                            line = next(lines)
+                    else:
+                        demand = []
+                        while not line.startswith("END"):
+                            tokens = line.split(',')
+                            demand.append({
+                                "date": date_to_js(tokens[0]),
+                                "shift": tokens[1],
+                                "skill": tokens[2],
+                                "minValue": tokens[3],
+                                "minWeight": tokens[4],
+                                "maxValue": tokens[5],
+                                "maxWeight": tokens[6],
+                            })
+                            line = next(lines).strip()
+                        problem["hospitalDemand"] = demand
+                elif "PREFERENCES" in line:
+                    line = next(lines).strip()
+                    preferences = []
+                    while not line.startswith("END"):
+                        tokens = line.split(',')
+                        date = date_to_js(tokens[0])
+                        nurse_name = nurse_names[tokens[1]]
+                        p_shifts = problem["shifts"] if tokens[3] == "Any" or tokens[3] == "Rest" \
+                            else [tokens[3]]
+                        pref = tokens[2]
+                        if tokens[3] == "Rest":
+                            pref = "ON" if pref == "OFF" else "OFF"
+                        weight = tokens[4]
+                        for shift in p_shifts:
+                            preferences.append({
+                                "date": date,
+                                "username": nurse_name,
+                                "preference": pref,
+                                "shift": shift,
+                                "weight": weight,
+                            })
+                        line = next(lines).strip()
+                    problem["preferences"] = preferences
+                elif "HISTORY" in line:
+                    line = next(lines).strip()
+                    history = []
+                    while not line.startswith("END"):
+                        tokens = line.split(',')
+                        nurse_name = nurse_names[tokens[1]]
+                        history.append({
+                            "date": date_to_js(tokens[0]),
+                            "username": nurse_name,
+                            "shift": tokens[2],
+                        })
+                        line = next(lines).strip()
+                    problem["history"] = history
 
                 # parse next line
                 line = next(lines, None)
@@ -118,7 +184,11 @@ class TXTImporter(BaseImporter):
         profile.nurses = nurses
         profile.nurse_groups = []
         profile.skills = skills
-        return profile.to_json()
+        p_json = profile.to_json()
+
+        p_json["problem"] = problem
+
+        return p_json
 
 
 if __name__ == "__main__":

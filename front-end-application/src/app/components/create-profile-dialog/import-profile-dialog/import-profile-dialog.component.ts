@@ -9,7 +9,8 @@ import { MAIN_MENU } from 'src/app/constants/app-routes';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { ContractGroupInterface } from 'src/app/models/ContractGroup';
 import { NurseGroupInterface, NurseInterface } from 'src/app/models/Nurse';
-import { BaseProfile, DetailedProfile } from 'src/app/models/Profile';
+import { BaseProfile, DetailedProfile, DetailedProblemProfile } from 'src/app/models/Profile';
+import { GenerationRequestDetails, GenerationRequest } from "src/app/models/GenerationRequest";
 import { ShiftInterface, ShiftTypeInterface, ShiftGroupInterface } from 'src/app/models/Shift';
 import { SkillInterface } from 'src/app/models/skill';
 import { ContractService } from 'src/app/services/contract/contract.service';
@@ -28,6 +29,7 @@ export class ImportProfileComponent implements OnInit{
 
   fileName: string;
   profile!: DetailedProfile;
+  problem!: GenerationRequest;
   validProfile: boolean;
   profileNames: string[]
   connectedUser: boolean;
@@ -110,8 +112,9 @@ export class ImportProfileComponent implements OnInit{
     const formData = new FormData();
     formData.append("file", file);
     this.profileService.import(formData).subscribe({
-      next: (data: DetailedProfile)=> {
+      next: (data: DetailedProblemProfile)=> {
         this.profile = data
+        this.problem = data.problem
         this.profileNameCtrl.setValue(this.profile.profile)
         this.readArrays();
         this.validProfile = true;
@@ -554,13 +557,33 @@ export class ImportProfileComponent implements OnInit{
       error: (err: HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
           this.profileService.emitNewProfileCreation(true);
-          this.router.navigate(["/" + MAIN_MENU])
+          this.profileService.profileChanged.subscribe(()=>{
+            if (this.problem) {
+              this.saveGenerationRequest();
+            }
+            this.router.navigate(["/" + MAIN_MENU])
+          })
         }
         else{
           this.openErrorDialog(err.error)
         }
       }
     })
+  }
+
+  saveGenerationRequest() {
+    const details : GenerationRequestDetails= {
+      nurses: this.profile.nurses,
+      skills: this.problem.skills,
+      shifts: this.problem.shifts,
+      startDate: new Date(this.problem.startDate),
+      endDate: new Date(this.problem.endDate)
+    }
+    CacheUtils.setGenerationRequest(details)
+    CacheUtils.setGenerationRequestPreferences(this.problem.preferences)
+    CacheUtils.setDemandGenerationRequest(this.problem.hospitalDemand);
+    CacheUtils.saveNurseHistory(this.problem.history);
+    CacheUtils.removeOldVersion()
   }
 
   downloadTemplate(){

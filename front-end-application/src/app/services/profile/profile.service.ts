@@ -2,7 +2,7 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CREATE_EMPTY_PROFILE, DELETE_PROFILE, DOWNLOAD_IMPORT_TEMPLATE, DUPLICATE_PROFILE, EXPORT_PROFILE, FETACH_PROFILES, FETCH_PROFILE_ACCESSORS, IMPORT_PROFILE, REVOKE_PROFILE_ACCESS, SAVE_IMPORT, SHARE_PROFILE } from 'src/app/constants/api-constants';
-import { BaseProfile, DetailedProfile } from 'src/app/models/Profile';
+import { BaseProfile, DetailedProfile, DetailedProblemProfile } from 'src/app/models/Profile';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
 import { Exception } from 'src/app/utils/Exception';
 
@@ -14,8 +14,8 @@ export class ProfileService {
 
   profileChanged: Subject<boolean>;
   newImportedProfileCreated: Subject<boolean>;
-  
-  constructor(private httpClient: HttpClient) { 
+
+  constructor(private httpClient: HttpClient) {
     this.profileChanged = new Subject();
     this.newImportedProfileCreated = new Subject()
   }
@@ -66,7 +66,7 @@ export class ProfileService {
       throw new Exception("user not logged in");
     }
   }
-  
+
   deleteProfile(): Observable<HttpResponse<string>>{
     try{
       let queryParams = new HttpParams();
@@ -134,11 +134,11 @@ export class ProfileService {
     }
   }
 
-  import(formData: FormData): Observable<DetailedProfile>{
+  import(formData: FormData): Observable<DetailedProblemProfile>{
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken());
-      return this.httpClient.post<DetailedProfile>(IMPORT_PROFILE, formData, {
+      return this.httpClient.post<DetailedProblemProfile>(IMPORT_PROFILE, formData, {
         params: queryParams,
       })
     }
