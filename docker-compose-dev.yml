@@ -13,12 +13,12 @@ services:
   front:
     image: legraina/ns_webapp_front
     container_name: front
-    # build:
-    #   context: ./front
-    #   dockerfile: Dockerfile-dev
-    # command: >
-    #  bash -c "service nginx start && npm start"
-    build: ./front
+    build:
+      context: ./front
+      dockerfile: Dockerfile-dev
+    command: >
+     bash -c "service nginx start && npm start"
+    # build: ./front
     ports:
       - 8443:443
       - 8080:80
