@@ -2,7 +2,8 @@ from werkzeug.datastructures import FileStorage
 
 from src.exceptions.project_base_exception import ProjectBaseException
 from src.handlers.base_handler import BaseHandler
-from src.importers.importer import CSVImporter
+from src.importers.CSVimporter import CSVImporter
+from src.importers.TXTimporter import TXTImporter
 from src.models.profile import Profile, DetailedProfile
 from constants import (
     user_username,
@@ -108,7 +109,10 @@ class ProfileHandler(BaseHandler):
         self.verify_token(token)
         file.save(file.filename)
         file_path = file.filename
-        profile_json = CSVImporter().read_file(file_name=file_path)
+        if file_path.endswith("txt"):
+            profile_json = TXTImporter().read_file(file_name=file_path)
+        else:
+            profile_json = CSVImporter().read_file(file_name=file_path)
         os.remove(file_path)
         return profile_json
 

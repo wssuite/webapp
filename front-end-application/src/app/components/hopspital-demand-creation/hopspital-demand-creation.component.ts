@@ -16,12 +16,12 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
   regex = WEIGHT_ALLOWED_INTEGERS
 
   @Input() shifts!: string[];
-  @Input() skills!: string[]; 
+  @Input() skills!: string[];
   @Input() startDate!: Date;
   @Input() endDate!: Date;
   @Output() hospitalDemand: EventEmitter<HospitalDemandElement[]>;
   @Output() errorState: EventEmitter<boolean>;
-  
+
   demand: SkillDemandInterface;
   skillDemandErrorState: boolean;
   saveDemandError: boolean;
@@ -34,7 +34,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
   selectedShift: Map<string, boolean>;
   nbColumns: number | undefined;
 
- 
+
   constructor() {
     this.hospitalDemand = new EventEmitter();
     this.errorState = new EventEmitter();
@@ -60,7 +60,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     }
     if (changes["startDate"] && changes["startDate"].currentValue) {
       this.startDate = changes["startDate"].currentValue;
-      
+
     }
     if (changes["endDate"] && changes["endDate"].currentValue) {
       this.endDate = changes["endDate"].currentValue;
@@ -82,7 +82,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
   }
 
   ngOnDestroy(): void {
-    this.saveDemand()    
+    this.saveDemand()
   }
 
   ngOnInit(): void {
@@ -101,7 +101,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
         for (const shift of this.shifts) {
           this.hospitalDemands.set(JSON.stringify({date:date,skill:skill,shift:shift}),initSkillDemand);
           this.selectedShift.set(JSON.stringify({date:date,skill:skill,shift:shift}),false);
-          this.getButtonStyle(date, skill, shift) 
+          this.getButtonStyle(date, skill, shift)
         }
       }
     }
@@ -138,7 +138,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     }
     else{
       this.selectedShift.set(key,true);
-      
+
 
     }
     if(!this.isEditing){
@@ -164,7 +164,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
 
   }
 
-  setEdition(){ 
+  setEdition(){
     this.isDisabled = false;
     this.isEditing = true;
   }
@@ -234,9 +234,9 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     const selected = this.selectedShift.get(key);
     if (selected) {
       return { 'border-radius': '3px','border': '3px solid darkgray',  'content':'goodbye', 'visibility': 'visible'};
-    } 
+    }
     return { 'border-radius': '0px','border': '0px'};
-  } 
+  }
 
 
   emitScheduleDemand(){
@@ -262,7 +262,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
       }
     }
     this.hospitalDemand.emit(scheduleDemand);
-    this.emitErrorState(); 
+    this.emitErrorState();
   }
 
   updateSkillDemandErrorState(e: boolean) {
@@ -318,5 +318,3 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     }
   }
 }
-
-

@@ -12,6 +12,7 @@ services:
 
   webapp:
     build:  .
+    image: legraina/ns_webapp_front
     container_name: webapp
     ports:
       - 8443:443
@@ -37,6 +38,7 @@ services:
 
   worker1:
     build: ./cpp-invoker/.
+    image: legraina/ns_webapp_scheduler
     container_name: worker1
     hostname: worker1
     ports:
@@ -54,6 +56,7 @@ services:
 
   worker2:
     build: ./cpp-invoker/.
+    image: legraina/ns_webapp_scheduler
     container_name: worker2
     hostname: worker2
     ports:
@@ -71,6 +74,7 @@ services:
 
   worker3:
     build: ./cpp-invoker/.
+    image: legraina/ns_webapp_scheduler
     container_name: worker3
     hostname: worker3
     ports:

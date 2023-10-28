@@ -24,7 +24,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, AfterViewInit{
-  
+
   isAdmin!: boolean;
   profiles: BaseProfile[];
   profile!: BaseProfile;
@@ -33,11 +33,11 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   connectedUser!: boolean;
   notifications: Solution[];
   newNotificationAdded: boolean;
-  @Input() showProfile!: boolean; 
-  @Input() enableProfileSwitch!: boolean; 
-  
+  @Input() showProfile!: boolean;
+  @Input() enableProfileSwitch!: boolean;
+
   constructor(private accountService: AccountService, private router: Router,
-    private dialog: MatDialog, private profileService: ProfileService, 
+    private dialog: MatDialog, private profileService: ProfileService,
     private scheduleService: ScheduleService){
       this.profiles = [];
       this.validProfile = false;
@@ -89,7 +89,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
         console.log(solution.state);
       })
   }
-  
+
   getProfiles(useLatProfile: boolean){
     this.profileService.getAllProfiles().subscribe({
       next:(profiles: BaseProfile[])=>{
@@ -136,9 +136,9 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   openCreateProfileDialog(closeDisplayed: boolean) {
     this.dialog.open(CreateProfileDialogComponent,{
       data: {profiles: this.profiles, closeDisplayed: closeDisplayed},
-      disableClose: true,  
+      disableClose: true,
       height: '60%',
-      width: '55%', 
+      width: '55%',
       position: {top:'15vh',left: '23%', right: '25%'},
     })
   }
@@ -165,10 +165,10 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   openErrorDialog(message: string){
     this.dialog.open(ErrorMessageDialogComponent, {
       height: '45%',
-      width: '45%', 
+      width: '45%',
       position: {top:'20vh',left: '30%', right: '25%'},
       data:{message: message},
-    })    
+    })
   }
 
   goToCreateAccount(){
@@ -199,9 +199,9 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     this.onResize();
     const dialog = this.dialog.open(DuplicateProfileComponent,{
       data: {profiles: this.profiles},
-      disableClose: true,  
+      disableClose: true,
       height: this.height,
-      width: this.width, 
+      width: this.width,
       position: {top:this.top, left: this.left, right: '25%'},
     })
     dialog.afterClosed().subscribe(()=>{
@@ -210,14 +210,14 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   }
 
   deleteProfile(){
-    const dialog = this.dialog.open(ConfirmationDialogComponent,  
-      { disableClose: true,  
+    const dialog = this.dialog.open(ConfirmationDialogComponent,
+      { disableClose: true,
         height: '50%',
-        width: '28%', 
+        width: '28%',
         position: {top:'20vh',left: '38%', right: '25%'},
         data: {message: "profile", elementName:CacheUtils.getProfile()}
       });
-    
+
     dialog.afterClosed().subscribe((result: boolean)=>{
       if(result){
         this.profileService.deleteProfile().subscribe({
@@ -238,7 +238,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     this.dialog.open(ShareProfileComponent, {
       data: {profileName: this.profile.profile},
       height: '65%',
-      width: '55%', 
+      width: '55%',
       position: {top:'5vh',left: '25%', right: '25%'},
     })
   }

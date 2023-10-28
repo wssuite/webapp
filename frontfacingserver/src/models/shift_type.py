@@ -31,7 +31,7 @@ class ShiftType(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
         wrapper = Wrapper(tokens)
         self.name = wrapper.get_by_index(0)
         for i in range(1, len(tokens)):
-            if tokens[i] != "":
+            if tokens[i] != "" and not tokens[i].isdigit():
                 self.shifts.append(wrapper.get_by_index(i))
 
         return self

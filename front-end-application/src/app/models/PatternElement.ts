@@ -1,4 +1,5 @@
 import { Exception } from "../utils/Exception";
+import { DateUtils } from '../utils/DateUtils';
 
 export class PatternElement {
     days: string[];
@@ -11,7 +12,7 @@ export class PatternElement {
 
     validatePattern(p: PatternElement): void{
         let sameDays = true;
-        let sameShifts =true;
+        let sameShifts = true;
         p.days.forEach((day: string)=>{
             if(!this.days.includes(day)){
                 sameDays = false;
@@ -36,6 +37,9 @@ export class PatternElement {
 
     fromJson(p: PatternElementInterface):void {
         this.days = p.days;
+        if (this.days.length == 0 || this.days.includes("*")) {
+          this.days = DateUtils.days;
+        }
         this.shifts = p.shifts;
     }
 

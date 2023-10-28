@@ -32,14 +32,13 @@ class Nurse(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
 
     def read_nurse(self, line, profile_name, contract_groups):
         self.profile = profile_name
-        self.read_line(line)
-        for c in self.direct_contracts:
+        contract_names = self.read_line(line)
+        for c in contract_names:
             if c in contract_groups:
                 self.contract_groups.append(c)
+            else:
+                self.direct_contracts.append(c)
 
-        self.direct_contracts = [
-            c for c in self.direct_contracts if c not in contract_groups
-        ]
         return self
 
     def read_line(self, line):
@@ -48,9 +47,12 @@ class Nurse(Jsonify, DBDocument, Stringify, StringReader, CSVExporter):
         wrapper = Wrapper(tokens)
         self.username = wrapper.get_by_index(1)
         self.name = wrapper.get_by_index(0)
-        self.direct_contracts = []
+        contract_names = []
         for i in range(2, len(tokens)):
-            self.direct_contracts.append(wrapper.get_by_index(i))
+            c = wrapper.get_by_index(i)
+            if not c.isdigit():
+                contract_names.append(c)
+        return contract_names
 
     def to_string(self):
         contracts_string = extract_string_from_simple_object_array(

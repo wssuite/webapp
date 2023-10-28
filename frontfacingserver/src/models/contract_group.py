@@ -36,7 +36,9 @@ class ContractGroup(DBDocument, Jsonify, StringReader, Stringify, CSVExporter):
         wrapper = Wrapper(tokens)
         self.name = wrapper.get_by_index(0)
         for i in range(1, len(tokens)):
-            self.contracts.append(wrapper.get_by_index(i))
+            c = wrapper.get_by_index(i)
+            if not c.isdigit():
+                self.contracts.append(c)
 
         return self
 

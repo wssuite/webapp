@@ -4,18 +4,22 @@ import { Component, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Subscription} from 'rxjs';
 import * as saveAs from 'file-saver';
-import { MAIN_MENU } from 'src/app/constants/app-routes';
+import { MAIN_MENU, SCHEDULE_GENERATION } from 'src/app/constants/app-routes';
 import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { ContractGroupInterface } from 'src/app/models/ContractGroup';
 import { NurseGroupInterface, NurseInterface } from 'src/app/models/Nurse';
-import { BaseProfile, DetailedProfile } from 'src/app/models/Profile';
+import { BaseProfile, DetailedProfile, DetailedProblemProfile } from 'src/app/models/Profile';
+import { GenerationRequestDetails, GenerationRequest } from "src/app/models/GenerationRequest";
 import { ShiftInterface, ShiftTypeInterface, ShiftGroupInterface } from 'src/app/models/Shift';
 import { SkillInterface } from 'src/app/models/skill';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { ErrorMessageDialogComponent } from '../../error-message-dialog/error-message-dialog.component';
 import { ALLOWED_PROFILE_NAMES } from 'src/app/constants/regex';
+import { CacheUtils } from 'src/app/utils/CacheUtils';
+
 
 @Component({
   selector: 'app-import-profile-dialog',
@@ -25,7 +29,7 @@ import { ALLOWED_PROFILE_NAMES } from 'src/app/constants/regex';
 export class ImportProfileComponent implements OnInit{
 
   fileName: string;
-  profile!: DetailedProfile;
+  profile!: DetailedProblemProfile;
   validProfile: boolean;
   profileNames: string[]
   connectedUser: boolean;
@@ -50,20 +54,20 @@ export class ImportProfileComponent implements OnInit{
   contractsGroupErrorState: boolean[];
   nursesErrorState: boolean[];
   nurseGroupsErrorState: boolean[];
-  skillsErrorState: boolean[]
+  skillsErrorState: boolean[];
 
   constructor( private profileService: ProfileService,
     private dialog: MatDialog, private router: Router,
-     private contractService: ContractService){
-      this.fileName = '';
-      this.validProfile = false;
-      this.profileNames = [];
-      this.connectedUser = false;
+    private contractService: ContractService){
+      this.fileName = ''
+      this.validProfile = false
+      this.profileNames = []
+      this.connectedUser = false
       this.profileNameCtrl = new FormControl(null, [Validators.required,
         Validators.pattern(ALLOWED_PROFILE_NAMES)])
-      this.contracts = [];
-      this.contractsGroup = [];
-      this.possibleContracts = [];
+      this.contracts = []
+      this.contractsGroup = []
+      this.possibleContracts = []
       this.possibleShifts = []
       this.possibleShiftTypes = []
       this.contractShifts = []
@@ -80,7 +84,7 @@ export class ImportProfileComponent implements OnInit{
       this.nursesErrorState = []
       this.nurseGroupsErrorState = []
       this.skillsErrorState = []
-      this.contractsGroupErrorState =[]
+      this.contractsGroupErrorState = []
     }
 
   ngOnInit(): void {
@@ -108,10 +112,10 @@ export class ImportProfileComponent implements OnInit{
     const formData = new FormData();
     formData.append("file", file);
     this.profileService.import(formData).subscribe({
-      next: (data: DetailedProfile)=> {
+      next: (data: DetailedProblemProfile)=> {
         this.profile = data
         this.profileNameCtrl.setValue(this.profile.profile)
-        this.readArrays();  
+        this.readArrays();
         this.validProfile = true;
       },
       error: (err: HttpErrorResponse)=>{
@@ -124,11 +128,11 @@ export class ImportProfileComponent implements OnInit{
       }
     })
   }
-  
+
   openErrorDialog(message: string){
     this.dialog.open(ErrorMessageDialogComponent, {
       height: '45%',
-      width: '45%', 
+      width: '45%',
       position: {top:'20vh',left: '30%', right: '25%'},
       data:{message: message}
     })
@@ -406,7 +410,7 @@ export class ImportProfileComponent implements OnInit{
      this.nurseSectionHasError() || this.nurseGroupSectionHasError()
       || this.contractSectionHasError() || this.shiftGroupSectionHasError()
       || this.shiftSectionHasError() || this.shiftTypeSectionHasError() ||
-      this.nameExist() || this.profileNameCtrl.hasError("required") 
+      this.nameExist() || this.profileNameCtrl.hasError("required")
       || this.containsWhiteSpace()
   }
 
@@ -552,13 +556,36 @@ export class ImportProfileComponent implements OnInit{
       error: (err: HttpErrorResponse)=>{
         if(err.status === HttpStatusCode.Ok){
           this.profileService.emitNewProfileCreation(true);
-          this.router.navigate(["/" + MAIN_MENU])
+          const profileSubscription: Subscription = this.profileService.profileChanged.subscribe(()=>{
+            if (this.profile.problem) {
+              this.saveGenerationRequest();
+              this.router.navigate(["/" + SCHEDULE_GENERATION])
+            } else {
+              this.router.navigate(["/" + MAIN_MENU])
+            }
+            profileSubscription.unsubscribe()
+          })
         }
         else{
           this.openErrorDialog(err.error)
         }
       }
     })
+  }
+
+  saveGenerationRequest() {
+    const details : GenerationRequestDetails= {
+      nurses: this.profile.nurses,
+      skills: this.profile.problem.skills,
+      shifts: this.profile.problem.shifts,
+      startDate: new Date(this.profile.problem.startDate),
+      endDate: new Date(this.profile.problem.endDate)
+    }
+    CacheUtils.setGenerationRequest(details)
+    CacheUtils.setGenerationRequestPreferences(this.profile.problem.preferences)
+    CacheUtils.setDemandGenerationRequest(this.profile.problem.hospitalDemand);
+    CacheUtils.saveNurseHistory(this.profile.problem.history);
+    CacheUtils.removeOldVersion()
   }
 
   downloadTemplate(){

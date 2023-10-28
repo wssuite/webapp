@@ -19,7 +19,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   weight: string;
   weightLabel: string;
   @Input() shifts!: string[];
-  @Input() nurses!: NurseInterface[]; 
+  @Input() nurses!: NurseInterface[];
   @Input() startDate!: Date;
   @Input() endDate!: Date;
   @Output() schedulePreference: EventEmitter<SchedulePreferenceElement[]>
@@ -27,7 +27,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   timetable: dateDisplay[];
   preferences: Map<string, Map<string,Map<string, {pref: string, weight: string}>>>;
   nbColumns: number | undefined;
-  
+
 
   constructor() {
     this.schedulePreference = new EventEmitter();
@@ -46,7 +46,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
       this.shifts = changes["shifts"].currentValue;
     }
     if (changes["startDate"] && changes["startDate"].currentValue) {
-      this.startDate = changes["startDate"].currentValue; 
+      this.startDate = changes["startDate"].currentValue;
     }
     if (changes["endDate"] && changes["endDate"].currentValue) {
       this.endDate = changes["endDate"].currentValue;
@@ -71,7 +71,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
   ngOnDestroy(): void {
       this.savePreferences()
   }
-  
+
   ngOnInit(): void {
     this.timetable = []
     this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate);
@@ -123,9 +123,9 @@ import { DateUtils } from "src/app/utils/DateUtils";
       } else {
         pref = '';
         weight = "";
-      }    
+      }
     } else { pref = 'ON';}
-    
+
     this.preferences.get(JSON.stringify(date))?.get(nurse)?.set(shift, { pref, weight });
     this.emitSchedulePref();
   }
@@ -150,7 +150,7 @@ import { DateUtils } from "src/app/utils/DateUtils";
     if(date !== undefined && nurse !==  undefined && shift !==  undefined) {
     if(this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.pref === 'ON') {
       return "check"
-    } 
+    }
     if (this.preferences.get(JSON.stringify(date))?.get(nurse)?.get(shift)?.pref === 'OFF') {
       return "close"
     }
@@ -204,8 +204,8 @@ import { DateUtils } from "src/app/utils/DateUtils";
           if( preferenceObj && (preferenceObj.pref === 'OFF' ||
               preferenceObj.pref === 'ON')){
             const schedule = {
-              date: date.date, 
-              username: nurse.username, 
+              date: date.date,
+              username: nurse.username,
               preference: preferenceObj.pref,
               shift: shift,
               weight: preferenceObj.weight
@@ -228,8 +228,8 @@ import { DateUtils } from "src/app/utils/DateUtils";
           if( preferenceObj && (preferenceObj.pref === 'OFF' ||
               preferenceObj.pref === 'ON')){
             const schedule = {
-              date: date.date, 
-              username: nurse.username, 
+              date: date.date,
+              username: nurse.username,
               preference: preferenceObj.pref,
               shift: shift,
               weight: preferenceObj.weight

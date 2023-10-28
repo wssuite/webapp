@@ -1,5 +1,6 @@
 import { ContractInterface } from "./Contract";
 import { ContractGroupInterface } from "./ContractGroup";
+import { GenerationRequest } from "./GenerationRequest";
 import { NurseGroupInterface, NurseInterface } from "./Nurse";
 import { ShiftGroupInterface, ShiftInterface, ShiftTypeInterface } from "./Shift";
 import { SkillInterface } from "./skill";
@@ -19,4 +20,8 @@ export interface DetailedProfile{
     nurses: NurseInterface[];
     nurseGroups: NurseGroupInterface[];
     skills: SkillInterface[];
+}
+
+export interface DetailedProblemProfile extends DetailedProfile {
+    problem: GenerationRequest
 }
