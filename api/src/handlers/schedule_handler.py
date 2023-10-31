@@ -358,20 +358,3 @@ class ScheduleHandler(BaseHandler):
             f"{solution_json[start_date]}_{solution_json[end_date]}",
             solution_json[version],
         )
-
-if __name__ == "__main__":
-    import sys
-    file_path = sys.argv[1]
-    token = "487149bfcc9a4874af73427390f44974"
-    profile = "n030w4_1_6-2-9-1"
-    startDate = "2023-9-4"
-    endDate = "2023-10-1"
-    version = 1.0
-    # dataset / n030w4_1_6 - 2 - 9 - 1 / 2023 - 9 - 4_2023 - 10 - 1 / 1.0 / sol.txt
-    from src.dao.abstract_dao import DBConnection
-    # sched = ScheduleHandler(DBConnection.get_connection())
-    # sched.verify_profile_accessors_access(token, profile)
-    # fs = FileSystemManager()
-    sol_file = file_path
-    solution = Schedule(sol_file)
-    print(solution.export())

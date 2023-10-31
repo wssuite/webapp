@@ -8,10 +8,8 @@
         <mat-label>Enter nurse Name</mat-label>
         <input
           matInput
-          [(ngModel)]="nurse.name"
           [formControl]="nameNurseFormCtrl"
-          (keyup)="emitNurse()"
-          (keyup)="setUsername()"
+          (keyup)="setName()"
         />
       </mat-form-field>
     </div>
@@ -24,11 +22,16 @@
         <mat-label>Enter nurse username</mat-label>
         <input
           matInput
-          [(ngModel)]="nurse.username"
           [formControl]="usernameNurseFormCtrl"
-          (keyup)="emitNurse()"
+          (keyup)="setUsername()"
         />
       </mat-form-field>
+      <mat-error *ngIf="usernamePatternErrorState()">
+  				Username not valid: must only contains characters, numbers, '-', '_', and '.'
+  		</mat-error>
+      <mat-error *ngIf="usernameExistsErrorState()">
+          Username is already taken
+      </mat-error>
     </div>
   </div>
   <div class="contractSection">
@@ -118,4 +121,7 @@
       </table>
     </div>
   </div>
+  <mat-error *ngIf="contractErrorState()">
+      You must provide at least a contract or a contract group.
+  </mat-error>
 </div>

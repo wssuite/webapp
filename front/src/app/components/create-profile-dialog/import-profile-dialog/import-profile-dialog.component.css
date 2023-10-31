@@ -6,6 +6,10 @@ mat-expansion-panel{
     margin-top: 2vh;
 }
 
+mat-error{
+    margin-top: 2vh;
+}
+
 .upload-btn{
     margin-left: 2vw;
 }
@@ -53,7 +57,7 @@ h1, h2 {
 }
 
 .header {
-    background-color: #255792; 
+    background-color: #255792;
     height: 100px;
     width: 100%;
     display: flex;

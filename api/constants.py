@@ -5,6 +5,7 @@ nurse_id = "nurse_id"
 nurse_username = "username"
 nurse_inherited_contracts = "inherited_contracts"
 nurse_contract_groups = "contract_groups"
+regex_nurse_username = r"[a-zA-Z0-9\_\.\-]+"
 
 """Nurse group fields"""
 nurse_group_name = "name"

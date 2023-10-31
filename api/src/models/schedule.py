@@ -6,6 +6,7 @@ from constants import (
     schedule_string,
     assignment_employee_uname,
     assignments_string,
+    regex_nurse_username
 )
 from src.models.exporter import CSVExporter
 
@@ -14,7 +15,7 @@ regex_assignments = (
     r"([a-zA-Z0-9\-\.]+),([a-zA-Z0-9\-\.]+)\n"
 )
 
-regex_headers = r"\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9\_\.\-]+)\)\n"
+regex_headers = r"\(([a-zA-Z0-9]+),\s*({})\)\n".format(regex_nurse_username)
 
 
 class Schedule(CSVExporter):
