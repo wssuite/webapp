@@ -181,6 +181,7 @@ profile_nurse_groups = "nurseGroups"
 profile_skills = "skills"
 
 """Hospital demand element"""
+demand_index = "index"
 demand_day = "day"
 demand_date = "date"
 demand_shift = "shift"

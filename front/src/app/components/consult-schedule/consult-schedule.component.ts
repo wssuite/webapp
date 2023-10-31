@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import * as saveAs from "file-saver";
 import {MAIN_MENU, SCHEDULE_GENERATION, VIEW_SCHEDULES} from "src/app/constants/app-routes";
 import { Assignment, EmployeeSchedule } from "src/app/models/Assignment";
-import { GenerationRequestDetails, SchedulePreferenceElement, NurseHistoryElement } from "src/app/models/GenerationRequest";
+import { GenerationRequestDetails, SchedulePreferenceElement, NurseHistoryElement, HospitalDemandElement } from "src/app/models/GenerationRequest";
 import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from "src/app/models/Schedule";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
 import { CacheUtils } from "src/app/utils/CacheUtils";
@@ -508,7 +508,14 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
       CacheUtils.setGenerationRequest(details)
       CacheUtils.setGenerationRequestPreferences(this.schedule.problem.preferences)
-      CacheUtils.setDemandGenerationRequest(this.schedule.problem.hospitalDemand);
+      const demand: HospitalDemandElement[][] = [];
+      for (let d of this.schedule.problem.hospitalDemand) {
+        while (demand.length <= d.index) {
+          demand.push([])
+        }
+        demand[d.index].push(d);
+      }
+      CacheUtils.setDemandGenerationRequest(demand);
       CacheUtils.saveNurseHistory(this.schedule.problem.history);
       CacheUtils.setOldVersion(this.schedule.version)
       this.router.navigate(["/" + SCHEDULE_GENERATION])

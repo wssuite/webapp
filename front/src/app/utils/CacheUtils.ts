@@ -215,7 +215,7 @@ export class CacheUtils {
         return JSON.parse(savedPreferences) as SchedulePreferenceElement[]
     }
 
-    public static setDemandGenerationRequest(demand: HospitalDemandElement[]){
+    public static setDemandGenerationRequest(demand: HospitalDemandElement[][]){
         try{
             localStorage.setItem(REQUEST_DEMAND_STRING + this.getProfile(), JSON.stringify(demand))
         }catch(err){
@@ -223,12 +223,12 @@ export class CacheUtils {
         }
     }
 
-    public static getDemandGenerationRequest(): HospitalDemandElement[] | undefined {
+    public static getDemandGenerationRequest(): HospitalDemandElement[][] {
         const savedDemand = localStorage.getItem(REQUEST_DEMAND_STRING + this.getProfile())
         if(!savedDemand){
-            return undefined
+            return []
         }
-        return JSON.parse(savedDemand) as HospitalDemandElement[]
+        return JSON.parse(savedDemand) as HospitalDemandElement[][]
     }
 
     public static saveNurseHistory(history: NurseHistoryElement[]){

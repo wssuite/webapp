@@ -43,7 +43,7 @@
       </div>
       <div class="scheduleDataSection">
       </div>
-      
+
         <div *ngIf="possibleSkills.length > 0 || possibleShifts.length > 0 || possibleNurses.length > 0" class="flex-row-center-container margin-on-top ">
           <button mat-raised-button class="add-all-button" color="nurse-blue" (click)="addAll()">
           add all Nurses, Skills & Shifts
@@ -111,12 +111,12 @@
         </div>
         <table class="list-table">
           <th *ngFor="let shift of shifts">
-            <div class="table-element-container flex-row-center-container">        
+            <div class="table-element-container flex-row-center-container">
             <td class="shiftName">
               {{ shift }}
             </td>
             <button
-              mat-icon-button 
+              mat-icon-button
               (click)="removeShift(shift)"
             >
             <mat-icon>cancel</mat-icon>
@@ -142,12 +142,12 @@
           add selected
         </button>
         <button mat-raised-button color="nurse-blue" class="bulk-action-button" (click)="addAllSkill()">
-          add all 
+          add all
         </button>
       </div>
       <table class="list-table">
         <th *ngFor="let skill of skills">
-          <div class="table-element-container flex-row-center-container">        
+          <div class="table-element-container flex-row-center-container">
           <td class="skillName">
             {{ skill }}
           </td>
@@ -163,27 +163,26 @@
     </div>
     <div *ngIf= "shifts.length > 0  && nurses.length > 0 && validRange() && skills.length > 0" class="nursePreferenceSection">
       <div class="help-div">
-        <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>  
+        <h2 class="HospitalDemandSectionTitle">Nurse Preferences</h2>
         <mat-icon class="help-icon" matTooltip="Enter the weight that will be associated to nurses' preferences in the box below. First click will mark a shift as working (ON). Second click will mark a shift as not working (OFF).  Third click will clear the weight associated to the shift." matTooltipPosition="right" >help</mat-icon>
       </div>
       <hr>
-      <app-nurse-preference 
+      <app-nurse-preference
         [shifts]="shifts" [nurses]="nurses" [startDate]="startDate" [endDate]="endDate" (schedulePreference)="updatePreferences($event)">
       </app-nurse-preference>
     </div>
 
-<div  *ngIf= "shifts.length > 0  && skills.length > 0 && validRange() && nurses.length > 0" class="HospitalDemandSection">
-  <div class="help-div">
-    <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>
-    <mat-icon class="help-icon" matTooltip="Select a shift to input the hospital demand. Enter values and and weight in the box below." matTooltipPosition="right" >help</mat-icon>
-  </div>  
-    <hr>
-    <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemand($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
-</div>
-
+      <div  *ngIf= "shifts.length > 0  && skills.length > 0 && validRange() && nurses.length > 0" class="HospitalDemandSection">
+        <div class="help-div">
+          <h2 class="HospitalDemandSectionTitle">Hospital Demand</h2>
+          <mat-icon class="help-icon" matTooltip="Select a shift to input the hospital demand. Enter values and and weight in the box below." matTooltipPosition="right" >help</mat-icon>
+        </div>
+          <hr>
+          <app-hopspital-demand-creation [shifts]="shifts" [skills]="skills" [startDate]="startDate" [endDate]="endDate" (hospitalDemand)="updateDemand($event)" (errorState)="updateDemandsErrorState($event)"></app-hopspital-demand-creation>
+      </div>
       <div *ngIf= "nurses.length > 0 && skills.length > 0 && shifts.length > 0 && validRange()" class="nurseHistorySection">
         <div class="help-div">
-          <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>  
+          <h2 class="HospitalDemandSectionTitle">Work history of nurses</h2>
           <mat-icon class="help-icon" matTooltip="Select shifts worked by each nurse in the previous planning horizon." matTooltipPosition="right">help</mat-icon>
         </div>
         <hr>
@@ -196,9 +195,7 @@
           color="primary"
           class="generateScheduleButton"
           (click)="generateSchedule()"
-          [disabled]=" !validRange() || nurses.length === 0 || shifts.length === 0 || demandsError
-          "
-        >
+          [disabled]=" !validRange() || nurses.length === 0 || shifts.length === 0 || demandsError">
           Generate schedule
         </button>
         <button
@@ -206,9 +203,7 @@
           color="primary"
           class="generateScheduleButton"
           (click)="generateSchedule()"
-          [disabled]=" !validRange() || nurses.length === 0 || shifts.length === 0 || demandsError
-          "
-        >
+          [disabled]=" !validRange() || nurses.length === 0 || shifts.length === 0 || demandsError">
           Regenerate schedule
         </button>
       </div>
@@ -218,5 +213,3 @@
 <ng-template #elseBlock>
   <app-not-connected></app-not-connected>
 </ng-template>
-
-

@@ -27,6 +27,7 @@ services:
       - api
     volumes:
       - dataset:/app/dataset
+      - front_src:/app/src
     restart: always
 
   api:
@@ -105,3 +106,9 @@ services:
 volumes:
   dataset:
   mongo_data:
+  front_src:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./front/src

@@ -1,6 +1,7 @@
 from src.models.jsonify import Jsonify
-from pykson import StringField
+from pykson import StringField, IntegerField
 from constants import (
+    demand_index,
     demand_date,
     demand_shift,
     demand_max_value,
@@ -13,6 +14,7 @@ from src.models.stringify import Stringify
 
 
 class HospitalDemandElement(Jsonify, Stringify):
+    index = IntegerField(serialized_name=demand_index, default_value=0)
     date = StringField(serialized_name=demand_date)
     shift = StringField(serialized_name=demand_shift)
     skill = StringField(serialized_name=demand_skill)

@@ -14,7 +14,7 @@ regex_assignments = (
     r"([a-zA-Z0-9\-\.]+),([a-zA-Z0-9\-\.]+)\n"
 )
 
-regex_headers = r"\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9]+)\)\n"
+regex_headers = r"\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9\_\.\-]+)\)\n"
 
 
 class Schedule(CSVExporter):

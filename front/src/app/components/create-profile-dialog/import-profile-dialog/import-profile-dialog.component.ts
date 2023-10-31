@@ -11,7 +11,7 @@ import { Contract, ContractInterface } from 'src/app/models/Contract';
 import { ContractGroupInterface } from 'src/app/models/ContractGroup';
 import { NurseGroupInterface, NurseInterface } from 'src/app/models/Nurse';
 import { BaseProfile, DetailedProfile, DetailedProblemProfile } from 'src/app/models/Profile';
-import { GenerationRequestDetails, GenerationRequest } from "src/app/models/GenerationRequest";
+import { GenerationRequestDetails, GenerationRequest, HospitalDemandElement } from "src/app/models/GenerationRequest";
 import { ShiftInterface, ShiftTypeInterface, ShiftGroupInterface } from 'src/app/models/Shift';
 import { SkillInterface } from 'src/app/models/skill';
 import { ContractService } from 'src/app/services/contract/contract.service';
@@ -583,7 +583,14 @@ export class ImportProfileComponent implements OnInit{
     }
     CacheUtils.setGenerationRequest(details)
     CacheUtils.setGenerationRequestPreferences(this.profile.problem.preferences)
-    CacheUtils.setDemandGenerationRequest(this.profile.problem.hospitalDemand);
+    const demand: HospitalDemandElement[][] = [];
+    for (let d of this.profile.problem.hospitalDemand) {
+      while (demand.length <= d.index) {
+        demand.push([])
+      }
+      demand[d.index].push(d);
+    }
+    CacheUtils.setDemandGenerationRequest(demand);
     CacheUtils.saveNurseHistory(this.profile.problem.history);
     CacheUtils.removeOldVersion()
   }

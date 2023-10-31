@@ -9,6 +9,7 @@ export interface SchedulePreferenceElement {
 }
 
 export interface HospitalDemandElement {
+    index: number;
     date: string;
     shift: string;
     skill: string;

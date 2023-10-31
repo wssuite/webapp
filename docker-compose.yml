@@ -39,9 +39,6 @@ services:
     command: worker1:5000
     volumes:
       - dataset:/invoker/dataset
-      - running-worker1:/invoker/running
-      # - ./default-cpp-param.txt:/invoker/default.txt
-      # - ./config-cpp-invoker.json:/invoker/config.json
     restart: always
     deploy:
       resources:
@@ -56,7 +53,6 @@ services:
     command: worker2:5000
     volumes:
       - dataset:/invoker/dataset
-      - running-worker2:/invoker/running
     restart: always
     deploy:
       resources:
@@ -71,7 +67,6 @@ services:
     command: worker3:5000
     volumes:
       - dataset:/invoker/dataset
-      - running-worker3:/invoker/running
     restart: always
     deploy:
       resources:

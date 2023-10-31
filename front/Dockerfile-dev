@@ -9,7 +9,7 @@ COPY ./*.json .
 RUN cd /app && npm i @angular/cli && npm ci
 
 # copy sources
-COPY ./src/ ./src/
+# COPY ./src/ ./src/
 COPY ./nginx/ /etc/nginx/
 COPY ./nginx/sites-available/default-dev /etc/nginx/sites-available/default
 

@@ -43,6 +43,7 @@ class TXTImporter(BaseImporter):
         nurse_names = {}
         nurse_groups = []
         problem = {}
+        index = 0
         with open(file_name, "r") as file:
             lines = iter(file.readlines())
             line = next(lines, None)
@@ -115,25 +116,23 @@ class TXTImporter(BaseImporter):
                     problem["nurses"] = list(nurse_names.values())
                 elif "HOSPITAL_DEMAND" in line:
                     line = next(lines).strip()
-                    if "hospitalDemand" in problem:
-                        print("Ignore subsequent hospital demand")
-                        while not line.startswith("END"):
-                            line = next(lines)
-                    else:
-                        demand = []
-                        while not line.startswith("END"):
-                            tokens = line.split(',')
-                            demand.append({
-                                "date": date_to_js(tokens[0]),
-                                "shift": tokens[1],
-                                "skill": tokens[2],
-                                "minValue": tokens[3],
-                                "minWeight": tokens[4],
-                                "maxValue": tokens[5],
-                                "maxWeight": tokens[6],
-                            })
-                            line = next(lines).strip()
-                        problem["hospitalDemand"] = demand
+                    if "hospitalDemand" not in problem:
+                        problem["hospitalDemand"] = []
+                    demand = problem["hospitalDemand"]
+                    while not line.startswith("END"):
+                        tokens = line.split(',')
+                        demand.append({
+                            "index": index,
+                            "date": date_to_js(tokens[0]),
+                            "shift": tokens[1],
+                            "skill": tokens[2],
+                            "minValue": tokens[3],
+                            "minWeight": tokens[4],
+                            "maxValue": tokens[5],
+                            "maxWeight": tokens[6],
+                        })
+                        line = next(lines).strip()
+                    index += 1
                 elif "PREFERENCES" in line:
                     line = next(lines).strip()
                     preferences = []

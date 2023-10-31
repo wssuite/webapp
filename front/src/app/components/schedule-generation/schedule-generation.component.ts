@@ -53,7 +53,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   selectedSkill: string;
   skills: string[];
 
-  hospitalDemands: HospitalDemandElement[];
+  hospitalDemands: HospitalDemandElement[][];
   demandsError: boolean;
   nursesPreference: SchedulePreferenceElement[];
   nursesHistory: NurseHistoryElement[];
@@ -64,7 +64,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   connectedUser: boolean
   oldVersion: string | null | undefined;
 
-  constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService, 
+  constructor(private router: Router,private shiftService: ShiftService,private skillService: SkillService,
     private nurseService: NurseService, private dialog: MatDialog, private scheduleService: ScheduleService
   ){
     this.startDate = new Date();
@@ -185,7 +185,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   openErrorDialog(message: string) {
     this.dialog.open(ErrorMessageDialogComponent, {
       height: '45%',
-      width: '45%', 
+      width: '45%',
       position: {top:'20vh',left: '30%', right: '25%'},
       data: {message: message},
     })
@@ -229,7 +229,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
         this.selectedNurse = this.possibleNurses[0];
     }
   }
-  
+
   removeNurse(nurse: NurseInterface) {
     const index = this.nurses.indexOf(nurse);
     if (index > -1) {
@@ -252,7 +252,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
         this.selectedShift = this.possibleShifts[0];
     }
   }
-  
+
   removeShift(shift: string) {
     const index = this.shifts.indexOf(shift);
     if (index > -1) {
@@ -265,7 +265,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   addSkill() {
     console.log(this.possibleSkills);
     console.log(this.selectedSkill);
@@ -281,7 +281,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
         this.selectedSkill = this.possibleSkills[0];
     }
   }
-  
+
   removeSkill(skill: string) {
     const index = this.skills.indexOf(skill);
     if (index > -1) {
@@ -316,6 +316,10 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     this.nurses.forEach((nurse: NurseInterface)=>{
       requestNurses.push(nurse.username)
     })
+    const demand = [];
+    for(let d of this.hospitalDemands) {
+      demand.push(...d);
+    }
     const request: GenerationRequest= {
       startDate: sd,
       endDate: ed,
@@ -324,7 +328,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
       nurses: requestNurses,
       skills: this.skills,
       shifts: this.shifts,
-      hospitalDemand: this.hospitalDemands,
+      hospitalDemand: demand,
       history: this.nursesHistory,
     }
     this.saveDetails()
@@ -371,7 +375,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
         error: (err: HttpErrorResponse)=>{
           this.openErrorDialog(err.error);
         }
-        
+
       })
     }
   }
@@ -381,10 +385,10 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     this.nursesPreference = preferences;
   }
 
-  updateDemand(demand: HospitalDemandElement[]){
+  updateDemand(demand: HospitalDemandElement[][]){
     this.hospitalDemands = demand;
   }
-  
+
   updateHistory(history: NurseHistoryElement[]){
     this.nursesHistory = history;
   }
