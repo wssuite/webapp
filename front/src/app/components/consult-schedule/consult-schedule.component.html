@@ -17,7 +17,7 @@
         <hr>
         <h3>The status of your schedule is: {{schedule.state}}</h3>
         <!--Modify this block to a table like the preferences table-->
-        <div class="schedule-container" *ngIf="employeeSchedule && schedule.state!=='Failed'">
+        <div class="schedule-container" *ngIf="schedule.state!=='Failed'">
             <!-- create a table to hold the column with the employee names-->
             <div class="nurse-name-table">
                 <table class="employee-names-column">
@@ -52,16 +52,19 @@
                                     </span>
                                 </button>
                                 <ng-template #noPreference></ng-template>
-                            </div>
-                            <ng-template #inProgress>
-                                <span class="employee-info" *ngIf="getPreference(n.username, index) !== undefined; else noPreference">
-                                    <b>
-                                        {{getEmployeeShift(n.username, index)}}
-                                    </b>
-                                    {{getEmployeeSkill(n.username, index)}}
-                                </span>
-                                <ng-template #noPreference></ng-template>
-                            </ng-template>
+                          </div>
+                          <ng-template #inProgress>
+                            <button class="pref-button" mat-raised-button *ngIf="getPreference(n.username, index) !== undefined; else noPreference"
+                                [ngStyle]="getButtonStyle(n.username, index)" [disabled]="true">
+                              <span class="employee-info">
+                                  <b>
+                                      {{getEmployeeShift(n.username, index)}}
+                                  </b>
+                                  {{getEmployeeSkill(n.username, index)}}
+                              </span>
+                              </button>
+                              <ng-template #noPreference></ng-template>
+                          </ng-template>
                         </td>
                     </tr>
                 </table>
