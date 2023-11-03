@@ -1,6 +1,7 @@
 from flask import Response
 from . import schedule_mod as mod
 from flask import request
+from src.controllers.socket_actions import create_room_name_from_json
 from src.exceptions.project_base_exception import ProjectBaseException
 from constants import (
     user_token,
@@ -132,10 +133,19 @@ def get_latest_solutions():
 
 @mod.route("/updateStatus", methods=["POST"])
 def update_solution_satus():
-    json = request.json
-    room = schedule_handler.update_solution_state(json)
+    stat_json = schedule_handler.update_solution_state(request.json)
+    room = create_room_name_from_json(request.json)
     print("update_notification", f"notification_{room}")
-    socketio.emit("update_notification", json, to=f"notification_{room}")
+    socketio.emit("update_notification", stat_json, to=f"notification_{room}")
+    return Response(ok_message, 200)
+
+
+@mod.route("/updateSolution", methods=["POST"])
+def update_solution():
+    sol_json = schedule_handler.update_solution(request.json)
+    room = create_room_name_from_json(request.json)
+    print("update_visualisation", f"visualisation_{room}")
+    socketio.emit("update_visualisation", sol_json, to=f"visualisation_{room}")
     return Response(ok_message, 200)
 
 

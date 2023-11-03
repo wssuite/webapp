@@ -9,8 +9,8 @@
                 <butoon mat-menu-item (click)="regenerateSchedule(true)">Show details and regenerate</butoon>
                 <butoon mat-menu-item (click)="nextSchedule()">Show details for next period</butoon>
             </mat-menu>
-            <button *ngIf="schedule.state === 'Success' && employeeSchedule && problemDefined" mat-raised-button color='nurse-blue' (click)="exportSchedule()">Export Schedule</button>
-            <button *ngIf="schedule.state === 'Success' && employeeSchedule" mat-raised-button color='nurse-blue' (click)="viewReport()">View Report</button>
+            <button *ngIf="employeesAssigned && problemDefined" mat-raised-button color='nurse-blue' (click)="exportSchedule()">Export Schedule</button>
+            <button *ngIf="employeesAssigned" mat-raised-button color='nurse-blue' (click)="viewReport()">View Report</button>
             <button *ngIf="schedule.state === inPrgressState" mat-raised-button color='nurse-blue' (click)="stopGeneration()">Stop generation></button>
             <button *ngIf="schedule.state === 'Failed'" mat-raised-button color='nurse-blue' (click)="exportError()">Export error</button>
         </div>

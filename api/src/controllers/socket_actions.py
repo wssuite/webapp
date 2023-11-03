@@ -1,11 +1,11 @@
 import os
+import requests
 from threading import Lock
-from src.models.schedule import Schedule
 from src.utils.file_system_manager import FileSystemManager
 from constants import version, start_date, end_date, profile
 from src.utils.repeatable_thread import RepeatableThread
 from .. import socketio
-from flask_socketio import join_room, leave_room
+from flask_socketio import join_room, leave_room, rooms
 from datetime import datetime
 
 
@@ -15,33 +15,21 @@ room_counter_dict_lock = Lock()
 room_counter_dict = {}
 
 
-def emit_schedule(json, last_modification):
+def emit_schedule(json, last_modification=None):
     sol_folder_path = FileSystemManager.get_solution_dir_path(
         json[profile], json[start_date], json[end_date], json[version]
     )
     sol_file_path = os.path.join(sol_folder_path, "sol.txt")
     file_modification = os.path.getmtime(sol_file_path)
-    room = create_room_name_from_json(json)
 
-    # send new file
     try:
-        # if not a new file, do nothing
-        if file_modification == last_modification:
-            socketio.emit(
-                "update_visualisation",
-                {},
-                to=f"visualisation_{room}",
+        # if a new file, ask for update, otherwise do nothing
+        if file_modification != last_modification:
+            requests.post(
+                f"http://localhost:5000/schedule/updateSolution",
+                json=json
             )
-            return last_modification
-        else:
-            schedule_json = Schedule(sol_file_path).filter_by_name()
-            print("update_visualisation", f"visualisation_{room}")
-            socketio.emit(
-                "update_visualisation",
-                schedule_json,
-                to=f"visualisation_{room}",
-            )
-            return file_modification
+        return file_modification
     except Exception as e:
         print(f"Cannot send last modification ({last_modification}) as encountered an error:", e)
         return last_modification

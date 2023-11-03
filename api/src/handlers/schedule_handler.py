@@ -352,19 +352,25 @@ class ScheduleHandler(BaseHandler):
             t = object_type().from_json(element)
             destination.append(t)
 
-    def update_solution_state(self, solution_json):
+    def update_solution_state(self, sol_json):
         self.solution_dao.update_state(
-            solution_json[start_date],
-            solution_json[end_date],
-            solution_json[profile],
-            solution_json[version],
-            solution_json[state],
+            sol_json[start_date],
+            sol_json[end_date],
+            sol_json[profile],
+            sol_json[version],
+            sol_json[state],
         )
-        return os.path.join(
-            solution_json[profile],
-            f"{solution_json[start_date]}_{solution_json[end_date]}",
-            solution_json[version],
+        return sol_json
+
+    def update_solution(self, sol_json):
+        sol_folder_path = FileSystemManager.get_solution_dir_path(
+            sol_json[profile],
+            sol_json[start_date],
+            sol_json[end_date],
+            sol_json[version]
         )
+        sol_file_path = os.path.join(sol_folder_path, "sol.txt")
+        return Schedule(sol_file_path).filter_by_name()
 
     def import_solution(self, token, file: FileStorage):
         self.verify_token(token)

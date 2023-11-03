@@ -52,6 +52,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   profile: string
   version: string
   problemDefined: boolean
+  employeesAssigned: boolean
 
   constructor(private service: ScheduleService, public dialog: MatDialog, private router: Router, private nurseService: NurseService) {
     this.historyAssignmentsMap = new Map();
@@ -67,6 +68,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     this.profile = ""
     this.version = ""
     this.problemDefined = true
+    this.employeesAssigned = false
   }
 
   ngOnInit(): void {
@@ -118,7 +120,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngAfterViewInit(): void {
     this.service.socket.on(VISUALISATION_UPDATE, (schedule: EmployeeSchedule)=>{
-      // console.console.log("Receive "+VISUALISATION_UPDATE+": ", schedule);
+      // console.log("Receive "+VISUALISATION_UPDATE+": ", schedule);
       if(schedule) {
         this.employeeSchedule = schedule
         this.updateAssignments(schedule)
@@ -218,13 +220,11 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   updateAssignments(schedule:EmployeeSchedule){
     for (const sch of schedule.schedule) {
+      this.employeesAssigned = true
       this.employeeAssignmentsMap.set(sch.employee_uname, sch.assignments);
-      if(this.schedule.state !== IN_PROGRESS){
-        for(const assignment of sch.assignments){
-          //console.log(assignment.date)
-          this.preferences.set(JSON.stringify({nurse: assignment.employee_uname,
-            shift: assignment.shift, date:assignment.date}),"");
-        }
+      for(const assignment of sch.assignments){
+        this.preferences.set(JSON.stringify({nurse: assignment.employee_uname,
+          shift: assignment.shift, date:assignment.date}),"");
       }
     }
   }
