@@ -39,7 +39,7 @@ class FileManager:
 
     def pop_item_by_key(self, key):
         data: dict = self.read()
-        data.pop(key)
+        data.pop(key, None)
         self.write(data)
 
     def len(self):

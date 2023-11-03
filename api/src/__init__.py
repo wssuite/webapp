@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_socketio import SocketIO
+from engineio.payload import Payload
 
-socketio = SocketIO(logger=True, cors_allowed_origins="*")
+Payload.max_decode_packets = 500
+socketio = SocketIO(logger=True, cors_allowed_origins="*", engineio_logger=True)
 
 
 def create_app():
@@ -28,7 +30,6 @@ def create_app():
     )
 
     flask_app.register_blueprint(index_mod)
-
     flask_app.register_blueprint(schedule_mod)
     flask_app.register_blueprint(nurse_mod)
     flask_app.register_blueprint(nurse_group_mod)

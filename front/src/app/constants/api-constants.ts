@@ -8,10 +8,11 @@ export const DETAILED_SOLUTION_URL = SCHEDULE_URL + "/getDetailedSolution";
 export const ALL_SOLUTIONS = SCHEDULE_URL + "/getAllSolutions";
 export const LATEST_SOLUTIONS = SCHEDULE_URL + "/getLatestSolutions";
 export const REMOVE_SOLUTION = SCHEDULE_URL + "/removeSolution"
+export const IMPORT_SOLUTION_URL = SCHEDULE_URL + "/importSolution";
 export const STOP_GENERATION_URL = SCHEDULE_URL + "/stopGeneration"
 export const EXPORT_SOLUTION_URL = SCHEDULE_URL + "/exportSchedule"
 export const EXPRORT_ERROR_URL = SCHEDULE_URL + "/exportError"
-export const GET_STATISTIC_URL = SCHEDULE_URL + "/GetStatistics"
+export const GET_STATISTIC_URL = SCHEDULE_URL + "/getStatistics"
 
 export const NAME_FILTER_SCHEDULE_URL = SCHEDULE_URL + "/nameFilter";
 export const PROTOTYPE_SCHEDULE_URL = NAME_FILTER_SCHEDULE_URL + "/prototype";

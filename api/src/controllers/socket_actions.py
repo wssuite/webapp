@@ -6,6 +6,7 @@ from constants import version, start_date, end_date, profile
 from src.utils.repeatable_thread import RepeatableThread
 from .. import socketio
 from flask_socketio import join_room, leave_room
+from datetime import datetime
 
 
 thread_dict_lock = Lock()
@@ -14,23 +15,36 @@ room_counter_dict_lock = Lock()
 room_counter_dict = {}
 
 
-def emit_schedule(json):
+def emit_schedule(json, last_modification):
     sol_folder_path = FileSystemManager.get_solution_dir_path(
         json[profile], json[start_date], json[end_date], json[version]
     )
     sol_file_path = os.path.join(sol_folder_path, "sol.txt")
+    file_modification = os.path.getmtime(sol_file_path)
     room = create_room_name_from_json(json)
-    schedule_json = None
+
+    # send new file
     try:
-        schedule_json = Schedule(sol_file_path).filter_by_name()
-    except Exception:
-        schedule_json = None
-    finally:
-        socketio.emit(
-            "update_visualisation",
-            schedule_json,
-            room=f"visualisation_{room}",
-        )
+        # if not a new file, do nothing
+        if file_modification == last_modification:
+            socketio.emit(
+                "update_visualisation",
+                {},
+                to=f"visualisation_{room}",
+            )
+            return last_modification
+        else:
+            schedule_json = Schedule(sol_file_path).filter_by_name()
+            print("update_visualisation", f"visualisation_{room}")
+            socketio.emit(
+                "update_visualisation",
+                schedule_json,
+                to=f"visualisation_{room}",
+            )
+            return file_modification
+    except Exception as e:
+        print(f"Cannot send last modification ({last_modification}) as encountered an error:", e)
+        return last_modification
 
 
 def create_room_name_from_json(json):
@@ -42,19 +56,37 @@ def create_room_name_from_json(json):
 @socketio.on("join_notification")
 def handle_join_status(json):
     room = create_room_name_from_json(json)
+    print("join_notification", f"notification_{room}")
     join_room(f"notification_{room}")
+    socketio.emit(
+        'join_room',
+        {'room': f"notification_{room}", 'at': str(datetime.now())},
+        to=f"notification_{room}"
+    )
 
 
 @socketio.on("leave_notification")
 def handle_leave_status(json):
     room = create_room_name_from_json(json)
+    print("leave_notification", f"notification_{room}")
+    socketio.emit(
+        'leave_room',
+        {'room': f"notification_{room}", 'at': str(datetime.now())},
+        to=f"notification_{room}"
+    )
     leave_room(f"notification_{room}")
 
 
 @socketio.on("join_visualisation")
 def handle_join_continuous_visualisation(json):
     room = create_room_name_from_json(json)
+    print("join_visualisation", f"visualisation_{room}")
     join_room(f"visualisation_{room}")
+    socketio.emit(
+        'join_room',
+        {'room': f"visualisation_{room}", 'at': str(datetime.now())},
+        to=f"visualisation_{room}"
+    )
     """
         TODO: start thread and add it it to a dict if not exist
         Increment counter
@@ -74,6 +106,12 @@ def handle_join_continuous_visualisation(json):
 @socketio.on("leave_visualisation")
 def handle_leave_continuous_visualisation(json):
     room = create_room_name_from_json(json)
+    print("leave_visualisation", f"visualisation_{room}")
+    socketio.emit(
+        'leave_room',
+        {'room': f"visualisation_{room}", 'at': str(datetime.now())},
+        to=f"visualisation_{room}"
+    )
     leave_room(f"visualisation_{room}")
     """
         TODO: stop thread if no other user is in the room 
@@ -86,3 +124,8 @@ def handle_leave_continuous_visualisation(json):
             with thread_dict_lock:
                 thread = thread_dict.pop(room)
                 thread.stop_event.set()
+
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')

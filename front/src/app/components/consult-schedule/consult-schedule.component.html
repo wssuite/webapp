@@ -2,13 +2,13 @@
     <app-header [showProfile]='true' [enableProfileSwitch]='false'></app-header>
     <div *ngIf="validSchedule === true else elseBlock" class="page-container">
         <div class="btn-section">
-            <button mat-raised-button (click)="exportCurrentScheduleProblem()" color='nurse-blue'>Download problem</button>
-            <button *ngIf="schedule.state !== inPrgressState" mat-raised-button color='nurse-blue' [matMenuTriggerFor]="regenerateMenu" >Regenerate Schedule</button>
+            <button *ngIf="problemDefined" mat-raised-button (click)="exportCurrentScheduleProblem()" color='nurse-blue'>Download problem</button>
+            <button *ngIf="schedule.state !== inPrgressState && problemDefined" mat-raised-button color='nurse-blue' [matMenuTriggerFor]="regenerateMenu" >Regenerate Schedule</button>
             <mat-menu #regenerateMenu>
                 <butoon mat-menu-item (click)="regenerateSchedule(false)">Regenerate as is</butoon>
                 <butoon mat-menu-item (click)="regenerateSchedule(true)">Show details and regenerate</butoon>
             </mat-menu>
-            <button *ngIf="schedule.state === 'Success' && employeeSchedule" mat-raised-button color='nurse-blue' (click)="exportSchedule()">Export Schedule</button>
+            <button *ngIf="schedule.state === 'Success' && employeeSchedule && problemDefined" mat-raised-button color='nurse-blue' (click)="exportSchedule()">Export Schedule</button>
             <button *ngIf="schedule.state === 'Success' && employeeSchedule" mat-raised-button color='nurse-blue' (click)="viewReport()">View Report</button>
             <button *ngIf="schedule.state === inPrgressState" mat-raised-button color='nurse-blue' (click)="stopGeneration()">Stop generation></button>
             <button *ngIf="schedule.state === 'Failed'" mat-raised-button color='nurse-blue' (click)="exportError()">Export error</button>

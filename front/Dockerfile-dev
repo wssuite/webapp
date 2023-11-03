@@ -6,7 +6,7 @@ WORKDIR /app
 
 # install packages
 COPY ./*.json .
-RUN cd /app && npm i @angular/cli && npm ci
+RUN npm i @angular/cli && npm ci
 
 # copy sources
 # COPY ./src/ ./src/

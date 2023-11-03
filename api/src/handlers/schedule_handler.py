@@ -2,8 +2,10 @@ import datetime
 import json
 import os
 from typing import Type
+import shutil
 
 import requests
+from werkzeug.datastructures import FileStorage
 
 from src.models.schedule import Schedule
 from src.models.solution import Solution
@@ -140,7 +142,8 @@ class ScheduleHandler(BaseHandler):
         requests.post(stop_url, params={"path": relative_path})
 
     def get_detailed_solution(self, token, start, end, profile_name, v):
-        self.verify_profile_accessors_access(token, profile_name)
+        if "_import" not in profile_name:
+            self.verify_profile_accessors_access(token, profile_name)
         solution_db = self.solution_dao.get_solution(
             start, end, profile_name, v
         )
@@ -162,10 +165,13 @@ class ScheduleHandler(BaseHandler):
         input_json_file = os.path.join(dir_path, "input.json")
         schedule_file = os.path.join(dir_path, "sol.txt")
         try:
-            file = open(input_json_file)
-            input_json = json.load(file)
-            file.close()
-            ret_json[problem] = input_json
+            if os.path.exists(input_json_file):
+                file = open(input_json_file)
+                input_json = json.load(file)
+                file.close()
+                ret_json[problem] = input_json
+            else:
+                ret_json[problem] = {}
             schedule_obj = Schedule(schedule_file)
             ret_json[schedule] = schedule_obj.filter_by_name()
 
@@ -191,7 +197,8 @@ class ScheduleHandler(BaseHandler):
             raise ProjectBaseException("The problem doesn't exist")
 
     def remove_schedule(self, token, start, end, profile_name, v):
-        self.verify_profile_accessors_access(token, profile_name)
+        if "_import" not in profile_name:
+            self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()
         """Before removing the solution update next versions to
         not consider the version that is about to be deleted"""
@@ -230,7 +237,7 @@ class ScheduleHandler(BaseHandler):
         solution = Schedule(sol_file)
         return solution.export()
 
-    def get_statistics(self, token, start, end, profile_name,v):
+    def get_statistics(self, token, start, end, profile_name, v):
         self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()
         sol_dir_path = fs.get_solution_dir_path(profile_name, start, end, v)
@@ -358,3 +365,28 @@ class ScheduleHandler(BaseHandler):
             f"{solution_json[start_date]}_{solution_json[end_date]}",
             solution_json[version],
         )
+
+    def import_solution(self, token, file: FileStorage):
+        self.verify_token(token)
+        file.save(file.filename)
+        file_path = file.filename
+        schedule = Schedule(file_path, False)
+        schedule.profile += "_import"
+
+        time = datetime.datetime.now().astimezone()
+        time_str = str(time).split(".")[0]
+        solution_json = schedule.profile_json()
+        solution_json['timestamp'] = time_str
+        solution_object = Solution().from_json(solution_json)
+        solution_object.worker_host = ""
+        solution_object.state = "Success"
+        self.solution_dao.insert_one(solution_object.db_json())
+
+        fs = FileSystemManager()
+        sol_dir_path = fs.get_solution_dir_path(schedule.profile, schedule.start_date,
+                                                schedule.end_date, schedule.version)
+        fs.create_dir_if_not_exist(sol_dir_path)
+        sol_file = os.path.join(sol_dir_path, "sol.txt")
+        shutil.move(file_path, sol_file)
+
+        return solution_json

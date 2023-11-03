@@ -134,7 +134,8 @@ def get_latest_solutions():
 def update_solution_satus():
     json = request.json
     room = schedule_handler.update_solution_state(json)
-    socketio.emit("notification_update", json, room=f"notification_{room}")
+    print("update_notification", f"notification_{room}")
+    socketio.emit("update_notification", json, to=f"notification_{room}")
     return Response(ok_message, 200)
 
 
@@ -184,7 +185,7 @@ def export_error():
         return Response(e.args, 500)
 
 
-@mod.route("/GetStatistics", methods=["GET"])
+@mod.route("/getStatistics", methods=["GET"])
 def get_statistics():
     try:
         token = request.args[user_token]
@@ -198,3 +199,14 @@ def get_statistics():
         return statistics
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/importSolution", methods=["POST"])
+def import_solution():
+    try:
+        token = request.args[user_token]
+        file = request.files["file"]
+        return schedule_handler.import_solution(token, file)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+

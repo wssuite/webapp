@@ -142,6 +142,11 @@ export class CacheUtils {
         }
         localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, JSON.stringify(parsedSubscriptions))
     }
+
+    public static removeNotifSubscriptions(){
+        localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, "[]")
+    }
+
     public static isNotifSubscription(sol: ContinuousVisualisationInterface): boolean{
         const subscriptions = this.getNotifSubscriptions()
         if(subscriptions.length === 0){
@@ -171,7 +176,7 @@ export class CacheUtils {
         localStorage.setItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING, JSON.stringify(sol));
     }
 
-    public static clearContinuousVisulaisation(){
+    public static clearContinuousVisualisation(){
         localStorage.removeItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING)
     }
     public static getContinuousVisulaisation(): ContinuousVisualisationInterface| undefined{

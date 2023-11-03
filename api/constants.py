@@ -25,6 +25,7 @@ schedule_string = "schedule"
 """Planning Horizon"""
 end_date = "endDate"
 start_date = "startDate"
+planning_field = "scheduling_period"
 
 """Mongo specific"""
 mongo_id_field = "_id"

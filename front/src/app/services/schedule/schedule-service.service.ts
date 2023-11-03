@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import {Socket, io} from "socket.io-client";
 import { ALL_SOLUTIONS, DETAILED_SOLUTION_URL,
   EXPORT_PROBLEM_URL, EXPORT_SOLUTION_URL, EXPRORT_ERROR_URL, GENERATE_SCHEDULE,
   GET_STATISTIC_URL,
   LATEST_SOLUTIONS,
-  REGENERATE_SCHEDULE_URL,REMOVE_SOLUTION, STOP_GENERATION_URL} from 'src/app/constants/api-constants';
+  REGENERATE_SCHEDULE_URL,
+  IMPORT_SOLUTION_URL, REMOVE_SOLUTION, STOP_GENERATION_URL} from 'src/app/constants/api-constants';
 import { SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, VISUALISATION_SUBSCRIPTION, VISUALISATION_UNSUBSCRIPTION } from 'src/app/constants/socket-events';
 import { GenerationRequest } from 'src/app/models/GenerationRequest';
 import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from 'src/app/models/Schedule';
@@ -18,21 +19,46 @@ import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUti
 export class ScheduleService {
 
   selectedScheduleToView!: Solution
+  importedScheduleToView!: boolean
   socket!: Socket;
+  socketConnected: Subject<boolean>;
+  notificationsSubscriptions: ContinuousVisualisationInterface[];
+  visualisationSubscription: ContinuousVisualisationInterface | undefined;
 
   constructor(private httpClient: HttpClient) {
+    this.notificationsSubscriptions = [];
+    this.visualisationSubscription = undefined;
+    this.socketConnected = new Subject();
     this.socket = io()
-    const notifSubscriptions = CacheUtils.getNotifSubscriptions()
-    for(const sub of notifSubscriptions){
-      this.notificationSubscribe(sub);
-    }
-    const savedVisulaisation = CacheUtils.getContinuousVisulaisation()
-    if(savedVisulaisation){
-      this.subscribeContinuousVisulation(savedVisulaisation)
-    }
-    console.log(this.socket)
+    this.socket.on('connect', () => {
+      console.log("Socket is connected");
+      this.joinSubscriptions();
+      this.socketConnected.next(true);
+    });
+    this.socket.on('reconnect', () => {
+      console.log("Socket is reconnected");
+      this.joinSubscriptions();
+      this.socketConnected.next(true);
+    });
+    this.socket.on('disconnect', () => {
+      console.log("Socket is disconnected");
+    });
+    this.socket.on('join_room', (data) => {
+      console.log('join room '+data.room+" at "+data.at)
+    });
+    this.socket.on('leave_room', (data) => {
+      console.log('leave room '+data.room+" at "+data.at)
+    });
   }
 
+  joinSubscriptions() {
+    for(const sub of this.notificationsSubscriptions){
+      this.socketEmit(SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, sub)
+    }
+    if(this.visualisationSubscription){
+      this.socketEmit(VISUALISATION_SUBSCRIPTION, this.visualisationSubscription)
+    }
+  }
 
   generateSchedule(request: GenerationRequest): Observable<Solution>{
     try{
@@ -53,6 +79,21 @@ export class ScheduleService {
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
       queryParams = queryParams.append("version", oldVersion);
       return this.httpClient.post<Solution>(REGENERATE_SCHEDULE_URL, request, {
+        params: queryParams,
+      })
+    }
+    catch(err){
+      throw new Error("user not logged in")
+    }
+  }
+
+  importSolution(file: File): Observable<Solution>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
+      const formData = new FormData();
+      formData.append("file", file);
+      return this.httpClient.post<Solution>(IMPORT_SOLUTION_URL, formData, {
         params: queryParams,
       })
     }
@@ -88,7 +129,7 @@ export class ScheduleService {
     try{
       let queryParams = new HttpParams();
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
+      queryParams = queryParams.append(PROFILE_STRING, sol.profile || CacheUtils.getProfile())
       queryParams = queryParams.append("startDate", sol.startDate)
       queryParams = queryParams.append("endDate", sol.endDate)
       queryParams = queryParams.append("version", sol.version)
@@ -105,7 +146,7 @@ export class ScheduleService {
     try{
       let queryParams = new HttpParams;
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
+      queryParams = queryParams.append(PROFILE_STRING, schedule.profile || CacheUtils.getProfile())
       queryParams = queryParams.append("startDate", schedule.startDate)
       queryParams = queryParams.append("endDate", schedule.endDate)
       queryParams = queryParams.append("version", schedule.version)
@@ -163,7 +204,7 @@ export class ScheduleService {
     try{
       let queryParams = new HttpParams;
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
-      queryParams = queryParams.append(PROFILE_STRING, CacheUtils.getProfile())
+      queryParams = queryParams.append(PROFILE_STRING, sol.profile || CacheUtils.getProfile())
       queryParams = queryParams.append("startDate", sol.startDate)
       queryParams = queryParams.append("endDate", sol.endDate)
       queryParams = queryParams.append("version", sol.version)
@@ -191,7 +232,7 @@ export class ScheduleService {
     }
   }
 
-  getResport(sol: ContinuousVisualisationInterface):Observable<Map<string, string>>{
+  getReport(sol: ContinuousVisualisationInterface):Observable<Map<string, string>>{
     try{
       let queryParams = new HttpParams;
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
@@ -207,33 +248,56 @@ export class ScheduleService {
     }
   }
 
-  connectSocket(){
-    this.socket = io()
-    console.log(this.socket)
-  }
-
   disconnectSocket(){
     this.socket.disconnect()
   }
 
+  isConnected(){
+    if(this.socket.connected) {
+      this.socketConnected.next(true);
+    }
+  }
+
   notificationUnsubscribe(solution: ContinuousVisualisationInterface){
-    this.socket.emit(UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution)
+    const index = this.notificationsSubscriptions.indexOf(solution)
+    if(index > -1){
+        this.notificationsSubscriptions.splice(index, 1);
+        this.socketEmit(UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution);
+    }
   }
 
   notificationSubscribe(solution: ContinuousVisualisationInterface) {
-    this.socket.emit(SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution)
+    const index = this.notificationsSubscriptions.indexOf(solution)
+    if(index == -1){
+        this.notificationsSubscriptions.push(solution);
+        this.socketEmit(SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, solution);
+    }
   }
 
-  subscribeContinuousVisulation(solution: ContinuousVisualisationInterface ){
-    this.socket.emit(VISUALISATION_SUBSCRIPTION, solution)
-    CacheUtils.setContinuousVisualisation(solution)
+  subscribeContinuousVisulation(solution: ContinuousVisualisationInterface){
+    if(!this.visualisationSubscription) {
+      this.socketEmit(VISUALISATION_SUBSCRIPTION, solution)
+      this.visualisationSubscription = solution;
+    }
   }
+
   unsubscribeContinuousVisulation(solution: ContinuousVisualisationInterface) {
-    this.socket.emit(VISUALISATION_UNSUBSCRIPTION, solution)
-    try{
-      CacheUtils.clearContinuousVisulaisation()
-    } catch(err){
-      // Do nothing
+    if(this.visualisationSubscription) {
+      this.socketEmit(VISUALISATION_UNSUBSCRIPTION, solution)
+      this.visualisationSubscription = undefined;
+    }
+  }
+
+  socketEmit(eventName: string, data: any) {
+    if(this.socket.connected) {
+      this.socket.emit(eventName, data)
+    } else {
+      const socketSubscription: Subscription = this.socketConnected.subscribe({
+        next: (connected: boolean) => {
+          this.socket.emit(eventName, data)
+          socketSubscription.unsubscribe()
+        }
+      })
     }
   }
 }

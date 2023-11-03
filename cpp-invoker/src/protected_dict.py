@@ -16,4 +16,4 @@ class ProtectedDict:
     @staticmethod
     def pop_item(key):
         with ProtectedDict.lock:
-            return ProtectedDict.target_dict.pop(key)
+            return ProtectedDict.target_dict.pop(key, None)

@@ -338,14 +338,6 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     if(this.oldVersion){
       this.scheduleService.regenerateSchedule(this.oldVersion, request).subscribe({
         next: (sol: Solution)=> {
-          const subscription: ContinuousVisualisationInterface = {
-            startDate: sol.startDate,
-            endDate: sol.endDate,
-            profile: sol.profile,
-            version: sol.version
-          }
-          CacheUtils.addNewNotifSubscription(subscription)
-          this.scheduleService.notificationSubscribe(subscription);
           this.router.navigate(["/" + VIEW_SCHEDULES])
           CacheUtils.removeOldVersion()
         },
@@ -362,14 +354,6 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     else{
       this.scheduleService.generateSchedule(request).subscribe({
         next: (sol: Solution)=>{
-          const subscription: ContinuousVisualisationInterface = {
-            startDate: sol.startDate,
-            endDate: sol.endDate,
-            profile: sol.profile,
-            version: sol.version
-          }
-          CacheUtils.addNewNotifSubscription(subscription)
-          this.scheduleService.notificationSubscribe(subscription);
           this.router.navigate(["/" + VIEW_SCHEDULES])
         },
         error: (err: HttpErrorResponse)=>{

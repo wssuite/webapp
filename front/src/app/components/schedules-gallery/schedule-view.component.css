@@ -54,3 +54,26 @@ p {
     margin-bottom: 2vh;
     margin-top: 2vh;
 }
+
+.title {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.fileUpload {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: auto;
+    margin-left: auto;
+    margin-bottom: 1vh;
+}
+
+.file-input {
+    display: none;
+}
+
+.upload-btn{
+    margin-left: 2vw;
+}

@@ -12,6 +12,7 @@ RUN npm ci
 
 # copy the current sources contents into the container at /app
 COPY ./src/ ./src/
+
 # build the app
 RUN npm run build
 
