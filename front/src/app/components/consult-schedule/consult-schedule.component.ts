@@ -40,7 +40,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   endDate: Date | undefined;
   startDate: Date | undefined;
   validSchedule: boolean;
-  nbColumns: number | undefined;
+  nbColumns: number;
   nbHistoryColumns: number;
   indexes: number[] | undefined;
   isButtonDisabled: boolean[] | undefined;
@@ -62,6 +62,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.preferences = new Map();
     this.nurses = []
+    this.nbColumns = 0
     this.nbHistoryColumns = 0;
     this.profile = ""
     this.version = ""
@@ -290,9 +291,6 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   getButtonDisabled() {
     const disabled: boolean[] = [];
-    if (this.nbColumns == undefined || this.nbHistoryColumns == undefined) {
-      return [];
-    }
     let i = 0;
     for (; i < this.nbHistoryColumns; i++) {
       disabled.push(true);
@@ -305,9 +303,6 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   getIndexes() {
     const indexes: number[] = [];
-    if (this.nbColumns == undefined) {
-      return [];
-    }
     for (let i = 0; i < this.nbColumns; i++) {
       indexes.push(i);
     }
@@ -576,6 +571,58 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         }
       })
     }
+  }
+
+  nextSchedule() {
+    const problemNurses: NurseInterface[] = []
+    this.schedule.problem.nurses.forEach((username: string)=>{
+      this.nurses.forEach((nurse: NurseInterface)=>{
+        if(username === nurse.username){
+          problemNurses.push(nurse)
+        }
+      })
+    })
+
+    const nextStart = new Date(this.schedule.problem.endDate.valueOf())
+    DateUtils.addDays(nextStart, 1)
+    const nDays = this.nbColumns - this.nbHistoryColumns - 1
+    const nextEnd = new Date(nextStart.valueOf())
+    DateUtils.addDays(nextEnd, nDays)
+    const details : GenerationRequestDetails= {
+      nurses: problemNurses,
+      skills: this.schedule.problem.skills,
+      shifts: this.schedule.problem.shifts,
+      startDate: nextStart,
+      endDate: nextEnd
+    }
+    CacheUtils.setGenerationRequest(details)
+
+    const demand: HospitalDemandElement[][] = [];
+    for (let d of this.schedule.problem.hospitalDemand) {
+      while (demand.length <= d.index) {
+        demand.push([])
+      }
+      const date = new Date(d.date)
+      DateUtils.addDays(date, nDays)
+      d.date = ""+date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()
+      demand[d.index].push(d);
+    }
+    CacheUtils.setDemandGenerationRequest(demand);
+
+    const history: NurseHistoryElement[] = []
+    for (const sch of this.schedule.schedule.schedule) {
+      for(const assignment of sch.assignments){
+        //console.log(assignment.date)
+        history.push({
+          username: assignment.employee_uname,
+          shift: assignment.shift,
+          date:assignment.date
+        });
+      }
+    }
+    CacheUtils.saveNurseHistory(history);
+
+    this.router.navigate(["/" + SCHEDULE_GENERATION])
   }
 
   stopGeneration(){
