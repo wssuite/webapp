@@ -1,11 +1,11 @@
 import json
 import requests
 
-from .file_writer import FileManager
+from src.file_writer import FileManager
 import os
 import subprocess
-import multiprocessing
-from .protected_dict import ProtectedDict
+from src.protected_dict import ProtectedDict
+from threading import Thread
 import shlex
 import sys
 
@@ -22,6 +22,7 @@ API_ADDRESS = os.getenv("API_ADDRESS", data["api_address"])
 TIMEOUT = os.getenv("TIMEOUT", data["timeout"])
 CPP_PARAMS = os.getenv("CPP_PARAMS", data["cpp_params"])
 file.close()
+UPDATE_ENDPOINT = f"http://{API_ADDRESS}/schedule/updateStatus"
 
 running_shared_dict = ProtectedDict()
 
@@ -37,19 +38,37 @@ def extract_version_info_from_path(path):
     return info_json
 
 
-def run_scheduler(path, counter):
-    """
-        TODO: launch a request to the ffs to update the status
-            to In progress
-        """
+def scheduler_wrapper(path, counter):
     info_json = extract_version_info_from_path(path)
     info_json["state"] = "In Progress"
+    requests.post(UPDATE_ENDPOINT, json=info_json)
+
+    status, out, err = run_scheduler(path, counter)
+    try:
+        str_err = err.decode()
+        str_out = out.decode()
+        error_file_path = os.path.join(path, "error.txt")
+        with open(error_file_path, "w") as f:
+            f.write(f"output: {str_out}\n")
+            f.write("--------------------------------------------------------------------------------------\n")
+            f.write(f"error: {str_err}")
+    except Exception as e:
+        print("No std error:", e)
+
+    if status == 0:
+        info_json["state"] = "Success"
+    elif status == -1:
+        info_json["state"] = "Stopped"
+    else:
+        info_json["state"] = "Failed"
+    requests.post(UPDATE_ENDPOINT, json=info_json)
+
+    exit(0)
+
+
+def run_scheduler(path, counter):
     running_fm.add_item(path, counter)
 
-    requests.post(
-        f"http://{API_ADDRESS}/schedule/updateStatus",
-        json=info_json
-    )
     cmd = (
         "./bin/staticscheduler --dir {0}/ --instance input.txt --param {1} "
         "--sol {0} --timeout {2} --origin ui".format(
@@ -57,52 +76,23 @@ def run_scheduler(path, counter):
     )
     cmd_split = shlex.split(cmd)
     print(cmd_split)
+
     proc = subprocess.Popen(
         cmd_split, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
+    running_shared_dict.add_item(path, proc)
     out, err = proc.communicate()
-    print(proc.returncode)
-    callback(path, proc.returncode, err, out)
+    p = running_shared_dict.pop_item(path)
 
-
-def callback(path, status, error: bytes, out:bytes):
-    """
-    TODO: the callback will launch a request to the ffs to inform
-        it with the status of the schedule
-    """
-    info_json = extract_version_info_from_path(path)
-    try:
-        str_err = error.decode()
-        str_out = out.decode()
-        error_file_path = os.path.join(path, "error.txt")
-        with open(error_file_path, "w") as f:
-            f.write(f"output: {str_out}\n")
-            f.write("--------------------------------------------------------------------------------------\n")
-            f.write(f"error: {str_err}")
-    except Exception:
-        print("No std error")
-
-    if status == 0:
-        """return success status"""
-        info_json["state"] = "Success"
-    else:
-        """return Failed status"""
-        info_json["state"] = "Failed"
-
-    requests.post(
-        f"http://{API_ADDRESS}/schedule/updateStatus",
-        json=info_json
-    )
     running_fm.pop_item_by_key(path)
-    # print(rd)
-    exit(0)
+    # if the item has already been popped by the stop event
+    return -1 if p is None else proc.returncode, out, err
 
 
 def schedule(full_path, counter):
-    process = multiprocessing.Process(target=run_scheduler,
-                                      args=(full_path, counter,))
-    running_shared_dict.add_item(full_path, process)
+    process = Thread(target=scheduler_wrapper, args=(full_path, counter,))
     process.start()
+    return process
 
 
 def add_to_waiting(key, value):
@@ -124,15 +114,18 @@ def schedule_waiting():
 
 def handle_stop_event(full_path):
     """Delete the element from the running map"""
-    process = running_shared_dict.pop_item(full_path)
+    proc = running_shared_dict.pop_item(full_path)
     print("Terminate process:", full_path)
-    if process:
-        process.terminate()
-        process.join()
-    info_json = extract_version_info_from_path(full_path)
-    running_fm.pop_item_by_key(full_path)
-    info_json["state"] = "Stopped"
-    requests.post(
-        f"http://{API_ADDRESS}/schedule/updateStatus",
-        json=info_json
-    )
+    if proc:
+        proc.terminate()
+
+
+if __name__ == "__main__":
+    import time
+
+    API_ADDRESS = "localhost:5000"
+    UPDATE_ENDPOINT = f"http://{API_ADDRESS}/schedule/updateStatus"
+
+    schedule(sys.argv[1], 0)
+    time.sleep(3)
+    handle_stop_event(sys.argv[1])

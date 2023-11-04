@@ -645,6 +645,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       }
     })
   }
+
   exportSchedule(){
     const obj: ContinuousVisualisationInterface = {
       startDate: this.schedule.startDate,
@@ -662,6 +663,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       }
     })
   }
+
   viewReport(){
     this.dialog.open(ReportDialogComponent, {
       data: {startDate: this.schedule.startDate,

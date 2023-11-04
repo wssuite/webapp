@@ -21,7 +21,7 @@ services:
     ports:
       - 8443:443
       - 8080:80
-      - 4200
+      - 4200:4200
     depends_on:
       - api
     volumes:
@@ -32,7 +32,7 @@ services:
     build: ./api
     container_name: api
     ports:
-      - 5000
+      - 5000:5000
     depends_on:
       - mongodb
     volumes:

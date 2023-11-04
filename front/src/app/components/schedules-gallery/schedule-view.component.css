@@ -58,7 +58,12 @@ p {
 .title {
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
+  margin-right: 0vw;
+}
+
+.title-container {
+  margin-left: 3vw;
+  margin-right: 3vw;
 }
 
 .fileUpload {
@@ -72,8 +77,4 @@ p {
 
 .file-input {
     display: none;
-}
-
-.upload-btn{
-    margin-left: 2vw;
 }
