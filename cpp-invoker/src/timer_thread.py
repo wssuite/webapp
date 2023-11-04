@@ -9,4 +9,8 @@ class TimerThread(Thread):
 
     def run(self):
         while not self.stopped.wait(2):
-            self.func()
+            try:
+                self.func()
+            except Exception as e:
+                print("Repeated thread caught an error:")
+                print(e)

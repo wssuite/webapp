@@ -61,6 +61,7 @@ def scheduler_wrapper(path, counter):
         info_json["state"] = "Stopped"
     else:
         info_json["state"] = "Failed"
+    print("Scheduler finished with status", info_json["state"], "for path", path)
     requests.post(UPDATE_ENDPOINT, json=info_json)
 
     exit(0)
@@ -115,17 +116,13 @@ def schedule_waiting():
 def handle_stop_event(full_path):
     """Delete the element from the running map"""
     proc = running_shared_dict.pop_item(full_path)
-    print("Terminate process:", full_path)
     if proc:
+        print("Terminate process:", full_path)
         proc.terminate()
 
 
 if __name__ == "__main__":
     import time
-
-    API_ADDRESS = "localhost:5000"
-    UPDATE_ENDPOINT = f"http://{API_ADDRESS}/schedule/updateStatus"
-
     schedule(sys.argv[1], 0)
     time.sleep(3)
     handle_stop_event(sys.argv[1])

@@ -1,5 +1,5 @@
 import os
-import multiprocessing
+from threading import Thread
 
 from .handler import (
     add_to_waiting,
@@ -35,7 +35,6 @@ def stop():
     path = request.args["path"]
     path = path[1:]
     full_path = os.path.join(base_directory, path)
-    process = multiprocessing.Process(target=handle_stop_event,
-                                      args=(full_path,))
+    process = Thread(target=handle_stop_event, args=(full_path,))
     process.start()
     return Response("ok_message", status=200)
