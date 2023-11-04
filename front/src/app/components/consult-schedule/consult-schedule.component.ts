@@ -90,11 +90,12 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       if(currentSchedule){
         this.getDetailedSchedule(currentSchedule);
       } else {
-        const savedHistory = CacheUtils.getNurseHistory()
-        if(savedHistory){
-          this.historyAssignmentsMap = new Map();
-          this.setHistoryAssignments(savedHistory);
-        }
+        // const savedHistory = CacheUtils.getNurseHistory()
+        // if(savedHistory){
+        //   this.historyAssignmentsMap = new Map();
+        //   this.setHistoryAssignments(savedHistory);
+        // }
+        this.openErrorDialog("No schedule has been found to be viewed")
       }
     }
     catch(err){
@@ -134,6 +135,23 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     this.preferences = new Map()
     this.profile = schedule.profile
     this.version = schedule.version
+
+    // listen to visualisation updates
+    this.service.socket.once(NOTIFICATION_UPDATE, (sol: Solution)=>{
+      if(this.profile === sol.profile && this.version === sol.version) {
+        if(sol.state !== IN_PROGRESS) {
+          this.service.notificationUnsubscribe({
+            startDate: sol.startDate,
+            endDate: sol.endDate,
+            profile: sol.profile,
+            version: sol.version
+          });
+        }
+        this.getDetailedSchedule(sol);
+      }
+    });
+
+    // fetch latest detailed solution
     CacheUtils.setCurrentSchedule(schedule);
     this.service.getDetailedSolution(schedule).subscribe({
       next: (data: DetailedSchedule)=>{
@@ -192,19 +210,6 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         this.openErrorDialog(err.error)
       }
     })
-    this.service.socket.once(NOTIFICATION_UPDATE, (sol: Solution)=>{
-      if(this.profile === sol.profile && this.version === sol.version) {
-        if(sol.state !== IN_PROGRESS) {
-          this.service.notificationUnsubscribe({
-            startDate: sol.startDate,
-            endDate: sol.endDate,
-            profile: sol.profile,
-            version: sol.version
-          });
-        }
-        this.getDetailedSchedule(sol);
-      }
-    });
   }
 
   setHistoryAssignments(history: NurseHistoryElement[]){
@@ -474,7 +479,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     if(currentSchedule){
       CacheUtils.savePreferences(currentSchedule, localPreferences);
     }
-
+    // fetch latest detailed schedule
     this.getDetailedSchedule(schedule);
   }
 
@@ -634,13 +639,9 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     }
     this.service.stopGeneration(obj).subscribe({
       error: (err: HttpErrorResponse)=>{
-        if(err.status === HttpStatusCode.Ok){
-          const currentSolution = CacheUtils.getCurrentSchedule();
-          if(currentSolution){
-            this.getDetailedSchedule(currentSolution)
-          }
+        if(err.statusText !== "OK") {
+          this.openErrorDialog(err.error)
         }
-        this.openErrorDialog(err.error)
       }
     })
   }

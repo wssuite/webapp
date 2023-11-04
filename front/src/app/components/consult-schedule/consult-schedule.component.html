@@ -42,7 +42,7 @@
                             <div class="button-cell" *ngIf="schedule.state !== inPrgressState; else inProgress">
                                 <button class="info-button" mat-raised-button *ngIf="getPreference(n.username, index) !== undefined; else noPreference"
                                     [ngStyle]="getButtonStyle(n.username, index)" (click)="updatePreference(n.username, index)"
-                                    [disabled]="isButtonDisabled === undefined || isButtonDisabled[index]">
+                                    [disabled]="!problemDefined || isButtonDisabled === undefined || isButtonDisabled[index]">
                                     <span class="employee-info">
                                         <b>
                                             {{getEmployeeShift(n.username, index)}}

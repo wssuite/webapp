@@ -125,8 +125,10 @@ def schedule_waiting():
 def handle_stop_event(full_path):
     """Delete the element from the running map"""
     process = running_shared_dict.pop_item(full_path)
+    print("Terminate process:", full_path)
     if process:
         process.terminate()
+        process.join()
     info_json = extract_version_info_from_path(full_path)
     running_fm.pop_item_by_key(full_path)
     info_json["state"] = "Stopped"

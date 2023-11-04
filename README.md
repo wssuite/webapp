@@ -1,13 +1,25 @@
 ## Nurse Scheduler interface
 
-[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/legraina/ns_app_front)](https://hub.docker.com/repository/docker/legraina/ns_app_front/)
-[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/legraina/ns_app_scheduler)](https://hub.docker.com/repository/docker/legraina/ns_app_scheduler/)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/legraina/ns_webapp_front)](https://hub.docker.com/repository/docker/legraina/ns_webapp_front/)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/legraina/ns_webapp_api)](https://hub.docker.com/repository/docker/legraina/ns_webapp_api/)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/legraina/ns_webapp_scheduler)](https://hub.docker.com/repository/docker/legraina/ns_webapp_scheduler/)
 
 ## Getting started
 
 To clone the git repository, please use the following command:
 
 	 git clone https://github.com/wssuite/webapp.git
+
+
+To run the production webapp, you may also just download the two files: docker-compose.yml and haproxy .cfg
+and run:
+
+	docker compose up -d
+
+You may then access the webapp through https://localhost/ with the default credentials:
+
+	username: admin
+	password: admin
 
 
 ## Using docker compose
@@ -19,7 +31,7 @@ There are two docker-compose files in this repository:
 
 Those files prepare the environment ex. creating the network and volumes necessary, for the docker containers to work properly.
 
-To use the docker-compose files, make sure to have docker and docker-compose installed on your computer.
+To use the docker-compose files, make sure to have docker installed on your computer.
 
 ## 1- Using docker-compose-dev.yml
 To start the docker containers:

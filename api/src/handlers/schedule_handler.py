@@ -127,9 +127,7 @@ class ScheduleHandler(BaseHandler):
             solution.version,
         )
         db_solution = Solution().from_json(solution_from_db)
-        """
-          TODO send the request to stop to the worker in question
-        """
+        # send the request to stop to the worker in question
         host = db_solution.worker_host
         stop_url = f"http://{host}/solver/stop"
         full_path = FileSystemManager.get_solution_dir_path(
@@ -139,6 +137,7 @@ class ScheduleHandler(BaseHandler):
             db_solution.version,
         )
         relative_path = full_path.replace(base_directory, "")
+        print("Stop job", relative_path, "for", host)
         requests.post(stop_url, params={"path": relative_path})
 
     def get_detailed_solution(self, token, start, end, profile_name, v):

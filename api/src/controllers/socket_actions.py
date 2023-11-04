@@ -24,7 +24,7 @@ def emit_schedule(json, last_modification=None):
 
     try:
         # if a new file, ask for update, otherwise do nothing
-        if file_modification != last_modification:
+        if last_modification and file_modification != last_modification:
             requests.post(
                 f"http://localhost:5000/schedule/updateSolution",
                 json=json
