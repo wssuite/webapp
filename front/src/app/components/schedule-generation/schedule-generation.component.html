@@ -3,7 +3,10 @@
   <div class="schedule-generation-container">
     <div class="problemDefinitionContainer">
       <div class="PlanningHorizonContainer">
-        <h2>Planning Horizon</h2>
+        <div class="title-container">
+          <h2>Planning Horizon</h2>
+          <button mat-icon-button class="close-button" (click)="closeView()" color='nurse-blue'><mat-icon>cancel</mat-icon></button>
+        </div>
         <hr>
         <mat-form-field appearance="fill">
           <mat-label>Enter a date range</mat-label>
@@ -190,6 +193,7 @@
       </div>
 
       <div class="generateScheduleButtonContainer">
+        <button mat-raised-button color="warn" class ="cancelButton" (click)="closeView()">Cancel</button>
         <button
           *ngIf="!oldVersion" mat-raised-button
           color="primary"

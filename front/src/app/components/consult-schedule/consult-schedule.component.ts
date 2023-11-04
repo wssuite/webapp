@@ -675,4 +675,8 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         position: {top:'8vh',left: '25%', right: '25%'},
     })
   }
+
+  closeView(){
+    this.router.navigate(["/" + VIEW_SCHEDULES])
+  }
 }

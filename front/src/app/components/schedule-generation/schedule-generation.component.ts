@@ -397,4 +397,8 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   validRange(): boolean{
     return DateUtils.nbDaysDifference(this.endDate, this.startDate) %7 === 0
   }
+
+  closeView(){
+    this.router.navigate(["/" + VIEW_SCHEDULES])
+  }
 }

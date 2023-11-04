@@ -89,6 +89,10 @@
  margin-left: 1vw;
 }
 
+.empty-container {
+  width: 2vw;
+}
+
 h2, h3 {
     color: #1a3d66;
 }

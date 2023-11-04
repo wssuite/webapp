@@ -13,6 +13,8 @@
             <button *ngIf="employeesAssigned" mat-raised-button color='nurse-blue' (click)="viewReport()">View Report</button>
             <button *ngIf="schedule.state === inPrgressState" mat-raised-button color='nurse-blue' (click)="stopGeneration()">Stop generation></button>
             <button *ngIf="schedule.state === 'Failed'" mat-raised-button color='nurse-blue' (click)="exportError()">Export error</button>
+            <div class="empty-container"></div>
+            <button mat-icon-button class="close-button" (click)="closeView()" color='nurse-blue'><mat-icon>cancel</mat-icon></button>
         </div>
         <h2>Schedule from {{schedule.startDate}} to {{schedule.endDate}} | version: {{schedule.version}}</h2>
         <hr>
