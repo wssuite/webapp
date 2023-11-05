@@ -28,21 +28,21 @@ def execute_before_server_start_up():
         waiting_requests: dict = waiting_fm.read()
 
         """Restart the failed jobs"""
-        for key in on_going_requests.keys():
-            counter = on_going_requests[key]
-            if counter > 3:
+        for key, config in on_going_requests.items():
+            if config["retry"] > 3:
                 """TODO send the request to the main
                 server with the status failed"""
-                on_going_requests.pop(key)
+                pass
             else:
-                waiting_requests[key] = counter
+                config["retry"] += 1
+                waiting_requests[key] = config
 
         waiting_fm.write(waiting_requests)
     except OSError:
         running_fm.write({})
         waiting_fm.write({})
-    except Exception:
-        pass
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":

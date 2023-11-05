@@ -192,8 +192,34 @@
         <app-nurse-history  [nurses]="nurses" [startDate]="startDate"  (nursesHistory)=" updateHistory($event)"></app-nurse-history>
       </div>
 
+      <div class="configSection margin-on-bottom">
+        <h2 class="configSectionTitle">Solver configuration</h2>
+        <hr>
+        <div class="configButtonsSection">
+          <mat-form-field class="configField" appearance="fill">
+              <mat-label>Configuration profile</mat-label>
+              <mat-select [value]="selectedParam">
+                <mat-option *ngFor="let param of possibleParams" (click)="onParamChange(param)" [value]="param">
+                   {{param}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="configField" appearance="fill">
+              <mat-label>Max. number of threads</mat-label>
+              <mat-select [value]="selectedThreads">
+                <mat-option *ngFor="let nThreads of possibleThreads" (click)="onThreadsChange(nThreads)" [value]="nThreads">
+                   {{nThreads}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="configField" appearance="fill">
+            <mat-label>Max. solving time (minutes)</mat-label>
+            <input matInput class="timeout" type="number" (input)="onTimeoutChange($event)" [value]="selectedTimeout">
+          </mat-form-field>
+        </div>
+      </div>
+
       <div class="generateScheduleButtonContainer">
-        <button mat-raised-button color="warn" class ="cancelButton" (click)="closeView()">Cancel</button>
         <button
           *ngIf="!oldVersion" mat-raised-button
           color="primary"
@@ -210,6 +236,7 @@
           [disabled]=" !validRange() || nurses.length === 0 || shifts.length === 0 || demandsError">
           Regenerate schedule
         </button>
+        <button mat-raised-button color="warn" class ="cancelButton" (click)="closeView()">Cancel</button>
       </div>
     </div>
   </div>

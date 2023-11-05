@@ -1,0 +1,28 @@
+# global options of the deterministic procedure
+solutionAlgorithm=GENCOL
+solverType=CLP
+divideIntoConnectedPositions=1
+withRollingHorizon=0
+withPrimalDual=0
+withLNS=0
+
+# complete solution options
+completeOptimalityLevel=REPEATED_DIVES
+
+# default branch and price solver parameters
+branchColumnDisjoint=1
+performHeuristicAfterXNode=-1
+spNbRotationsPerNurse=20
+spNbNursesToPrice=15
+verbose=1
+
+# RCSPP Solver options
+rcsppToOptimality=1
+rcsppSortLabels=1
+rcsppMinCostToSinks=0
+rcsppImprovedDomination=1
+rcsppEnumSubpaths=0
+rcsppEnumSubpathsForMinCostToSinks=0
+rcsppDssr=0
+rcsppNbToExpand=0
+rcsppBidirectional=0

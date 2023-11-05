@@ -9,33 +9,22 @@ withLNS=0
 # complete solution options
 completeOptimalityLevel=REPEATED_DIVES
 
-# rolling horizon options
-rollingSamplePeriod=7
-rollingControlHorizon=56
-rollingPredictionHorizon=56
-rollingOptimalityLevel=TWO_DIVES
-
-# lns options
-lnsMaxItWithoutImprovement=100
-lnsNursesRandomDestroy=1
-lnsNursesPositionDestroy=1
-lnsNursesContractDestroy=1
-lnsDestroyOverTwoWeeks=1
-lnsDestroyOverFourWeeks=1
-lnsDestroyOverAllWeeks=1
-lnsNbNursesDestroyOverTwoWeeks=24
-lnsNbNursesDestroyOverFourWeeks=12
-lnsNbNursesDestroyOverAllWeeks=6
-lnsOptimalityLevel=TWO_DIVES
-
 # default branch and price solver parameters
 branchColumnDisjoint=1
-performHeuristicAfterXNode=-1
-spDefaultStrategy=0
 spNbRotationsPerNurse=20
 spNbNursesToPrice=15
-spMaxReducedCostBound=0
 verbose=1
+
+# MIP heuristic
+performHeuristicAfterXNode=0
+heuristicMinIntegerPercent=0
+performMIPHeuristic=1
+MIPHeuristicGapLimit=.5
+MIPHeuristicUseRotations=1
+MIPHeuristicNThreads=1
+MIPHeuristicVerbose=0
+MIPHeuristicSolver=FIRST_AVAIL
+# MIPHeuristicMaxIteration=-1
 
 # RCSPP Solver options
 rcsppToOptimality=1

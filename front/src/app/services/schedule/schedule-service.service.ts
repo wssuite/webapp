@@ -6,10 +6,10 @@ import { ALL_SOLUTIONS, DETAILED_SOLUTION_URL,
   EXPORT_PROBLEM_URL, EXPORT_SOLUTION_URL, EXPRORT_ERROR_URL, GENERATE_SCHEDULE,
   GET_STATISTIC_URL,
   LATEST_SOLUTIONS,
-  REGENERATE_SCHEDULE_URL,
+  REGENERATE_SCHEDULE_URL, CONFIG_SCHEDULE_URL,
   IMPORT_SOLUTION_URL, REMOVE_SOLUTION, STOP_GENERATION_URL} from 'src/app/constants/api-constants';
 import { SUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, UNSUBSCRIBE_SCHEDULE_STATUS_NOTIFICATIONS, VISUALISATION_SUBSCRIPTION, VISUALISATION_UNSUBSCRIPTION } from 'src/app/constants/socket-events';
-import { GenerationRequest } from 'src/app/models/GenerationRequest';
+import { GenerationRequest, PossibleConfig } from 'src/app/models/GenerationRequest';
 import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from 'src/app/models/Schedule';
 import { CacheUtils, PROFILE_STRING, TOKEN_STRING } from 'src/app/utils/CacheUtils';
 
@@ -79,6 +79,19 @@ export class ScheduleService {
       queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
       queryParams = queryParams.append("version", oldVersion);
       return this.httpClient.post<Solution>(REGENERATE_SCHEDULE_URL, request, {
+        params: queryParams,
+      })
+    }
+    catch(err){
+      throw new Error("user not logged in")
+    }
+  }
+
+  getConfig(): Observable<PossibleConfig>{
+    try{
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append(TOKEN_STRING, CacheUtils.getUserToken())
+      return this.httpClient.get<PossibleConfig>(CONFIG_SCHEDULE_URL, {
         params: queryParams,
       })
     }

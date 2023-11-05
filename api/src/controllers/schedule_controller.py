@@ -77,6 +77,15 @@ def regenerate_schedule():
         return Response(e.args, 500)
 
 
+@mod.route("/config", methods=["GET"])
+def get_params():
+    try:
+        token = request.args[user_token]
+        return schedule_handler.proxy_worker(token, "config")
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+
+
 @mod.route("/stopGeneration", methods=["POST"])
 def stop_schedule_generation():
     try:

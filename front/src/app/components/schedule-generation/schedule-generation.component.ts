@@ -5,13 +5,14 @@ import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { MAIN_MENU, VIEW_SCHEDULES } from "src/app/constants/app-routes";
+import { MAX_THREADS, DEFAULT_TIMEOUT} from "src/app/constants/solver_config";
 import { ScheduleDataInterface } from "src/app/models/hospital-demand"
 import { NurseInterface } from "src/app/models/Nurse";
 import { NurseService } from "src/app/services/nurse/nurse.service"
 import { ShiftService } from "src/app/services/shift/shift.service";
 import { SkillService } from "src/app/services/shift/skill.service";
 import { ErrorMessageDialogComponent } from "../error-message-dialog/error-message-dialog.component";
-import { GenerationRequest, GenerationRequestDetails, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement } from "src/app/models/GenerationRequest";
+import { GenerationRequest, GenerationRequestDetails, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement, GenerationConfig, PossibleConfig } from "src/app/models/GenerationRequest";
 import { DateUtils } from "src/app/utils/DateUtils";
 import { CacheUtils } from "src/app/utils/CacheUtils";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
@@ -61,6 +62,12 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   scheduleData!: ScheduleDataInterface;
   //dateError: boolean
 
+  selectedParam: string
+  possibleParams: string[]
+  selectedThreads: number
+  possibleThreads: number[]
+  selectedTimeout: number
+
   connectedUser: boolean
   oldVersion: string | null | undefined;
 
@@ -86,10 +93,18 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     this.hospitalDemands = [];
     this.nursesPreference = [];
     this.nursesHistory = [];
+
+    this.possibleParams = [];
+    this.selectedParam = "";
+    this.possibleThreads = [];
+    this.selectedThreads = 0;
+    this.selectedTimeout = 0;
+
     this.demandsError = true;
     //this.dateError = true;
     this.connectedUser = false;
   }
+
   ngOnInit(): void {
     this.nurses = []
     this.skills = []
@@ -162,6 +177,34 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
                 this.skills.push(skill)
               }
             })
+          }
+        },
+        error: (error: HttpErrorResponse)=>{
+          this.openErrorDialog(error.error);
+        }
+      })
+      this.scheduleService.getConfig().subscribe({
+        next: (possibleConfig: PossibleConfig)=>{
+          this.possibleParams = possibleConfig.params
+          const config = CacheUtils.getGenerationConfig()
+          if(config && this.possibleParams.indexOf(config.param) >= 0) {
+            this.selectedParam = config.param;
+          } else {
+            this.selectedParam = this.possibleParams[0];
+          }
+          this.possibleThreads = [];
+          for(let n=1; n<=possibleConfig.maxThreads; n++) {
+            this.possibleThreads.push(n)
+          }
+          if(!config || this.selectedThreads === 0) {
+            this.selectedThreads = possibleConfig.maxThreads > 1 ? 2 : 1;
+          } else {
+            this.selectedThreads = config.threads;
+          }
+          if(!config || this.selectedTimeout === 0) {
+            this.selectedTimeout = possibleConfig.defaultTimeout;
+          } else {
+            this.selectedTimeout = config.timeout;
           }
         },
         error: (error: HttpErrorResponse)=>{
@@ -330,8 +373,14 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
       shifts: this.shifts,
       hospitalDemand: demand,
       history: this.nursesHistory,
+      config: {
+        param: this.selectedParam,
+        timeout: this.selectedTimeout,
+        threads: this.selectedThreads
+      }
     }
     this.saveDetails()
+    CacheUtils.setGenerationConfig(request.config)
     CacheUtils.setGenerationRequestPreferences(this.nursesPreference)
     CacheUtils.saveNurseHistory(this.nursesHistory)
     CacheUtils.setDemandGenerationRequest(this.hospitalDemands)
@@ -364,7 +413,6 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
     }
   }
 
-
   updatePreferences(preferences: SchedulePreferenceElement[]) {
     this.nursesPreference = preferences;
   }
@@ -383,7 +431,6 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
 
   @HostListener("window:beforeunload")
   saveDetails(){
-    console.log(this.nurses)
     const request : GenerationRequestDetails ={
       startDate: this.startDate,
       endDate: this.endDate,
@@ -392,6 +439,18 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
       skills: this.skills
     }
     CacheUtils.setGenerationRequest(request)
+  }
+
+  onParamChange(param: string){
+    this.selectedParam = param
+  }
+
+  onThreadsChange(nThreads: number){
+    this.selectedThreads = nThreads
+  }
+
+  onTimeoutChange(event: any){
+    this.selectedTimeout = event.target.value
   }
 
   validRange(): boolean{

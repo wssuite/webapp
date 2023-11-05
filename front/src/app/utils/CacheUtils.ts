@@ -1,5 +1,5 @@
 import { UserInfo } from "../models/Credentials";
-import { GenerationRequestDetails, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement } from "../models/GenerationRequest";
+import { GenerationRequestDetails, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement, GenerationConfig } from "../models/GenerationRequest";
 import { ContinuousVisualisationInterface, Solution } from "../models/Schedule";
 
 export const TOKEN_STRING = "token";
@@ -10,6 +10,7 @@ export const CURRENT_SCHEDULE = "schedule";
 export const NOTIFICATION_SUBSCRIPTION_STRING = "notifiSubscription";
 const CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING = "continuousVisualisation"
 export const GENERATION_REQUEST_STRING = "generationRequest";
+const GENERATION_CONFIG_STRING = "generationConfig";
 const NURSE_PREFERENCE_REQUEST_STRING = "preferences"
 const REQUEST_DEMAND_STRING = "demand";
 const REQUEST_HISTORY_STRING = "history"
@@ -179,6 +180,7 @@ export class CacheUtils {
     public static clearContinuousVisualisation(){
         localStorage.removeItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING)
     }
+
     public static getContinuousVisulaisation(): ContinuousVisualisationInterface| undefined{
         const savedItem = localStorage.getItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING);
         if(!savedItem){
@@ -202,6 +204,23 @@ export class CacheUtils {
             return undefined
         }
         return JSON.parse(savedRequest) as GenerationRequestDetails
+    }
+
+    public static setGenerationConfig(config: GenerationConfig){
+        try{
+            localStorage.setItem(GENERATION_CONFIG_STRING, JSON.stringify(config))
+        }
+        catch(err){
+            // Do nothing
+        }
+    }
+
+    public static getGenerationConfig(): GenerationConfig| undefined{
+        const savedConfig = localStorage.getItem(GENERATION_CONFIG_STRING)
+        if(!savedConfig){
+            return undefined
+        }
+        return JSON.parse(savedConfig) as GenerationConfig
     }
 
     public static setGenerationRequestPreferences(preferences: SchedulePreferenceElement[]){

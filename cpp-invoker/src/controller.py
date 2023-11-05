@@ -2,9 +2,10 @@ import os
 from threading import Thread
 
 from .handler import (
-    add_to_waiting,
+    handle_schedule,
     base_directory,
-    handle_stop_event
+    handle_stop_event,
+    possible_configs
 )
 
 from flask import Blueprint, request, Response
@@ -21,20 +22,22 @@ def test():
         return request.host
 
 
-@mod.route("/schedule", methods=["POST"])
+@mod.route("/schedule", methods=["GET", "POST"])
 def schedule():
-    path = request.args["path"]
-    path = path[1:]
-    full_path = os.path.join(base_directory, path)
-    add_to_waiting(full_path, 1)
-    return Response(sys.argv[1], status=200)
+    handle_schedule(request.args.to_dict())
+    return sys.argv[1] if len(sys.argv) > 1 else "localhost"  # worker hostname
 
 
-@mod.route("/stop", methods=["POST"])
+@mod.route("/stop", methods=["GET", "POST"])
 def stop():
     path = request.args["path"]
     path = path[1:]
     full_path = os.path.join(base_directory, path)
     process = Thread(target=handle_stop_event, args=(full_path,))
     process.start()
-    return Response("ok_message", status=200)
+    return "ok_message"
+
+
+@mod.route("/config", methods=["GET", "POST"])
+def params():
+    return possible_configs()

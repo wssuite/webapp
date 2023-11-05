@@ -562,6 +562,10 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       this.router.navigate(["/" + SCHEDULE_GENERATION])
     }
     else{
+      const config = CacheUtils.getGenerationConfig();
+      if(config) {
+        this.schedule.problem.config = config
+      }
       this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
         next:(sol: Solution)=> {
           this.router.navigate(["/" + VIEW_SCHEDULES])

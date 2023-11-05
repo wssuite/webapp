@@ -98,7 +98,9 @@ class ScheduleHandler(BaseHandler):
 
         solution_object = Solution().from_json(solution_json)
         relative_path = full_path.replace(base_directory, "")
-        response = requests.post(generate_url, params={"path": relative_path})
+        config = demand_json.get("config", {})
+        config["path"] = relative_path
+        response = requests.get(generate_url, params=config)
         if response.status_code == 200:
             solution_object.worker_host = response.text
             solution_object.state = "Waiting"
@@ -117,9 +119,15 @@ class ScheduleHandler(BaseHandler):
     def regenerate_schedule(self, token, demand_json, v):
         return self.__generate_schedule(token, demand_json, v)
 
+    def proxy_worker(self, token, path):
+        self.verify_token(token)
+        param_url = f"http://{HAPROXY_ADDRESS}/solver/{path}"
+        res = requests.get(param_url)
+        return res.json()
+
     def stop_generation(self, token, solution_json):
         solution = Solution().from_json(solution_json)
-        self.verify_profile_accessors_access(token, solution.profile)
+        self.verify_token(token)
         solution_from_db = self.solution_dao.get_solution(
             solution.start_date,
             solution.end_date,
@@ -138,7 +146,7 @@ class ScheduleHandler(BaseHandler):
         )
         relative_path = full_path.replace(base_directory, "")
         print("Stop job", relative_path, "for", host)
-        requests.post(stop_url, params={"path": relative_path})
+        requests.get(stop_url, params={"path": relative_path})
 
     def get_detailed_solution(self, token, start, end, profile_name, v):
         if "_import" not in profile_name:

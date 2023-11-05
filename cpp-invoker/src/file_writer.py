@@ -30,7 +30,7 @@ class FileManager:
             value = data.pop(first_key)
             self.write(data)
             return first_key, value
-        return None
+        return None, None
 
     def add_item(self, key, value):
         data: dict = self.read()

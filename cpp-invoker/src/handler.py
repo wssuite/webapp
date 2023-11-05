@@ -1,4 +1,5 @@
 import json
+import glob
 import requests
 
 from src.file_writer import FileManager
@@ -16,12 +17,9 @@ if not os.path.exists(running_dir):
 running_fm = FileManager(os.path.join(running_dir, 'running.json'))
 waiting_fm = FileManager(os.path.join(running_dir, 'waiting.json'))
 
-file = open("config.json")
-data = json.load(file)
-API_ADDRESS = os.getenv("API_ADDRESS", data["api_address"])
-TIMEOUT = os.getenv("TIMEOUT", data["timeout"])
-CPP_PARAMS = os.getenv("CPP_PARAMS", data["cpp_params"])
-file.close()
+API_ADDRESS = os.getenv("API_ADDRESS", "api:5000")
+TIMEOUT = int(os.getenv("TIMEOUT", "1800"))
+MAX_THREADS = int(os.getenv("MAX_THREADS", "4"))
 UPDATE_ENDPOINT = f"http://{API_ADDRESS}/schedule/updateStatus"
 
 running_shared_dict = ProtectedDict()
@@ -67,16 +65,23 @@ def scheduler_wrapper(path, counter):
     exit(0)
 
 
-def run_scheduler(path, counter):
-    running_fm.add_item(path, counter)
+def run_scheduler(path, config):
+    if "retry" not in config:
+        config["retry"] = 0
+    else:
+        config["retry"] += 1
+    running_fm.add_item(path, config)
 
     cmd = (
-        "./bin/staticscheduler --dir {0}/ --instance input.txt --param {1} "
-        "--sol {0} --timeout {2} --origin ui".format(
-            path, CPP_PARAMS, TIMEOUT)
+        "./bin/staticscheduler --dir {0}/ --instance input.txt "
+        "--sol {0} --timeout {1} --n-threads {2} --origin ui".format(
+            path, config["timeout"], config["threads"])
     )
+    if "param" in config and config["param"] != "default":
+        param = config["param"].replace(" ", "_")
+        cmd += f" --param ./params/{param}.txt"
     cmd_split = shlex.split(cmd)
-    print(cmd_split)
+    print("Run command:", cmd_split)
 
     proc = subprocess.Popen(
         cmd_split, stdout=subprocess.PIPE, stderr=subprocess.PIPE
@@ -90,8 +95,8 @@ def run_scheduler(path, counter):
     return -1 if p is None else proc.returncode, out, err
 
 
-def schedule(full_path, counter):
-    process = Thread(target=scheduler_wrapper, args=(full_path, counter,))
+def schedule(full_path, config):
+    process = Thread(target=scheduler_wrapper, args=(full_path, config,))
     process.start()
     return process
 
@@ -106,11 +111,29 @@ def pop_from_waiting():
 
 def schedule_waiting():
     running_data = running_fm.read()
-    if len(running_data.keys()) < int(data["max_nb_processes"]):
-        item = pop_from_waiting()
-        if item is not None:
-            print("new item scheduled")
-            schedule(item[0], item[1])
+    nThreads = sum(d["threads"] for d in running_data.values())
+    if nThreads < MAX_THREADS:
+        path, config = pop_from_waiting()
+        if path is not None:
+            if config["threads"] + nThreads <= MAX_THREADS:
+                print("new item scheduled")
+                schedule(path, config)
+            else:
+                add_to_waiting(path, config)
+
+
+def handle_schedule(request):
+    path = request.get("path")[1:]
+    full_path = os.path.join(base_directory, path)
+    config = {
+        "timeout": request.get("timeout", TIMEOUT),
+        "threads": int(request.get("threads", 1 if MAX_THREADS <= 1 else 2))
+    }
+    if "param" in request:
+        config["param"] = request.get("param")
+        if "mip" in config["param"] and config["threads"] <= 1:
+            config["threads"] = 2  # needs at least 2 threads to run the mip params
+    add_to_waiting(full_path, config)
 
 
 def handle_stop_event(full_path):
@@ -121,8 +144,24 @@ def handle_stop_event(full_path):
         proc.terminate()
 
 
+def possible_configs():
+    param_files = glob.glob('./params/*.txt')
+    params_list = [p.rsplit("/", 1)[-1][:-4].replace("_", " ") for p in param_files]
+    if MAX_THREADS < 2:
+        # remove mip param files
+        params_list = [p for p in params_list if "mip" not in p]
+    return {
+        "params": ["default"] + sorted(params_list),
+        "defaultTimeout": TIMEOUT,
+        "maxThreads": MAX_THREADS
+    }
+
+
 if __name__ == "__main__":
     import time
-    schedule(sys.argv[1], 0)
+    schedule(sys.argv[1], {
+        "timeout": TIMEOUT,
+        "threads": 1 if MAX_THREADS <= 1 else 2
+    })
     time.sleep(3)
     handle_stop_event(sys.argv[1])
