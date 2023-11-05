@@ -1,15 +1,13 @@
-import os
+import sys
 from threading import Thread
 
 from .handler import (
     handle_schedule,
-    base_directory,
     handle_stop_event,
     possible_configs
 )
 
-from flask import Blueprint, request, Response
-import sys
+from flask import Blueprint, request
 
 mod = Blueprint("controller", __name__, url_prefix="/solver")
 
@@ -25,15 +23,12 @@ def test():
 @mod.route("/schedule", methods=["GET", "POST"])
 def schedule():
     handle_schedule(request.args.to_dict())
-    return sys.argv[1] if len(sys.argv) > 1 else "localhost"  # worker hostname
+    return request.host
 
 
 @mod.route("/stop", methods=["GET", "POST"])
 def stop():
-    path = request.args["path"]
-    path = path[1:]
-    full_path = os.path.join(base_directory, path)
-    process = Thread(target=handle_stop_event, args=(full_path,))
+    process = Thread(target=handle_stop_event, args=(request.args["path"],))
     process.start()
     return "ok_message"
 

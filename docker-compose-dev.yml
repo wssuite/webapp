@@ -45,7 +45,6 @@ services:
     hostname: worker1
     ports:
       - 5000
-    command: worker1:5000
     volumes:
       - dataset:/invoker/dataset
     restart: always
@@ -60,7 +59,6 @@ services:
     hostname: worker2
     ports:
       - 5000
-    command: worker2:5000
     volumes:
       - dataset:/invoker/dataset
     restart: always
@@ -75,7 +73,6 @@ services:
     hostname: worker3
     ports:
       - 5000
-    command: worker3:5000
     volumes:
       - dataset:/invoker/dataset
     restart: always

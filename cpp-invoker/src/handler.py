@@ -1,4 +1,4 @@
-import json
+import time
 import glob
 import requests
 
@@ -34,6 +34,12 @@ def extract_version_info_from_path(path):
     info_json["endDate"] = start_end[1]
     info_json["profile"] = path_list[-3]
     return info_json
+
+
+def get_full_path(path):
+    if path[0] == "/":
+        path = path[1:]
+    return os.path.join(base_directory, path)
 
 
 def scheduler_wrapper(path, counter):
@@ -123,8 +129,7 @@ def schedule_waiting():
 
 
 def handle_schedule(request):
-    path = request.get("path")[1:]
-    full_path = os.path.join(base_directory, path)
+    full_path = get_full_path(request.get("path"))
     config = {
         "timeout": request.get("timeout", TIMEOUT),
         "threads": int(request.get("threads", 1 if MAX_THREADS <= 1 else 2))
@@ -136,12 +141,29 @@ def handle_schedule(request):
     add_to_waiting(full_path, config)
 
 
-def handle_stop_event(full_path):
-    """Delete the element from the running map"""
+def kill_process(full_path, wait_for=0):
     proc = running_shared_dict.pop_item(full_path)
     if proc:
         print("Terminate process:", full_path)
         proc.terminate()
+        time.sleep(wait_for)
+        if proc.returncode is None:
+            print("Kill process:", full_path)
+            proc.kill()
+            info_json = extract_version_info_from_path(full_path)
+            info_json["state"] = "Stopped"
+            print("Scheduler finished with status", info_json["state"], "for path", full_path)
+            requests.post(UPDATE_ENDPOINT, json=info_json)
+
+
+
+def handle_stop_event(path):
+    """Delete the element from the running map"""
+    full_path = get_full_path(path)
+    print("Try to stop process associated to", full_path)
+    print("Current paths with active processes:", list(running_shared_dict.keys()))
+    process = Thread(target=kill_process, args=(full_path, 5,))
+    process.start()
 
 
 def possible_configs():
@@ -158,7 +180,6 @@ def possible_configs():
 
 
 if __name__ == "__main__":
-    import time
     schedule(sys.argv[1], {
         "timeout": TIMEOUT,
         "threads": 1 if MAX_THREADS <= 1 else 2

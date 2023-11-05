@@ -20,3 +20,11 @@ class ProtectedDict:
     def get_item(self, key):
         with self.lock:
             return self.target_dict.get(key, None)
+
+    def values(self):
+        with self.lock:
+            return self.target_dict.values()
+
+    def keys(self):
+        with self.lock:
+            return self.target_dict.keys()
