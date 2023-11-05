@@ -214,7 +214,7 @@
           </mat-form-field>
           <mat-form-field class="configField" appearance="fill">
             <mat-label>Max. solving time (minutes)</mat-label>
-            <input matInput class="timeout" type="number" (input)="onTimeoutChange($event)" [value]="selectedTimeout">
+            <input matInput class="timeout" type="number" (input)="onTimeoutChange($event)" [value]="selectedTimeout / 60">
           </mat-form-field>
         </div>
       </div>

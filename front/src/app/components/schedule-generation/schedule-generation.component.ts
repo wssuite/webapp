@@ -5,7 +5,6 @@ import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { MAIN_MENU, VIEW_SCHEDULES } from "src/app/constants/app-routes";
-import { MAX_THREADS, DEFAULT_TIMEOUT} from "src/app/constants/solver_config";
 import { ScheduleDataInterface } from "src/app/models/hospital-demand"
 import { NurseInterface } from "src/app/models/Nurse";
 import { NurseService } from "src/app/services/nurse/nurse.service"
@@ -450,7 +449,7 @@ export class ScheduleGenerationComponent implements OnInit, OnDestroy {
   }
 
   onTimeoutChange(event: any){
-    this.selectedTimeout = event.target.value
+    this.selectedTimeout = Math.round(event.target.value * 60)
   }
 
   validRange(): boolean{
