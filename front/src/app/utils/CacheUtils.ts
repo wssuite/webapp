@@ -1,5 +1,5 @@
 import { UserInfo } from "../models/Credentials";
-import { GenerationRequestDetails, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement } from "../models/GenerationRequest";
+import { GenerationRequestDetails, HospitalDemandElement, NurseHistoryElement, SchedulePreferenceElement, GenerationConfig } from "../models/GenerationRequest";
 import { ContinuousVisualisationInterface, Solution } from "../models/Schedule";
 
 export const TOKEN_STRING = "token";
@@ -10,6 +10,7 @@ export const CURRENT_SCHEDULE = "schedule";
 export const NOTIFICATION_SUBSCRIPTION_STRING = "notifiSubscription";
 const CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING = "continuousVisualisation"
 export const GENERATION_REQUEST_STRING = "generationRequest";
+const GENERATION_CONFIG_STRING = "generationConfig";
 const NURSE_PREFERENCE_REQUEST_STRING = "preferences"
 const REQUEST_DEMAND_STRING = "demand";
 const REQUEST_HISTORY_STRING = "history"
@@ -142,6 +143,11 @@ export class CacheUtils {
         }
         localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, JSON.stringify(parsedSubscriptions))
     }
+
+    public static removeNotifSubscriptions(){
+        localStorage.setItem(NOTIFICATION_SUBSCRIPTION_STRING, "[]")
+    }
+
     public static isNotifSubscription(sol: ContinuousVisualisationInterface): boolean{
         const subscriptions = this.getNotifSubscriptions()
         if(subscriptions.length === 0){
@@ -171,9 +177,10 @@ export class CacheUtils {
         localStorage.setItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING, JSON.stringify(sol));
     }
 
-    public static clearContinuousVisulaisation(){
+    public static clearContinuousVisualisation(){
         localStorage.removeItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING)
     }
+
     public static getContinuousVisulaisation(): ContinuousVisualisationInterface| undefined{
         const savedItem = localStorage.getItem(CONTINUOUS_VISUALISATION_SUBSCRIPTION_STRING);
         if(!savedItem){
@@ -199,6 +206,23 @@ export class CacheUtils {
         return JSON.parse(savedRequest) as GenerationRequestDetails
     }
 
+    public static setGenerationConfig(config: GenerationConfig){
+        try{
+            localStorage.setItem(GENERATION_CONFIG_STRING, JSON.stringify(config))
+        }
+        catch(err){
+            // Do nothing
+        }
+    }
+
+    public static getGenerationConfig(): GenerationConfig| undefined{
+        const savedConfig = localStorage.getItem(GENERATION_CONFIG_STRING)
+        if(!savedConfig){
+            return undefined
+        }
+        return JSON.parse(savedConfig) as GenerationConfig
+    }
+
     public static setGenerationRequestPreferences(preferences: SchedulePreferenceElement[]){
         try{
             localStorage.setItem(NURSE_PREFERENCE_REQUEST_STRING + this.getProfile(), JSON.stringify(preferences))
@@ -215,7 +239,7 @@ export class CacheUtils {
         return JSON.parse(savedPreferences) as SchedulePreferenceElement[]
     }
 
-    public static setDemandGenerationRequest(demand: HospitalDemandElement[]){
+    public static setDemandGenerationRequest(demand: HospitalDemandElement[][]){
         try{
             localStorage.setItem(REQUEST_DEMAND_STRING + this.getProfile(), JSON.stringify(demand))
         }catch(err){
@@ -223,12 +247,12 @@ export class CacheUtils {
         }
     }
 
-    public static getDemandGenerationRequest(): HospitalDemandElement[] | undefined {
+    public static getDemandGenerationRequest(): HospitalDemandElement[][] {
         const savedDemand = localStorage.getItem(REQUEST_DEMAND_STRING + this.getProfile())
         if(!savedDemand){
-            return undefined
+            return []
         }
-        return JSON.parse(savedDemand) as HospitalDemandElement[]
+        return JSON.parse(savedDemand) as HospitalDemandElement[][]
     }
 
     public static saveNurseHistory(history: NurseHistoryElement[]){

@@ -7,7 +7,7 @@ withPrimalDual=0
 withLNS=1
 
 # complete solution options
-completeOptimalityLevel=UNTIL_FEASIBLE
+completeOptimalityLevel=REPEATED_DIVES
 
 # rolling horizon options
 rollingSamplePeriod=7
@@ -31,11 +31,8 @@ lnsOptimalityLevel=TWO_DIVES
 # default branch and price solver parameters
 branchColumnDisjoint=1
 performHeuristicAfterXNode=-1
-heuristicMinIntegerPercent=50
-spDefaultStrategy=0
 spNbRotationsPerNurse=20
 spNbNursesToPrice=15
-spMaxReducedCostBound=0
 verbose=1
 
 # RCSPP Solver options

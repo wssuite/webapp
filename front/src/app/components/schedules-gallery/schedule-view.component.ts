@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,6 +12,8 @@ import { CacheUtils } from 'src/app/utils/CacheUtils';
 import { Router } from '@angular/router';
 import { CONSULT_SCHEDULE, SCHEDULE_GENERATION } from 'src/app/constants/app-routes';
 import { NOTIFICATION_UPDATE } from 'src/app/constants/socket-events';
+import { IN_PROGRESS, WAITING } from "src/app/constants/schedule_states";
+import { ContinuousVisualisationInterface } from "src/app/models/Schedule";
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -19,11 +21,13 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   templateUrl: './schedule-view.component.html',
   styleUrls: ['./schedule-view.component.css']
 })
-export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
+export class SchedulesGalleryComponent implements OnInit, OnDestroy, AfterViewInit{
   connectedUser: boolean;
   schedules: Solution[];
   displayedColumns: string[];
-  dataSource: MatTableDataSource<Solution>
+  dataSource: MatTableDataSource<Solution>;
+  alived: boolean;
+  fileName: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -34,6 +38,8 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
     this.schedules = []
     this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.dataSource = new MatTableDataSource();
+    this.alived = true;
+    this.fileName = ''
   }
 
   ngOnInit(): void {
@@ -45,14 +51,29 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
     }
   }
 
+  ngOnDestroy(): void {
+    this.alived = false;
+  }
+
   ngAfterViewInit(): void {
-    this.profileService.profileChanged.subscribe(()=>{
-      this.getSchedules();
+    const profS = this.profileService.profileChanged.subscribe(()=>{
+      if(this.alived) {
+        this.getSchedules();
+      } else {
+        profS.unsubscribe();
+      }
     })
-    this.dataSource.paginator = this.paginator;
-    this.service.socket.on(NOTIFICATION_UPDATE, ()=>{
-      this.getSchedules()
-    })
+    this.setPaginator()
+  }
+
+  setPaginator() {
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    } else {
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator
+      });
+    }
   }
 
   getSchedules(){
@@ -60,12 +81,30 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
       next: (schedules: Solution[])=> {
         this.schedules = schedules.reverse();
         this.dataSource.data= schedules;
-        this.dataSource.paginator = this.paginator;
+        this.setPaginator()
+        for(const sol of schedules) {
+          const subscription: ContinuousVisualisationInterface = {
+            startDate: sol.startDate,
+            endDate: sol.endDate,
+            profile: sol.profile,
+            version: sol.version
+          }
+          if(sol.state === WAITING || sol.state === IN_PROGRESS) {
+            this.service.notificationSubscribe(sol);
+          } else {
+            this.service.notificationUnsubscribe(sol);
+          }
+        }
       },
       error: (err: HttpErrorResponse)=> {
         this.openErrorDialog(err.error)
       }
     })
+    this.service.socket.once(NOTIFICATION_UPDATE, (data: any)=>{
+      if(this.alived) {
+        this.getSchedules();
+      }
+    });
   }
 
   openErrorDialog(message: string) {
@@ -77,8 +116,9 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
     })
   }
 
-  viewSchedule(schedule: Solution){
+  viewSchedule(schedule: Solution, imported: boolean = false){
     this.service.selectedScheduleToView = schedule;
+    this.service.importedScheduleToView = imported;
     this.router.navigate(["/"+ CONSULT_SCHEDULE])
   }
 
@@ -130,5 +170,20 @@ export class SchedulesGalleryComponent implements OnInit, AfterViewInit{
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  onFileSelected(event:any){
+    const file: File = event.target.files[0];
+    this.fileName = file.name;
+    this.service.importSolution(file).subscribe({
+      next: (sol: Solution)=> {
+        this.viewSchedule(sol, true)
+      },
+      error: (err: HttpErrorResponse)=>{
+        if(err.status !== HttpStatusCode.Ok){
+          this.openErrorDialog(err.error);
+        }
+      }
+    })
   }
 }

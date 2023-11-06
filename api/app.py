@@ -6,9 +6,6 @@ from src.dao.abstract_dao import DBConnection
 from constants import admin, user_password, utf8
 from src.models.user import User
 import bcrypt
-from engineio.payload import Payload
-
-Payload.max_decode_packets = 50
 
 
 def test_client():

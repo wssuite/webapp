@@ -5,15 +5,26 @@ from typing import Dict
 
 
 class ProtectedDict:
-    target_dict: Dict[str, Process] = {}
-    lock = Lock()
+    def __init__(self):
+        self.target_dict: Dict[str, Process] = {}
+        self.lock = Lock()
 
-    @staticmethod
-    def add_item(key, value):
-        with ProtectedDict.lock:
-            ProtectedDict.target_dict[key] = value
+    def add_item(self, key, value):
+        with self.lock:
+            self.target_dict[key] = value
 
-    @staticmethod
-    def pop_item(key):
-        with ProtectedDict.lock:
-            return ProtectedDict.target_dict.pop(key)
+    def pop_item(self, key):
+        with self.lock:
+            return self.target_dict.pop(key, None)
+
+    def get_item(self, key):
+        with self.lock:
+            return self.target_dict.get(key, None)
+
+    def values(self):
+        with self.lock:
+            return self.target_dict.values()
+
+    def keys(self):
+        with self.lock:
+            return self.target_dict.keys()

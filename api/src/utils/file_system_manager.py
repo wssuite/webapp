@@ -27,9 +27,7 @@ class FileSystemManager:
 
     @staticmethod
     def create_dir_if_not_exist(name):
-        exists = FileSystemManager.exist(name)
-        if exists is False:
-            os.mkdir(name)
+        os.makedirs(name, exist_ok=True)
 
     @staticmethod
     def current_version(dir_name: str):

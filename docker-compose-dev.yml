@@ -11,7 +11,6 @@ services:
     restart: always
 
   front:
-    image: legraina/ns_webapp_front
     container_name: front
     build:
       context: ./front
@@ -22,19 +21,18 @@ services:
     ports:
       - 8443:443
       - 8080:80
-      - 4200
+      - 4200:4200
     depends_on:
       - api
     volumes:
-      - dataset:/app/dataset
+      - front_src:/app/src
     restart: always
 
   api:
     build: ./api
-    image: legraina/ns_webapp_api
     container_name: api
     ports:
-      - 5000
+      - 5000:5000
     depends_on:
       - mongodb
     volumes:
@@ -43,12 +41,11 @@ services:
 
   worker1:
     build: ./cpp-invoker
-    image: legraina/ns_webapp_scheduler
     container_name: worker1
     hostname: worker1
+    entrypoint: sleep 1000000000
     ports:
-      - 5000
-    command: worker1:5000
+      - 8050:5000
     volumes:
       - dataset:/invoker/dataset
     restart: always
@@ -57,45 +54,41 @@ services:
         limits:
           cpus: '2'
 
-  worker2:
-    build: ./cpp-invoker
-    image: legraina/ns_webapp_scheduler
-    container_name: worker2
-    hostname: worker2
-    ports:
-      - 5000
-    command: worker2:5000
-    volumes:
-      - dataset:/invoker/dataset
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-
-  worker3:
-    build: ./cpp-invoker
-    image: legraina/ns_webapp_scheduler
-    container_name: worker3
-    hostname: worker3
-    ports:
-      - 5000
-    command: worker3:5000
-    volumes:
-      - dataset:/invoker/dataset
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
+  # worker2:
+  #   build: ./cpp-invoker
+  #   container_name: worker2
+  #   hostname: worker2
+  #   ports:
+  #     - 5000
+  #   volumes:
+  #     - dataset:/invoker/dataset
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '2'
+  #
+  # worker3:
+  #   build: ./cpp-invoker
+  #   container_name: worker3
+  #   hostname: worker3
+  #   ports:
+  #     - 5000
+  #   volumes:
+  #     - dataset:/invoker/dataset
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '2'
 
   haproxy:
     image: haproxy
     container_name: haproxy
     depends_on:
       - worker1
-      - worker2
-      - worker3
+      # - worker2
+      # - worker3
     ports:
       - 80
     volumes:
@@ -105,3 +98,9 @@ services:
 volumes:
   dataset:
   mongo_data:
+  front_src:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./front/src

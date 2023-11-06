@@ -1,6 +1,7 @@
 from flask import Response
 from . import schedule_mod as mod
 from flask import request
+from src.controllers.socket_actions import create_room_name_from_json
 from src.exceptions.project_base_exception import ProjectBaseException
 from constants import (
     user_token,
@@ -76,6 +77,15 @@ def regenerate_schedule():
         return Response(e.args, 500)
 
 
+@mod.route("/config", methods=["GET"])
+def get_params():
+    try:
+        token = request.args[user_token]
+        return schedule_handler.proxy_worker(token, "config")
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+
+
 @mod.route("/stopGeneration", methods=["POST"])
 def stop_schedule_generation():
     try:
@@ -132,9 +142,19 @@ def get_latest_solutions():
 
 @mod.route("/updateStatus", methods=["POST"])
 def update_solution_satus():
-    json = request.json
-    room = schedule_handler.update_solution_state(json)
-    socketio.emit("notification_update", json, room=f"notification_{room}")
+    stat_json = schedule_handler.update_solution_state(request.json)
+    room = create_room_name_from_json(request.json)
+    print("update_notification", f"notification_{room}")
+    socketio.emit("update_notification", stat_json, to=f"notification_{room}")
+    return Response(ok_message, 200)
+
+
+@mod.route("/updateSolution", methods=["POST"])
+def update_solution():
+    sol_json = schedule_handler.update_solution(request.json)
+    room = create_room_name_from_json(request.json)
+    print("update_visualisation", f"visualisation_{room}")
+    socketio.emit("update_visualisation", sol_json, to=f"visualisation_{room}")
     return Response(ok_message, 200)
 
 
@@ -184,7 +204,7 @@ def export_error():
         return Response(e.args, 500)
 
 
-@mod.route("/GetStatistics", methods=["GET"])
+@mod.route("/getStatistics", methods=["GET"])
 def get_statistics():
     try:
         token = request.args[user_token]
@@ -198,3 +218,14 @@ def get_statistics():
         return statistics
     except ProjectBaseException as e:
         return Response(e.args, 500)
+
+
+@mod.route("/importSolution", methods=["POST"])
+def import_solution():
+    try:
+        token = request.args[user_token]
+        file = request.files["file"]
+        return schedule_handler.import_solution(token, file)
+    except ProjectBaseException as e:
+        return Response(e.args, 500)
+

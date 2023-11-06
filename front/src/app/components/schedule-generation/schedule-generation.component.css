@@ -45,7 +45,7 @@ hr {
     margin-left: 0px;
 }
 
-.single-action-button{ 
+.single-action-button{
     margin-left: 5vw;
     margin-right: 5px;
     width: 115px;
@@ -90,6 +90,17 @@ hr {
     margin-left:2%;
 }
 
+.cancelButton {
+  height: 60px;
+  padding: 10px;
+  font-size: medium;
+  font-weight: bold;
+  padding-left: 14px;
+  padding-right: 14px;
+  margin-left: 2vw;
+  margin-bottom: 2%;
+}
+
 
 .generateScheduleButton {
     height: 60px;
@@ -100,6 +111,26 @@ hr {
     padding-right: 14px;
     margin-right: 2vw;
     margin-bottom: 2%;
+}
+
+.configButtonsSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.configField {
+  display: flex;
+  flex-direction: row;
+  text-align: right;
+  font-weight: bold;
+  display: block;
+  margin-left: 2vw;
+  margin-right: 2vw;
+}
+
+.timeout {
+  text-align: right;
 }
 
 .help-icon{
@@ -120,4 +151,20 @@ hr {
        display: none;
     }
 
+}
+
+.title-container {
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+  margin-left: 0px;
+}
+
+.close-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: auto;
+  margin-left: auto;
+  margin-bottom: 1vh;
 }

@@ -19,10 +19,10 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
   @Input() skills!: string[];
   @Input() startDate!: Date;
   @Input() endDate!: Date;
-  @Output() hospitalDemand: EventEmitter<HospitalDemandElement[]>;
+  @Output() hospitalDemand: EventEmitter<HospitalDemandElement[][]>;
   @Output() errorState: EventEmitter<boolean>;
 
-  demand: SkillDemandInterface;
+  minMaxDemand: SkillDemandInterface;
   skillDemandErrorState: boolean;
   saveDemandError: boolean;
   timetable: dateDisplay[];
@@ -30,8 +30,9 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
   isDisabled: boolean;
   stillSelected: boolean;
   isEditing: boolean;
-  hospitalDemands: Map<string, SkillDemandInterface>;
-  selectedShift: Map<string, boolean>;
+  indices: number[];
+  demand: Map<string, SkillDemandInterface>[];
+  selectedShift: Map<string, boolean>[];
   nbColumns: number | undefined;
 
 
@@ -39,9 +40,10 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     this.hospitalDemand = new EventEmitter();
     this.errorState = new EventEmitter();
     this.timetable = [];
-    this.hospitalDemands = new Map();
-    this.selectedShift = new Map();
-    this.demand = {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
+    this.indices = [];
+    this.demand = [];
+    this.selectedShift = [];
+    this.minMaxDemand= {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
     this.skillDemandErrorState = true;
     this.saveDemandError = false;
     this.editOff = true;
@@ -51,7 +53,7 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const tempDemand = this.hospitalDemands;
+    const tempDemand = this.demand;
     if (changes["skills"] && changes["skills"].currentValue) {
       this.skills = changes["skills"].currentValue;
     }
@@ -66,14 +68,17 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
       this.endDate = changes["endDate"].currentValue;
     }
     this.ngOnInit()
-    for(const date of this.timetable){
-      for(const skill of this.skills){
-        for(const shift of this.shifts){
-          const key = JSON.stringify({date: date, skill:skill,shift: shift});
-          const demand = tempDemand.get(key);
-          if(demand){
-            this.hospitalDemands.set(key, demand);
-            this.getButtonStyle(date,skill, shift)
+    for(let i = 0; i < tempDemand.length; i++) {
+      const tmpDemand = tempDemand[i];
+      for(const date of this.timetable){
+        for(const skill of this.skills){
+          for(const shift of this.shifts){
+            const key = this.getKey(date,skill,shift);
+            const d = tmpDemand.get(key);
+            if(d){
+              this.demand[i].set(key, d);
+              this.getButtonStyleKey(i, key)
+            }
           }
         }
       }
@@ -89,70 +94,82 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     this.timetable = []
     this.isDisabled = true;
     this.nbColumns = DateUtils.nbDaysDifference(this.endDate, this.startDate);
-    const initSkillDemand = {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
     for(let i = 0; i < this.nbColumns; i++) {
       this.timetable.push( {date: this.getDateDayStringByIndex(i), day: this.getDayString(i)});
     }
-    //initiate demands
-    this.hospitalDemands = new Map();
-    this.selectedShift = new Map();
-    for(const date of this.timetable){
-      for (const skill of this.skills) {
-        for (const shift of this.shifts) {
-          this.hospitalDemands.set(JSON.stringify({date:date,skill:skill,shift:shift}),initSkillDemand);
-          this.selectedShift.set(JSON.stringify({date:date,skill:skill,shift:shift}),false);
-          this.getButtonStyle(date, skill, shift)
-        }
-      }
+    // initialize demands
+    const savedDemand = CacheUtils.getDemandGenerationRequest();
+    const size = Math.max(1, this.indices.length, savedDemand.length);
+    this.indices = [];
+    this.demand = [];
+    this.selectedShift = [];
+    for (let i = 0; i < size; i++) {
+      this.addIndex();
     }
-    const savedDemand = CacheUtils.getDemandGenerationRequest()
-    if(savedDemand){
-      savedDemand.forEach((demand: HospitalDemandElement)=>{
-        this.timetable.forEach((time: dateDisplay)=>{
-          if(demand.date === time.date){
-            const hd = this.hospitalDemands.get(JSON.stringify({date: time, skill: demand.skill, shift: demand.shift}))
-            if(hd){
-              const value = {maxValue: demand.maxValue,  maxWeight: demand.maxWeight, minValue: demand.minValue,  minWeight: demand.minWeight}
-              const key = JSON.stringify({date: time, skill: demand.skill, shift: demand.shift})
-              this.hospitalDemands.set(key, value)
-              this.getButtonStyle(time, demand.skill, demand.shift)
+
+    if(savedDemand.length > 0){
+      for (const i of this.indices) {
+        savedDemand[i].forEach((d: HospitalDemandElement)=>{
+          this.timetable.forEach((time: dateDisplay)=>{
+            if(d.date === time.date){
+              const key = this.getKey(time,d.skill,d.shift);
+              const hd = this.demand[i].get(key)
+              if(hd) {
+                const value = {maxValue: d.maxValue,  maxWeight: d.maxWeight, minValue: d.minValue,  minWeight: d.minWeight}
+                this.demand[i].set(key, value)
+                this.getButtonStyleKey(i, key)
+              }
             }
-          }
+          })
         })
-      })
+      }
     }
     this.emitScheduleDemand()
   }
 
- displayValue(date: dateDisplay, skill: string, shift: string){
-    const key = JSON.stringify({date:date,skill:skill,shift:shift});
-    const min = this.hospitalDemands.get(key)?.minValue;
-    const max = this.hospitalDemands.get(key)?.maxValue;
+  initializeDemand(index: number) {
+    const initSkillDemand = {maxValue: '0',  maxWeight: '0', minValue: '0',  minWeight: '0'};
+    for(const date of this.timetable){
+      for (const skill of this.skills) {
+        for (const shift of this.shifts) {
+          const key = this.getKey(date,skill,shift);
+          this.demand[index].set(key,initSkillDemand);
+          this.selectedShift[index].set(key,false);
+          this.getButtonStyleKey(index,key)
+        }
+      }
+    }
+  }
+
+ displayValue(index: number, date: dateDisplay, skill: string, shift: string){
+    const key = this.getKey(date,skill,shift);
+    const min = this.demand[index].get(key)?.minValue;
+    const max = this.demand[index].get(key)?.maxValue;
     return "Min: " + min + '\n' + "Max: " + max;
   }
 
-  setSelection(date: dateDisplay, skill: string, shift: string){
-    const key = JSON.stringify({date:date,skill:skill,shift:shift});
-    if(this.selectedShift.get(key) === true){
-      this.selectedShift.set(key,false);
+  setSelection(index: number, date: dateDisplay, skill: string, shift: string){
+    const key = this.getKey(date,skill,shift);
+    if(this.selectedShift[index].get(key) === true){
+      this.selectedShift[index].set(key,false);
     }
     else{
-      this.selectedShift.set(key,true);
-
-
+      this.selectedShift[index].set(key,true);
     }
     if(!this.isEditing){
-      const demand = this.hospitalDemands.get(key);
-      if(demand !== undefined) {
-        this.demand = {...demand};
+      const d = this.demand[index].get(key);
+      if(d!== undefined) {
+        this.minMaxDemand = {...d};
       }
     }
     this.stillSelected = false;
-    for (const key of this.selectedShift.keys()){
-      if(this.selectedShift.get(key) === true){
-        this.editOff = false;
-        this.saveDemandError = true;
-        this.stillSelected = true;
+    for (const i of this.indices) {
+      for (const key of this.selectedShift[i].keys()){
+        if(this.selectedShift[i].get(key) === true){
+          this.editOff = false;
+          this.saveDemandError = true;
+          this.stillSelected = true;
+        }
       }
     }
 
@@ -173,38 +190,39 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     this.editOff = true;
     this.isDisabled = true;
     this.isEditing = false;
-    const demand = this.demand;
-    for (const key of this.selectedShift.keys()){
-      if(this.selectedShift.get(key) === true){
-        this.hospitalDemands.set(key, demand);
+    const minMaxDemand = this.minMaxDemand;
+    for (const i of this.indices) {
+      for (const key of this.selectedShift[i].keys()){
+        if(this.selectedShift[i].get(key) === true){
+          this.demand[i].set(key, minMaxDemand);
+        }
+        this.selectedShift[i].set(key,false);
       }
-      this.selectedShift.set(key,false);
     }
     this.saveDemandError = false;
     this.emitScheduleDemand();
   }
 
 
-  showToolTip(date: dateDisplay,skill: string, shift: string):string {
-    const key = JSON.stringify({date:date,skill:skill,shift:shift});
-    const preferenceObj = this.hospitalDemands.get(key);
-    if(preferenceObj === undefined){
+  showToolTip(index: number, date: dateDisplay, skill: string, shift: string):string {
+    const key = this.getKey(date,skill,shift);
+    const hObj = this.demand[index].get(key);
+    if(hObj === undefined){
       return "";
     }
-    return "The Max weight is "+ preferenceObj.maxWeight + " and the min weight is " + preferenceObj.minWeight;
+    return "The Max weight is "+ hObj.maxWeight + " and the min weight is " + hObj.minWeight;
   }
 
-  getWeight(date: dateDisplay,skill: string, shift: string): string {
-    const key = JSON.stringify({date:date,skill:skill,shift:shift});
-    const preferenceObj = this.hospitalDemands.get(key);
-    if(preferenceObj === undefined){
+  getWeight(index: number, date: dateDisplay,skill: string, shift: string): string {
+    const key = this.getKey(date,skill,shift);
+    const hObj = this.demand[index].get(key);
+    if(hObj === undefined){
       return "";
     }
-    if(preferenceObj.maxWeight === "0" && preferenceObj.minWeight === "0"){
+    if(hObj.maxWeight === "0" && hObj.minWeight === "0"){
       return "";
-    }
-    else{
-      return "The Max weight is "+ preferenceObj.maxWeight + " and the min weight is " + preferenceObj.minWeight;
+    } else {
+      return "The Max weight is "+ hObj.maxWeight + " and the min weight is " + hObj.minWeight;
     }
   }
 
@@ -229,38 +247,25 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     return DateUtils.days[nextDay] + "\n";
   }
 
-  getButtonStyle(date: dateDisplay, skill: string, shift: string) {
-    const key = JSON.stringify({date:date,skill:skill,shift:shift});
-    const selected = this.selectedShift.get(key);
+  getButtonStyle(index: number, date: dateDisplay,skill: string, shift: string) {
+    const key = this.getKey(date,skill,shift);
+    return this.getButtonStyleKey(index, key);
+  }
+
+  getButtonStyleKey(index: number, key: string) {
+    const selected = this.selectedShift[index].get(key);
     if (selected) {
       return { 'border-radius': '3px','border': '3px solid darkgray',  'content':'goodbye', 'visibility': 'visible'};
     }
     return { 'border-radius': '0px','border': '0px'};
   }
 
+  getKey(date: dateDisplay, skill: string, shift: string) {
+    return JSON.stringify({date:date,skill:skill,shift:shift});
+  }
 
   emitScheduleDemand(){
-    const scheduleDemand = [];
-    for(const date of this.timetable){
-      for (const skill of this.skills) {
-        for (const shift of this.shifts) {
-          const key = JSON.stringify({date:date,skill:skill,shift:shift});
-          const preferenceObj = this.hospitalDemands.get(key);
-          if(preferenceObj){
-          const schedule = {
-              date: date.date,
-              shift: shift,
-              skill: skill,
-              maxValue: preferenceObj.maxValue,
-              maxWeight: preferenceObj.maxWeight,
-              minValue: preferenceObj.minValue,
-              minWeight: preferenceObj.minWeight,
-            }
-            scheduleDemand.push(schedule);
-          }
-        }
-      }
-    }
+    const scheduleDemand = this.getDemandArray();
     this.hospitalDemand.emit(scheduleDemand);
     this.emitErrorState();
   }
@@ -275,28 +280,39 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
 
   @HostListener("window:beforeunload")
   saveDemand(){
+    const scheduleDemand = this.getDemandArray();
+    CacheUtils.setDemandGenerationRequest(scheduleDemand);
+  }
+
+  getDemandArray(): HospitalDemandElement[][] {
     const scheduleDemand = [];
-    for(const date of this.timetable){
-      for (const skill of this.skills) {
-        for (const shift of this.shifts) {
-          const key = JSON.stringify({date:date,skill:skill,shift:shift});
-          const preferenceObj = this.hospitalDemands.get(key);
-          if(preferenceObj){
-          const schedule = {
-              date: date.date,
-              shift: shift,
-              skill: skill,
-              maxValue: preferenceObj.maxValue,
-              maxWeight: preferenceObj.maxWeight,
-              minValue: preferenceObj.minValue,
-              minWeight: preferenceObj.minWeight,
+    for (const i of this.indices) {
+      const cDemand = this.demand[i];
+      const tmpDemand = [];
+      for(const date of this.timetable){
+        for (const skill of this.skills) {
+          for (const shift of this.shifts) {
+            const key = this.getKey(date,skill,shift);
+            const hObj = cDemand.get(key);
+            if(hObj){
+              const schedule = {
+                index: i,
+                date: date.date,
+                shift: shift,
+                skill: skill,
+                maxValue: hObj.maxValue,
+                maxWeight: hObj.maxWeight,
+                minValue: hObj.minValue,
+                minWeight: hObj.minWeight,
+              }
+              tmpDemand.push(schedule);
             }
-            scheduleDemand.push(schedule);
           }
         }
       }
+      scheduleDemand.push(tmpDemand);
     }
-    CacheUtils.setDemandGenerationRequest(scheduleDemand);
+    return scheduleDemand;
   }
 
   getDisplayedDate(date: string){
@@ -308,13 +324,28 @@ export class HopspitalDemandCreationComponent  implements OnInit, OnChanges, OnD
     }
   }
 
+  addIndex() {
+    this.demand.push(new Map());
+    this.selectedShift.push(new Map());
+    this.initializeDemand(this.indices.length);
+    this.indices.push(this.indices.length);
+  }
+
+  deleteIndex(index: number) {
+    this.demand.splice(index, 1);
+    this.selectedShift.splice(index, 1);
+    this.indices = [...Array(this.indices.length-1).keys()];
+  }
+
   cancel(){
     this.editOff = true
     this.isDisabled = true;
     this.isEditing = false;
     this.stillSelected = false;
-    for(const key of this.selectedShift.keys()){
-      this.selectedShift.set(key, false)
+    for (const i of this.indices) {
+      for(const key of this.selectedShift[i].keys()){
+        this.selectedShift[i].set(key, false)
+      }
     }
   }
 }

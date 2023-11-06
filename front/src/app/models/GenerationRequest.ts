@@ -9,6 +9,7 @@ export interface SchedulePreferenceElement {
 }
 
 export interface HospitalDemandElement {
+    index: number;
     date: string;
     shift: string;
     skill: string;
@@ -24,6 +25,18 @@ export interface NurseHistoryElement {
     shift: string;
 }
 
+export interface PossibleConfig {
+  params: string[];
+  defaultTimeout: number;
+  maxThreads: number;
+}
+
+export interface GenerationConfig {
+  param: string;
+  timeout: number;
+  threads: number;
+}
+
 export interface GenerationRequest {
     startDate: string;
     endDate: string;
@@ -34,6 +47,7 @@ export interface GenerationRequest {
     nurses: string[];
     skills: string[];
     shifts: string[];
+    config: GenerationConfig;
 }
 
 export interface GenerationRequestDetails{

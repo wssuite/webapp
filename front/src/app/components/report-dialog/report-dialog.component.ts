@@ -26,7 +26,7 @@ export class ReportDialogComponent implements OnInit{
     }
 
   ngOnInit(): void {
-    this.service.getResport(this.data).subscribe({
+    this.service.getReport(this.data).subscribe({
       next: (report: Map<string, string>)=>{
         const statistics: StatisticElement[] = []
         for(const [key, value] of Object.entries(report)){

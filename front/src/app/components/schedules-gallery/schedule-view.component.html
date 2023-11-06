@@ -1,9 +1,21 @@
 <div *ngIf="connectedUser; else elseBlock">
   <app-header></app-header>
   <div *ngIf="this.schedules.length > 0; else noSchedules">
-    <div class="title">
-      <h2>Schedules</h2>
-      <hr />
+    <div class="title-container">
+      <div class="title">
+        <h2>Schedules</h2>
+        <input type="file" class="file-input"
+            (change)="onFileSelected($event)" #fileUpload>
+
+        <div class="fileUpload">
+            <button mat-raised-button color="nurse-blue" class="upload-btn"
+            (click)="fileUpload.click()">
+            Upload a solution
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </div>
+      </div>
+      <hr>
     </div>
     <div class="generateScheduleButtonContainer">
       <mat-form-field class="filter">
@@ -116,7 +128,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-        <!-- Row shown when there is no matching data. 
+        <!-- Row shown when there is no matching data.
                 <tr class="mat-row" *matNoDataRow>
                 <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                 </tr> -->

@@ -1,11 +1,17 @@
 from src.models.assignment import Assignment
 import re
 from constants import (
+    planning_field,
     start_date,
     end_date,
     schedule_string,
     assignment_employee_uname,
     assignments_string,
+    regex_nurse_username,
+    profile_name,
+    version,
+    state,
+    timestamp
 )
 from src.models.exporter import CSVExporter
 
@@ -14,18 +20,21 @@ regex_assignments = (
     r"([a-zA-Z0-9\-\.]+),([a-zA-Z0-9\-\.]+)\n"
 )
 
-regex_headers = r"\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9]+)\)\n"
+regex_headers = r"\(([a-zA-Z0-9]+),\s*({})\)\n".format(regex_nurse_username)
 
 
 class Schedule(CSVExporter):
-    def __init__(self, file_name):
+    def __init__(self, file_name, load_assignments=True):
         self.assignments_list = []
+        self.profile = ""
+        self.version = ""
         self.start_date = ""
         self.end_date = ""
         self.id_dict = {}
         self.report = ""
         is_report = False
         is_assignments = False
+        is_planning = False
         with open(file_name) as stream:
             reader = stream.readlines()
             for row in reader:
@@ -33,7 +42,7 @@ class Schedule(CSVExporter):
                 match_regex_headers = re.search(regex_headers, row)
                 """the assignments block will be after the headers bloc"""
                 if match_regex_assignments:
-                    if is_assignments is True:
+                    if load_assignments and is_assignments is True:
                         employee_uname = self.id_dict.get(
                             match_regex_assignments.group(1)
                         )
@@ -46,9 +55,12 @@ class Schedule(CSVExporter):
                         ]
 
                         self.assignments_list.append(Assignment(groups))
-                    else:
+                    elif is_planning:
+                        self.profile = match_regex_assignments.group(1)
+                        self.version = match_regex_assignments.group(2)
                         self.start_date = match_regex_assignments.group(3)
                         self.end_date = match_regex_assignments.group(4)
+                        is_planning = False
 
                 elif match_regex_headers:
                     self.id_dict[
@@ -57,6 +69,9 @@ class Schedule(CSVExporter):
 
                 elif row.upper().__contains__(assignments_string.upper()):
                     is_assignments = True
+
+                elif row.upper().__contains__(planning_field.upper()):
+                    is_planning = True
 
                 if is_report is True and row.upper().__contains__("END") is False:
                     self.report += row
@@ -71,14 +86,9 @@ class Schedule(CSVExporter):
         dict_filtered_name = {}
         for assignment in self.assignments_list:
             if assignment.employee_uname not in dict_filtered_name:
-                list_assignments = [assignment.to_json()]
-                dict_filtered_name[assignment.employee_uname] = list_assignments
+                dict_filtered_name[assignment.employee_uname] = [assignment.to_json()]
             else:
-                list_assignments = dict_filtered_name.get(
-                    assignment.employee_uname
-                )
-                list_assignments.append(assignment.to_json())
-                dict_filtered_name[assignment.employee_uname] = list_assignments
+                dict_filtered_name[assignment.employee_uname].append(assignment.to_json())
         schedule = []
         for key in dict_filtered_name.keys():
             ret_element = {
@@ -93,6 +103,14 @@ class Schedule(CSVExporter):
             schedule_string: schedule,
         }
         return ret
+
+    def profile_json(self):
+        return {
+            start_date: self.start_date,
+            end_date: self.end_date,
+            profile_name: self.profile,
+            version: self.version
+        }
 
     def export(self):
         ret_string = "ASSIGNMENTS\n"

@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, Input } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
@@ -23,7 +23,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, AfterViewInit{
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit{
 
   isAdmin!: boolean;
   profiles: BaseProfile[];
@@ -54,8 +54,6 @@ export class HeaderComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
     try{
-      //this.validProfile = false;
-      //this.profiles = []
       const firstLogin = CacheUtils.getFirstLogin()
       this.getProfiles(false || firstLogin);
       this.isAdmin = CacheUtils.getIsAdmin();
@@ -67,6 +65,10 @@ export class HeaderComponent implements OnInit, AfterViewInit{
     }
   }
 
+  ngOnDestroy(): void {
+    this.scheduleService.socket.off(NOTIFICATION_UPDATE);
+  }
+
   ngAfterViewInit(): void {
       this.profileService.newImportedProfileCreated.subscribe(()=>{
         this.getProfiles(true);
@@ -76,15 +78,13 @@ export class HeaderComponent implements OnInit, AfterViewInit{
           this.notifications.push(solution);
           this.newNotificationAdded = true;
         }
-        const savedNotifSub: ContinuousVisualisationInterface = {
-          startDate: solution.startDate,
-          endDate: solution.endDate,
-          profile: solution.profile,
-          version: solution.version,
-        }
-        if(solution.state !== IN_PROGRESS && solution.state!== WAITING && CacheUtils.isNotifSubscription(savedNotifSub)){
-          CacheUtils.removeNotifSubscription(savedNotifSub)
-          this.scheduleService.notificationUnsubscribe(savedNotifSub);
+        if(solution.state !== IN_PROGRESS && solution.state !== WAITING) {
+          this.scheduleService.notificationUnsubscribe({
+            startDate: solution.startDate,
+            endDate: solution.endDate,
+            profile: solution.profile,
+            version: solution.version,
+          });
         }
         console.log(solution.state);
       })
@@ -93,17 +93,13 @@ export class HeaderComponent implements OnInit, AfterViewInit{
   getProfiles(useLatProfile: boolean){
     this.profileService.getAllProfiles().subscribe({
       next:(profiles: BaseProfile[])=>{
-        console.log(profiles)
         this.profiles = profiles;
-        console.log(this.profiles)
         if(this.profiles.length === 0){
           this.openCreateProfileDialog(false);
         }
         else{
           if(useLatProfile){
-            console.log(this.profiles)
             this.profile = this.profiles[profiles.length - 1]
-            console.log(this.profile)
             CacheUtils.setProfile(this.profile.profile);
             this.validProfile = true;
             this.profileService.emitProfileChange();
@@ -122,7 +118,7 @@ export class HeaderComponent implements OnInit, AfterViewInit{
               CacheUtils.setProfile(this.profile.profile);
             } finally{
               this.validProfile = true;
-              this.profileService.emitProfileChange();
+              // this.profileService.emitProfileChange();
             }
           }
         }

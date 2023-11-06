@@ -31,4 +31,8 @@ export class DateUtils {
     const day = +splittedDate[2].toString()
     return `${splittedDate[0]}-${month}-${day}`;
   }
+  public static addDays(date: Date, nDays: number) {
+    date.setDate(date.getDate() + nDays);
+    return date
+  }
 }

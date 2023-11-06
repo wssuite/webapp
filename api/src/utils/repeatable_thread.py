@@ -7,7 +7,8 @@ class RepeatableThread(Thread):
         self.stop_event = Event()
         self.fun = fun
         self.param = param
+        self.ret = None
 
     def run(self):
-        while not self.stop_event.wait(0.5):
-            self.fun(self.param)
+        while not self.stop_event.wait(5):
+            self.ret = self.fun(self.param, self.ret)

@@ -21,21 +21,21 @@ export class NurseCreationDialogComponent  implements OnInit{
   possibleContractsGroup!: string[];
   contractsLoaded: boolean;
   contractsGroupLoaded: boolean;
-  
+
 
   constructor(public dialogRef: MatDialogRef<NurseCreationDialogComponent >,
     @Inject(MAT_DIALOG_DATA) public data:  {nurse: NurseInterface, nurses: string[]},
     private api: NurseService,
     private contractService: ContractService,
     private contractGroupService: ContractGroupService,
-    private dialog: MatDialog,  
+    private dialog: MatDialog,
 ) {
   this.errorState = new EventEmitter();
   this.nurseErrorState = true;
   this.initNurseUsername = data.nurse.username;
   this.contractsLoaded = false;
   this.contractsGroupLoaded = false;
-      
+
 }
   ngOnInit(): void {
     this.possibleContracts = [];
@@ -72,7 +72,7 @@ export class NurseCreationDialogComponent  implements OnInit{
 
   add() {
     try
-    { 
+    {
       console.log(this.data.nurse);
       if(this.initNurseUsername === ""){
         this.api.addNurse(this.data.nurse).subscribe({
@@ -83,7 +83,7 @@ export class NurseCreationDialogComponent  implements OnInit{
             else{
               this.openErrorDialog(err.error)
             }
-          } 
+          }
         })
       }
       else {
@@ -91,13 +91,13 @@ export class NurseCreationDialogComponent  implements OnInit{
           error: (err: HttpErrorResponse)=> {
             if(err.status === HttpStatusCode.Ok) {
               this.close();
-            }          
+            }
             else{
               this.openErrorDialog(err.error)
             }
           }
         })
-      } 
+      }
     }
     catch(e){
       this.openErrorDialog((e as Exception).getMessage())
@@ -108,7 +108,7 @@ export class NurseCreationDialogComponent  implements OnInit{
 openErrorDialog(message: string) {
   this.dialog.open(ErrorMessageDialogComponent, {
     height: '45%',
-    width: '45%', 
+    width: '45%',
     position: {top:'20vh',left: '30%', right: '25%'},
     data: {message: message},
   })
@@ -120,9 +120,7 @@ close(){
 }
 
 updateNurseErrorState(e: boolean) {
-  console.log("update")
   this.nurseErrorState = e;
 }
 
 }
-

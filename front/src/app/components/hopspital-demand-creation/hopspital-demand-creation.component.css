@@ -2,11 +2,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding-bottom: 20px;
 }
 
 /* .skill-name-table {
   height: calc(100%-15px);
-  max-height: calc(100%-15px); 
+  max-height: calc(100%-15px);
   width:max-content;
   max-width: 100%;
 } */
@@ -72,6 +73,11 @@
   margin-top: 2%;
 }
 
+.single-action-button{
+  padding: 20px;
+  margin-top: 2%;
+}
+
 button{
   width: 90px;
   height: 40px;
@@ -82,12 +88,11 @@ button:hover{
 
 }
 
-
 .skill-table{
   width:max-content;
   max-width: 100%;
   height: calc(100% - 15px);
-  max-height: calc(100% - 15px); 
+  max-height: calc(100% - 15px);
 }
 
 table{
@@ -95,8 +100,8 @@ table{
 }
 
 .disabled {
-  opacity: 0.5; 
-  pointer-events: none; 
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .edition-buttons{
@@ -106,7 +111,13 @@ table{
 .cancel-btn{
   margin-right: 1vw;
 }
- 
+
+.left-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
 .centered-container {
   display: flex;
   flex-direction: row;

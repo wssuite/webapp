@@ -3,8 +3,8 @@ FROM python:3.10
 WORKDIR /app
 
 # install packages
-COPY requirements.txt ./app/
-RUN cd app && pip install -r requirements.txt
+COPY requirements.txt /app/
+RUN pip install -r requirements.txt
 
 # copy sources
 COPY ./src/ /app/src/

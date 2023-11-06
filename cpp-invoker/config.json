@@ -1,6 +1,0 @@
-{
-    "max_nb_processes": "2",
-    "timeout": "1800",
-    "api_address": "api:5000",
-    "cpp_params": "params/default.txt"
-}

@@ -3,10 +3,11 @@ import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from "@angu
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
+import { Subscription } from 'rxjs';
 import * as saveAs from "file-saver";
 import {MAIN_MENU, SCHEDULE_GENERATION, VIEW_SCHEDULES} from "src/app/constants/app-routes";
 import { Assignment, EmployeeSchedule } from "src/app/models/Assignment";
-import { GenerationRequestDetails, SchedulePreferenceElement, NurseHistoryElement } from "src/app/models/GenerationRequest";
+import { GenerationRequestDetails, SchedulePreferenceElement, NurseHistoryElement, HospitalDemandElement } from "src/app/models/GenerationRequest";
 import { ContinuousVisualisationInterface, DetailedSchedule, Solution } from "src/app/models/Schedule";
 import { ScheduleService } from "src/app/services/schedule/schedule-service.service";
 import { CacheUtils } from "src/app/utils/CacheUtils";
@@ -39,7 +40,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   endDate: Date | undefined;
   startDate: Date | undefined;
   validSchedule: boolean;
-  nbColumns: number | undefined;
+  nbColumns: number;
   nbHistoryColumns: number;
   indexes: number[] | undefined;
   isButtonDisabled: boolean[] | undefined;
@@ -48,6 +49,10 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   preferences: Map<string, string>
   inPrgressState = IN_PROGRESS
   nurses: NurseInterface[]
+  profile: string
+  version: string
+  problemDefined: boolean
+  employeesAssigned: boolean
 
   constructor(private service: ScheduleService, public dialog: MatDialog, private router: Router, private nurseService: NurseService) {
     this.historyAssignmentsMap = new Map();
@@ -58,27 +63,39 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     this.displayedColumns = ["CreationDate","startDate", "endDate", "versionNumber", "state", "actions"]
     this.preferences = new Map();
     this.nurses = []
+    this.nbColumns = 0
     this.nbHistoryColumns = 0;
+    this.profile = ""
+    this.version = ""
+    this.problemDefined = true
+    this.employeesAssigned = false
   }
 
   ngOnInit(): void {
     try{
-      this.nurseService.getAllNurse().subscribe({
-        next: (nurses: NurseInterface[])=>{
-          this.nurses = nurses
-        },
-        error: (err: HttpErrorResponse)=>{
-          this.openErrorDialog(err.error);
-        }
-      })
+      this.problemDefined = !this.service.importedScheduleToView
+      if(this.problemDefined){
+        this.nurseService.getAllNurse().subscribe({
+          next: (nurses: NurseInterface[])=>{
+            this.nurses = nurses
+          },
+          error: (err: HttpErrorResponse)=>{
+            this.openErrorDialog(err.error);
+          }
+        })
+      }
+      this.connectedUser = true;
       const currentSchedule = this.service.selectedScheduleToView ?
           this.service.selectedScheduleToView : CacheUtils.getCurrentSchedule();
       if(currentSchedule){
         this.getDetailedSchedule(currentSchedule);
-      }
-      this.connectedUser = true;
-      if(this.service.socket === undefined){
-        this.service.connectSocket()
+      } else {
+        // const savedHistory = CacheUtils.getNurseHistory()
+        // if(savedHistory){
+        //   this.historyAssignmentsMap = new Map();
+        //   this.setHistoryAssignments(savedHistory);
+        // }
+        this.openErrorDialog("No schedule has been found to be viewed")
       }
     }
     catch(err){
@@ -88,88 +105,102 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngOnDestroy(): void {
     this.savePreferences()
-    if(CacheUtils.getContinuousVisulaisation()){
-      this.service.unsubscribeContinuousVisulation({
-        startDate: this.schedule.startDate,
-        endDate: this.schedule.endDate,
-        profile: this.schedule.profile,
-        version: this.schedule.version
-      })
+    this.service.unsubscribeContinuousVisulation({
+      startDate: this.schedule.startDate,
+      endDate: this.schedule.endDate,
+      profile: this.schedule.profile,
+      version: this.schedule.version
+    });
+    this.service.socket.off(VISUALISATION_UPDATE);
+    if(this.service.selectedScheduleToView && this.service.importedScheduleToView) {
+      this.service.removeSolution(this.service.selectedScheduleToView)
     }
+    this.profile = ""
+    this.version = "";
   }
 
   ngAfterViewInit(): void {
-      this.service.socket.on(VISUALISATION_UPDATE, (schedule: EmployeeSchedule)=>{
+    this.service.socket.on(VISUALISATION_UPDATE, (schedule: EmployeeSchedule)=>{
+      // console.log("Receive "+VISUALISATION_UPDATE+": ", schedule);
+      if(schedule) {
         this.employeeSchedule = schedule
         this.updateAssignments(schedule)
-      })
-      this.service.socket.on(NOTIFICATION_UPDATE, (sol: Solution)=>{
-        this.getDetailedSchedule(sol);
-        const savedNotifSub: ContinuousVisualisationInterface = {
-          startDate: sol.startDate,
-          endDate: sol.endDate,
-          profile: sol.profile,
-          version: sol.version,
-        }
-        if(sol.state !== IN_PROGRESS && CacheUtils.getContinuousVisulaisation()){
-          if(sol.state!== WAITING && CacheUtils.isNotifSubscription(savedNotifSub)){
-            CacheUtils.removeNotifSubscription(savedNotifSub)
-            this.service.notificationUnsubscribe(savedNotifSub);
-          }
-          this.service.unsubscribeContinuousVisulation({
+      }
+    });
+  }
+
+  getDetailedSchedule(schedule: Solution) {
+    this.historyAssignmentsMap = new Map();
+    this.employeeAssignmentsMap = new Map()
+    this.preferences = new Map()
+    this.profile = schedule.profile
+    this.version = schedule.version
+
+    // listen to visualisation updates
+    this.service.socket.once(NOTIFICATION_UPDATE, (sol: Solution)=>{
+      if(this.profile === sol.profile && this.version === sol.version) {
+        if(sol.state !== IN_PROGRESS) {
+          this.service.notificationUnsubscribe({
             startDate: sol.startDate,
             endDate: sol.endDate,
             profile: sol.profile,
             version: sol.version
-          })
+          });
         }
-      })
-  }
+        this.getDetailedSchedule(sol);
+      }
+    });
 
-  getDetailedSchedule(schedule: Solution) {
-    this.employeeAssignmentsMap = new Map()
-    this.preferences = new Map()
+    // fetch latest detailed solution
     CacheUtils.setCurrentSchedule(schedule);
     this.service.getDetailedSolution(schedule).subscribe({
       next: (data: DetailedSchedule)=>{
         this.schedule = data;
         this.employeeSchedule = this.schedule.schedule
-        if(this.schedule.schedule){
-          console.log(this.schedule.startDate)
-          console.log(this.schedule.endDate)
-          const schedStartDate = new Date(this.schedule.startDate)
-          this.endDate = new Date(this.schedule.endDate);
-          // update history startDate
-          this.startDate = schedStartDate;
+        const schedStartDate = new Date(this.schedule.startDate)
+        this.endDate = new Date(this.schedule.endDate);
+        // update history startDate
+        this.startDate = schedStartDate;
+        this.problemDefined = Object.keys(this.schedule.problem).length > 0
+        if(this.problemDefined) {
           for (const assignment of this.schedule.problem.history) {
             const d = new Date(assignment.date);
             if (d < this.startDate) {
               this.startDate = d;
             }
           }
-          this.nbColumns =
-            DateUtils.nbDaysDifference(this.endDate, this.startDate);
-          this.nbHistoryColumns = DateUtils.nbDaysDifference(schedStartDate, this.startDate) - 1;
-          this.isButtonDisabled = this.getButtonDisabled();
-          this.indexes = this.getIndexes();
-          if(data.state === IN_PROGRESS){
-            const obj: ContinuousVisualisationInterface = {
-              startDate: this.schedule.startDate,
-              endDate: this.schedule.endDate,
-              profile: this.schedule.profile,
-              version: this.schedule.version
-            }
-            this.service.subscribeContinuousVisulation(obj)
+        }
+        this.nbColumns =
+          DateUtils.nbDaysDifference(this.endDate, this.startDate);
+        this.nbHistoryColumns = DateUtils.nbDaysDifference(schedStartDate, this.startDate) - 1;
+        this.isButtonDisabled = this.getButtonDisabled();
+        this.indexes = this.getIndexes();
+        if(this.problemDefined) {
+          const obj: ContinuousVisualisationInterface = {
+            startDate: this.schedule.startDate,
+            endDate: this.schedule.endDate,
+            profile: this.schedule.profile,
+            version: this.schedule.version
           }
-          this.setHistoryAssignments();
-          this.updateAssignments(this.schedule.schedule);
-          if(data.state !== IN_PROGRESS){
+          if(data.state === IN_PROGRESS){
+            this.service.notificationSubscribe(obj)
+            this.service.subscribeContinuousVisulation(obj)
+          } else {
+            this.service.notificationUnsubscribe(obj)
+            this.service.unsubscribeContinuousVisulation(obj)
             const savedPrefrences = CacheUtils.getPreferences(schedule);
             if(savedPrefrences){
               for(const pref of savedPrefrences){
                 this.preferences.set(JSON.stringify({nurse: pref.username, shift: pref.shift, date: pref.date}), pref.preference)
               }
             }
+          }
+          this.setHistoryAssignments(this.schedule.problem.history);
+        }
+        if(this.schedule.schedule){
+          this.updateAssignments(this.schedule.schedule);
+          if(!this.problemDefined) {
+            this.updateNurses(this.schedule.schedule)
           }
         }
         this.dataSource.data = data.previousVersions;
@@ -181,9 +212,8 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     })
   }
 
-  setHistoryAssignments(){
-    this.historyAssignmentsMap = new Map();
-    for (const historyElement of this.schedule.problem.history) {
+  setHistoryAssignments(history: NurseHistoryElement[]){
+    for (const historyElement of history) {
       let elements = this.historyAssignmentsMap.get(historyElement.username)
       if(elements === undefined) {
         this.historyAssignmentsMap.set(historyElement.username, [historyElement]);
@@ -195,13 +225,32 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
   updateAssignments(schedule:EmployeeSchedule){
     for (const sch of schedule.schedule) {
+      this.employeesAssigned = true
       this.employeeAssignmentsMap.set(sch.employee_uname, sch.assignments);
-      if(this.schedule.state !== IN_PROGRESS){
-        for(const assignment of sch.assignments){
-          //console.log(assignment.date)
-          this.preferences.set(JSON.stringify({nurse: assignment.employee_uname,
-            shift: assignment.shift, date:assignment.date}),"");
+      for(const assignment of sch.assignments){
+        this.preferences.set(JSON.stringify({nurse: assignment.employee_uname,
+          shift: assignment.shift, date:assignment.date}),"");
+      }
+    }
+  }
+
+  updateNurses(schedule:EmployeeSchedule){
+    this.nurses = []
+    for (const sch of schedule.schedule) {
+      for(const assignment of sch.assignments){
+        const index = this.nurses.findIndex((nurse) => {
+          return nurse.name === assignment.employee_uname
+        })
+        if (index === -1) {
+          this.nurses.push({
+            name: assignment.employee_uname,
+            username: assignment.employee_uname,
+            contracts: [],
+            contract_groups: [],
+            profile: this.profile
+          })
         }
+        break
       }
     }
   }
@@ -246,30 +295,22 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   getButtonDisabled() {
-    const diabled: boolean[] = [];
-    if (this.nbColumns == undefined || this.nbHistoryColumns == undefined) {
-      return [];
-    }
+    const disabled: boolean[] = [];
     let i = 0;
     for (; i < this.nbHistoryColumns; i++) {
-      diabled.push(true);
+      disabled.push(true);
     }
     for (; i < this.nbColumns; i++) {
-      diabled.push(false);
+      disabled.push(false);
     }
-    console.log(diabled.length)
-    return diabled;
+    return disabled;
   }
 
   getIndexes() {
     const indexes: number[] = [];
-    if (this.nbColumns == undefined) {
-      return [];
-    }
     for (let i = 0; i < this.nbColumns; i++) {
       indexes.push(i);
     }
-    console.log(indexes.length)
     return indexes;
   }
 
@@ -438,7 +479,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     if(currentSchedule){
       CacheUtils.savePreferences(currentSchedule, localPreferences);
     }
-
+    // fetch latest detailed schedule
     this.getDetailedSchedule(schedule);
   }
 
@@ -508,22 +549,25 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
 
       CacheUtils.setGenerationRequest(details)
       CacheUtils.setGenerationRequestPreferences(this.schedule.problem.preferences)
-      CacheUtils.setDemandGenerationRequest(this.schedule.problem.hospitalDemand);
+      const demand: HospitalDemandElement[][] = [];
+      for (let d of this.schedule.problem.hospitalDemand) {
+        while (demand.length <= d.index) {
+          demand.push([])
+        }
+        demand[d.index].push(d);
+      }
+      CacheUtils.setDemandGenerationRequest(demand);
       CacheUtils.saveNurseHistory(this.schedule.problem.history);
       CacheUtils.setOldVersion(this.schedule.version)
       this.router.navigate(["/" + SCHEDULE_GENERATION])
     }
     else{
+      const config = CacheUtils.getGenerationConfig();
+      if(config) {
+        this.schedule.problem.config = config
+      }
       this.service.regenerateSchedule(this.schedule.version, this.schedule.problem).subscribe({
         next:(sol: Solution)=> {
-          const subscription: ContinuousVisualisationInterface = {
-            startDate: sol.startDate,
-            endDate: sol.endDate,
-            profile: sol.profile,
-            version: sol.version
-          }
-          CacheUtils.addNewNotifSubscription(subscription)
-          this.service.notificationSubscribe(subscription);
           this.router.navigate(["/" + VIEW_SCHEDULES])
         },
         error: (err: HttpErrorResponse)=>{
@@ -538,6 +582,58 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
     }
   }
 
+  nextSchedule() {
+    const problemNurses: NurseInterface[] = []
+    this.schedule.problem.nurses.forEach((username: string)=>{
+      this.nurses.forEach((nurse: NurseInterface)=>{
+        if(username === nurse.username){
+          problemNurses.push(nurse)
+        }
+      })
+    })
+
+    const nextStart = new Date(this.schedule.problem.endDate.valueOf())
+    DateUtils.addDays(nextStart, 1)
+    const nDays = this.nbColumns - this.nbHistoryColumns - 1
+    const nextEnd = new Date(nextStart.valueOf())
+    DateUtils.addDays(nextEnd, nDays)
+    const details : GenerationRequestDetails= {
+      nurses: problemNurses,
+      skills: this.schedule.problem.skills,
+      shifts: this.schedule.problem.shifts,
+      startDate: nextStart,
+      endDate: nextEnd
+    }
+    CacheUtils.setGenerationRequest(details)
+
+    const demand: HospitalDemandElement[][] = [];
+    for (let d of this.schedule.problem.hospitalDemand) {
+      while (demand.length <= d.index) {
+        demand.push([])
+      }
+      const date = new Date(d.date)
+      DateUtils.addDays(date, nDays)
+      d.date = ""+date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()
+      demand[d.index].push(d);
+    }
+    CacheUtils.setDemandGenerationRequest(demand);
+
+    const history: NurseHistoryElement[] = []
+    for (const sch of this.schedule.schedule.schedule) {
+      for(const assignment of sch.assignments){
+        //console.log(assignment.date)
+        history.push({
+          username: assignment.employee_uname,
+          shift: assignment.shift,
+          date:assignment.date
+        });
+      }
+    }
+    CacheUtils.saveNurseHistory(history);
+
+    this.router.navigate(["/" + SCHEDULE_GENERATION])
+  }
+
   stopGeneration(){
     const obj: ContinuousVisualisationInterface = {
       startDate: this.schedule.startDate,
@@ -545,18 +641,16 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       profile: this.schedule.profile,
       version: this.schedule.version,
     }
+    this.schedule.state = "Stopping"
     this.service.stopGeneration(obj).subscribe({
       error: (err: HttpErrorResponse)=>{
-        if(err.status === HttpStatusCode.Ok){
-          const currentSolution = CacheUtils.getCurrentSchedule();
-          if(currentSolution){
-            this.getDetailedSchedule(currentSolution)
-          }
+        if(err.statusText !== "OK") {
+          this.openErrorDialog(err.error)
         }
-        this.openErrorDialog(err.error)
       }
     })
   }
+
   exportSchedule(){
     const obj: ContinuousVisualisationInterface = {
       startDate: this.schedule.startDate,
@@ -574,6 +668,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       }
     })
   }
+
   viewReport(){
     this.dialog.open(ReportDialogComponent, {
       data: {startDate: this.schedule.startDate,
@@ -584,5 +679,9 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
         width: '55%',
         position: {top:'8vh',left: '25%', right: '25%'},
     })
+  }
+
+  closeView(){
+    this.router.navigate(["/" + VIEW_SCHEDULES])
   }
 }

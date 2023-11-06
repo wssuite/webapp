@@ -2,8 +2,10 @@ import datetime
 import json
 import os
 from typing import Type
+import shutil
 
 import requests
+from werkzeug.datastructures import FileStorage
 
 from src.models.schedule import Schedule
 from src.models.solution import Solution
@@ -50,9 +52,6 @@ class ScheduleHandler(BaseHandler):
         demand = ScheduleDemand().from_json(demand_json)
         self.verify_profile_accessors_access(token, demand.profile)
 
-        config = open("config.json")
-        data = json.load(config)
-        config.close()
         generate_url = f"http://{HAPROXY_ADDRESS}/solver/schedule"
 
         """Get th path for next version"""
@@ -65,13 +64,13 @@ class ScheduleHandler(BaseHandler):
             demand_json[end_date],
             v
         )
-        detailed_demand = ScheduleDemandDetailed()
 
         input_json = os.path.join(full_path, "input.json")
         """Dump the demand in an input.json file"""
         with open(input_json, "w") as f:
             json.dump(demand.to_json(), f)
 
+        detailed_demand = ScheduleDemandDetailed()
         detailed_demand.id = next_version
         self.__build_detailed_demand(demand, detailed_demand)
 
@@ -99,7 +98,9 @@ class ScheduleHandler(BaseHandler):
 
         solution_object = Solution().from_json(solution_json)
         relative_path = full_path.replace(base_directory, "")
-        response = requests.post(generate_url, params={"path": relative_path})
+        config = demand_json.get("config", {})
+        config["path"] = relative_path
+        response = requests.get(generate_url, params=config)
         if response.status_code == 200:
             solution_object.worker_host = response.text
             solution_object.state = "Waiting"
@@ -118,9 +119,15 @@ class ScheduleHandler(BaseHandler):
     def regenerate_schedule(self, token, demand_json, v):
         return self.__generate_schedule(token, demand_json, v)
 
+    def proxy_worker(self, token, path):
+        self.verify_token(token)
+        param_url = f"http://{HAPROXY_ADDRESS}/solver/{path}"
+        res = requests.get(param_url)
+        return res.json()
+
     def stop_generation(self, token, solution_json):
         solution = Solution().from_json(solution_json)
-        self.verify_profile_accessors_access(token, solution.profile)
+        self.verify_token(token)
         solution_from_db = self.solution_dao.get_solution(
             solution.start_date,
             solution.end_date,
@@ -128,9 +135,7 @@ class ScheduleHandler(BaseHandler):
             solution.version,
         )
         db_solution = Solution().from_json(solution_from_db)
-        """
-          TODO send the request to stop to the worker in question
-        """
+        # send the request to stop to the worker in question
         host = db_solution.worker_host
         stop_url = f"http://{host}/solver/stop"
         full_path = FileSystemManager.get_solution_dir_path(
@@ -140,10 +145,12 @@ class ScheduleHandler(BaseHandler):
             db_solution.version,
         )
         relative_path = full_path.replace(base_directory, "")
-        requests.post(stop_url, params={"path": relative_path})
+        print("Stop job", relative_path, "for", host)
+        requests.get(stop_url, params={"path": relative_path})
 
     def get_detailed_solution(self, token, start, end, profile_name, v):
-        self.verify_profile_accessors_access(token, profile_name)
+        if "_import" not in profile_name:
+            self.verify_profile_accessors_access(token, profile_name)
         solution_db = self.solution_dao.get_solution(
             start, end, profile_name, v
         )
@@ -165,10 +172,13 @@ class ScheduleHandler(BaseHandler):
         input_json_file = os.path.join(dir_path, "input.json")
         schedule_file = os.path.join(dir_path, "sol.txt")
         try:
-            file = open(input_json_file)
-            input_json = json.load(file)
-            file.close()
-            ret_json[problem] = input_json
+            if os.path.exists(input_json_file):
+                file = open(input_json_file)
+                input_json = json.load(file)
+                file.close()
+                ret_json[problem] = input_json
+            else:
+                ret_json[problem] = {}
             schedule_obj = Schedule(schedule_file)
             ret_json[schedule] = schedule_obj.filter_by_name()
 
@@ -194,7 +204,18 @@ class ScheduleHandler(BaseHandler):
             raise ProjectBaseException("The problem doesn't exist")
 
     def remove_schedule(self, token, start, end, profile_name, v):
-        self.verify_profile_accessors_access(token, profile_name)
+        try:
+            self.stop_generation(token, {
+                    "start_date": start,
+                    "end_date": end,
+                    "profile": profile_name,
+                    "version": v,
+            })
+        except Exception as e:
+            print(e)
+
+        if "_import" not in profile_name:
+            self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()
         """Before removing the solution update next versions to
         not consider the version that is about to be deleted"""
@@ -233,7 +254,7 @@ class ScheduleHandler(BaseHandler):
         solution = Schedule(sol_file)
         return solution.export()
 
-    def get_statistics(self, token, start, end, profile_name,v):
+    def get_statistics(self, token, start, end, profile_name, v):
         self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()
         sol_dir_path = fs.get_solution_dir_path(profile_name, start, end, v)
@@ -348,16 +369,47 @@ class ScheduleHandler(BaseHandler):
             t = object_type().from_json(element)
             destination.append(t)
 
-    def update_solution_state(self, solution_json):
+    def update_solution_state(self, sol_json):
         self.solution_dao.update_state(
-            solution_json[start_date],
-            solution_json[end_date],
-            solution_json[profile],
-            solution_json[version],
-            solution_json[state],
+            sol_json[start_date],
+            sol_json[end_date],
+            sol_json[profile],
+            sol_json[version],
+            sol_json[state],
         )
-        return os.path.join(
-            solution_json[profile],
-            f"{solution_json[start_date]}_{solution_json[end_date]}",
-            solution_json[version],
+        return sol_json
+
+    def update_solution(self, sol_json):
+        sol_folder_path = FileSystemManager.get_solution_dir_path(
+            sol_json[profile],
+            sol_json[start_date],
+            sol_json[end_date],
+            sol_json[version]
         )
+        sol_file_path = os.path.join(sol_folder_path, "sol.txt")
+        return Schedule(sol_file_path).filter_by_name()
+
+    def import_solution(self, token, file: FileStorage):
+        self.verify_token(token)
+        file.save(file.filename)
+        file_path = file.filename
+        schedule = Schedule(file_path, False)
+        schedule.profile += "_import"
+
+        time = datetime.datetime.now().astimezone()
+        time_str = str(time).split(".")[0]
+        solution_json = schedule.profile_json()
+        solution_json['timestamp'] = time_str
+        solution_object = Solution().from_json(solution_json)
+        solution_object.worker_host = ""
+        solution_object.state = "Success"
+        self.solution_dao.insert_one(solution_object.db_json())
+
+        fs = FileSystemManager()
+        sol_dir_path = fs.get_solution_dir_path(schedule.profile, schedule.start_date,
+                                                schedule.end_date, schedule.version)
+        fs.create_dir_if_not_exist(sol_dir_path)
+        sol_file = os.path.join(sol_dir_path, "sol.txt")
+        shutil.move(file_path, sol_file)
+
+        return solution_json
