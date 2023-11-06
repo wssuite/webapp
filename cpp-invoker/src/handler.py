@@ -150,11 +150,6 @@ def kill_process(full_path, wait_for=0):
         if proc.returncode is None:
             print("Kill process:", full_path)
             proc.kill()
-            info_json = extract_version_info_from_path(full_path)
-            info_json["state"] = "Stopped"
-            print("Scheduler finished with status", info_json["state"], "for path", full_path)
-            requests.post(UPDATE_ENDPOINT, json=info_json)
-
 
 
 def handle_stop_event(path):

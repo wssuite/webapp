@@ -43,8 +43,9 @@ services:
     build: ./cpp-invoker
     container_name: worker1
     hostname: worker1
+    entrypoint: sleep 1000000000
     ports:
-      - 5000
+      - 8050:5000
     volumes:
       - dataset:/invoker/dataset
     restart: always
@@ -53,41 +54,41 @@ services:
         limits:
           cpus: '2'
 
-  worker2:
-    build: ./cpp-invoker
-    container_name: worker2
-    hostname: worker2
-    ports:
-      - 5000
-    volumes:
-      - dataset:/invoker/dataset
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-
-  worker3:
-    build: ./cpp-invoker
-    container_name: worker3
-    hostname: worker3
-    ports:
-      - 5000
-    volumes:
-      - dataset:/invoker/dataset
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
+  # worker2:
+  #   build: ./cpp-invoker
+  #   container_name: worker2
+  #   hostname: worker2
+  #   ports:
+  #     - 5000
+  #   volumes:
+  #     - dataset:/invoker/dataset
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '2'
+  #
+  # worker3:
+  #   build: ./cpp-invoker
+  #   container_name: worker3
+  #   hostname: worker3
+  #   ports:
+  #     - 5000
+  #   volumes:
+  #     - dataset:/invoker/dataset
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '2'
 
   haproxy:
     image: haproxy
     container_name: haproxy
     depends_on:
       - worker1
-      - worker2
-      - worker3
+      # - worker2
+      # - worker3
     ports:
       - 80
     volumes:

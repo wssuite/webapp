@@ -641,6 +641,7 @@ export class ConsultScheduleComponent implements OnInit, OnDestroy, AfterViewIni
       profile: this.schedule.profile,
       version: this.schedule.version,
     }
+    this.schedule.state = "Stopping"
     this.service.stopGeneration(obj).subscribe({
       error: (err: HttpErrorResponse)=>{
         if(err.statusText !== "OK") {

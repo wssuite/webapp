@@ -204,6 +204,16 @@ class ScheduleHandler(BaseHandler):
             raise ProjectBaseException("The problem doesn't exist")
 
     def remove_schedule(self, token, start, end, profile_name, v):
+        try:
+            self.stop_generation(token, {
+                    "start_date": start,
+                    "end_date": end,
+                    "profile": profile_name,
+                    "version": v,
+            })
+        except Exception as e:
+            print(e)
+
         if "_import" not in profile_name:
             self.verify_profile_accessors_access(token, profile_name)
         fs = FileSystemManager()

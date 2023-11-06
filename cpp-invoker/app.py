@@ -1,7 +1,7 @@
 import os
 
 from src.timer_thread import TimerThread
-from src.controller import mod
+from src.controller import mod, PORT
 from flask import Flask
 from src.handler import (
     running_fm,
@@ -53,5 +53,4 @@ if __name__ == "__main__":
     """
     thread = TimerThread(schedule_waiting)
     thread.start()
-    port = int(os.getenv('PORT', '5000'))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=PORT)
