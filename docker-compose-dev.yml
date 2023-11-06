@@ -43,16 +43,18 @@ services:
     build: ./cpp-invoker
     container_name: worker1
     hostname: worker1
-    entrypoint: sleep 1000000000
     ports:
       - 8050:5000
+    environment:
+      - MAX_THREADS=4
+      - TIMEOUT=600
     volumes:
       - dataset:/invoker/dataset
     restart: always
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: '4'
 
   # worker2:
   #   build: ./cpp-invoker
