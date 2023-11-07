@@ -11,8 +11,7 @@ To clone the git repository, please use the following command:
 	 git clone https://github.com/wssuite/webapp.git
 
 
-To run the production webapp, you may also just download the two files: docker-compose.yml and haproxy .cfg
-and run:
+To run the production webapp, you may also just download one file (docker-compose.yml) and run:
 
 	docker compose up -d
 

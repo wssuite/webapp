@@ -33,6 +33,10 @@ services:
     container_name: api
     ports:
       - 5000:5000
+    environment:
+      - HAPROXY_ADDRESS=worker1:5000
+      - username=admin
+      - password=test
     depends_on:
       - mongodb
     volumes:
@@ -83,19 +87,19 @@ services:
   #     resources:
   #       limits:
   #         cpus: '2'
-
-  haproxy:
-    image: haproxy
-    container_name: haproxy
-    depends_on:
-      - worker1
-      # - worker2
-      # - worker3
-    ports:
-      - 80
-    volumes:
-      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-    restart: always
+  #
+  # haproxy:
+  #   image: haproxy
+  #   container_name: haproxy
+  #   depends_on:
+  #     - worker1
+  #     # - worker2
+  #     # - worker3
+  #   ports:
+  #     - 80
+  #   volumes:
+  #     - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+  #   restart: always
 
 volumes:
   dataset:

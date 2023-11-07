@@ -1,9 +1,10 @@
+import os
 import config
 from src import create_app, socketio
 from src.dao.user_dao import UserDao
 from test_constants import default_user
 from src.dao.abstract_dao import DBConnection
-from constants import admin, user_password, utf8
+from constants import admin, user_username, user_password, utf8
 from src.models.user import User
 import bcrypt
 
@@ -20,6 +21,11 @@ if __name__ == "__main__":
     app = create_app()
     admin_dict = user_dao.find_by_username(admin)
     if admin_dict is None:
+        print("Create default admin user")
+        default_user = {
+            user_password: os.getenv(user_password, default_user[user_password]),
+            user_username: os.getenv(user_username, default_user[user_username])
+        }
         admin_user = User().from_json(default_user)
         db_json = admin_user.db_json()
         password = db_json[user_password].encode(utf8)

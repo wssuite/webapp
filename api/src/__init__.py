@@ -4,7 +4,7 @@ from flask_socketio import SocketIO
 from engineio.payload import Payload
 
 Payload.max_decode_packets = 500
-socketio = SocketIO(logger=True, cors_allowed_origins="*", engineio_logger=True)
+socketio = SocketIO(logger=True, cors_allowed_origins="*")
 
 
 def create_app():
