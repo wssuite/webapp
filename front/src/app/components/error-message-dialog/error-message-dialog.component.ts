@@ -19,11 +19,11 @@ export class ErrorMessageDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.dialog.afterAllClosed.subscribe((value: void) => {
-      if(this.data.message.includes(TOKEN_INVALID) ||
-         this.data.message.includes(LOGIN_REQUIRED)) {
-        this.router.navigate(["/" + LOGIN]);
-      }
-    })
+    if(this.data.message.includes(TOKEN_INVALID) ||
+       this.data.message.includes(LOGIN_REQUIRED)) {
+     this.dialog.afterAllClosed.subscribe((value: void) => {
+       this.router.navigate(["/" + LOGIN]);
+     })
+    }
   }
 }

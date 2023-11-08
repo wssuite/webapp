@@ -27,6 +27,8 @@ services:
       - 5000
     environment:
       - HAPROXY_ADDRESS=worker1:5000
+      - username=admin
+      - password=admin
     depends_on:
       - mongodb
     volumes:
