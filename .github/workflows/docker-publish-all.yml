@@ -1,0 +1,33 @@
+name: Publish Docker app images
+
+on:
+  push:
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  push_front_to_dockerhub:
+    uses: ./.github/workflows/docker-publish.yml
+    with:
+      image: legraina/ns_webapp_front
+      context: ./front
+    secrets: inherit
+
+  push_api_to_dockerhub:
+    uses: ./.github/workflows/docker-publish.yml
+    with:
+      image: legraina/ns_webapp_api
+      context: ./api
+    secrets: inherit
+
+  push_scheduler_to_dockerhub:
+    uses: ./.github/workflows/docker-publish.yml
+    with:
+      image: legraina/ns_webapp_scheduler
+      context: ./cpp-invoker
+    secrets: inherit
